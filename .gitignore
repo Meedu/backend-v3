@@ -29,3 +29,5 @@ yarn.lock
 .env.production
 .env.development
 .env
+
+template.php

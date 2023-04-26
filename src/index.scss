@@ -67,3 +67,63 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+.helper-text {
+  height: 24px;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.45);
+  line-height: 24px;
+}
+
+.float-left {
+  width: 100%;
+  height: auto;
+  float: left;
+}
+
+.d-flex {
+  display: flex;
+  align-items: center;
+}
+
+.j-flex {
+  display: flex;
+  justify-content: center;
+}
+
+.d-j-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.j-r-flex {
+  display: flex;
+  justify-content: right;
+}
+
+.j-b-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.c-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.c-a-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-1 {
+  flex: 1;
+}

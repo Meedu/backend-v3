@@ -12,6 +12,6 @@ export function saveSetting(params: any) {
   return client.post("/backend/api/v1/setting", params);
 }
 
-export function imageCaptcha() {
+export function getImageCaptcha() {
   return client.get("/backend/api/v1/captcha/image", {});
 }

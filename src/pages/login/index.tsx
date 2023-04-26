@@ -1,43 +1,197 @@
 import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
+import { useNavigate } from "react-router-dom";
 import { Spin, Input, Button, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { login as loginApi, system } from "../../api/index";
 import { loginAction, logoutAction } from "../../store/user/loginUserSlice";
+import {
+  SystemConfigStoreInterface,
+  saveConfigAction,
+} from "../../store/system/systemConfigSlice";
+import { setToken } from "../../utils/index";
 
 const LoginPage = () => {
   document.title = "登录";
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [image, setImage] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [captchaVal, setCaptchaVal] = useState<string>("");
+  const [captchaKey, setCaptchaKey] = useState<string>("");
+  const [captchaLoading, setCaptchaLoading] = useState(true);
   const loginState = useSelector((state: any) => {
     return state.loginUser.value;
   });
 
-  return (
-    <>
-      <Button
-        onClick={() => {
-          dispatch(
-            loginAction({
-              user: {
-                name: "霸王",
-              },
-            })
-          );
-        }}
-      >
-        登录吧
-      </Button>
+  useEffect(() => {
+    fetchImageCaptcha();
+  }, []);
 
-      {loginState.isLogin && (
-        <Button
-          onClick={() => {
-            dispatch(logoutAction());
-          }}
-        >
-          {loginState.user.name}
-        </Button>
-      )}
-    </>
+  const fetchImageCaptcha = () => {
+    setCaptchaVal("");
+    setCaptchaLoading(true);
+
+    system.getImageCaptcha().then((res: any) => {
+      setImage(res.data.img);
+      setCaptchaKey(res.data.key);
+      setCaptchaLoading(false);
+    });
+  };
+
+  const keyUp = (e: any) => {
+    if (e.keyCode === 13) {
+      loginSubmit();
+    }
+  };
+
+  const loginSubmit = async () => {
+    if (!email) {
+      message.error("请输入管理员账号");
+      return;
+    }
+    if (!password) {
+      message.error("请输入账户密码");
+      return;
+    }
+    if (!captchaVal) {
+      message.error("请输入图形验证码");
+      return;
+    }
+    if (captchaVal.length !== 4) {
+      message.error("图形验证码错误");
+      return;
+    }
+    await handleSubmit();
+  };
+
+  const handleSubmit = async () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    try {
+      let res: any = await loginApi.login({
+        username: email,
+        password: password,
+        image_key: captchaKey,
+        image_captcha: captchaVal,
+      });
+      setToken(res.data.token); //将token写入本地
+      await getSystemConfig(); //获取系统配置并写入store
+      await getUser(); //获取登录用户的信息并写入store
+
+      navigate("/", { replace: true });
+    } catch (e) {
+      console.error("错误信息", e);
+      setLoading(false);
+      fetchImageCaptcha(); //刷新图形验证码
+    }
+  };
+
+  const getUser = async () => {
+    let res: any = await loginApi.getUser();
+    dispatch(loginAction(res.data));
+  };
+
+  const getSystemConfig = async () => {
+    let res: any = await system.getSystemConfig();
+    let data: SystemConfigStoreInterface = {
+      systemName: res.data["system.name"],
+      systemLogo: res.data["system.logo"],
+      systemApiUrl: res.data["system.api_url"],
+      systemPcUrl: res.data["system.pc_url"],
+      systemH5Url: res.data["system.h5_url"],
+      memberDefaultAvatar: res.data["member.default_avatar"],
+      courseDefaultThumbs: res.data["default.course_thumbs"],
+    };
+    dispatch(saveConfigAction(data));
+  };
+
+  return (
+    <div className={styles["login-container"]}>
+      <div className={styles["left_content"]}></div>
+      <div className={styles["right_content"]}>
+        <div className={styles["title"]}>登录后台</div>
+        <div className={styles["login-box"]}>
+          <Input
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            style={{
+              width: 400,
+              height: 48,
+              borderRadius: 4,
+              border: "1px solid #e5e5e5",
+            }}
+            placeholder="请输入管理员账号"
+            onKeyUp={(e) => keyUp(e)}
+            allowClear
+          />
+        </div>
+        <div className="login-box d-flex mt-50">
+          <Input.Password
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            allowClear
+            style={{
+              width: 400,
+              height: 48,
+              borderRadius: 4,
+              border: "1px solid #e5e5e5",
+            }}
+            placeholder="请输入账户密码"
+          />
+        </div>
+        <div className="d-flex mt-50">
+          <Input
+            value={captchaVal}
+            style={{
+              width: 250,
+              height: 48,
+              borderRadius: 4,
+              border: "1px solid #e5e5e5",
+            }}
+            placeholder="请输入图形验证码"
+            onChange={(e) => {
+              setCaptchaVal(e.target.value);
+            }}
+            allowClear
+            onKeyUp={(e) => keyUp(e)}
+          />
+          <div className={styles["captcha-box"]}>
+            {captchaLoading && (
+              <div className={styles["catpcha-loading-box"]}>
+                <Spin size="small" />
+              </div>
+            )}
+
+            {!captchaLoading && (
+              <img
+                className={styles["captcha"]}
+                onClick={fetchImageCaptcha}
+                src={image}
+              />
+            )}
+          </div>
+        </div>
+        <div className="login-box d-flex mt-50">
+          <Button
+            style={{ width: 400, height: 54 }}
+            type="primary"
+            onClick={loginSubmit}
+            loading={loading}
+          >
+            立即登录
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 

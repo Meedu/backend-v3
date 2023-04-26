@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
     <ConfigProvider
       locale={zhCN}
-      theme={{ token: { colorPrimary: "#ff4d4f" } }}
+      theme={{ token: { colorPrimary: "#3ca7fa" } }}
     >
       <BrowserRouter>
         <AutoScorllTop>

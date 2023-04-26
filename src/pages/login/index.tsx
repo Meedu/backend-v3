@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 import { Spin, Input, Button, message } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login as loginApi, system } from "../../api/index";
-import { loginAction, logoutAction } from "../../store/user/loginUserSlice";
+import { loginAction } from "../../store/user/loginUserSlice";
 import {
-  SystemConfigStoreInterface,
   saveConfigAction,
+  SystemConfigStoreInterface,
 } from "../../store/system/systemConfigSlice";
 import { setToken } from "../../utils/index";
 
@@ -22,9 +22,6 @@ const LoginPage = () => {
   const [captchaVal, setCaptchaVal] = useState<string>("");
   const [captchaKey, setCaptchaKey] = useState<string>("");
   const [captchaLoading, setCaptchaLoading] = useState(true);
-  const loginState = useSelector((state: any) => {
-    return state.loginUser.value;
-  });
 
   useEffect(() => {
     fetchImageCaptcha();
@@ -98,16 +95,20 @@ const LoginPage = () => {
 
   const getSystemConfig = async () => {
     let res: any = await system.getSystemConfig();
-    let data: SystemConfigStoreInterface = {
-      systemName: res.data["system.name"],
-      systemLogo: res.data["system.logo"],
-      systemApiUrl: res.data["system.api_url"],
-      systemPcUrl: res.data["system.pc_url"],
-      systemH5Url: res.data["system.h5_url"],
-      memberDefaultAvatar: res.data["member.default_avatar"],
-      courseDefaultThumbs: res.data["default.course_thumbs"],
+    let config: SystemConfigStoreInterface = {
+      system: {
+        logo: res.data.system.logo,
+        url: {
+          api: res.data.system.url.api,
+          h5: res.data.system.url.h5,
+          pc: res.data.system.url.pc,
+        },
+      },
+      video: {
+        default_service: res.data.video.default_service,
+      },
     };
-    dispatch(saveConfigAction(data));
+    dispatch(saveConfigAction(config));
   };
 
   return (

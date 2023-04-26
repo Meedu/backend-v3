@@ -1,13 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type SystemConfigStoreInterface = {
-  systemApiUrl?: string;
-  systemPcUrl?: string;
-  systemH5Url?: string;
-  systemLogo?: string;
-  systemName?: string;
-  memberDefaultAvatar?: string;
-  courseDefaultThumbs?: string[];
+  system?: {
+    logo?: string;
+    url?: {
+      api?: string;
+      h5?: string;
+      pc?: string;
+    };
+  };
+  video?: {
+    default_service?: string;
+  };
 };
 
 const systemConfigSlice = createSlice({

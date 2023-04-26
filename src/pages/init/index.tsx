@@ -19,13 +19,17 @@ const InitPage = (props: Props) => {
 
   if (props.configData) {
     let config: SystemConfigStoreInterface = {
-      systemName: props.configData["system.name"],
-      systemLogo: props.configData["system.logo"],
-      systemApiUrl: props.configData["system.api_url"],
-      systemPcUrl: props.configData["system.pc_url"],
-      systemH5Url: props.configData["system.h5_url"],
-      memberDefaultAvatar: props.configData["member.default_avatar"],
-      courseDefaultThumbs: props.configData["default.course_thumbs"],
+      system: {
+        logo: props.configData.system.logo,
+        url: {
+          api: props.configData.system.url.api,
+          h5: props.configData.system.url.h5,
+          pc: props.configData.system.url.pc,
+        },
+      },
+      video: {
+        default_service: props.configData.video.default_service,
+      },
     };
     dispatch(saveConfigAction(config));
   }

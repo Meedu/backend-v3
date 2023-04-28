@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./index.module.scss";
 import { Outlet } from "react-router-dom";
-import { Header } from "../../components";
-// import { Header, LeftMenu } from "../../components";
+import { Header, LeftMenu } from "../../components";
 
 const HomePage = () => {
   useEffect(() => {}, []);
@@ -10,7 +9,9 @@ const HomePage = () => {
   return (
     <>
       <div className={styles["layout-wrap"]}>
-        <div className={styles["left-menu"]}>{/* <LeftMenu /> */}</div>
+        <div className={styles["left-menu"]}>
+          <LeftMenu />
+        </div>
         <div className={styles["right-cont"]}>
           <div className={styles["right-top"]}>
             <Header></Header>

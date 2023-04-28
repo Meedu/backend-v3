@@ -1,0 +1,21 @@
+.left-menu {
+  width: 200px;
+  height: 100%;
+  background-color: #fff;
+
+  .App-logo {
+    width: 112px;
+    height: 30px;
+    margin-top: 26px;
+    cursor: pointer;
+  }
+
+  .menu-box {
+    width: 200px;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding-top: 24px;
+  }
+}

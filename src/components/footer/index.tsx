@@ -7,7 +7,7 @@ export const Footer: React.FC = () => {
     <Layout.Footer
       style={{
         width: "100%",
-        backgroundColor: "#F6F6F6",
+        backgroundColor: "#f1f2f9",
         height: 166,
         paddingTop: 80,
         textAlign: "center",

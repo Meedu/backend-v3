@@ -14,7 +14,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    background-color: #f6f6f6;
+    background-color: #f1f2f9;
     overflow-x: auto;
     overflow-y: auto;
     .right-top {
@@ -26,7 +26,6 @@
       z-index: 10;
     }
     .right-main {
-      min-width: 1400px;
       float: left;
       height: auto;
       box-sizing: border-box;

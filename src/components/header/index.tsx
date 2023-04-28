@@ -7,10 +7,11 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../store/user/loginUserSlice";
 import { login, user as member } from "../../api/index";
-import deviceIcon from "../../assets/img/focus-device.png";
-import liveIcon from "../../assets/img/teacher-live-icon.png";
+import { StudentDeviceDialog } from "../../components";
 import AppConfig from "../../js/config";
 import { checkUrl } from "../../utils/index";
+import deviceIcon from "../../assets/img/focus-device.png";
+import liveIcon from "../../assets/img/teacher-live-icon.png";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,10 @@ export const Header = () => {
 
   return (
     <div className={styles["app-header"]}>
+      <StudentDeviceDialog
+        open={studentDevice}
+        onCancel={() => setStudentDevice(false)}
+      ></StudentDeviceDialog>
       <div className={styles["main-header"]}>
         <div className={styles["page-name"]}>主页</div>
         <div className={styles["device-bar"]}>

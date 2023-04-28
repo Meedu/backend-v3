@@ -53,3 +53,12 @@ export function inStrArray(array: string[], value: string): boolean {
   }
   return false;
 }
+
+export function checkUrl(value: any) {
+  let url = value;
+  let str = url.substr(url.length - 1, 1);
+  if (str !== "/") {
+    url = url + "/";
+  }
+  return url;
+}

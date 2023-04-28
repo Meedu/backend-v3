@@ -21,5 +21,49 @@
       line-height: 56px;
       text-align: left;
     }
+    .device-bar {
+      width: auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .device-item {
+        width: 95px;
+        height: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: #666666;
+        line-height: 20px;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
+        img {
+          width: 20px;
+          height: 20px;
+          margin-right: 5px;
+        }
+      }
+      .column {
+        width: 1px;
+        height: 20px;
+        background: #d8d8d8;
+        margin-right: 15px;
+        margin-left: 15px;
+      }
+    }
+    .user-info {
+      width: auto;
+      padding-right: 30px;
+      cursor: pointer;
+      .name {
+        display: inline-block;
+        position: relative;
+        color: #606266;
+        font-size: 14px;
+      }
+    }
   }
 }

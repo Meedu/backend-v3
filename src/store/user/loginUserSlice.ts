@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { clearToken } from "../../utils/index";
 
 type UserStoreInterface = {
   user: any;
@@ -23,6 +24,7 @@ const loginUserSlice = createSlice({
     logoutAction(stage) {
       stage.value.user = null;
       stage.value.isLogin = false;
+      clearToken();
     },
   },
 });

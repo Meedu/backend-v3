@@ -6,9 +6,12 @@ import {
   saveConfigAction,
 } from "../../store/system/systemConfigSlice";
 
+import { setEnabledAddonsAction } from "../../store/enabledAddons/enabledAddonsConfigSlice";
+
 interface Props {
   loginData?: any;
   configData?: any;
+  addonsData?: any;
 }
 
 const InitPage = (props: Props) => {
@@ -32,6 +35,18 @@ const InitPage = (props: Props) => {
       },
     };
     dispatch(saveConfigAction(config));
+  }
+
+  if (props.addonsData) {
+    let enabledAddons: any = {};
+    let count = 0;
+    for (let i = 0; i < props.addonsData.length; i++) {
+      if (props.addonsData[i].enabled) {
+        count += 1;
+        enabledAddons[props.addonsData[i].sign] = 1;
+      }
+    }
+    dispatch(setEnabledAddonsAction({ addons: enabledAddons, count: count }));
   }
 
   return (

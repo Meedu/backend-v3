@@ -15,3 +15,7 @@ export function saveSetting(params: any) {
 export function getImageCaptcha() {
   return client.get("/backend/api/v1/captcha/image", {});
 }
+
+export function addonsList() {
+  return client.get(`/backend/api/v1/addons`, {});
+}

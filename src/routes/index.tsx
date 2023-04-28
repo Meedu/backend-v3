@@ -18,10 +18,15 @@ if (getToken()) {
       try {
         let configRes: any = await system.getSystemConfig();
         let userRes: any = await login.getUser();
+        let addonsRes: any = await system.addonsList();
 
         resolve({
           default: (
-            <InitPage configData={configRes.data} loginData={userRes.data} />
+            <InitPage
+              configData={configRes.data}
+              loginData={userRes.data}
+              addonsData={addonsRes.data}
+            />
           ),
         });
       } catch (e) {

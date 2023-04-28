@@ -22,6 +22,15 @@ export const Header = () => {
   const [showLiveTeacher, setShowLiveTeacher] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const enabledAddons = useSelector(
+    (state: any) => state.enabledAddonsConfig.value.enabledAddons
+  );
+
+  useEffect(() => {
+    if (enabledAddons["Zhibo"] === 1) {
+      setShowLiveTeacher(true);
+    }
+  }, [enabledAddons]);
 
   const items: MenuProps["items"] = [
     {

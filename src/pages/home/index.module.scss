@@ -15,8 +15,6 @@
     display: flex;
     flex-direction: column;
     background-color: #f1f2f9;
-    overflow-x: auto;
-    overflow-y: auto;
     .right-top {
       height: 56px;
       position: sticky;
@@ -33,7 +31,9 @@
       /* Firefox */
       -webkit-box-sizing: border-box;
       /* Safari */
-      padding: 24px;
+      padding: 20px;
+      overflow-x: auto;
+      overflow-y: auto;
     }
   }
 }

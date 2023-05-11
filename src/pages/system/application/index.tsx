@@ -13,6 +13,7 @@ const { confirm } = Modal;
 interface DataType {
   id: React.Key;
   name: string;
+  sign: string;
   version: string;
 }
 
@@ -232,7 +233,7 @@ const SystemApplicationPage = () => {
             loading={loading}
             columns={columns}
             dataSource={list}
-            rowKey={(record) => record.id}
+            rowKey={(record) => record.sign}
             pagination={false}
           />
         </div>

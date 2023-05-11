@@ -20,6 +20,7 @@ export const Header = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [studentDevice, setStudentDevice] = useState<boolean>(false);
   const [showLiveTeacher, setShowLiveTeacher] = useState<boolean>(false);
+  const title = useSelector((state: any) => state.loginUser.value.title);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const enabledAddons = useSelector(
@@ -67,7 +68,7 @@ export const Header = () => {
         onCancel={() => setStudentDevice(false)}
       ></StudentDeviceDialog>
       <div className={styles["main-header"]}>
-        <div className={styles["page-name"]}>主页</div>
+        <div className={styles["page-name"]}>{title}</div>
         <div className={styles["device-bar"]}>
           <div
             className={styles["device-item"]}

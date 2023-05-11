@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { message, Form, Input, Button } from "antd";
+import { useDispatch } from "react-redux";
 import { administrator } from "../../../api/index";
+import { titleAction } from "../../../store/user/loginUserSlice";
 
 const ChangePasswordPage = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     document.title = "修改密码";
+    dispatch(titleAction("修改密码"));
   }, []);
 
   const onFinish = (values: any) => {

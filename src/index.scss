@@ -40,8 +40,108 @@ h1 {
   }
 }
 
+.c-blue {
+  color: #409eff;
+}
+.c-red {
+  color: #ff4d4f;
+}
+.c-danger {
+  color: #ff4d4f !important;
+}
+.c-yellow {
+  color: #e1a500;
+}
+.c-green {
+  color: #04c877;
+}
+.c-gray {
+  color: #999999;
+}
+
+.c-primary {
+  color: #409eff;
+}
+
 .mt-50 {
   margin-top: 50px;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}
+
+.mb-5 {
+  margin-bottom: 5px;
+}
+
+.mb-8 {
+  margin-bottom: 8px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.ml-15 {
+  margin-left: 15px;
+}
+
+.mr-15 {
+  margin-right: 15px;
+}
+
+.ml-30 {
+  margin-left: 30px;
+}
+
+.ml-24 {
+  margin-left: 24px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.mt-5 {
+  margin-top: 5px;
+}
+.mt-10 {
+  margin-top: 10px;
+}
+.mt-20 {
+  margin-top: 20px;
+}
+.mt-30 {
+  margin-top: 30px;
 }
 
 .helper-text {
@@ -115,6 +215,12 @@ h1 {
 
 .c-danger {
   color: #ff4d4f !important;
+}
+
+.b-n-link {
+  &:hover {
+    // color: rgba(#ff4d4f, 0.8) !important;
+  }
 }
 
 .ant-menu {
@@ -219,4 +325,31 @@ textarea.ant-input {
 
 .ant-btn-primary {
   border: none;
+}
+
+.meedu-main-body {
+  width: 100%;
+  height: auto;
+  float: left;
+  background-color: white;
+  box-sizing: border-box;
+  padding: 30px;
+  border-radius: 15px;
+  margin-bottom: 90px;
+  box-shadow: 0px 2px 4px 0px rgba(102, 102, 102, 0.05);
+  min-width: 1180px;
+  text-align: left;
+}
+
+.status-success {
+  font-size: 10px;
+  color: red;
+
+  .status-success-icon {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background-color: #66dd7b;
+    border-radius: 50%;
+  }
 }

@@ -2,9 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./index.module.scss";
 import { Row, Col, DatePicker, Button } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { home } from "../../api/index";
 import * as echarts from "echarts";
+import { titleAction } from "../../store/user/loginUserSlice";
 import demandIcon from "../../assets/home/demand.png";
 import liveIcon from "../../assets/home/live.png";
 import topicIcon from "../../assets/home/tuwen.png";
@@ -25,6 +26,7 @@ const funDate = (aa: number) => {
 
 const DashboardPage = () => {
   let chartRef = useRef(null);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [basicData, setBasicData] = useState<any>({});
   const [systemInfo, setSystemInfo] = useState<any>({});
@@ -46,6 +48,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     document.title = "MeEdu后台管理";
+    dispatch(titleAction("主页"));
     getStatData();
     getSystemInfo();
     getZXTdata();

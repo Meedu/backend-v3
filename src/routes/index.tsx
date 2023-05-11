@@ -8,6 +8,7 @@ import { getToken } from "../utils";
 import LoginPage from "../pages/login";
 import HomePage from "../pages/home";
 import DashboardPage from "../pages/dashboard";
+import ChangePasswordPage from "../pages/administrator/change-password";
 
 import ErrorPage from "../pages/error";
 
@@ -56,6 +57,10 @@ const routes: RouteObject[] = [
           {
             path: "/",
             element: <DashboardPage />,
+          },
+          {
+            path: "/administrator/change-password",
+            element: <ChangePasswordPage />,
           },
         ],
       },

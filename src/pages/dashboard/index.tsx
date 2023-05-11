@@ -45,6 +45,7 @@ const DashboardPage = () => {
   );
 
   useEffect(() => {
+    document.title = "MeEdu后台管理";
     getStatData();
     getSystemInfo();
     getZXTdata();

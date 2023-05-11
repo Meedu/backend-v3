@@ -56,7 +56,7 @@ export const Header = () => {
         navigate("/login", { replace: true });
       });
     } else if (key === "edit_password") {
-      console.log("edit_password");
+      navigate("/administrator/change-password");
     }
   };
 

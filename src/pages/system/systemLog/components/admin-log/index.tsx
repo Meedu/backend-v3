@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import styles from "./index.module.scss";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { system } from "../../../../../api/index";

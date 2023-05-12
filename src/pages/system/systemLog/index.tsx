@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Radio } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { system } from "../../../api/index";
 import { AdminLogComp } from "./components/admin-log";
+import { UserLoginLogComp } from "./components/user-login-log";
+import { UploadImagesComp } from "./components/upload-images-log";
 import { titleAction } from "../../../store/user/loginUserSlice";
 
 const SystemLogPage = () => {
@@ -69,6 +70,8 @@ const SystemLogPage = () => {
       </div>
       <div className="float-left mt-30">
         {tabActive === "admin" && <AdminLogComp></AdminLogComp>}
+        {tabActive === "userLogin" && <UserLoginLogComp></UserLoginLogComp>}
+        {tabActive === "uploadImages" && <UploadImagesComp></UploadImagesComp>}
       </div>
     </div>
   );

@@ -114,7 +114,7 @@ const SystemAdministratorUpdatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加管理员" />
+      <BackBartment title="编辑管理员" />
       <div className="float-left mt-30">
         <Form
           form={form}

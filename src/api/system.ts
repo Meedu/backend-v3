@@ -35,3 +35,13 @@ export function upgrade(params: any) {
 export function install(params: any) {
   return client.get(`/backend/api/v1/addons/repository/install`, params);
 }
+
+export function adminLog(params: any) {
+  return client.get(`/backend/api/v1/log/admin`, params);
+}
+export function userLoginLog(params: any) {
+  return client.get(`/backend/api/v1/log/userLogin`, params);
+}
+export function uploadImagesLog(params: any) {
+  return client.get(`/backend/api/v1/log/uploadImages`, params);
+}

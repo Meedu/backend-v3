@@ -10,6 +10,7 @@ import HomePage from "../pages/home";
 import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
 import SystemApplicationPage from "../pages/system/application";
+import SystemLogPage from "../pages/system/systemLog/index";
 
 import ErrorPage from "../pages/error";
 
@@ -66,6 +67,10 @@ const routes: RouteObject[] = [
           {
             path: "/system/application",
             element: <SystemApplicationPage />,
+          },
+          {
+            path: "/systemLog/index",
+            element: <SystemLogPage />,
           },
         ],
       },

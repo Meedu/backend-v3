@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Table, Button, Modal, message, Space } from "antd";
+import { Table, Modal, message, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { adminRole } from "../../../api/index";
 import { useDispatch, useSelector } from "react-redux";
@@ -97,16 +97,6 @@ const SystemAdminrolesPage = () => {
     {
       title: "描述",
       render: (_, record: any) => <span>{record.description}</span>,
-    },
-    {
-      title: "禁止登录",
-      width: 130,
-      render: (_, record: any) => (
-        <>
-          {record.is_ban_login === 0 && <span>否</span>}
-          {record.is_ban_login !== 0 && <span>是</span>}
-        </>
-      ),
     },
     {
       title: "操作",

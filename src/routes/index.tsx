@@ -15,6 +15,8 @@ import SystemAdministratorPage from "../pages/system/administrator/index";
 import SystemAdministratorCreatePage from "../pages/system/administrator/create";
 import SystemAdministratorUpdatePage from "../pages/system/administrator/update";
 import SystemAdminrolesPage from "../pages/system/adminroles/index";
+import SystemAdminrolesCreatePage from "../pages/system/adminroles/create";
+import SystemAdminrolesUpdatePage from "../pages/system/adminroles/update";
 
 import ErrorPage from "../pages/error";
 
@@ -83,6 +85,14 @@ const routes: RouteObject[] = [
           {
             path: "/system/adminroles",
             element: <SystemAdminrolesPage />,
+          },
+          {
+            path: "/system/adminroles/create",
+            element: <SystemAdminrolesCreatePage />,
+          },
+          {
+            path: "/system/adminroles/update",
+            element: <SystemAdminrolesUpdatePage />,
           },
           {
             path: "/system/application",

@@ -88,10 +88,7 @@ const SystemAdministratorCreatePage = () => {
         >
           <Form.Item label="角色">
             <Space align="baseline" style={{ height: 32 }}>
-              <Form.Item
-                name="role_id"
-                rules={[{ required: true, message: "请选择角色!" }]}
-              >
+              <Form.Item name="role_id">
                 <Select
                   style={{ width: 300 }}
                   mode="multiple"

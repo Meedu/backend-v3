@@ -7,6 +7,7 @@ import { system } from "../../..//api/index";
 import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { dateWholeFormat } from "../../../utils/index";
+import { PerButton } from "../../../components";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
 
@@ -118,30 +119,28 @@ const SystemAdministratorPage = () => {
       width: 130,
       render: (_, record: any) => (
         <Space>
-          {checkPermission("administrator.update") && (
-            <Button
-              type="link"
-              size="small"
-              className="c-primary"
-              onClick={() => {
-                navigate("/system/administrator/update?id=" + record.id);
-              }}
-            >
-              编辑
-            </Button>
-          )}
-          {checkPermission("administrator.destroy") && (
-            <Button
-              type="link"
-              size="small"
-              className="c-red"
-              onClick={() => {
-                destory(record.id);
-              }}
-            >
-              删除
-            </Button>
-          )}
+          <PerButton
+            type="link"
+            text="编辑"
+            class="c-primary"
+            icon={null}
+            p="administrator.update"
+            onClick={() => {
+              navigate("/system/administrator/update?id=" + record.id);
+            }}
+            disabled={null}
+          />
+          <PerButton
+            type="link"
+            text="删除"
+            class="c-red"
+            icon={null}
+            p="administrator.destroy"
+            onClick={() => {
+              destory(record.id);
+            }}
+            disabled={null}
+          />
         </Space>
       ),
     },
@@ -183,16 +182,15 @@ const SystemAdministratorPage = () => {
   return (
     <div className="meedu-main-body">
       <div className="float-left">
-        {checkPermission("administrator.store") && (
-          <Button
-            type="primary"
-            onClick={() => {
-              navigate("/system/administrator/create");
-            }}
-          >
-            添加
-          </Button>
-        )}
+        <PerButton
+          type="primary"
+          text="添加"
+          class=""
+          icon={null}
+          p="administrator.store"
+          onClick={() => navigate("/system/administrator/create")}
+          disabled={null}
+        />
       </div>
       <div className="float-left mt-30">
         <Table

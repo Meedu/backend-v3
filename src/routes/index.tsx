@@ -13,6 +13,7 @@ import SystemApplicationPage from "../pages/system/application";
 import SystemLogPage from "../pages/system/systemLog/index";
 import SystemAdministratorPage from "../pages/system/administrator/index";
 import SystemAdministratorCreatePage from "../pages/system/administrator/create";
+import SystemAdministratorUpdatePage from "../pages/system/administrator/update";
 
 import ErrorPage from "../pages/error";
 
@@ -73,6 +74,10 @@ const routes: RouteObject[] = [
           {
             path: "/system/administrator/create",
             element: <SystemAdministratorCreatePage />,
+          },
+          {
+            path: "/system/administrator/update",
+            element: <SystemAdministratorUpdatePage />,
           },
           {
             path: "/system/application",

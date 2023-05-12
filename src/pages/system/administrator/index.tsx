@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 import { Table, Button, Modal, message, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";

@@ -6,3 +6,4 @@ export * from "./student-device";
 export * from "./left-menu";
 export * from "./back-bar";
 export * from "./permission-button";
+export * from "./helper-text";

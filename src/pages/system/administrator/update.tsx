@@ -1,25 +1,32 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button, Input, message, Form, Select, Switch, Space } from "antd";
 import { system } from "../../../api/index";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
-import { BackBartment, PerButton } from "../../../components";
+import { BackBartment, PerButton, HelperText } from "../../../components";
 import { passwordRules } from "../../../utils/index";
 
-const SystemAdministratorCreatePage = () => {
+const SystemAdministratorUpdatePage = () => {
+  const result = new URLSearchParams(useLocation().search);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [roles, setRoles] = useState<any>([]);
   const [helpText, setHelpText] = useState<string>("");
+  const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
-    document.title = "添加管理员";
-    dispatch(titleAction("添加管理员"));
+    document.title = "编辑管理员";
+    dispatch(titleAction("编辑管理员"));
     params();
   }, []);
+
+  useEffect(() => {
+    setId(Number(result.get("id")));
+    getDetail();
+  }, [result.get("id")]);
 
   const params = () => {
     system.administratorCreate().then((res: any) => {
@@ -35,21 +42,54 @@ const SystemAdministratorCreatePage = () => {
     });
   };
 
+  const getDetail = () => {
+    if (id === 0) {
+      return;
+    }
+    system.administratorDetail(id).then((res: any) => {
+      var data = res.data;
+      var roles = data.role_id;
+      let newbox = [];
+      for (var i = 0; i < roles.length; i++) {
+        newbox.push(roles[i]);
+      }
+      form.setFieldsValue({
+        is_ban_login: data.is_ban_login,
+        email: data.email,
+        name: data.name,
+        role_id: newbox,
+      });
+    });
+  };
+
   const onFinish = (values: any) => {
     if (loading) {
       return;
     }
-    if (passwordRules(values.password)) {
-      message.error("密码至少包含大写字母，小写字母，数字，且不少于12位");
-      return;
-    }
-    let params = {
+    let params: any = {
       password_confirmation: values.password,
     };
-    Object.assign(params, values);
+
+    if (values.password === undefined || values.password === "") {
+    } else {
+      if (passwordRules(values.password)) {
+        message.error("密码至少包含大写字母，小写字母，数字，且不少于12位");
+        return;
+      }
+      params = {
+        password_confirmation: values.password,
+        password: values.password,
+      };
+    }
+    Object.assign(params, {
+      name: values.name,
+      email: values.email,
+      role_id: values.role_id,
+      is_ban_login: values.is_ban_login,
+    });
     setLoading(true);
     system
-      .administratorStore(params)
+      .administratorUpdate(id, params)
       .then((res: any) => {
         setLoading(false);
         message.success("保存成功！");
@@ -131,10 +171,7 @@ const SystemAdministratorCreatePage = () => {
           </Form.Item>
           <Form.Item label="密码">
             <Space align="baseline" style={{ height: 32 }}>
-              <Form.Item
-                name="password"
-                rules={[{ required: true, message: "请输入密码!" }]}
-              >
+              <Form.Item name="password">
                 <Input.Password
                   style={{ width: 300 }}
                   placeholder="请输入密码"
@@ -149,6 +186,9 @@ const SystemAdministratorCreatePage = () => {
                   }}
                 />
               </Form.Item>
+              <div className="ml-10">
+                <HelperText text="不修改密码请勿填写"></HelperText>
+              </div>
               {helpText !== "" && helpText !== "undefined" && (
                 <div className="ml-10 c-red">{helpText}</div>
               )}
@@ -185,4 +225,4 @@ const SystemAdministratorCreatePage = () => {
   );
 };
 
-export default SystemAdministratorCreatePage;
+export default SystemAdministratorUpdatePage;

@@ -126,7 +126,6 @@ h1 {
   margin-left: 24px;
 }
 
-
 .mr-10 {
   margin-right: 10px;
 }
@@ -225,6 +224,11 @@ h1 {
 
 .ant-menu {
   border-inline-end: none !important;
+}
+
+.helper-text {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .ant-menu-item {

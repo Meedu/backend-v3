@@ -64,3 +64,7 @@ export function administratorStore(params: any) {
 export function administratorDetail(id: number) {
   return client.get(`/backend/api/v1/administrator/${id}`, {});
 }
+
+export function administratorUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/administrator/${id}`, params);
+}

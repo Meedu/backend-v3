@@ -45,3 +45,10 @@ export function userLoginLog(params: any) {
 export function uploadImagesLog(params: any) {
   return client.get(`/backend/api/v1/log/uploadImages`, params);
 }
+export function administratorList(params: any) {
+  return client.get(`/backend/api/v1/administrator`, params);
+}
+
+export function administratorDestory(id: number) {
+  return client.destroy(`/backend/api/v1/administrator/${id}`);
+}

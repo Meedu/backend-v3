@@ -11,6 +11,7 @@ import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
 import SystemApplicationPage from "../pages/system/application";
 import SystemLogPage from "../pages/system/systemLog/index";
+import SystemAdministratorPage from "../pages/system/administrator/index";
 
 import ErrorPage from "../pages/error";
 
@@ -63,6 +64,10 @@ const routes: RouteObject[] = [
           {
             path: "/administrator/change-password",
             element: <ChangePasswordPage />,
+          },
+          {
+            path: "/system/administrator",
+            element: <SystemAdministratorPage />,
           },
           {
             path: "/system/application",

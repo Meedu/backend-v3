@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
 import { Table, Button, Modal, message, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { system } from "../../..//api/index";
+import { system } from "../../../api/index";
 import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { dateWholeFormat } from "../../../utils/index";

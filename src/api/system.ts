@@ -52,3 +52,15 @@ export function administratorList(params: any) {
 export function administratorDestory(id: number) {
   return client.destroy(`/backend/api/v1/administrator/${id}`);
 }
+
+export function administratorCreate() {
+  return client.get(`/backend/api/v1/administrator/create`, {});
+}
+
+export function administratorStore(params: any) {
+  return client.post(`/backend/api/v1/administrator`, params);
+}
+
+export function administratorDetail(id: number) {
+  return client.get(`/backend/api/v1/administrator/${id}`, {});
+}

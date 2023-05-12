@@ -126,9 +126,6 @@ h1 {
   margin-left: 24px;
 }
 
-.ml-10 {
-  margin-left: 10px;
-}
 
 .mr-10 {
   margin-right: 10px;
@@ -359,4 +356,25 @@ textarea.ant-input {
 
 .ant-radio-group-large .ant-radio-button-wrapper {
   font-size: 14px;
+}
+
+.bottom-menus {
+  width: 100%;
+  height: 1px;
+  float: left;
+
+  .bottom-menus-box {
+    position: fixed;
+    bottom: 0;
+    left: 200px;
+    right: 0;
+    z-index: 2000;
+    box-sizing: border-box;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    background-color: white;
+    display: flex;
+    box-shadow: 0px -2px 4px 0px rgba(102, 102, 102, 0.05);
+  }
 }

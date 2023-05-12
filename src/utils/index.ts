@@ -13,10 +13,16 @@ export function clearToken() {
 }
 
 export function dateFormat(dateStr: string) {
+  if (!dateStr) {
+    return "";
+  }
   return moment(dateStr).format("YYYY-MM-DD HH:mm");
 }
 
 export function dateWholeFormat(dateStr: string) {
+  if (!dateStr) {
+    return "";
+  }
   return moment(dateStr).format("YYYY-MM-DD HH:mm:ss");
 }
 
@@ -65,4 +71,12 @@ export function checkUrl(value: any) {
     url = url + "/";
   }
   return url;
+}
+
+export function passwordRules(value: any) {
+  let re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{12,25}$/;
+  let result = re.test(value);
+  if (!result) {
+    return "密码至少包含大写字母，小写字母，数字，且不少于12位";
+  }
 }

@@ -5,7 +5,7 @@ import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { role } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
-import { BackBartment, PerButton } from "../../components";
+import { PerButton } from "../../components";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
 
@@ -26,8 +26,11 @@ const RolePage = () => {
   useEffect(() => {
     document.title = "VIP会员";
     dispatch(titleAction("VIP会员"));
-    getData();
   }, []);
+
+  useEffect(() => {
+    getData();
+  }, [refresh]);
 
   const getData = () => {
     if (loading) {
@@ -99,7 +102,6 @@ const RolePage = () => {
   ];
 
   const resetData = () => {
-    setPage(1);
     setList([]);
     setRefresh(!refresh);
   };

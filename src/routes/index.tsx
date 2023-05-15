@@ -21,6 +21,8 @@ import StatsTransactionPage from "../pages/stats/transaction";
 import StatsContentPage from "../pages/stats/content";
 import StatsMemberPage from "../pages/stats/member";
 import RolePage from "../pages/role/index";
+import RoleCreatePage from "../pages/role/create";
+import RoleUpdatePage from "../pages/role/update";
 
 import ErrorPage from "../pages/error";
 
@@ -75,6 +77,8 @@ const routes: RouteObject[] = [
             element: <ChangePasswordPage />,
           },
           { path: "/role", element: <RolePage /> },
+          { path: "/addrole", element: <RoleCreatePage /> },
+          { path: "/editrole", element: <RoleUpdatePage /> },
           {
             path: "/system/administrator",
             element: <SystemAdministratorPage />,

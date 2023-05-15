@@ -30,6 +30,9 @@ const StatsTransactionPage = () => {
       moment().subtract(6, "days").format("YYYY-MM-DD"),
       moment().add(1, "days").format("YYYY-MM-DD")
     );
+    return () => {
+      window.onresize = null;
+    };
   }, []);
 
   useEffect(() => {

@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./index.module.scss";
-import { Row, Col, DatePicker, Button } from "antd";
-import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { stats } from "../../../api/index";
 import * as echarts from "echarts";

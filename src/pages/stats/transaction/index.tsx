@@ -7,6 +7,7 @@ import { stats } from "../../../api/index";
 import * as echarts from "echarts";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import moment from "moment";
+import { DayWeekMonth } from "../../../components/index";
 
 const StatsTransactionPage = () => {
   const dispatch = useDispatch();
@@ -131,6 +132,31 @@ const StatsTransactionPage = () => {
     ).toFixed(2);
 
     return Math.floor(value * 100);
+  };
+
+  const paginationPageChange = (page: number) => {
+    setPage(page);
+    getTopData();
+  };
+
+  const changeTimePaid = (start_at: any, end_at: any) => {
+    setStartAt(start_at);
+    setEndAt(end_at);
+    paginationPageChange(1);
+  };
+
+  const getTopData = () => {
+    stats
+      .contentList({
+        start_at: start_at,
+        end_at: end_at,
+        page: page,
+        size: size,
+      })
+      .then((res: any) => {
+        setTopData(res.data.data);
+        setTotal(res.data.total);
+      });
   };
 
   return (
@@ -378,7 +404,14 @@ const StatsTransactionPage = () => {
                 <div className={styles["item_title"]}>
                   <span>Top5销售额</span>
                 </div>
-                <div className={styles["controls"]}></div>
+                <div className={styles["controls"]}>
+                  <DayWeekMonth
+                    active={false}
+                    onChange={(start_at, end_at) => {
+                      changeTimePaid(start_at, end_at);
+                    }}
+                  ></DayWeekMonth>
+                </div>
               </div>
               <div className={styles["top-list"]}>
                 {topData.length === 0 && (

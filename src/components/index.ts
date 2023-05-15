@@ -7,3 +7,4 @@ export * from "./left-menu";
 export * from "./back-bar";
 export * from "./permission-button";
 export * from "./helper-text";
+export * from "./day-week-month";

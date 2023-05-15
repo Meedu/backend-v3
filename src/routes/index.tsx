@@ -20,6 +20,7 @@ import SystemAdminrolesUpdatePage from "../pages/system/adminroles/update";
 import StatsTransactionPage from "../pages/stats/transaction";
 import StatsContentPage from "../pages/stats/content";
 import StatsMemberPage from "../pages/stats/member";
+import RolePage from "../pages/role/index";
 
 import ErrorPage from "../pages/error";
 
@@ -73,6 +74,7 @@ const routes: RouteObject[] = [
             path: "/administrator/change-password",
             element: <ChangePasswordPage />,
           },
+          { path: "/role", element: <RolePage /> },
           {
             path: "/system/administrator",
             element: <SystemAdministratorPage />,

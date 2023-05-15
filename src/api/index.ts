@@ -6,3 +6,4 @@ export * as home from "./home";
 export * as administrator from "./administrator";
 export * as adminRole from "./admin-role";
 export * as stats from "./stats";
+export * as role from "./role";

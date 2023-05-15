@@ -10,6 +10,7 @@ import moment from "moment";
 import { DayWeekMonth } from "../../../components/index";
 
 const StatsTransactionPage = () => {
+  let chartRef = useRef(null);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState(1);
@@ -21,11 +22,17 @@ const StatsTransactionPage = () => {
     moment().add(1, "days").format("YYYY-MM-DD")
   );
   const [topData, setTopData] = useState<any>([]);
+  const [firstTransactionGraph, setFirstTransactionGraph] = useState<any>([]);
 
   useEffect(() => {
     document.title = "交易数据";
     dispatch(titleAction("交易数据"));
     getStatData();
+    getTopData();
+    getTransactionGraphData(
+      moment().subtract(6, "days").format("YYYY-MM-DD"),
+      moment().add(1, "days").format("YYYY-MM-DD")
+    );
   }, []);
 
   const getStatData = () => {
@@ -157,6 +164,98 @@ const StatsTransactionPage = () => {
         setTopData(res.data.data);
         setTotal(res.data.total);
       });
+  };
+
+  const getTransactionGraphData = (start_at: any, end_at: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    let params = {
+      start_at: start_at,
+      end_at: end_at,
+    };
+    stats
+      .transactionGraph(params)
+      .then((res: any) => {
+        setFirstTransactionGraph(res.data);
+        drawLineChart(res.data);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+
+    return () => {
+      window.onresize = null;
+    };
+  };
+
+  const changeObjectKey = (obj: any) => {
+    var arr = [];
+    for (let i in obj) {
+      arr.push(i); //返回键名
+    }
+    return arr;
+  };
+
+  const changeObject = (obj: any) => {
+    let data = Object.values(obj);
+    return data;
+  };
+
+  const drawLineChart = (params: any) => {
+    let dom: any = chartRef.current;
+    let myChart = echarts.init(dom);
+    myChart.setOption({
+      tooltip: {
+        trigger: "axis",
+      },
+      legend: {
+        data: ["支付金额", "支付订单数", "支付人数", "客单价"],
+        x: "right",
+      },
+      grid: {
+        left: "3%",
+        right: "4%",
+        bottom: "3%",
+        containLabel: true,
+      },
+      xAxis: {
+        type: "category",
+        boundaryGap: false,
+        data: changeObjectKey(params.paid_sum),
+      },
+      yAxis: {
+        type: "value",
+      },
+      series: [
+        {
+          name: "支付金额",
+          type: "line",
+          data: changeObject(params.paid_sum),
+        },
+        {
+          name: "支付订单数",
+          type: "line",
+          data: changeObject(params.paid_count),
+        },
+        {
+          name: "支付人数",
+          type: "line",
+          data: changeObject(params.paid_user_count),
+        },
+        {
+          name: "客单价",
+          type: "line",
+          data: changeObject(params.paid_avg_charge),
+        },
+      ],
+    });
+
+    window.onresize = () => {
+      myChart.resize();
+    };
   };
 
   return (
@@ -431,6 +530,34 @@ const StatsTransactionPage = () => {
                     </div>
                   ))}
               </div>
+            </div>
+          </div>
+        </div>
+        <div className={styles["el_top_row3"]}>
+          <div className={styles["el_row_item"]}>
+            <div className={styles["header"]}>
+              <div className={styles["title"]}>
+                <span>交易分析</span>
+              </div>
+              <div className={styles["controls"]}>
+                <DayWeekMonth
+                  active={true}
+                  onChange={(start_at, end_at) => {
+                    getTransactionGraphData(start_at, end_at);
+                  }}
+                ></DayWeekMonth>
+              </div>
+            </div>
+            <div className={styles["charts"]}>
+              <div
+                ref={chartRef}
+                style={{
+                  width: "100%",
+                  height: 280,
+                  marginLeft: -30,
+                  position: "relative",
+                }}
+              ></div>
             </div>
           </div>
         </div>

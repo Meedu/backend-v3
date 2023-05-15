@@ -42,6 +42,9 @@ const StatsTransactionPage = () => {
   };
 
   const formatNumber = (num: number) => {
+    if (!num) {
+      return 0;
+    }
     return Number(num).toLocaleString();
   };
 

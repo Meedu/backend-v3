@@ -35,6 +35,10 @@ const StatsTransactionPage = () => {
     );
   }, []);
 
+  useEffect(() => {
+    getTopData();
+  }, [page, size, start_at, end_at]);
+
   const getStatData = () => {
     stats.transactionList({}).then((res: any) => {
       setList(res.data);
@@ -146,7 +150,6 @@ const StatsTransactionPage = () => {
 
   const paginationPageChange = (page: number) => {
     setPage(page);
-    getTopData();
   };
 
   const changeTimePaid = (start_at: any, end_at: any) => {

@@ -147,7 +147,7 @@ const StatsContentPage = () => {
       title: (
         <div className="d-flex">
           <span className="mr-5">Top10销售额</span>
-          <Tooltip placement="top" title="团购秒杀活动销量不计入此列表统计">
+          <Tooltip placement="rightTop" title="团购秒杀活动销量不计入此列表统计">
             <InfoCircleOutlined />
           </Tooltip>
         </div>

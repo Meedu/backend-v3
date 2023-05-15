@@ -26,7 +26,6 @@ const StatsTransactionPage = () => {
     document.title = "交易数据";
     dispatch(titleAction("交易数据"));
     getStatData();
-    getTopData();
     getTransactionGraphData(
       moment().subtract(6, "days").format("YYYY-MM-DD"),
       moment().add(1, "days").format("YYYY-MM-DD")

@@ -2,7 +2,7 @@ import { Button } from "antd";
 import { useSelector } from "react-redux";
 
 interface PropInterface {
-  type: "link" | "text" | "primary" | "default";
+  type: "link" | "text" | "primary" | "default" | "danger";
   text: string;
   p: string;
   class: string;
@@ -35,7 +35,21 @@ export const PerButton = (props: PropInterface) => {
           {props.text}
         </Button>
       )}
-      {isThrough() && props.type !== "link" && (
+      {isThrough() && props.type !== "link" && props.type === "danger" && (
+        <Button
+          className={props.class}
+          type="primary"
+          icon={props.icon}
+          onClick={() => {
+            props.onClick();
+          }}
+          disabled={props.disabled}
+          danger
+        >
+          {props.text}
+        </Button>
+      )}
+      {isThrough() && props.type !== "link" && props.type !== "danger" && (
         <Button
           className={props.class}
           type={props.type}

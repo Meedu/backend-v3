@@ -26,6 +26,7 @@ import RoleUpdatePage from "../pages/role/update";
 import WechatPage from "../pages/wechat/index";
 import WechatCreatePage from "../pages/wechat/create";
 import WechatUpdatePage from "../pages/wechat/update";
+import PromoCodePage from "../pages/promocode/index";
 
 import ErrorPage from "../pages/error";
 
@@ -82,6 +83,7 @@ const routes: RouteObject[] = [
           { path: "/role", element: <RolePage /> },
           { path: "/addrole", element: <RoleCreatePage /> },
           { path: "/editrole", element: <RoleUpdatePage /> },
+          { path: "/promocode", element: <PromoCodePage /> },
           {
             path: "/wechat/messagereply/index",
             element: <WechatPage />,

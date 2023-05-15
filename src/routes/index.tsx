@@ -17,6 +17,7 @@ import SystemAdministratorUpdatePage from "../pages/system/administrator/update"
 import SystemAdminrolesPage from "../pages/system/adminroles/index";
 import SystemAdminrolesCreatePage from "../pages/system/adminroles/create";
 import SystemAdminrolesUpdatePage from "../pages/system/adminroles/update";
+import StatsTransactionPage from "../pages/stats/transaction";
 
 import ErrorPage from "../pages/error";
 
@@ -101,6 +102,10 @@ const routes: RouteObject[] = [
           {
             path: "/systemLog/index",
             element: <SystemLogPage />,
+          },
+          {
+            path: "/stats/transaction/index",
+            element: <StatsTransactionPage />,
           },
         ],
       },

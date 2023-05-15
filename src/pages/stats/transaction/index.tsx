@@ -364,9 +364,9 @@ const StatsTransactionPage = () => {
                 <div className={styles["tit"]}>
                   <span>支付转化率</span>
                 </div>
-                <div className={styles["num"]}>{todayPaidConversion()}</div>
+                <div className={styles["num"]}>{todayPaidConversion()}%</div>
                 <div className={styles["info-t"]}>
-                  昨日：{yesterdayPaidConversion()}
+                  昨日：{yesterdayPaidConversion()}%
                 </div>
                 <div className={styles["info"]}>
                   较昨日：
@@ -419,6 +419,17 @@ const StatsTransactionPage = () => {
                     <span>暂无数据</span>
                   </div>
                 )}
+                {topData.length > 0 &&
+                  topData.map((item: any, index: number) => (
+                    <div className={styles["list-item"]} key={item.goods_id}>
+                      <div className={styles["list-item-name"]}>
+                        {index + 1}. {item.goods_name}
+                      </div>
+                      <div className={styles["list-item-sum"]}>
+                        {item.orders_paid_sum}
+                      </div>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>

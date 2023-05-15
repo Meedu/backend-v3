@@ -53,7 +53,7 @@ const RoleCreatePage = () => {
       <div className="float-left mt-30">
         <Form
           form={form}
-          name="administrator-create"
+          name="role-create"
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
           initialValues={{ remember: true }}
@@ -124,7 +124,7 @@ const RoleCreatePage = () => {
             rules={[{ required: true, message: "请输入描述!" }]}
           >
             <Input.TextArea
-              style={{ width: 400, minHeight: 120 }}
+              style={{ width: 500, minHeight: 120 }}
               placeholder="一行一个描述"
               allowClear
               maxLength={200}

@@ -7,3 +7,4 @@ export * as administrator from "./administrator";
 export * as adminRole from "./admin-role";
 export * as stats from "./stats";
 export * as role from "./role";
+export * as wechat from "./wechat";

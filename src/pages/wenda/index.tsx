@@ -28,6 +28,10 @@ interface DataType {
   id: React.Key;
   user_id: number;
   title: string;
+  view_times: number;
+  vote_count: number;
+  answer_count: number;
+  credit1: number;
   created_at: string;
 }
 
@@ -42,7 +46,7 @@ const WendaPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [keywords, setKeywords] = useState<string>("");
   const [user_id, setUserId] = useState("");
-  const [category_id, setCategoryId] = useState([]);
+  const [category_id, setCategoryId] = useState<any>([]);
   const [status, setStatus] = useState(-1);
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
@@ -50,6 +54,20 @@ const WendaPage = () => {
   const [categories, setCategories] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
+  const statusTypes = [
+    {
+      value: -1,
+      label: "全部",
+    },
+    {
+      value: 0,
+      label: "未解决",
+    },
+    {
+      value: 1,
+      label: "已解决",
+    },
+  ];
 
   useEffect(() => {
     document.title = "站内问答";
@@ -60,6 +78,20 @@ const WendaPage = () => {
   useEffect(() => {
     getData();
   }, [page, size, refresh]);
+
+  useEffect(() => {
+    if (
+      (created_at && created_at.length > 0) ||
+      (category_id && category_id.length !== 0) ||
+      user_id ||
+      keywords ||
+      status !== -1
+    ) {
+      setShowStatus(true);
+    } else {
+      setShowStatus(false);
+    }
+  }, [created_at, category_id, user_id, keywords, status]);
 
   const getData = () => {
     if (loading) {
@@ -173,6 +205,7 @@ const WendaPage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "ID",
+      fixed: "left",
       width: 120,
       render: (_, record: any) => <span>{record.id}</span>,
     },
@@ -209,6 +242,74 @@ const WendaPage = () => {
       width: 500,
       dataIndex: "title",
       render: (title: string) => <span>{title}</span>,
+    },
+    {
+      title: "浏览",
+      width: 120,
+      dataIndex: "view_times",
+      render: (view_times: number) => <span>{view_times}次</span>,
+    },
+    {
+      title: "点赞",
+      width: 120,
+      dataIndex: "vote_count",
+      render: (vote_count: number) => <span>{vote_count}次</span>,
+    },
+    {
+      title: "答案",
+      width: 120,
+      dataIndex: "answer_count",
+      render: (answer_count: number) => <span>{answer_count}个</span>,
+    },
+    {
+      title: "积分",
+      width: 120,
+      dataIndex: "credit1",
+      render: (credit1: number) => <span>{credit1}积分</span>,
+    },
+    {
+      title: "状态",
+      width: 120,
+      render: (_, record: any) => (
+        <>
+          {record.status === 1 && (
+            <Tag color="success">{record.status_text}</Tag>
+          )}
+          {record.status !== 1 && (
+            <Tag color="default">{record.status_text}</Tag>
+          )}
+        </>
+      ),
+    },
+    {
+      title: "时间",
+      width: 200,
+      dataIndex: "created_at",
+      render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
+    },
+    {
+      title: "操作",
+      key: "action",
+      fixed: "right",
+      width: 80,
+      render: (_, record: any) => (
+        <PerButton
+          type="link"
+          text="回答"
+          class="c-primary"
+          icon={null}
+          p="addons.Wenda.question.answers"
+          onClick={() => {
+            navigate(
+              "/wenda/question/answer?id=" +
+                record.id +
+                "&status=" +
+                record.status
+            );
+          }}
+          disabled={null}
+        />
+      ),
     },
   ];
 
@@ -304,6 +405,85 @@ const WendaPage = () => {
           pagination={paginationProps}
         />
       </div>
+      <Drawer
+        title="更多筛选"
+        onClose={() => setDrawer(false)}
+        maskClosable={false}
+        open={drawer}
+        footer={
+          <Space className="j-b-flex">
+            <Button
+              onClick={() => {
+                resetList();
+                setDrawer(false);
+              }}
+            >
+              清空
+            </Button>
+            <Button
+              onClick={() => {
+                setPage(1);
+                setRefresh(!refresh);
+                setDrawer(false);
+              }}
+              type="primary"
+            >
+              筛选
+            </Button>
+          </Space>
+        }
+        width={360}
+      >
+        <div className="float-left">
+          <Input
+            value={keywords}
+            onChange={(e) => {
+              setKeywords(e.target.value);
+            }}
+            allowClear
+            placeholder="关键字"
+          />
+          <Select
+            style={{ marginTop: 20, width: "100%" }}
+            value={category_id}
+            onChange={(e) => {
+              setCategoryId(e);
+            }}
+            allowClear
+            placeholder="分类"
+            options={categories}
+          />
+          <Input
+            value={user_id}
+            onChange={(e) => {
+              setUserId(e.target.value);
+            }}
+            allowClear
+            style={{ marginTop: 20 }}
+            placeholder="学员ID"
+          />
+          <Select
+            style={{ marginTop: 20, width: "100%" }}
+            value={status}
+            onChange={(e) => {
+              setStatus(e);
+            }}
+            allowClear
+            placeholder="状态"
+            options={statusTypes}
+          />
+          <RangePicker
+            format={"YYYY-MM-DD"}
+            value={createdAts}
+            style={{ marginTop: 20 }}
+            onChange={(date, dateString) => {
+              setCreatedAt(dateString);
+              setCreatedAts(date);
+            }}
+            placeholder={["日期-开始", "日期-结束"]}
+          />
+        </div>
+      </Drawer>
     </div>
   );
 };

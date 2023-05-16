@@ -34,6 +34,7 @@ import WendaPage from "../pages/wenda/index";
 import WendaCategoriesPage from "../pages/wenda/category/index";
 import WendaCategoriesCreatePage from "../pages/wenda/category/create";
 import WendaCategoriesUpdatePage from "../pages/wenda/category/update";
+import WendaAnswerPage from "../pages/wenda/answer";
 
 import ErrorPage from "../pages/error";
 
@@ -102,6 +103,10 @@ const routes: RouteObject[] = [
           {
             path: "/wenda/question/category/update",
             element: <WendaCategoriesUpdatePage />,
+          },
+          {
+            path: "/wenda/question/answer",
+            element: <WendaAnswerPage />,
           },
           { path: "/promocode", element: <PromoCodePage /> },
           { path: "/order/code-import", element: <PromoCodeImportPage /> },

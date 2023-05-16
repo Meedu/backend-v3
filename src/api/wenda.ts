@@ -16,6 +16,17 @@ export function answer(id: number) {
   return client.get(`/backend/addons/Wenda/question/${id}/answers`, {});
 }
 
+export function setAnswer(questionId: number, answerId: number) {
+  return client.get(
+    `/backend/addons/Wenda/question/${questionId}/answers/${answerId}/selected`,
+    {}
+  );
+}
+
+export function destoryAnswer(id: number, ids: number) {
+  return client.destroy(`/backend/addons/Wenda/question/${id}/answers/${ids}`);
+}
+
 export function storeCate(params: any) {
   return client.post(`/backend/addons/Wenda/category/create`, params);
 }

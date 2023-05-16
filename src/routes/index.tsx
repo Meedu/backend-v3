@@ -36,6 +36,7 @@ import WendaCategoriesCreatePage from "../pages/wenda/category/create";
 import WendaCategoriesUpdatePage from "../pages/wenda/category/update";
 import WendaAnswerPage from "../pages/wenda/answer";
 import WendaCommentPage from "../pages/wenda/comment";
+import MultiSharePage from "../pages/multi_level_share/index";
 
 import ErrorPage from "../pages/error";
 
@@ -92,6 +93,10 @@ const routes: RouteObject[] = [
           { path: "/role", element: <RolePage /> },
           { path: "/addrole", element: <RoleCreatePage /> },
           { path: "/editrole", element: <RoleUpdatePage /> },
+          {
+            path: "/multi_level_share/goods/index",
+            element: <MultiSharePage />,
+          },
           { path: "/wenda/question/index", element: <WendaPage /> },
           {
             path: "/wenda/question/category/index",

@@ -10,3 +10,4 @@ export * as role from "./role";
 export * as wechat from "./wechat";
 export * as promocode from "./promocode";
 export * as wenda from "./wenda";
+export * as multiShare from "./multi-share";

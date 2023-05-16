@@ -30,6 +30,7 @@ import PromoCodePage from "../pages/promocode/index";
 import PromoCodeImportPage from "../pages/promocode/import";
 import PromoCodeCreateMultiPage from "../pages/promocode/create-multi";
 import PromoCodeCreatePage from "../pages/promocode/create";
+import WendaPage from "../pages/wenda/index";
 
 import ErrorPage from "../pages/error";
 
@@ -86,6 +87,7 @@ const routes: RouteObject[] = [
           { path: "/role", element: <RolePage /> },
           { path: "/addrole", element: <RoleCreatePage /> },
           { path: "/editrole", element: <RoleUpdatePage /> },
+          { path: "/wenda/question/index", element: <WendaPage /> },
           { path: "/promocode", element: <PromoCodePage /> },
           { path: "/order/code-import", element: <PromoCodeImportPage /> },
           { path: "/createcode", element: <PromoCodeCreatePage /> },

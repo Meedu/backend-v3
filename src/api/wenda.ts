@@ -15,3 +15,7 @@ export function destroyMulti(params: any) {
 export function answer(id: number) {
   return client.get(`/backend/addons/Wenda/question/${id}/answers`, {});
 }
+
+export function destroyCate(id: number) {
+  return client.destroy(`/backend/addons/Wenda/category/${id}`);
+}

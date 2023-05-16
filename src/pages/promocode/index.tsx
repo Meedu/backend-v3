@@ -113,7 +113,9 @@ const PromoCodePage = () => {
         }
         setLoading(true);
         promocode
-          .destroyMulti(selectedRowKeys)
+          .destroyMulti({
+            ids: selectedRowKeys,
+          })
           .then(() => {
             message.success("成功");
             resetList();

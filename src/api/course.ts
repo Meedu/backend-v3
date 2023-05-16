@@ -1,6 +1,10 @@
 import client from "./internal/httpClient";
 
 // 线上课详情
+
+export function list(params: any) {
+  return client.get(`/backend/api/v1/course`, params);
+}
 export function detail(id: number) {
   return client.get(`/api/v1/course/${id}`, {});
 }

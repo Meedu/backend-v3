@@ -13,7 +13,6 @@ import { media } from "../../api";
 import styles from "./index.module.scss";
 import { UploadImageSub } from "./upload-image-sub";
 import selectedIcon from "../../assets/home/selected.png";
-import { index } from "../../api/home";
 
 interface Option {
   id: string | number;

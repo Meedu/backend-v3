@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, Space } from "antd";
+import { Button, Input, message, Form, Space, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { multiShare } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
-import { UploadImageButton, HelperText, BackBartment } from "../../components";
+import {
+  UploadImageButton,
+  HelperText,
+  BackBartment,
+  SelectResources,
+} from "../../components";
 
 const MultiShareCreatePage = () => {
   const result = new URLSearchParams(useLocation().search);
@@ -14,6 +19,7 @@ const MultiShareCreatePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [thumb, setThumb] = useState<string>("");
   const [title, setTitle] = useState<string>("");
+  const [goods_type, setGoodsType] = useState<string>("");
   const [showSelectResWin, setShowSelectResWin] = useState<boolean>(false);
 
   useEffect(() => {
@@ -26,6 +32,7 @@ const MultiShareCreatePage = () => {
       return;
     }
     setLoading(true);
+    values.goods_type = goods_type;
     multiShare
       .store(values)
       .then((res: any) => {
@@ -45,7 +52,23 @@ const MultiShareCreatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="添加分销课程" />
-
+      <SelectResources
+        open={showSelectResWin}
+        enabledResource={"vod,live,book,topic,paper,practice,learnPath,vip"}
+        onCancel={() => setShowSelectResWin(false)}
+        onSelected={(result: any) => {
+          form.setFieldsValue({
+            goods_id: result.id,
+            goods_title: result.title,
+            goods_charge: result.original_charge,
+            goods_thumb: result.thumb,
+          });
+          setTitle(result.title);
+          setThumb(result.thumb);
+          setGoodsType(result.resource_type);
+          setShowSelectResWin(false);
+        }}
+      ></SelectResources>
       <div className="float-left mt-30">
         <Form
           form={form}
@@ -108,17 +131,19 @@ const MultiShareCreatePage = () => {
             ></UploadImageButton>
           </Form.Item>
           {thumb && (
-            <Form.Item>
-              <div
-                className="normal-thumb-box"
-                style={{
-                  backgroundImage: `url(${thumb})`,
-                  width: 120,
-                  height: 90,
-                  marginLeft: 200,
-                }}
-              ></div>
-            </Form.Item>
+            <Row style={{ marginBottom: 22 }}>
+              <Col span={3}></Col>
+              <Col span={21}>
+                <div
+                  className="normal-thumb-box"
+                  style={{
+                    backgroundImage: `url(${thumb})`,
+                    width: 120,
+                    height: 90,
+                  }}
+                ></div>
+              </Col>
+            </Row>
           )}
           <Form.Item
             label="一级奖励"

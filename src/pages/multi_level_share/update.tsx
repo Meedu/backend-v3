@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, Space } from "antd";
+import { Button, Input, message, Form, Space, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { multiShare } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
@@ -122,17 +122,19 @@ const MultiShareUpdatePage = () => {
             ></UploadImageButton>
           </Form.Item>
           {thumb && (
-            <Form.Item>
-              <div
-                className="normal-thumb-box"
-                style={{
-                  backgroundImage: `url(${thumb})`,
-                  width: 120,
-                  height: 90,
-                  marginLeft: 200,
-                }}
-              ></div>
-            </Form.Item>
+            <Row style={{ marginBottom: 22 }}>
+              <Col span={3}></Col>
+              <Col span={21}>
+                <div
+                  className="normal-thumb-box"
+                  style={{
+                    backgroundImage: `url(${thumb})`,
+                    width: 120,
+                    height: 90,
+                  }}
+                ></div>
+              </Col>
+            </Row>
           )}
           <Form.Item
             label="一级奖励"

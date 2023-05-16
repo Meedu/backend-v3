@@ -403,3 +403,18 @@ textarea.ant-input {
     }
   }
 }
+
+.normal-thumb-box {
+  overflow: hidden;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.contain-thumb-box {
+  overflow: hidden;
+  max-width: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+}

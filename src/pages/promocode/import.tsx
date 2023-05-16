@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Modal, message, Upload, Button } from "antd";
+import { message, Upload, Button } from "antd";
 import styles from "./import.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";

@@ -94,7 +94,11 @@ const RoleUpdatePage = () => {
               allowClear
             />
           </Form.Item>
-          <Form.Item label="天数">
+          <Form.Item
+            label="天数"
+            name="expire_days"
+            rules={[{ required: true, message: "请输入天数!" }]}
+          >
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
                 name="expire_days"
@@ -112,7 +116,11 @@ const RoleUpdatePage = () => {
               </div>
             </Space>
           </Form.Item>
-          <Form.Item label="价格">
+          <Form.Item
+            label="价格"
+            name="charge"
+            rules={[{ required: true, message: "请输入价格!" }]}
+          >
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
                 name="charge"

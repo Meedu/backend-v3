@@ -28,6 +28,7 @@ import WechatCreatePage from "../pages/wechat/create";
 import WechatUpdatePage from "../pages/wechat/update";
 import PromoCodePage from "../pages/promocode/index";
 import PromoCodeImportPage from "../pages/promocode/import";
+import PromoCodeCreateMultiPage from "../pages/promocode/create-multi";
 
 import ErrorPage from "../pages/error";
 
@@ -86,6 +87,7 @@ const routes: RouteObject[] = [
           { path: "/editrole", element: <RoleUpdatePage /> },
           { path: "/promocode", element: <PromoCodePage /> },
           { path: "/order/code-import", element: <PromoCodeImportPage /> },
+          { path: "/createmulticode", element: <PromoCodeCreateMultiPage /> },
           {
             path: "/wechat/messagereply/index",
             element: <WechatPage />,

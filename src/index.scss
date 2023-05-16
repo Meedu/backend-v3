@@ -395,3 +395,11 @@ textarea.ant-input {
     margin-right: 5px;
   }
 }
+
+.user-item {
+  .avatar {
+    img {
+      border-radius: 50%;
+    }
+  }
+}

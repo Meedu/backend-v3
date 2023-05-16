@@ -9,6 +9,7 @@ import {
   Tag,
   DatePicker,
   Space,
+  Select,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
@@ -18,8 +19,17 @@ import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton, OptionBar } from "../../components";
 import { dateFormat } from "../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import filterIcon from "../../assets/img/icon-filter.png";
+import filterHIcon from "../../assets/img/icon-filter-h.png";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
+
+interface DataType {
+  id: React.Key;
+  user_id: number;
+  title: string;
+  created_at: string;
+}
 
 const WendaPage = () => {
   const dispatch = useDispatch();
@@ -32,17 +42,19 @@ const WendaPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [keywords, setKeywords] = useState<string>("");
   const [user_id, setUserId] = useState("");
-  const [category_id, setCategoryId] = useState("");
+  const [category_id, setCategoryId] = useState([]);
   const [status, setStatus] = useState(-1);
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [categories, setCategories] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
 
   useEffect(() => {
     document.title = "站内问答";
     dispatch(titleAction("站内问答"));
+    getParams();
   }, []);
 
   useEffect(() => {
@@ -67,13 +79,27 @@ const WendaPage = () => {
         keywords: keywords,
       })
       .then((res: any) => {
-        setList(res.data.data);
-        setTotal(res.data.total);
+        setList(res.data.data.data);
+        setTotal(res.data.data.total);
         setLoading(false);
       })
       .catch((e) => {
         setLoading(false);
       });
+  };
+
+  const getParams = () => {
+    wenda.category().then((res: any) => {
+      let categories = res.data.data;
+      const arr = [];
+      for (let i = 0; i < categories.length; i++) {
+        arr.push({
+          label: categories[i].name,
+          value: categories[i].id,
+        });
+      }
+      setCategories(arr);
+    });
   };
 
   const resetList = () => {
@@ -82,7 +108,7 @@ const WendaPage = () => {
     setList([]);
     setKeywords("");
     setUserId("");
-    setCategoryId("");
+    setCategoryId([]);
     setStatus(-1);
     setCreatedAt([]);
     setRefresh(!refresh);
@@ -124,6 +150,68 @@ const WendaPage = () => {
     });
   };
 
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      setSelectedRowKeys(selectedRowKeys);
+    },
+  };
+
+  const paginationProps = {
+    current: page, //当前页码
+    pageSize: size,
+    total: total, // 总条数
+    onChange: (page: number, pageSize: number) =>
+      handlePageChange(page, pageSize), //改变页码的函数
+    showSizeChanger: true,
+  };
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    setPage(page);
+    setSize(pageSize);
+  };
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "ID",
+      width: 120,
+      render: (_, record: any) => <span>{record.id}</span>,
+    },
+    {
+      title: "学员ID",
+      width: 120,
+      dataIndex: "user_id",
+      render: (user_id: number) => <span>{user_id}</span>,
+    },
+    {
+      title: "分类",
+      width: 200,
+      render: (_, record: any) => <span>{record.category.name}</span>,
+    },
+    {
+      title: "学员",
+      width: 300,
+      render: (_, record: any) => (
+        <>
+          {record.user && (
+            <div className="user-item d-flex">
+              <div className="avatar">
+                <img src={record.user.avatar} width="40" height="40" />
+              </div>
+              <div className="ml-10">{record.user.nick_name}</div>
+            </div>
+          )}
+          {!record.user && <span className="c-red">学员不存在</span>}
+        </>
+      ),
+    },
+    {
+      title: "标题",
+      width: 500,
+      dataIndex: "title",
+      render: (title: string) => <span>{title}</span>,
+    },
+  ];
+
   return (
     <div className="meedu-main-body">
       <div className="float-left j-b-flex mb-30">
@@ -137,23 +225,85 @@ const WendaPage = () => {
             onClick={() => navigate("/wenda/question/category/index")}
             disabled={null}
           />
-          <PerButton
-            type="danger"
-            text="批量删除"
-            class="ml-10"
-            icon={null}
-            p="promoCode.destroy.multi"
+          <Button
+            type="primary"
+            className="ml-10"
+            danger
             onClick={() => destorymulti()}
-            disabled={null}
-          />
+          >
+            批量删除
+          </Button>
           <OptionBar
             text="问答配置"
             value="/system/config?key=问答"
           ></OptionBar>
         </div>
-        <div className="d-flex"></div>
+        <div className="d-flex">
+          <Input
+            value={keywords}
+            onChange={(e) => {
+              setKeywords(e.target.value);
+            }}
+            allowClear
+            style={{ width: 150 }}
+            placeholder="关键字"
+          />
+          <Select
+            style={{ width: 150, marginLeft: 10 }}
+            value={category_id}
+            onChange={(e) => {
+              setCategoryId(e);
+            }}
+            allowClear
+            placeholder="分类"
+            options={categories}
+          />
+          <Button className="ml-10" onClick={resetList}>
+            清空
+          </Button>
+          <Button
+            className="ml-10"
+            type="primary"
+            onClick={() => {
+              setPage(1);
+              setRefresh(!refresh);
+              setDrawer(false);
+            }}
+          >
+            筛选
+          </Button>
+          <div
+            className="drawerMore d-flex ml-10"
+            onClick={() => setDrawer(true)}
+          >
+            {showStatus && (
+              <>
+                <img src={filterHIcon} />
+                <span className="act">已选</span>
+              </>
+            )}
+            {!showStatus && (
+              <>
+                <img src={filterIcon} />
+                <span>更多</span>
+              </>
+            )}
+          </div>
+        </div>
       </div>
-      <div className="float-left"> </div>
+      <div className="float-left">
+        <Table
+          rowSelection={{
+            type: "checkbox",
+            ...rowSelection,
+          }}
+          loading={loading}
+          columns={columns}
+          dataSource={list}
+          rowKey={(record) => record.id}
+          pagination={paginationProps}
+        />
+      </div>
     </div>
   );
 };

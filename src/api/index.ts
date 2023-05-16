@@ -11,3 +11,4 @@ export * as wechat from "./wechat";
 export * as promocode from "./promocode";
 export * as wenda from "./wenda";
 export * as multiShare from "./multi-share";
+export * as media from "./media";

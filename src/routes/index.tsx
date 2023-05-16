@@ -38,6 +38,7 @@ import WendaAnswerPage from "../pages/wenda/answer";
 import WendaCommentPage from "../pages/wenda/comment";
 import MultiSharePage from "../pages/multi_level_share/index";
 import MultiShareRewardsPage from "../pages/multi_level_share/rewards";
+import MultiShareUpdatePage from "../pages/multi_level_share/update";
 
 import ErrorPage from "../pages/error";
 
@@ -97,6 +98,10 @@ const routes: RouteObject[] = [
           {
             path: "/multi_level_share/goods/index",
             element: <MultiSharePage />,
+          },
+          {
+            path: "/multi_level_share/goods/update",
+            element: <MultiShareUpdatePage />,
           },
           {
             path: "/multi_level_share/goods/rewards",

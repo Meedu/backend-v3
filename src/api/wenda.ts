@@ -27,6 +27,19 @@ export function destoryAnswer(id: number, ids: number) {
   return client.destroy(`/backend/addons/Wenda/question/${id}/answers/${ids}`);
 }
 
+export function comment(id: number) {
+  return client.get(
+    `/backend/addons/Wenda/question/answers/${id}/comments`,
+    {}
+  );
+}
+
+export function destoryComment(id: number) {
+  return client.destroy(
+    `/backend/addons/Wenda/question/answers/comments/${id}`
+  );
+}
+
 export function storeCate(params: any) {
   return client.post(`/backend/addons/Wenda/category/create`, params);
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Tag, Space } from "antd";
+import { Table, Modal, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch } from "react-redux";
@@ -17,26 +17,25 @@ interface DataType {
   created_at: string;
 }
 
-const WendaAnswerPage = () => {
+const WendaCommentPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(Number(result.get("id")));
-  const [status, setStatus] = useState(Number(result.get("status")));
+  const [answer_id, setAnswerId] = useState(Number(result.get("answer_id")));
 
   useEffect(() => {
-    document.title = "问题回答";
-    dispatch(titleAction("问题回答"));
+    document.title = "问题评论";
+    dispatch(titleAction("问题评论"));
   }, []);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    setStatus(Number(result.get("status")));
+    setAnswerId(Number(result.get("answer_id")));
     getData();
-  }, [result.get("id"), result.get("status"), refresh]);
+  }, [result.get("id"), result.get("answer_id"), refresh]);
 
   const getData = () => {
     if (loading) {
@@ -44,9 +43,9 @@ const WendaAnswerPage = () => {
     }
     setLoading(true);
     wenda
-      .answer(id)
+      .comment(answer_id)
       .then((res: any) => {
-        setList(res.data.answers);
+        setList(res.data.comments);
         setLoading(false);
       })
       .catch((e) => {
@@ -89,22 +88,9 @@ const WendaAnswerPage = () => {
       ),
     },
     {
-      title: "点赞",
-      width: 120,
-      dataIndex: "vote_count",
-      render: (vote_count: number) => <span>{vote_count}次</span>,
-    },
-    {
       title: "内容",
       width: 500,
       render: (_, record: any) => <div>{record.original_content}</div>,
-    },
-    {
-      title: "答案",
-      width: 120,
-      render: (_, record: any) => (
-        <>{record.is_correct === 1 && <Tag color="success">答案</Tag>}</>
-      ),
     },
     {
       title: "时间",
@@ -114,62 +100,31 @@ const WendaAnswerPage = () => {
     },
     {
       title: "操作",
-      width: 160,
+      width: 100,
       render: (_, record: any) => (
-        <Space>
-          <PerButton
-            type="link"
-            text="评论"
-            class="c-primary"
-            icon={null}
-            p="addons.Wenda.question.answers.comments"
-            onClick={() => {
-              navigate(
-                "/wenda/question/comment?id=" +
-                  record.question_id +
-                  "&answer_id=" +
-                  record.id
-              );
-            }}
-            disabled={null}
-          />
-          {status !== 1 && (
-            <PerButton
-              type="link"
-              text="设为答案"
-              class="c-primary"
-              icon={null}
-              p="addons.Wenda.question.answers.setTrue"
-              onClick={() => {
-                setAnswer(record.id);
-              }}
-              disabled={null}
-            />
-          )}
-          <PerButton
-            type="link"
-            text="删除"
-            class="c-red"
-            icon={null}
-            p="addons.Wenda.question.answers.delete"
-            onClick={() => {
-              destory(record.id);
-            }}
-            disabled={null}
-          />
-        </Space>
+        <PerButton
+          type="link"
+          text="删除"
+          class="c-red"
+          icon={null}
+          p="addons.Wenda.question.answers.comments.delete"
+          onClick={() => {
+            destory(record.id);
+          }}
+          disabled={null}
+        />
       ),
     },
   ];
 
-  const destory = (aid: number) => {
-    if (aid === 0) {
+  const destory = (cid: number) => {
+    if (cid === 0) {
       return;
     }
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除此回答？",
+      content: "确认删除此评论？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
@@ -179,7 +134,7 @@ const WendaAnswerPage = () => {
         }
         setLoading(true);
         wenda
-          .destoryAnswer(id, aid)
+          .destoryComment(cid)
           .then(() => {
             setLoading(false);
             message.success("删除成功");
@@ -195,22 +150,9 @@ const WendaAnswerPage = () => {
     });
   };
 
-  const setAnswer = (aid: number) => {
-    if (aid === 0) {
-      return;
-    }
-    wenda.setAnswer(id, aid).then(() => {
-      message.success("成功");
-      navigate("/wenda/question/answer?id=" + id + "&status=1", {
-        replace: true,
-      });
-      resetData();
-    });
-  };
-
   return (
     <div className="meedu-main-body">
-      <BackBartment title="问题回答" />
+      <BackBartment title="问题评论" />
       <div className="float-left mt-30">
         <Table
           loading={loading}
@@ -224,4 +166,4 @@ const WendaAnswerPage = () => {
   );
 };
 
-export default WendaAnswerPage;
+export default WendaCommentPage;

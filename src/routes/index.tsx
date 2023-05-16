@@ -32,6 +32,8 @@ import PromoCodeCreateMultiPage from "../pages/promocode/create-multi";
 import PromoCodeCreatePage from "../pages/promocode/create";
 import WendaPage from "../pages/wenda/index";
 import WendaCategoriesPage from "../pages/wenda/category/index";
+import WendaCategoriesCreatePage from "../pages/wenda/category/create";
+import WendaCategoriesUpdatePage from "../pages/wenda/category/update";
 
 import ErrorPage from "../pages/error";
 
@@ -92,6 +94,14 @@ const routes: RouteObject[] = [
           {
             path: "/wenda/question/category/index",
             element: <WendaCategoriesPage />,
+          },
+          {
+            path: "/wenda/question/category/create",
+            element: <WendaCategoriesCreatePage />,
+          },
+          {
+            path: "/wenda/question/category/update",
+            element: <WendaCategoriesUpdatePage />,
           },
           { path: "/promocode", element: <PromoCodePage /> },
           { path: "/order/code-import", element: <PromoCodeImportPage /> },

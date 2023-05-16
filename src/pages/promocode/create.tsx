@@ -7,15 +7,15 @@ import { titleAction } from "../../store/user/loginUserSlice";
 import { BackBartment, HelperText } from "../../components";
 import moment from "moment";
 
-const PromoCodeCreateMultiPage = () => {
+const PromoCodeCreatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "优惠码批量生成";
-    dispatch(titleAction("优惠码批量生成"));
+    document.title = "添加优惠码";
+    dispatch(titleAction("添加优惠码"));
   }, []);
 
   const onFinish = (values: any) => {
@@ -25,7 +25,7 @@ const PromoCodeCreateMultiPage = () => {
     setLoading(true);
     values.expired_at = moment(values.expired_at).format("YYYY-MM-DD HH:mm");
     promocode
-      .createMulti(values)
+      .create(values)
       .then((res: any) => {
         setLoading(false);
         message.success("保存成功！");
@@ -42,11 +42,11 @@ const PromoCodeCreateMultiPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="优惠码批量生成" />
+      <BackBartment title="添加优惠码" />
       <div className="float-left mt-30">
         <Form
           form={form}
-          name="promoCode-create-multi"
+          name="promoCode-create"
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
           initialValues={{ remember: true }}
@@ -55,34 +55,27 @@ const PromoCodeCreateMultiPage = () => {
           autoComplete="off"
         >
           <Form.Item
-            label="统一前缀"
-            name="prefix"
-            rules={[{ required: true, message: "请输入前缀!" }]}
-          >
-            <Input style={{ width: 300 }} placeholder="请输入前缀" allowClear />
-          </Form.Item>
-          <Form.Item
-            label="生成数量"
-            name="num"
-            rules={[{ required: true, message: "请输入生成数量!" }]}
+            label="优惠码"
+            name="code"
+            rules={[{ required: true, message: "请输入优惠码!" }]}
           >
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
-                name="num"
-                rules={[{ required: true, message: "请输入生成数量!" }]}
+                name="code"
+                rules={[{ required: true, message: "请输入优惠码!" }]}
               >
                 <Input
-                  type="number"
                   style={{ width: 300 }}
-                  placeholder="请输入生成数量"
+                  placeholder="请输入优惠码"
                   allowClear
                 />
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="请输入整数。为防止系统卡顿导致生成失败，请勿输入超过1000的数字。"></HelperText>
+                <HelperText text="请勿使用大写U或者小写u开头"></HelperText>
               </div>
             </Space>
           </Form.Item>
+
           <Form.Item
             label="到期时间"
             name="expired_at"
@@ -101,18 +94,18 @@ const PromoCodeCreateMultiPage = () => {
                 />
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="该字段决定优惠码的有效期限，到了选定的时间就无法使用了。"></HelperText>
+                <HelperText text="过期时间到了之后优惠码便无法使用了"></HelperText>
               </div>
             </Space>
           </Form.Item>
           <Form.Item
             label="面值"
-            name="money"
+            name="invited_user_reward"
             rules={[{ required: true, message: "请输入面值!" }]}
           >
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
-                name="money"
+                name="invited_user_reward"
                 rules={[{ required: true, message: "请输入面值!" }]}
               >
                 <Input
@@ -123,7 +116,29 @@ const PromoCodeCreateMultiPage = () => {
                 />
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="请输入整数。不支持小数。面值是学员使用该码在收银台可抵扣的金额。"></HelperText>
+                <HelperText text="请输入整数。不支持小数。可在收银台抵扣的金额。"></HelperText>
+              </div>
+            </Space>
+          </Form.Item>
+          <Form.Item
+            label="可使用次数"
+            name="use_times"
+            rules={[{ required: true, message: "请输入可使用次数!" }]}
+          >
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item
+                name="use_times"
+                rules={[{ required: true, message: "请输入可使用次数!" }]}
+              >
+                <Input
+                  type="number"
+                  style={{ width: 300 }}
+                  placeholder="请输入可使用次数"
+                  allowClear
+                />
+              </Form.Item>
+              <div className="ml-10">
+                <HelperText text="请输入整数。0意味着不限制。"></HelperText>
               </div>
             </Space>
           </Form.Item>
@@ -150,4 +165,4 @@ const PromoCodeCreateMultiPage = () => {
     </div>
   );
 };
-export default PromoCodeCreateMultiPage;
+export default PromoCodeCreatePage;

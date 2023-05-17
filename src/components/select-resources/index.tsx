@@ -10,6 +10,7 @@ import { TopicComp } from "./components/topic";
 import { PaperComp } from "./components/paper";
 import { PracticeComp } from "./components/practice";
 import { MockPaperComp } from "./components/mock-paper";
+import { VideoComp } from "./components/video";
 
 interface PropsInterface {
   enabledResource: any;
@@ -183,6 +184,9 @@ export const SelectResources = (props: PropsInterface) => {
             )}
             {resourceActive === "mock-paper" && (
               <MockPaperComp onChange={change}></MockPaperComp>
+            )}
+            {resourceActive === "video" && (
+              <VideoComp onChange={change}></VideoComp>
             )}
           </div>
         </Modal>

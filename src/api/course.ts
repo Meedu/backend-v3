@@ -20,3 +20,7 @@ export function record(courseId: number, hourId: number, duration: number) {
     duration,
   });
 }
+
+export function videoList(params: any) {
+  return client.get(`/backend/api/v1/video`, params);
+}

@@ -42,6 +42,7 @@ import MultiShareCreatePage from "../pages/multi_level_share/create";
 import MultiShareUpdatePage from "../pages/multi_level_share/update";
 import CodeExchangerPage from "../pages/codeExchanger/index";
 import CodeExchangerCreatePage from "../pages/codeExchanger/create";
+import CodeExchangerUpdatePage from "../pages/codeExchanger/update";
 
 import ErrorPage from "../pages/error";
 
@@ -136,6 +137,10 @@ const routes: RouteObject[] = [
           {
             path: "/codeExchanger/create",
             element: <CodeExchangerCreatePage />,
+          },
+          {
+            path: "/codeExchanger/update",
+            element: <CodeExchangerUpdatePage />,
           },
           { path: "/promocode", element: <PromoCodePage /> },
           { path: "/order/code-import", element: <PromoCodeImportPage /> },

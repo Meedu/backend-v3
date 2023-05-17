@@ -1,0 +1,139 @@
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Button, Input, message, DatePicker, Form } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { codeExchanger } from "../../api/index";
+import { titleAction } from "../../store/user/loginUserSlice";
+import { BackBartment } from "../../components";
+import moment from "moment";
+
+const CodeExchangerUpdatePage = () => {
+  const result = new URLSearchParams(useLocation().search);
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [id, setId] = useState(Number(result.get("id")));
+  const [relate_data, setRelateData] = useState("");
+
+  useEffect(() => {
+    document.title = "编辑兑换活动";
+    dispatch(titleAction("编辑兑换活动"));
+  }, []);
+
+  useEffect(() => {
+    setId(Number(result.get("id")));
+    getDetail();
+  }, [result.get("id")]);
+
+  const getDetail = () => {
+    if (id === 0) {
+      return;
+    }
+    codeExchanger.detail(id).then((res: any) => {
+      var data = res.data;
+      setRelateData(data.relate_data);
+      form.setFieldsValue({
+        name: data.name,
+        start_at: moment(data.start_at),
+        end_at: moment(data.end_at),
+      });
+    });
+  };
+
+  const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    values.relate_data = relate_data;
+    codeExchanger
+      .update(id, values)
+      .then((res: any) => {
+        setLoading(false);
+        message.success("保存成功！");
+        navigate(-1);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  return (
+    <div className="meedu-main-body">
+      <BackBartment title="编辑兑换活动" />
+      <div className="float-left mt-30">
+        <Form
+          form={form}
+          name="codeExchanger-update"
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 21 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="活动名称"
+            name="name"
+            rules={[{ required: true, message: "请输入活动名称!" }]}
+          >
+            <Input
+              style={{ width: 300 }}
+              placeholder="请输入活动名称"
+              allowClear
+            />
+          </Form.Item>
+          <Form.Item
+            label="活动开始时间"
+            name="start_at"
+            rules={[{ required: true, message: "请选择开始时间!" }]}
+          >
+            <DatePicker
+              format="YYYY-MM-DD HH:mm"
+              style={{ width: 300 }}
+              showTime
+              placeholder="请选择开始时间"
+            />
+          </Form.Item>
+          <Form.Item
+            label="活动结束时间"
+            name="end_at"
+            rules={[{ required: true, message: "请选择结束时间!" }]}
+          >
+            <DatePicker
+              format="YYYY-MM-DD HH:mm"
+              style={{ width: 300 }}
+              showTime
+              placeholder="请选择结束时间"
+            />
+          </Form.Item>
+        </Form>
+        <div className="bottom-menus">
+          <div className="bottom-menus-box">
+            <div>
+              <Button
+                loading={loading}
+                type="primary"
+                onClick={() => form.submit()}
+              >
+                保存
+              </Button>
+            </div>
+            <div className="ml-24">
+              <Button type="default" onClick={() => navigate(-1)}>
+                取消
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CodeExchangerUpdatePage;

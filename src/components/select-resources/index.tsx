@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Modal, message, Tabs } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { VodComp } from "./components/vod";
+import { LiveComp } from "./components/live";
 
 interface PropsInterface {
   enabledResource: any;
@@ -152,6 +153,9 @@ export const SelectResources = (props: PropsInterface) => {
             }}
           >
             {resourceActive === "vod" && <VodComp onChange={change}></VodComp>}
+            {resourceActive === "live" && (
+              <LiveComp onChange={change}></LiveComp>
+            )}
           </div>
         </Modal>
       )}

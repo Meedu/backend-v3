@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, message, Table, Input, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { live } from "../../../api/index";
+import { path } from "../../../api/index";
 
 interface DataType {
   id: React.Key;
@@ -30,7 +30,7 @@ export const LearnPathComp = (props: PropsInterface) => {
       return;
     }
     setLoading(true);
-    live
+    path
       .list({
         page: page,
         size: size,
@@ -39,8 +39,8 @@ export const LearnPathComp = (props: PropsInterface) => {
         keywords: keywords,
       })
       .then((res: any) => {
-        setList(res.data.data.data);
-        setTotal(res.data.data.total);
+        setList(res.data.data);
+        setTotal(res.data.total);
         setLoading(false);
       })
       .catch((e) => {
@@ -72,26 +72,20 @@ export const LearnPathComp = (props: PropsInterface) => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "课程ID",
+      title: "路径ID",
       width: 120,
       render: (_, record: any) => <span>{record.id}</span>,
     },
     {
-      title: "课程",
+      title: "路径",
       render: (_, record: any) => (
         <div className="d-flex">
           <div>
-            <img src={record.thumb} width="80" height="60" />
+            <img src={record.thumb} width="100" height="80" />
           </div>
-          <div className="ml-15">{record.title}</div>
+          <div className="ml-15">{record.name}</div>
         </div>
       ),
-    },
-    {
-      title: "价格",
-      width: 120,
-      dataIndex: "charge",
-      render: (charge: number) => <span>￥{charge}</span>,
     },
   ];
 
@@ -100,9 +94,9 @@ export const LearnPathComp = (props: PropsInterface) => {
       let row: any = selectedRows[0];
       if (row) {
         props.onChange({
-          resource_type: "live",
+          resource_type: "learnPath",
           id: row.id,
-          title: row.title,
+          title: row.name,
           thumb: row.thumb,
           charge: row.charge,
           original_charge: row.charge,

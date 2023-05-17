@@ -5,6 +5,7 @@ import { VodComp } from "./components/vod";
 import { LiveComp } from "./components/live";
 import { RoleComp } from "./components/vip";
 import { BookComp } from "./components/book";
+import { LearnPathComp } from "./components/learn-path";
 
 interface PropsInterface {
   enabledResource: any;
@@ -163,6 +164,9 @@ export const SelectResources = (props: PropsInterface) => {
             )}
             {resourceActive === "book" && (
               <BookComp onChange={change}></BookComp>
+            )}
+            {resourceActive === "learn-path" && (
+              <LearnPathComp onChange={change}></LearnPathComp>
             )}
           </div>
         </Modal>

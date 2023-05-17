@@ -12,3 +12,4 @@ export * from "./option-bar";
 export * from "./upload-image-button";
 export * from "./select-resources/index";
 export * from "./select-resources/multiIndex";
+export * from "./thumb-bar";

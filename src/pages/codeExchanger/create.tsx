@@ -1,16 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  Button,
-  Input,
-  message,
-  DatePicker,
-  Table,
-  Form,
-  Space,
-  Row,
-  Col,
-} from "antd";
+import { Button, Input, message, DatePicker, Table, Form } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { codeExchanger } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
@@ -18,8 +9,15 @@ import {
   BackBartment,
   SelectResourcesMulti,
   PerButton,
+  ThumbBar,
 } from "../../components";
 import moment from "moment";
+import paperIcon from "../../assets/img/default-paper.png";
+import vipIcon from "../../assets/img/default-vip.png";
+
+interface DataType {
+  id: React.Key;
+}
 
 const CodeExchangerCreatePage = () => {
   const [form] = Form.useForm();
@@ -121,7 +119,6 @@ const CodeExchangerCreatePage = () => {
   };
 
   const changeCourses = (data: any) => {
-    console.log(data);
     if (data[0].type === "vip") {
       if (coursesData.length > 0) {
         let box = [...coursesData];
@@ -144,6 +141,104 @@ const CodeExchangerCreatePage = () => {
       setCoursesData(box);
     }
     setShowSelectResourceCoursesWin(false);
+  };
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "包含商品",
+      render: (_, record: any) => (
+        <>
+          {record.type === "book" ? (
+            <ThumbBar
+              value={record.thumb}
+              width={90}
+              height={120}
+              title={record.title}
+              border={4}
+            ></ThumbBar>
+          ) : record.type === "paper" ||
+            record.type === "mock_paper" ||
+            record.type === "practice" ? (
+            <ThumbBar
+              value={paperIcon}
+              width={120}
+              height={90}
+              title={record.title}
+              border={4}
+            ></ThumbBar>
+          ) : record.type === "vip" ? (
+            <ThumbBar
+              value={vipIcon}
+              width={120}
+              height={90}
+              title={record.title}
+              border={4}
+            ></ThumbBar>
+          ) : (
+            <ThumbBar
+              value={record.thumb}
+              width={120}
+              height={90}
+              title={record.title}
+              border={4}
+            ></ThumbBar>
+          )}
+        </>
+      ),
+    },
+    {
+      title: "商品类型",
+      render: (_, record: any) => (
+        <>
+          {record.type === "vod" && <span>录播课程</span>}
+          {record.type === "live" && <span>直播课程</span>}
+          {record.type === "book" && <span>电子书</span>}
+          {record.type === "paper" && <span>考试</span>}
+          {record.type === "mock_paper" && <span>模拟卷</span>}
+          {record.type === "practice" && <span>练习</span>}
+          {record.type === "vip" && <span>VIP会员</span>}
+        </>
+      ),
+    },
+    {
+      title: "单品价格",
+      render: (_, record: any) => (
+        <>
+          {record.charge === 0 && <span>免费</span>}
+          {record.charge !== 0 && <span>￥{record.charge}</span>}
+        </>
+      ),
+    },
+    {
+      title: "操作",
+      width: 100,
+      render: (_, record: any) => (
+        <PerButton
+          type="link"
+          text="删除"
+          class="c-red"
+          icon={null}
+          p="addons.CodeExchanger.activity.update"
+          onClick={() => {
+            delCourses(record.id);
+          }}
+          disabled={null}
+        />
+      ),
+    },
+  ];
+
+  const delCourses = (id: number) => {
+    const data = [...coursesData];
+    const index = data.findIndex((i: any) => i.id === id);
+    if (index >= 0) {
+      data.splice(index, 1);
+    }
+    if (data.length > 0) {
+      setCoursesData(data);
+    } else {
+      setCoursesData([]);
+    }
   };
 
   return (
@@ -223,6 +318,15 @@ const CodeExchangerCreatePage = () => {
             p="addons.CodeExchanger.activity.store"
             onClick={() => setShowSelectResourceCoursesWin(true)}
             disabled={null}
+          />
+        </div>
+        <div className="float-left">
+          <Table
+            loading={loading}
+            columns={columns}
+            dataSource={coursesData}
+            rowKey={(record) => record.id}
+            pagination={false}
           />
         </div>
 

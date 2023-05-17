@@ -9,6 +9,7 @@ import { LearnPathComp } from "./components/learn-path";
 import { TopicComp } from "./components/topic";
 import { PaperComp } from "./components/paper";
 import { PracticeComp } from "./components/practice";
+import { MockPaperComp } from "./components/mock-paper";
 
 interface PropsInterface {
   enabledResource: any;
@@ -179,6 +180,9 @@ export const SelectResources = (props: PropsInterface) => {
             )}
             {resourceActive === "practice" && (
               <PracticeComp onChange={change}></PracticeComp>
+            )}
+            {resourceActive === "mock-paper" && (
+              <MockPaperComp onChange={change}></MockPaperComp>
             )}
           </div>
         </Modal>

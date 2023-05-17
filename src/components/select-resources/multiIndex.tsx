@@ -5,9 +5,9 @@ import { VodComp } from "./components/multiVod";
 import { LiveComp } from "./components/multiLive";
 import { RoleComp } from "./components/multiVip";
 import { BookComp } from "./components/multiBook";
-import { PaperComp } from "./components/paper";
-import { PracticeComp } from "./components/practice";
-import { MockPaperComp } from "./components/mock-paper";
+import { PaperComp } from "./components/multiPaper";
+import { PracticeComp } from "./components/multiPractice";
+import { MockPaperComp } from "./components/multiMockPaper";
 
 interface PropsInterface {
   enabledResource: any;
@@ -170,13 +170,22 @@ export const SelectResourcesMulti = (props: PropsInterface) => {
               ></BookComp>
             )}
             {resourceActive === "paper" && (
-              <PaperComp onChange={change}></PaperComp>
+              <PaperComp
+                selected={props.selectedPaper}
+                onChange={change}
+              ></PaperComp>
             )}
             {resourceActive === "practice" && (
-              <PracticeComp onChange={change}></PracticeComp>
+              <PracticeComp
+                selected={props.selectedPractice}
+                onChange={change}
+              ></PracticeComp>
             )}
             {resourceActive === "mock-paper" && (
-              <MockPaperComp onChange={change}></MockPaperComp>
+              <MockPaperComp
+                selected={props.selectedMockPaper}
+                onChange={change}
+              ></MockPaperComp>
             )}
           </div>
         </Modal>

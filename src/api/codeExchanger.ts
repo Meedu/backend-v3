@@ -25,3 +25,28 @@ export function store(params: any) {
 export function update(id: number, params: any) {
   return client.put(`/backend/addons/CodeExchanger/v2/activity/${id}`, params);
 }
+
+export function codesList(id: number, params: any) {
+  return client.get(
+    `/backend/addons/CodeExchanger/v2/activity/${id}/code/index`,
+    params
+  );
+}
+
+export function destoryMultiCodes(id: number, params: any) {
+  return client.post(
+    `/backend/addons/CodeExchanger/v2/activity/${id}/code/destroy`,
+    params
+  );
+}
+
+export function generateCodes(id: number, params: any) {
+  return client.post(
+    `/backend/addons/CodeExchanger/v2/activity/${id}/code/generate`,
+    params
+  );
+}
+
+export function exportCodes() {
+  return client.get(`/backend/addons/CodeExchanger/code/export`, {});
+}

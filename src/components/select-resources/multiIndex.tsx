@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Modal, message, Tabs } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { VodComp } from "./components/multiVod";
-import { LiveComp } from "./components/live";
-import { RoleComp } from "./components/vip";
+import { LiveComp } from "./components/multiLive";
+import { RoleComp } from "./components/multiVip";
 import { BookComp } from "./components/book";
 import { PaperComp } from "./components/paper";
 import { PracticeComp } from "./components/practice";
@@ -152,10 +152,16 @@ export const SelectResourcesMulti = (props: PropsInterface) => {
               <VodComp selected={props.selectedVod} onChange={change}></VodComp>
             )}
             {resourceActive === "vip" && (
-              <RoleComp onChange={change}></RoleComp>
+              <RoleComp
+                selected={props.selectedVip}
+                onChange={change}
+              ></RoleComp>
             )}
             {resourceActive === "live" && (
-              <LiveComp onChange={change}></LiveComp>
+              <LiveComp
+                selected={props.selectedLive}
+                onChange={change}
+              ></LiveComp>
             )}
             {resourceActive === "book" && (
               <BookComp onChange={change}></BookComp>

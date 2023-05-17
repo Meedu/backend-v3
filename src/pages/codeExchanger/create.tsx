@@ -44,14 +44,38 @@ const CodeExchangerCreatePage = () => {
 
   useEffect(() => {
     let params: any = [];
+    let liveParams: any = [];
+    let paperParams: any = [];
+    let bookParams: any = [];
+    let mockPaperParams: any = [];
+    let practiceParams: any = [];
+    let vipParams: any = [];
     if (coursesData.length > 0) {
       for (let i = 0; i < coursesData.length; i++) {
         if (coursesData[i].type === "vod") {
           params.push(coursesData[i].id);
+        } else if (coursesData[i].type === "live") {
+          liveParams.push(coursesData[i].id);
+        } else if (coursesData[i].type === "paper") {
+          paperParams.push(coursesData[i].id);
+        } else if (coursesData[i].type === "book") {
+          bookParams.push(coursesData[i].id);
+        } else if (coursesData[i].type === "mock_paper") {
+          mockPaperParams.push(coursesData[i].id);
+        } else if (coursesData[i].type === "practice") {
+          practiceParams.push(coursesData[i].id);
+        } else if (coursesData[i].type === "vip") {
+          vipParams.push(coursesData[i].id);
         }
       }
     }
     setCoursesVodId(params);
+    setCoursesLiveId(liveParams);
+    setPaperId(paperParams);
+    setBookId(bookParams);
+    setMockPaperId(mockPaperParams);
+    setPracticeId(practiceParams);
+    setVipId(vipParams);
   }, [coursesData]);
 
   const onFinish = (values: any) => {
@@ -99,6 +123,21 @@ const CodeExchangerCreatePage = () => {
   const changeCourses = (data: any) => {
     console.log(data);
     if (data[0].type === "vip") {
+      if (coursesData.length > 0) {
+        let box = [...coursesData];
+        for (let i = 0; i < coursesData.length; i++) {
+          if (coursesData[i].type === "vip") {
+            box.splice(i, 1);
+            message.warning("VIP会员只能选择一个，已自动删除之前选择的VIP会员");
+          }
+        }
+        box = box.concat(data);
+        setCoursesData(box);
+      } else {
+        let box = [...coursesData];
+        box = box.concat(data);
+        setCoursesData(box);
+      }
     } else {
       let box = [...coursesData];
       box = box.concat(data);

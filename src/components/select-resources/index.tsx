@@ -7,6 +7,7 @@ import { RoleComp } from "./components/vip";
 import { BookComp } from "./components/book";
 import { LearnPathComp } from "./components/learn-path";
 import { TopicComp } from "./components/topic";
+import { PaperComp } from "./components/paper";
 
 interface PropsInterface {
   enabledResource: any;
@@ -171,6 +172,9 @@ export const SelectResources = (props: PropsInterface) => {
             )}
             {resourceActive === "topic" && (
               <TopicComp onChange={change}></TopicComp>
+            )}
+            {resourceActive === "paper" && (
+              <PaperComp onChange={change}></PaperComp>
             )}
           </div>
         </Modal>

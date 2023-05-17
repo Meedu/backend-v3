@@ -15,3 +15,4 @@ export * as media from "./media";
 export * as live from "./live";
 export * as book from "./book";
 export * as path from "./path";
+export * as topic from "./topic";

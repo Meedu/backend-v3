@@ -16,7 +16,7 @@ interface DataType {
   goods_id: number;
   goods_type_text: string;
   goods_charge: number;
-  created_at: number;
+  created_at: string;
 }
 
 const MultiSharePage = () => {

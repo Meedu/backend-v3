@@ -19,3 +19,4 @@ export * as topic from "./topic";
 export * as paper from "./paper";
 export * as practice from "./practice";
 export * as mock from "./mock";
+export * as codeExchanger from "./codeExchanger";

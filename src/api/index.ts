@@ -13,3 +13,5 @@ export * as wenda from "./wenda";
 export * as multiShare from "./multi-share";
 export * as media from "./media";
 export * as live from "./live";
+export * as book from "./book";
+export * as path from "./path";

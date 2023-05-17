@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { VodComp } from "./components/vod";
 import { LiveComp } from "./components/live";
 import { RoleComp } from "./components/vip";
+import { BookComp } from "./components/book";
 
 interface PropsInterface {
   enabledResource: any;
@@ -159,6 +160,9 @@ export const SelectResources = (props: PropsInterface) => {
             )}
             {resourceActive === "live" && (
               <LiveComp onChange={change}></LiveComp>
+            )}
+            {resourceActive === "book" && (
+              <BookComp onChange={change}></BookComp>
             )}
           </div>
         </Modal>

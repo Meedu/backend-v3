@@ -20,3 +20,4 @@ export * as paper from "./paper";
 export * as practice from "./practice";
 export * as mock from "./mock";
 export * as codeExchanger from "./codeExchanger";
+export * as miaosha from "./miaosha";

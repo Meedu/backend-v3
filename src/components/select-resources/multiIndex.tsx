@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { VodComp } from "./components/multiVod";
 import { LiveComp } from "./components/multiLive";
 import { RoleComp } from "./components/multiVip";
-import { BookComp } from "./components/book";
+import { BookComp } from "./components/multiBook";
 import { PaperComp } from "./components/paper";
 import { PracticeComp } from "./components/practice";
 import { MockPaperComp } from "./components/mock-paper";
@@ -164,7 +164,10 @@ export const SelectResourcesMulti = (props: PropsInterface) => {
               ></LiveComp>
             )}
             {resourceActive === "book" && (
-              <BookComp onChange={change}></BookComp>
+              <BookComp
+                selected={props.selectedBook}
+                onChange={change}
+              ></BookComp>
             )}
             {resourceActive === "paper" && (
               <PaperComp onChange={change}></PaperComp>

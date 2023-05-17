@@ -6,6 +6,7 @@ import { codeExchanger } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { BackBartment } from "../../components";
 import moment from "moment";
+import dayjs from "dayjs";
 
 const CodeExchangerUpdatePage = () => {
   const result = new URLSearchParams(useLocation().search);
@@ -35,8 +36,8 @@ const CodeExchangerUpdatePage = () => {
       setRelateData(data.relate_data);
       form.setFieldsValue({
         name: data.name,
-        start_at: moment(data.start_at),
-        end_at: moment(data.end_at),
+        start_at: dayjs(data.start_at, "YYYY-MM-DD HH:mm"),
+        end_at: dayjs(data.end_at, "YYYY-MM-DD HH:mm"),
       });
     });
   };

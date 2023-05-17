@@ -45,6 +45,8 @@ import CodeExchangerCreatePage from "../pages/codeExchanger/create";
 import CodeExchangerUpdatePage from "../pages/codeExchanger/update";
 import CodeExchangerCodesPage from "../pages/codeExchanger/codes";
 import MiaoshaPage from "../pages/miaosha/index";
+import MiaoshaCreatePage from "../pages/miaosha/create";
+import MiaoshaUpdatePage from "../pages/miaosha/update";
 
 import ErrorPage from "../pages/error";
 
@@ -118,6 +120,8 @@ const routes: RouteObject[] = [
             element: <MultiShareRewardsPage />,
           },
           { path: "/miaosha/goods/index", element: <MiaoshaPage /> },
+          { path: "/miaosha/goods/create", element: <MiaoshaCreatePage /> },
+          { path: "/miaosha/goods/update", element: <MiaoshaUpdatePage /> },
           { path: "/wenda/question/index", element: <WendaPage /> },
           {
             path: "/wenda/question/category/index",

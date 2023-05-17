@@ -16,7 +16,12 @@ interface PropsInterface {
 export const RoleComp = (props: PropsInterface) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
+  const [keys, setKeys] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    setKeys(props.selected);
+  }, [props.selected]);
 
   useEffect(() => {
     getData();
@@ -64,6 +69,7 @@ export const RoleComp = (props: PropsInterface) => {
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       let row: any = selectedRows[0];
+      setKeys(selectedRowKeys);
       var newbox = [];
       if (row) {
         let item = {
@@ -77,6 +83,7 @@ export const RoleComp = (props: PropsInterface) => {
         props.onChange(newbox);
       }
     },
+    selectedRowKeys: keys,
   };
 
   return (

@@ -41,6 +41,7 @@ import MultiShareRewardsPage from "../pages/multi_level_share/rewards";
 import MultiShareCreatePage from "../pages/multi_level_share/create";
 import MultiShareUpdatePage from "../pages/multi_level_share/update";
 import CodeExchangerPage from "../pages/codeExchanger/index";
+import CodeExchangerCreatePage from "../pages/codeExchanger/create";
 
 import ErrorPage from "../pages/error";
 
@@ -132,6 +133,10 @@ const routes: RouteObject[] = [
           },
           { path: "/wenda/question/comment", element: <WendaCommentPage /> },
           { path: "/codeExchanger/index", element: <CodeExchangerPage /> },
+          {
+            path: "/codeExchanger/create",
+            element: <CodeExchangerCreatePage />,
+          },
           { path: "/promocode", element: <PromoCodePage /> },
           { path: "/order/code-import", element: <PromoCodeImportPage /> },
           { path: "/createcode", element: <PromoCodeCreatePage /> },

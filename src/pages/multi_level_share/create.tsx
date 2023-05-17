@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Input, message, Form, Space, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { multiShare } from "../../api/index";
@@ -12,7 +12,6 @@ import {
 } from "../../components";
 
 const MultiShareCreatePage = () => {
-  const result = new URLSearchParams(useLocation().search);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();

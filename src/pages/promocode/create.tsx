@@ -23,7 +23,9 @@ const PromoCodeCreatePage = () => {
       return;
     }
     setLoading(true);
-    values.expired_at = moment(values.expired_at).format("YYYY-MM-DD HH:mm");
+    values.expired_at = moment(new Date(values.expired_at)).format(
+      "YYYY-MM-DD HH:mm"
+    );
     promocode
       .create(values)
       .then((res: any) => {

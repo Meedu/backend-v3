@@ -23,7 +23,9 @@ const PromoCodeCreateMultiPage = () => {
       return;
     }
     setLoading(true);
-    values.expired_at = moment(values.expired_at).format("YYYY-MM-DD HH:mm");
+    values.expired_at = moment(new Date(values.expired_at)).format(
+      "YYYY-MM-DD HH:mm"
+    );
     promocode
       .createMulti(values)
       .then((res: any) => {

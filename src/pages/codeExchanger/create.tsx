@@ -100,6 +100,10 @@ const CodeExchangerCreatePage = () => {
     }
     setLoading(true);
     values.relate_data = JSON.stringify(params);
+    values.start_at = moment(new Date(values.start_at)).format(
+      "YYYY-MM-DD HH:mm"
+    );
+    values.end_at = moment(new Date(values.end_at)).format("YYYY-MM-DD HH:mm");
     codeExchanger
       .store(values)
       .then((res: any) => {

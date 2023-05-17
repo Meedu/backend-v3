@@ -8,6 +8,7 @@ import { BookComp } from "./components/book";
 import { LearnPathComp } from "./components/learn-path";
 import { TopicComp } from "./components/topic";
 import { PaperComp } from "./components/paper";
+import { PracticeComp } from "./components/practice";
 
 interface PropsInterface {
   enabledResource: any;
@@ -175,6 +176,9 @@ export const SelectResources = (props: PropsInterface) => {
             )}
             {resourceActive === "paper" && (
               <PaperComp onChange={change}></PaperComp>
+            )}
+            {resourceActive === "practice" && (
+              <PracticeComp onChange={change}></PracticeComp>
             )}
           </div>
         </Modal>

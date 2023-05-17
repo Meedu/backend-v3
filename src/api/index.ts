@@ -17,3 +17,4 @@ export * as book from "./book";
 export * as path from "./path";
 export * as topic from "./topic";
 export * as paper from "./paper";
+export * as practice from "./practice";

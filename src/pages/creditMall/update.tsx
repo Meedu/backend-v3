@@ -8,32 +8,27 @@ import {
   Tabs,
   Switch,
   Space,
-  Select,
   Row,
   Col,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { creditMall } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
-import {
-  BackBartment,
-  SelectResources,
-  UploadImageButton,
-  HelperText,
-} from "../../components";
+import { BackBartment, UploadImageButton, HelperText } from "../../components";
 
-const CreditMallCreatePage = () => {
+const CreditMallUpdatePage = () => {
+  const result = new URLSearchParams(useLocation().search);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  const [is_v, setIsV] = useState(0);
   const [resourceActive, setResourceActive] = useState<string>("base");
-  const [goodsTypes, setGoodsTypes] = useState<any>([]);
-  const [showSelectResWin, setShowSelectResWin] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [thumb, setThumb] = useState<string>("");
+  const [is_v, setIsV] = useState(0);
+  const [v_id, setVId] = useState(0);
   const [type, setType] = useState("");
+  const [id, setId] = useState(Number(result.get("id")));
   const types = [
     {
       key: "base",
@@ -46,23 +41,35 @@ const CreditMallCreatePage = () => {
   ];
 
   useEffect(() => {
-    document.title = "添加商品";
-    dispatch(titleAction("添加商品"));
-    form.setFieldsValue({ is_show: 1, is_v: 0 });
-    getParams();
+    document.title = "编辑商品";
+    dispatch(titleAction("编辑商品"));
   }, []);
 
-  const getParams = () => {
-    creditMall.create().then((res: any) => {
-      let goodsTypes = res.data.types;
-      const arr = [];
-      for (let i = 0; i < goodsTypes.length; i++) {
-        arr.push({
-          label: goodsTypes[i].name,
-          value: goodsTypes[i].value,
-        });
-      }
-      setGoodsTypes(arr);
+  useEffect(() => {
+    setId(Number(result.get("id")));
+    getDetail();
+  }, [result.get("id")]);
+
+  const getDetail = () => {
+    if (id === 0) {
+      return;
+    }
+    creditMall.detail(id).then((res: any) => {
+      var data = res.data;
+      form.setFieldsValue({
+        v_id: data.v_id,
+        title: data.title,
+        thumb: data.thumb,
+        is_show: data.is_show,
+        desc: data.desc,
+        stock_count: data.stock_count,
+        charge: data.charge,
+      });
+      setThumb(data.thumb);
+      setTitle(data.title);
+      setIsV(data.is_v);
+      setVId(data.v_id);
+      setType(data.v_type);
     });
   };
 
@@ -74,20 +81,12 @@ const CreditMallCreatePage = () => {
     if (loading) {
       return;
     }
-    if (values.is_v === 0) {
-      form.setFieldsValue({ v_type: null, v_id: null });
-    }
-    if (values.is_v === 1 && !values.v_type) {
-      message.error("请选择虚拟商品类型");
-      return;
-    }
-    if (values.is_v === 1 && values.v_type && !values.v_id) {
-      message.error("请选择虚拟商品");
-      return;
-    }
+    values.is_v = is_v;
+    values.v_id = v_id;
+    values.v_type = type;
     setLoading(true);
     creditMall
-      .store(values)
+      .update(id, values)
       .then((res: any) => {
         setLoading(false);
         message.success("保存成功！");
@@ -110,34 +109,9 @@ const CreditMallCreatePage = () => {
     }
   };
 
-  const isVChange = (checked: boolean) => {
-    if (checked) {
-      form.setFieldsValue({ is_v: 1 });
-      setIsV(1);
-    } else {
-      form.setFieldsValue({ is_v: 0 });
-      setIsV(0);
-    }
-  };
-
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加商品" />
-      <SelectResources
-        open={showSelectResWin}
-        enabledResource={type}
-        onCancel={() => setShowSelectResWin(false)}
-        onSelected={(result: any) => {
-          form.setFieldsValue({
-            v_id: result.id,
-            title: result.title,
-            thumb: result.thumb,
-          });
-          setTitle(result.title);
-          setThumb(result.thumb);
-          setShowSelectResWin(false);
-        }}
-      ></SelectResources>
+      <BackBartment title="编辑商品" />
       <div className="center-tabs mb-30">
         <Tabs
           defaultActiveKey={resourceActive}
@@ -148,7 +122,7 @@ const CreditMallCreatePage = () => {
       <div className="float-left">
         <Form
           form={form}
-          name="creditMall-create"
+          name="creditMall-update"
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
           initialValues={{ remember: true }}
@@ -159,34 +133,6 @@ const CreditMallCreatePage = () => {
           <div
             style={{ display: resourceActive === "base" ? "block" : "none" }}
           >
-            <Form.Item label="是否虚拟商品" name="is_v" valuePropName="checked">
-              <Switch onChange={isVChange} />
-            </Form.Item>
-            {is_v === 1 && (
-              <Form.Item name="v_type" label="虚拟商品类型">
-                <Select
-                  style={{ width: 300 }}
-                  allowClear
-                  placeholder="请选择虚拟商品类型"
-                  options={goodsTypes}
-                  onChange={(e) => {
-                    setType(e);
-                  }}
-                />
-              </Form.Item>
-            )}
-            {is_v === 1 && type && (
-              <Form.Item label="虚拟商品" name="v_id">
-                <Button
-                  loading={loading}
-                  type="primary"
-                  onClick={() => setShowSelectResWin(true)}
-                >
-                  {title && <span>已选择「{title}」</span>}
-                  {!title && <span>选择商品</span>}
-                </Button>
-              </Form.Item>
-            )}
             <Form.Item
               label="商品名"
               name="title"
@@ -308,4 +254,4 @@ const CreditMallCreatePage = () => {
   );
 };
 
-export default CreditMallCreatePage;
+export default CreditMallUpdatePage;

@@ -27,3 +27,15 @@ export function destroy(id: number) {
 export function ordersList(params: any) {
   return client.get("/backend/addons/Credit1Mall/orders/index", params);
 }
+
+export function ordersDetail(id: number) {
+  return client.get(`/backend/addons/Credit1Mall/orders/${id}`, {});
+}
+
+export function ordersUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/Credit1Mall/orders/${id}`, params);
+}
+
+export function ordersSend(id: number, params: any) {
+  return client.post(`/backend/addons/Credit1Mall/orders/${id}/send`, params);
+}

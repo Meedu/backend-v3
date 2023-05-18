@@ -52,6 +52,7 @@ import CreditMallPage from "../pages/creditMall/index";
 import CreditMallCreatePage from "../pages/creditMall/create";
 import CreditMallUpdatePage from "../pages/creditMall/update";
 import CreditMallOrdersPage from "../pages/creditMall/orders";
+import CreditMallOrdersUpdatePage from "../pages/creditMall/orders/update";
 
 import ErrorPage from "../pages/error";
 
@@ -114,6 +115,10 @@ const routes: RouteObject[] = [
           {
             path: "/creditMall/orders/index",
             element: <CreditMallOrdersPage />,
+          },
+          {
+            path: "/creditMall/orders/update",
+            element: <CreditMallOrdersUpdatePage />,
           },
           {
             path: "/multi_level_share/goods/index",

@@ -74,6 +74,17 @@ const CreditMallCreatePage = () => {
     if (loading) {
       return;
     }
+    if (values.is_v === 0) {
+      form.setFieldsValue({ v_type: null, v_id: null });
+    }
+    if (values.is_v === 1 && !values.v_type) {
+      message.error("请选择虚拟商品类型");
+      return;
+    }
+    if (values.is_v === 1 && values.v_type && !values.v_id) {
+      message.error("请选择虚拟商品");
+      return;
+    }
     setLoading(true);
     creditMall
       .store(values)

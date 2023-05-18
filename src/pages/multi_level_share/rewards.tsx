@@ -55,7 +55,7 @@ const MultiShareRewardsPage = () => {
 
   const resetList = () => {
     setPage(1);
-    setSize(10);
+    setSize(50);
     setList([]);
     setOrderId("");
     setRefresh(!refresh);

@@ -163,7 +163,7 @@ const MiaoshaOrdersPage = () => {
       ),
     },
     {
-      title: "价格",
+      title: "秒杀价",
       width: 150,
       render: (_, record: any) => <div>{record.charge}元</div>,
     },

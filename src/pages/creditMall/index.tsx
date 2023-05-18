@@ -29,9 +29,44 @@ const CreditMallPage = () => {
   const [goods_type, setGoodsType] = useState([]);
 
   useEffect(() => {
-    document.title = "秒杀课程";
-    dispatch(titleAction("秒杀课程"));
+    document.title = "商品列表";
+    dispatch(titleAction("商品列表"));
   }, []);
+
+  useEffect(() => {
+    getData();
+  }, [page, size, refresh]);
+
+  const getData = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    creditMall
+      .list({
+        page: page,
+        size: size,
+        key: keywords,
+        goods_type: goods_type,
+      })
+      .then((res: any) => {
+        setList(res.data.data.data);
+        setTotal(res.data.data.total);
+        let goodsTypes = res.data.goods_type;
+        const arr = [];
+        for (let i = 0; i < goodsTypes.length; i++) {
+          arr.push({
+            label: goodsTypes[i].name,
+            value: goodsTypes[i].value,
+          });
+        }
+        setGoodsTypes(arr);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
 
   const resetList = () => {
     setPage(1);
@@ -62,7 +97,116 @@ const CreditMallPage = () => {
       width: 120,
       render: (_, record: any) => <span>{record.id}</span>,
     },
+    {
+      title: "商品",
+      width: 400,
+      render: (_, record: any) => (
+        <div className="d-flex">
+          <div
+            style={{
+              backgroundImage: "url(" + record.thumb + ")",
+              width: 120,
+              height: 120,
+              backgroundPosition: "center center",
+              backgroundSize: "contain",
+              backgroundRepeat: "'no-repeat'",
+            }}
+          ></div>
+          <div className="ml-10" style={{ width: 250 }}>
+            {record.title}
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "价格",
+      render: (_, record: any) => <div>{record.charge}积分</div>,
+    },
+    {
+      title: "库存",
+      width: 120,
+      render: (_, record: any) => (
+        <>
+          <div>兑换：{record.sales_count}</div>
+          <div>库存：{record.stock_count}</div>
+        </>
+      ),
+    },
+    {
+      title: "时间",
+      width: 200,
+      render: (_, record: any) => <div>{dateFormat(record.created_at)}</div>,
+    },
+    {
+      title: "操作",
+      width: 130,
+      render: (_, record: any) => (
+        <Space>
+          <PerButton
+            type="link"
+            text="编辑"
+            class="c-primary"
+            icon={null}
+            p="addons.credit1Mall.goods.update"
+            onClick={() => {
+              navigate("/creditMall/update?id=" + record.id);
+            }}
+            disabled={null}
+          />
+          <PerButton
+            type="link"
+            text="删除"
+            class="c-red"
+            icon={null}
+            p="addons.credit1Mall.goods.delete"
+            onClick={() => {
+              destory(record.id);
+            }}
+            disabled={null}
+          />
+        </Space>
+      ),
+    },
   ];
+
+  const destory = (id: number) => {
+    if (id === 0) {
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此商品？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        if (loading) {
+          return;
+        }
+        setLoading(true);
+        creditMall
+          .destroy(id)
+          .then(() => {
+            setLoading(false);
+            message.success("删除成功");
+            resetData();
+          })
+          .catch((e) => {
+            setLoading(false);
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const resetData = () => {
+    setPage(1);
+    setList([]);
+    setRefresh(!refresh);
+  };
 
   return (
     <div className="meedu-main-body">

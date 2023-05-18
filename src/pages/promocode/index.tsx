@@ -137,7 +137,7 @@ const PromoCodePage = () => {
     setList([]);
     setKey("");
     setUserId("");
-    setExpiredAts([]);
+    setCreatedAts([]);
     setExpiredAt([]);
     setExpiredAts([]);
     setCreatedAt([]);

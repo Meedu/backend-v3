@@ -49,6 +49,7 @@ import MiaoshaCreatePage from "../pages/miaosha/create";
 import MiaoshaUpdatePage from "../pages/miaosha/update";
 import MiaoshaOrdersPage from "../pages/miaosha/orders";
 import CreditMallPage from "../pages/creditMall/index";
+import CreditMallCreatePage from "../pages/creditMall/create";
 
 import ErrorPage from "../pages/error";
 
@@ -106,6 +107,7 @@ const routes: RouteObject[] = [
           { path: "/addrole", element: <RoleCreatePage /> },
           { path: "/editrole", element: <RoleUpdatePage /> },
           { path: "/creditMall/index", element: <CreditMallPage /> },
+          { path: "/creditMall/create", element: <CreditMallCreatePage /> },
           {
             path: "/multi_level_share/goods/index",
             element: <MultiSharePage />,

@@ -435,3 +435,11 @@ textarea.ant-input {
   color: #999;
   text-decoration: line-through;
 }
+
+.center-tabs {
+  width: 100%;
+  height: auto;
+  float: left;
+  display: flex;
+  justify-content: center;
+}

@@ -119,7 +119,7 @@ const MultiShareCreatePage = () => {
           <Form.Item
             label="商品封面"
             name="goods_thumb"
-            rules={[{ required: true, message: "请输入商品封面!" }]}
+            rules={[{ required: true, message: "请上传商品封面!" }]}
           >
             <UploadImageButton
               text="上传图片"

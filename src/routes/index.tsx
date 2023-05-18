@@ -51,8 +51,9 @@ import MiaoshaOrdersPage from "../pages/miaosha/orders";
 import CreditMallPage from "../pages/creditMall/index";
 import CreditMallCreatePage from "../pages/creditMall/create";
 import CreditMallUpdatePage from "../pages/creditMall/update";
-import CreditMallOrdersPage from "../pages/creditMall/orders";
+import CreditMallOrdersPage from "../pages/creditMall/orders/index";
 import CreditMallOrdersUpdatePage from "../pages/creditMall/orders/update";
+import CreditMallOrdersSendPage from "../pages/creditMall/orders/send";
 
 import ErrorPage from "../pages/error";
 
@@ -119,6 +120,10 @@ const routes: RouteObject[] = [
           {
             path: "/creditMall/orders/update",
             element: <CreditMallOrdersUpdatePage />,
+          },
+          {
+            path: "/creditMall/orders/send",
+            element: <CreditMallOrdersSendPage />,
           },
           {
             path: "/multi_level_share/goods/index",

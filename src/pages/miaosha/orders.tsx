@@ -8,6 +8,7 @@ import { titleAction } from "../../store/user/loginUserSlice";
 import { BackBartment, ThumbBar } from "../../components";
 import { dateFormat } from "../../utils/index";
 const { RangePicker } = DatePicker;
+import moment from "moment";
 
 interface DataType {
   id: React.Key;
@@ -183,6 +184,10 @@ const MiaoshaOrdersPage = () => {
     },
   ];
 
+  const disabledDate = (current: any) => {
+    return current && current >= moment().endOf("day"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
+  };
+
   return (
     <div className="meedu-main-body">
       <BackBartment title="秒杀订单" />
@@ -197,6 +202,7 @@ const MiaoshaOrdersPage = () => {
           placeholder="学员ID"
         />
         <RangePicker
+          disabledDate={disabledDate}
           format={"YYYY-MM-DD"}
           value={createdAts}
           style={{ marginLeft: 10 }}

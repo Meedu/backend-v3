@@ -21,7 +21,6 @@ import {
   UploadImageButton,
   HelperText,
 } from "../../components";
-import moment from "moment";
 
 const CreditMallCreatePage = () => {
   const [form] = Form.useForm();

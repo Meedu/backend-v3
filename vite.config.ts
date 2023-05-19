@@ -9,5 +9,5 @@ export default defineConfig({
     rollupOptions: {
       plugins: [gzipPlugin()],
     },
-  }
+  },
 });

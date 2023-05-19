@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import {
   Table,
-  Modal,
   Select,
   message,
   Drawer,
   Input,
   Button,
-  Tag,
   DatePicker,
   Space,
   Tabs,
@@ -27,7 +25,9 @@ import filterHIcon from "../../assets/img/icon-filter-h.png";
 import aliIcon from "../../assets/img/ali-pay.png";
 import wepayIcon from "../../assets/img/wepay.png";
 import cardIcon from "../../assets/img/card.png";
-const { confirm } = Modal;
+import moment from "moment";
+import * as XLSX from "xlsx";
+
 const { RangePicker } = DatePicker;
 
 interface DataType {
@@ -54,7 +54,7 @@ const OrderPage = () => {
   const [createdAts, setCreatedAts] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
-  const [countMap, setCountMap] = useState<any>({});
+  const [countMap, setCountMap] = useState<any>({ 1: 0, 5: 0, 7: 0, 9: 0 });
   const [users, setUsers] = useState<any>({});
   const [orderTotal, setOrderTotal] = useState(0);
   const [visiable, setVisiable] = useState<boolean>(false);
@@ -264,7 +264,7 @@ const OrderPage = () => {
       render: (_, record: any) => (
         <>
           {record.goods.map((item: any) => (
-            <span key={item.id}>{item.goods_name}</span>
+            <span key={item.goods_id}>{item.goods_name}</span>
           ))}
         </>
       ),
@@ -415,6 +415,76 @@ const OrderPage = () => {
       return;
     }
     setLoading(true);
+    let params = {
+      page: 1,
+      size: total,
+      order_id: order_id,
+      goods_name: goods_name,
+      is_refund: is_refund,
+      status: status,
+      created_at: created_at,
+      payment: payment,
+    };
+    order.list(params).then((res: any) => {
+      if (res.data.orders.total === 0) {
+        message.error("数据为空");
+        setLoading(false);
+        return;
+      }
+      let status;
+      if (Number(status) === 9) {
+        status = "已支付";
+      } else if (Number(status) === 5) {
+        status = "支付中";
+      } else if (Number(status) === 1) {
+        status = "未支付";
+      } else if (Number(status) === 7) {
+        status = "已取消";
+      } else {
+        status = "全部";
+      }
+      let filename = "全部订单（" + status + "）.xlsx";
+      let sheetName = "sheet1";
+      let users = res.data.users;
+      let data = [
+        [
+          "ID",
+          "学员ID",
+          "学员",
+          "商品名称",
+          "支付金额",
+          "支付渠道",
+          "支付状态",
+          "退款",
+          "订单创建时间",
+        ],
+      ];
+      res.data.orders.data.forEach((item: any) => {
+        data.push([
+          item.id,
+          item.user_id,
+          users[item.user_id] ? users[item.user_id].nick_name : "用户已删除",
+          item.goods[0] ? item.goods[0].goods_name : "商品已删除",
+          item.charge + "元",
+          item.payment_text,
+          item.status_text,
+          item.is_refund === 0 ? "-" : showRefund(item.refund),
+          item.updated_at
+            ? moment(item.updated_at).format("YYYY-MM-DD HH:mm")
+            : "",
+        ]);
+      });
+
+      const jsonWorkSheet = XLSX.utils.json_to_sheet(data);
+      const workBook: XLSX.WorkBook = {
+        SheetNames: [sheetName],
+        Sheets: {
+          [sheetName]: jsonWorkSheet,
+        },
+      };
+      XLSX.writeFile(workBook, filename);
+      setLoading(false);
+    });
   };
 
   const onChange = (key: string) => {

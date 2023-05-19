@@ -11,6 +11,7 @@ import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
 import OrderPage from "../pages/order/index";
 import OrderRefundPage from "../pages/order/refund";
+import OrderDetailPage from "../pages/order/detail";
 import SystemApplicationPage from "../pages/system/application";
 import SystemLogPage from "../pages/system/systemLog/index";
 import SystemAdministratorPage from "../pages/system/administrator/index";
@@ -111,6 +112,7 @@ const routes: RouteObject[] = [
           },
           { path: "/order/index", element: <OrderPage /> },
           { path: "/order/refund", element: <OrderRefundPage /> },
+          { path: "/order/detail", element: <OrderDetailPage /> },
           { path: "/role", element: <RolePage /> },
           { path: "/addrole", element: <RoleCreatePage /> },
           { path: "/editrole", element: <RoleUpdatePage /> },

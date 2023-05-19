@@ -327,6 +327,16 @@ textarea.ant-input {
   border: none;
 }
 
+.ant-modal-confirm-btns {
+  .ant-btn-primary {
+    background-color: #3ca7fa;
+    &:hover {
+      background-color: #3ca7fa;
+      opacity: 0.8;
+    }
+  }
+}
+
 .meedu-main-body {
   width: 100%;
   height: auto;
@@ -442,4 +452,37 @@ textarea.ant-input {
   float: left;
   display: flex;
   justify-content: center;
+}
+
+.panel-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding: 30px;
+  background-color: white;
+  border-radius: 15px;
+
+  .panel-header {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    padding-left: 15px;
+    border-left: 4px solid #3ca7fa;
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px;
+  }
+
+  .panel-body {
+    width: 100%;
+    height: auto;
+    float: left;
+  }
+}
+
+.p-0 {
+  padding: 0;
 }

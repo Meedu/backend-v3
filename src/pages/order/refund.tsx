@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   Table,
+  Modal,
   Select,
   message,
   Drawer,
@@ -11,23 +12,26 @@ import {
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import type { MenuProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { order } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../components";
 import { dateFormat } from "../../utils/index";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import filterIcon from "../../assets/img/icon-filter.png";
 import filterHIcon from "../../assets/img/icon-filter-h.png";
+import aliIcon from "../../assets/img/ali-pay.png";
+import wepayIcon from "../../assets/img/wepay.png";
+import cardIcon from "../../assets/img/card.png";
 import moment from "moment";
 import * as XLSX from "xlsx";
-
+const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 
 interface DataType {
   id: React.Key;
-  charge: number;
-  updated_at: string;
+  refund_no: string;
+  created_at: string;
 }
 
 const OrderRefundPage = () => {
@@ -169,7 +173,82 @@ const OrderRefundPage = () => {
     setRefresh(!refresh);
   };
 
-  const importexcel = () => {};
+  const importexcel = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    let params = {
+      page: 1,
+      size: total,
+      is_local: is_local,
+      mobile: mobile,
+      status: status,
+      created_at: created_at,
+      payment: payment,
+      refund_no: refund_no,
+      order_no: order_no,
+    };
+    order.refundList(params).then((res: any) => {
+      if (res.data.data.total === 0) {
+        message.error("数据为空");
+        setLoading(false);
+        return;
+      }
+      let filename = "退款订单.xlsx";
+      let sheetName = "sheet1";
+      let data = [
+        [
+          "ID",
+          "学员ID",
+          "学员",
+          "退款单号",
+          "退款类型",
+          "支付渠道",
+          "退款金额",
+          "状态",
+          "到账时间",
+          "提交时间",
+        ],
+      ];
+      res.data.data.data.forEach((item: any) => {
+        let status;
+        if (item.status === 1) {
+          status = "待处理";
+        } else if (item.status === 5) {
+          status = "退款成功";
+        } else if (item.status === 9) {
+          status = "退款已关闭";
+        }
+        data.push([
+          item.id,
+          item.user ? item.user.id : "用户已删除",
+          item.user ? item.user.nick_name : "用户已删除",
+          item.refund_no,
+          item.is_local === 1 ? "线下退款" : "原渠道退回",
+          item.payment === "" ? "-" : item.payment,
+          "¥" + item.amount / 100,
+          status,
+          item.status === 5
+            ? moment(item.success_at).format("YYYY-MM-DD HH:mm")
+            : "",
+          item.created_at
+            ? moment(item.created_at).format("YYYY-MM-DD HH:mm")
+            : "",
+        ]);
+      });
+
+      const jsonWorkSheet = XLSX.utils.json_to_sheet(data);
+      const workBook: XLSX.WorkBook = {
+        SheetNames: [sheetName],
+        Sheets: {
+          [sheetName]: jsonWorkSheet,
+        },
+      };
+      XLSX.writeFile(workBook, filename);
+      setLoading(false);
+    });
+  };
 
   const paginationProps = {
     current: page, //当前页码
@@ -196,7 +275,7 @@ const OrderRefundPage = () => {
       width: 300,
       render: (_, record: any) => (
         <>
-          {record.user && (
+          {record.user && record.user.length !== 0 && (
             <div className="user-item d-flex">
               <div className="avatar">
                 <img src={record.user.avatar} width="40" height="40" />
@@ -204,11 +283,139 @@ const OrderRefundPage = () => {
               <div className="ml-10">{record.user.nick_name}</div>
             </div>
           )}
-          {!record.user && <span className="c-red">学员不存在</span>}
+          {(!record.user || record.user.length === 0) && (
+            <span className="c-red">学员不存在</span>
+          )}
         </>
       ),
     },
+    {
+      title: "退款单号",
+      width: 300,
+      dataIndex: "refund_no",
+      render: (refund_no: string) => <span>{refund_no}</span>,
+    },
+    {
+      title: "退款类型",
+      width: 120,
+      render: (_, record: any) => (
+        <>
+          {record.is_local === 1 && <span>线下退款</span>}
+          {record.is_local !== 1 && <span>原渠道退回</span>}
+        </>
+      ),
+    },
+    {
+      title: "支付渠道",
+      width: 150,
+      render: (_, record: any) => (
+        <>
+          {record.payment === "alipay" && (
+            <img src={aliIcon} width="30" height="30" />
+          )}
+          {record.payment === "wechat" && (
+            <img src={wepayIcon} width="30" height="30" />
+          )}
+          {record.payment === "wechat_h5" && (
+            <img src={wepayIcon} width="30" height="30" />
+          )}
+          {record.payment === "wechat-jsapi" && (
+            <img src={wepayIcon} width="30" height="30" />
+          )}
+          {record.payment === "wechatApp" && (
+            <img src={wepayIcon} width="30" height="30" />
+          )}
+          {record.payment === "handPay" && (
+            <img src={cardIcon} width="30" height="30" />
+          )}
+          {record.payment === "" && <span>-</span>}
+        </>
+      ),
+    },
+    {
+      title: "退款金额",
+      render: (_, record: any) => <span>¥{record.amount / 100}</span>,
+    },
+    {
+      title: "状态",
+      width: 220,
+      render: (_, record: any) => (
+        <>
+          {record.status === 5 && (
+            <>
+              <span className="c-green mb-10">· 退款成功</span>
+              <br />
+              <span className="c-gray">{dateFormat(record.success_at)}</span>
+            </>
+          )}
+          {record.status === 13 && <span className="c-red">· 退款已关闭</span>}
+          {record.status === 1 && <span className="c-yellow">· 待处理</span>}
+          {record.status === 9 && <span>· 退款异常</span>}
+        </>
+      ),
+    },
+    {
+      title: "时间",
+      width: 200,
+      dataIndex: "created_at",
+      render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
+    },
+    {
+      title: "操作",
+      width: 80,
+      render: (_, record: any) => (
+        <PerButton
+          type="link"
+          text="删除"
+          class="c-red"
+          icon={null}
+          p="order.refund.delete"
+          onClick={() => {
+            destory(record.id);
+          }}
+          disabled={null}
+        />
+      ),
+    },
   ];
+
+  const destory = (id: number) => {
+    if (id === 0) {
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此订单记录？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        if (loading) {
+          return;
+        }
+        setLoading(true);
+        order
+          .refundDestroy(id)
+          .then(() => {
+            setLoading(false);
+            message.success("删除成功");
+            resetData();
+          })
+          .catch((e) => {
+            setLoading(false);
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const resetData = () => {
+    setList([]);
+    setRefresh(!refresh);
+  };
 
   return (
     <div className="meedu-main-body">

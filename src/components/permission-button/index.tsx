@@ -24,7 +24,7 @@ export const PerButton = (props: PropInterface) => {
       {isThrough() && props.type === "link" && (
         <Button
           size="small"
-          className={props.class}
+          className={props.class === "c-red" ? "c-red-link" : props.class}
           type="link"
           icon={props.icon}
           onClick={() => {

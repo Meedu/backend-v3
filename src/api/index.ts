@@ -24,3 +24,4 @@ export * as miaosha from "./miaosha";
 export * as creditMall from "./creditMall";
 export * as order from "./order";
 export * as snapshot from "./snapshot";
+export * as certificate from "./certificate";

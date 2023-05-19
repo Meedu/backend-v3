@@ -486,3 +486,11 @@ textarea.ant-input {
 .p-0 {
   padding: 0;
 }
+
+.c-red-link {
+  color: #ff4d4f;
+  &:hover {
+    color: #ff4d4f !important;
+    opacity: 0.8;
+  }
+}

@@ -9,6 +9,7 @@ import LoginPage from "../pages/login";
 import HomePage from "../pages/home";
 import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
+import SnapshotPage from "../pages/snapshot/index";
 import OrderPage from "../pages/order/index";
 import OrderRefundPage from "../pages/order/refund";
 import OrderDetailPage from "../pages/order/detail";
@@ -112,6 +113,7 @@ const routes: RouteObject[] = [
             path: "/administrator/change-password",
             element: <ChangePasswordPage />,
           },
+          { path: "/snapshot/index", element: <SnapshotPage /> },
           { path: "/order/index", element: <OrderPage /> },
           { path: "/order/refund", element: <OrderRefundPage /> },
           { path: "/order/detail", element: <OrderDetailPage /> },

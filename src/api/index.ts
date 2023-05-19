@@ -23,3 +23,4 @@ export * as codeExchanger from "./codeExchanger";
 export * as miaosha from "./miaosha";
 export * as creditMall from "./creditMall";
 export * as order from "./order";
+export * as snapshot from "./snapshot";

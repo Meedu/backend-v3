@@ -22,3 +22,4 @@ export * as mock from "./mock";
 export * as codeExchanger from "./codeExchanger";
 export * as miaosha from "./miaosha";
 export * as creditMall from "./creditMall";
+export * as order from "./order";

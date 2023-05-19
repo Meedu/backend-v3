@@ -9,6 +9,7 @@ import LoginPage from "../pages/login";
 import HomePage from "../pages/home";
 import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
+import OrderPage from "../pages/order/index";
 import SystemApplicationPage from "../pages/system/application";
 import SystemLogPage from "../pages/system/systemLog/index";
 import SystemAdministratorPage from "../pages/system/administrator/index";
@@ -107,6 +108,7 @@ const routes: RouteObject[] = [
             path: "/administrator/change-password",
             element: <ChangePasswordPage />,
           },
+          { path: "/order/index", element: <OrderPage /> },
           { path: "/role", element: <RolePage /> },
           { path: "/addrole", element: <RoleCreatePage /> },
           { path: "/editrole", element: <RoleUpdatePage /> },

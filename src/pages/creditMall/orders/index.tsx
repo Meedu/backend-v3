@@ -7,7 +7,6 @@ import { creditMall } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../../components";
 import { dateFormat } from "../../../utils/index";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 
 interface DataType {
   id: React.Key;

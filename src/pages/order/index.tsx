@@ -25,6 +25,7 @@ import filterHIcon from "../../assets/img/icon-filter-h.png";
 import aliIcon from "../../assets/img/ali-pay.png";
 import wepayIcon from "../../assets/img/wepay.png";
 import cardIcon from "../../assets/img/card.png";
+import { RefundDialog } from "./components/refund-dailog";
 import moment from "moment";
 import * as XLSX from "xlsx";
 
@@ -495,6 +496,15 @@ const OrderPage = () => {
 
   return (
     <div className="meedu-main-body">
+      <RefundDialog
+        open={visiable}
+        id={oid}
+        onCancel={() => setVisiable(false)}
+        onSuccess={() => {
+          setVisiable(false);
+          setRefresh(!refresh);
+        }}
+      ></RefundDialog>
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
           <PerButton

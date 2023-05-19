@@ -104,8 +104,9 @@ export const RefundDialog = (props: PropsInterface) => {
               >
                 <Input
                   type="number"
+                  addonAfter="元"
                   style={{ width: 300 }}
-                  placeholder="单位：元"
+                  placeholder="请输入退款金额"
                   allowClear
                 />
               </Form.Item>

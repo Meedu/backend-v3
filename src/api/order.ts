@@ -23,6 +23,18 @@ export function detail(id: number) {
 export function setPaid(id: number) {
   return client.get(`/backend/api/v1/order/${id}/finish`, {});
 }
+
 export function rechargeOrders(params: any) {
   return client.get("/backend/addons/TemplateOne/recharge/orders", params);
+}
+
+export function withdrawOrders(params: any) {
+  return client.get("/backend/addons/multi_level_share/withdraw/index", params);
+}
+
+export function withdrawOrdersSubmit(params: any) {
+  return client.post(
+    "/backend/addons/multi_level_share/withdraw/handle",
+    params
+  );
 }

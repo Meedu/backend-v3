@@ -1,0 +1,149 @@
+import { useEffect, useState } from "react";
+import {
+  Button,
+  Row,
+  Col,
+  Switch,
+  Modal,
+  Form,
+  Select,
+  Input,
+  message,
+} from "antd";
+import { order } from "../../../../api/index";
+
+interface PropsInterface {
+  open: boolean;
+  ids: any[];
+  onCancel: () => void;
+  onSuccess: () => void;
+}
+
+export const WithdrawDialog = (props: PropsInterface) => {
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [v_type, setVtype] = useState(0);
+  const types = [
+    {
+      label: "成功",
+      value: 5,
+    },
+    {
+      label: "驳回",
+      value: 3,
+    },
+  ];
+
+  useEffect(() => {
+    if (props.open) {
+      setVtype(0);
+      form.setFieldsValue({
+        status: [],
+        remark: "",
+        is_return: 1,
+      });
+    }
+  }, [props.open]);
+
+  const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
+    values.ids = props.ids;
+    setLoading(true);
+    order
+      .withdrawOrdersSubmit(values)
+      .then((res: any) => {
+        setLoading(false);
+        message.success("成功！");
+        props.onSuccess();
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const onSwitch = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ is_return: 1 });
+    } else {
+      form.setFieldsValue({ is_return: 0 });
+    }
+  };
+
+  return (
+    <>
+      {props.open && (
+        <Modal
+          title="提现处理"
+          onCancel={() => {
+            props.onCancel();
+          }}
+          open={true}
+          width={500}
+          maskClosable={false}
+          onOk={() => {
+            form.submit();
+          }}
+        >
+          <div className="float-left mt-30">
+            <Form
+              form={form}
+              name="refund-dailog"
+              labelCol={{ span: 7 }}
+              wrapperCol={{ span: 17 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+              <Form.Item
+                label="状态"
+                name="status"
+                rules={[{ required: true, message: "请选择状态!" }]}
+              >
+                <Select
+                  style={{ width: 300 }}
+                  allowClear
+                  placeholder="请选择状态"
+                  options={types}
+                  onChange={(e) => {
+                    setVtype(e);
+                  }}
+                />
+              </Form.Item>
+              <div style={{ display: v_type === 3 ? "block" : "none" }}>
+                <Form.Item
+                  label="是否退回提现金额"
+                  name="is_return"
+                  valuePropName="checked"
+                  rules={[
+                    { required: true, message: "请选择是否退回提现金额!" },
+                  ]}
+                >
+                  <Switch onChange={onSwitch} />
+                </Form.Item>
+              </div>
+              <Form.Item
+                label="备注"
+                name="remark"
+                rules={[{ required: true, message: "请输入备注!" }]}
+              >
+                <Input.TextArea
+                  style={{ width: 300 }}
+                  placeholder="请输入备注"
+                  allowClear
+                  rows={3}
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      )}
+    </>
+  );
+};

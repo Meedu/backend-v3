@@ -13,6 +13,7 @@ import OrderPage from "../pages/order/index";
 import OrderRefundPage from "../pages/order/refund";
 import OrderDetailPage from "../pages/order/detail";
 import OrderRechargePage from "../pages/order/recharge";
+import WithdrawOrdersPage from "../pages/order/withdrawOrders";
 import SystemApplicationPage from "../pages/system/application";
 import SystemLogPage from "../pages/system/systemLog/index";
 import SystemAdministratorPage from "../pages/system/administrator/index";
@@ -115,6 +116,7 @@ const routes: RouteObject[] = [
           { path: "/order/refund", element: <OrderRefundPage /> },
           { path: "/order/detail", element: <OrderDetailPage /> },
           { path: "/order/recharge", element: <OrderRechargePage /> },
+          { path: "/withdrawOrders", element: <WithdrawOrdersPage /> },
           { path: "/role", element: <RolePage /> },
           { path: "/addrole", element: <RoleCreatePage /> },
           { path: "/editrole", element: <RoleUpdatePage /> },

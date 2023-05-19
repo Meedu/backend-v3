@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import { Table, Select, message, Input, DatePicker, Button, Space } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Table, Select, Input, DatePicker, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import type { MenuProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { order } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
-import { PerButton } from "../../components";
 import { dateFormat } from "../../utils/index";
 const { RangePicker } = DatePicker;
 
@@ -18,7 +15,6 @@ interface DataType {
 
 const OrderRechargePage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [page, setPage] = useState(1);

@@ -29,6 +29,7 @@ const { RangePicker } = DatePicker;
 interface DataType {
   id: React.Key;
   created_at: string;
+  credit1: number;
 }
 
 const MemberPage = () => {
@@ -121,8 +122,48 @@ const MemberPage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "ID",
-      width: 100,
+      width: "6%",
       render: (_, record: any) => <span>{record.id}</span>,
+    },
+    {
+      title: "学员",
+      width: "15%",
+      render: (_, record: any) => (
+        <>
+          <div className="user-item d-flex">
+            <div className="avatar">
+              <img src={record.avatar} width="40" height="40" />
+            </div>
+            <div className="ml-10">{record.nick_name}</div>
+          </div>
+        </>
+      ),
+    },
+    {
+      title: "手机号码",
+      width: "11%",
+      render: (_, record: any) => (
+        <>
+          {record.mobile && <span>{record.mobile}</span>}
+          {!record.mobile && <span>-</span>}
+        </>
+      ),
+    },
+    {
+      title: "VIP类型",
+      width: "8%",
+      render: (_, record: any) => (
+        <>
+          {record.role && <span>{record.role.name}</span>}
+          {!record.role && <span>-</span>}
+        </>
+      ),
+    },
+    {
+      title: "积分",
+      width: 150,
+      dataIndex: "credit1",
+      render: (credit1: number) => <span>{credit1}</span>,
     },
   ];
 

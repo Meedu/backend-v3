@@ -74,6 +74,17 @@ const MemberImportPage = () => {
       })
       .catch((e) => {
         setLoading(false);
+        let config = {
+          content: e.message,
+          duration: 0,
+          onClick: (e: any) => {
+            let dom = e.target;
+            if (dom.tagName === "svg" || dom.tagName === "path") {
+              message.destroy();
+            }
+          },
+        };
+        message.error(config);
       });
   };
 

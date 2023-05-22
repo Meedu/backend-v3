@@ -144,7 +144,6 @@ const CertificateUsersPage = () => {
     },
     {
       title: "学员",
-      width: 300,
       render: (_, record: any) => (
         <>
           {record.user && (

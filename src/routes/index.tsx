@@ -9,6 +9,7 @@ import LoginPage from "../pages/login";
 import HomePage from "../pages/home";
 import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
+import MemberPage from "../pages/member/index";
 import SnapshotPage from "../pages/snapshot/index";
 import SnapshotImagesPage from "../pages/snapshot/images";
 import CertificatePage from "../pages/certificate/index";
@@ -116,6 +117,7 @@ const routes: RouteObject[] = [
             path: "/administrator/change-password",
             element: <ChangePasswordPage />,
           },
+          { path: "/member/index", element: <MemberPage /> },
           { path: "/snapshot/index", element: <SnapshotPage /> },
           { path: "/snapshot/images", element: <SnapshotImagesPage /> },
           { path: "/certificate/index", element: <CertificatePage /> },

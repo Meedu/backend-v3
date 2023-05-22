@@ -12,6 +12,7 @@ import ChangePasswordPage from "../pages/administrator/change-password";
 import SnapshotPage from "../pages/snapshot/index";
 import SnapshotImagesPage from "../pages/snapshot/images";
 import CertificatePage from "../pages/certificate/index";
+import CertificateUsersPage from "../pages/certificate/users";
 import OrderPage from "../pages/order/index";
 import OrderRefundPage from "../pages/order/refund";
 import OrderDetailPage from "../pages/order/detail";
@@ -118,6 +119,7 @@ const routes: RouteObject[] = [
           { path: "/snapshot/index", element: <SnapshotPage /> },
           { path: "/snapshot/images", element: <SnapshotImagesPage /> },
           { path: "/certificate/index", element: <CertificatePage /> },
+          { path: "/certificate/users", element: <CertificateUsersPage /> },
           { path: "/order/index", element: <OrderPage /> },
           { path: "/order/refund", element: <OrderRefundPage /> },
           { path: "/order/detail", element: <OrderDetailPage /> },

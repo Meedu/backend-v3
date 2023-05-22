@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, Space, message, Dropdown, Button } from "antd";
 import type { MenuProps } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { certificate } from "../../api/index";
@@ -17,7 +17,6 @@ interface DataType {
 }
 
 const CertificatePage = () => {
-  const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);

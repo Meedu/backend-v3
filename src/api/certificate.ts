@@ -23,3 +23,15 @@ export function update(id: number, params: any) {
 export function destroy(id: number) {
   return client.destroy(`/backend/addons/Cert/cert/${id}`);
 }
+
+export function userList(id: number, params: any) {
+  return client.get(`/backend/addons/Cert/cert/${id}/users`, params);
+}
+
+export function userImport(id: number, params: any) {
+  return client.post(`/backend/addons/Cert/cert/${id}/user/import`, params);
+}
+
+export function userDelete(id: number, params: any) {
+  return client.post(`/backend/addons/Cert/cert/${id}/user/destroy`, params);
+}

@@ -23,6 +23,7 @@ import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat } from "../../utils/index";
 import { SendMessageDialog } from "./components/message-send";
 import { ConfigUpdateDialog } from "./components/config-update";
+import { MemberCreateDialog } from "./components/create";
 import filterIcon from "../../assets/img/icon-filter.png";
 import filterHIcon from "../../assets/img/icon-filter-h.png";
 const { confirm } = Modal;
@@ -51,12 +52,14 @@ const MemberPage = () => {
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
-  const [showStatus, setShowStatus] = useState(false);
+  const [showStatus, setShowStatus] = useState<boolean>(false);
   const [userRemark, setUserRemark] = useState<any>({});
   const [mid, setMid] = useState(0);
-  const [visiable, setVisiable] = useState(false);
-  const [editVisible, setEditVisible] = useState(false);
+  const [visiable, setVisiable] = useState<boolean>(false);
+  const [editVisible, setEditVisible] = useState<boolean>(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [showAddWin, setShowAddWin] = useState<boolean>(false);
+  const [showUpdateWin, setShowUpdateWin] = useState<boolean>(false);
 
   useEffect(() => {
     document.title = "学员列表";
@@ -163,7 +166,9 @@ const MemberPage = () => {
     },
   };
 
-  const addMember = () => {};
+  const addMember = () => {
+    setShowAddWin(true);
+  };
 
   const sendMessageMulti = () => {
     if (selectedRowKeys.length === 0) {
@@ -371,7 +376,10 @@ const MemberPage = () => {
     },
   ];
 
-  const updateMember = (id: number) => {};
+  const updateMember = (id: number) => {
+    setMid(id);
+    setShowUpdateWin(true);
+  };
 
   const lockMember = (item: any) => {
     let text = "冻结后此账号将无法登录，确认冻结？";
@@ -463,6 +471,15 @@ const MemberPage = () => {
           resetData();
         }}
       ></ConfigUpdateDialog>
+      <MemberCreateDialog
+        open={showAddWin}
+        roles={roles}
+        onCancel={() => setShowAddWin(false)}
+        onSuccess={() => {
+          setShowAddWin(false);
+          resetData();
+        }}
+      ></MemberCreateDialog>
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
           <PerButton

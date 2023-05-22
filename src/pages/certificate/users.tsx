@@ -4,8 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { certificate } from "../../api/index";
-import { PerButton, BackBartment } from "../../components";
-import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
+import { PerButton, BackBartment, UserImportDialog } from "../../components";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat, getToken } from "../../utils/index";
 import config from "../../js/config";
@@ -13,6 +13,7 @@ const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
+  user_id: number;
   created_at: string;
 }
 
@@ -69,6 +70,7 @@ const CertificateUsersPage = () => {
     setPage(1);
     setSize(10);
     setList([]);
+    setSelectedRowKeys([]);
     setUserId("");
     setRefresh(!refresh);
   };
@@ -110,6 +112,7 @@ const CertificateUsersPage = () => {
   const resetData = () => {
     setPage(1);
     setList([]);
+    setSelectedRowKeys([]);
     setRefresh(!refresh);
   };
 
@@ -203,6 +206,17 @@ const CertificateUsersPage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="证书授予学员" />
+      <UserImportDialog
+        open={importDialog}
+        id={id}
+        type="cert"
+        name="证书授予批量导入模板"
+        onCancel={() => setImportDialog(false)}
+        onSuccess={() => {
+          setImportDialog(false);
+          resetData();
+        }}
+      ></UserImportDialog>
       <div className="float-left j-b-flex mb-30 mt-30">
         <div className="d-flex">
           <PerButton

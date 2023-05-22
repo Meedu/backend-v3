@@ -42,6 +42,12 @@ const MemberPage = () => {
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [keywords, setKeywords] = useState<string>("");
+  const [role_id, setRoleId] = useState<any>([]);
+  const [roles, setRoles] = useState<any>([]);
+  const [tag_id, setTagId] = useState<any>([]);
+  const [tags, setTags] = useState<any>([]);
+  const [created_at, setCreatedAt] = useState<any>([]);
+  const [createdAts, setCreatedAts] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
   const [userRemark, setUserRemark] = useState<any>({});
@@ -67,6 +73,12 @@ const MemberPage = () => {
       .list({
         page: page,
         size: size,
+        sort: "id",
+        order: "desc",
+        keywords: keywords,
+        role_id: role_id,
+        tag_id: tag_id,
+        created_at: created_at,
       })
       .then((res: any) => {
         setList(res.data.data.data);
@@ -75,6 +87,24 @@ const MemberPage = () => {
         if (userRemark.length !== 0) {
           setUserRemark(userRemark);
         }
+        let roles = res.data.roles;
+        let arr: any = [];
+        roles.map((item: any) => {
+          arr.push({
+            label: item.name,
+            value: item.id,
+          });
+        });
+        setRoles(arr);
+        let tags = res.data.tags;
+        let arr2: any = [];
+        tags.map((item: any) => {
+          arr2.push({
+            label: item.name,
+            value: item.id,
+          });
+        });
+        setTags(arr2);
         setLoading(false);
       })
       .catch((e) => {
@@ -82,11 +112,28 @@ const MemberPage = () => {
       });
   };
 
+  useEffect(() => {
+    if (
+      (created_at && created_at.length > 0) ||
+      (tag_id && tag_id.length !== 0) ||
+      (role_id && role_id.length !== 0) ||
+      keywords
+    ) {
+      setShowStatus(true);
+    } else {
+      setShowStatus(false);
+    }
+  }, [created_at, role_id, tag_id, keywords]);
+
   const resetList = () => {
     setPage(1);
     setSize(10);
     setList([]);
     setKeywords("");
+    setCreatedAts([]);
+    setCreatedAt([]);
+    setTagId([]);
+    setRoleId([]);
     setRefresh(!refresh);
   };
 
@@ -484,6 +531,76 @@ const MemberPage = () => {
           pagination={paginationProps}
         />
       </div>
+      <Drawer
+        title="更多筛选"
+        onClose={() => setDrawer(false)}
+        maskClosable={false}
+        open={drawer}
+        footer={
+          <Space className="j-b-flex">
+            <Button
+              onClick={() => {
+                resetList();
+                setDrawer(false);
+              }}
+            >
+              清空
+            </Button>
+            <Button
+              onClick={() => {
+                setPage(1);
+                setRefresh(!refresh);
+                setDrawer(false);
+              }}
+              type="primary"
+            >
+              筛选
+            </Button>
+          </Space>
+        }
+        width={360}
+      >
+        <div className="float-left">
+          <Input
+            value={keywords}
+            onChange={(e) => {
+              setKeywords(e.target.value);
+            }}
+            allowClear
+            placeholder="昵称或手机号"
+          />
+          <Select
+            style={{ width: "100%", marginTop: 20 }}
+            value={role_id}
+            onChange={(e) => {
+              setRoleId(e);
+            }}
+            allowClear
+            placeholder="VIP会员"
+            options={roles}
+          />
+          <Select
+            style={{ width: "100%", marginTop: 20 }}
+            value={tag_id}
+            onChange={(e) => {
+              setTagId(e);
+            }}
+            allowClear
+            placeholder="学员标签"
+            options={tags}
+          />
+          <RangePicker
+            format={"YYYY-MM-DD"}
+            value={createdAts}
+            style={{ marginTop: 20 }}
+            onChange={(date, dateString) => {
+              setCreatedAt(dateString);
+              setCreatedAts(date);
+            }}
+            placeholder={["注册-开始日期", "注册-结束日期"]}
+          />
+        </div>
+      </Drawer>
     </div>
   );
 };

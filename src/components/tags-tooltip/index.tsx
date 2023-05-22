@@ -32,7 +32,11 @@ export const TagsTooltip: React.FC<PropInterface> = ({ tags }) => {
         title={
           <>
             {tags.map((item: any, index: number) => (
-              <Tag color="processing" key={index} className="ml-5 mb-5">
+              <Tag
+                color="processing"
+                key={"title" + index}
+                className="ml-5 mb-5"
+              >
                 {item.name}
               </Tag>
             ))}
@@ -44,17 +48,21 @@ export const TagsTooltip: React.FC<PropInterface> = ({ tags }) => {
           {current &&
             current > 0 &&
             tags.slice(0, current).map((item: any, index: number) => (
-              <>
-                <Tag key={index} color="processing" className="ml-5 mb-5">
+              <div key={"ecli" + index}>
+                <Tag color="processing" className="ml-5 mb-5">
                   {item.name}
                 </Tag>
                 ...
-              </>
+              </div>
             ))}
           {current === 0 && (
             <>
               {tags.map((item: any, index: number) => (
-                <Tag key={index} color="processing" className="ml-5 mb-5">
+                <Tag
+                  key={"no" + index}
+                  color="processing"
+                  className="ml-5 mb-5"
+                >
                   {item.name}
                 </Tag>
               ))}

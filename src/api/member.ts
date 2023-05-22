@@ -27,3 +27,11 @@ export function destroy(id: number) {
 export function editMulti(params: any) {
   return client.put(`/backend/api/v1/member/field/multi`, params);
 }
+
+export function sendMessageMulti(params: any) {
+  return client.post("/backend/api/v1/member/message/multi", params);
+}
+
+export function sendMessage(id: number, params: any) {
+  return client.post(`/backend/api/v1/member/${id}/message`, params);
+}

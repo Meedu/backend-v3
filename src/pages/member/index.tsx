@@ -21,6 +21,7 @@ import { PerButton, TagsTooltip, VhtmlTooltip } from "../../components";
 import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat } from "../../utils/index";
+import { SendMessageDialog } from "./components/message-send";
 import filterIcon from "../../assets/img/icon-filter.png";
 import filterHIcon from "../../assets/img/icon-filter-h.png";
 const { confirm } = Modal;
@@ -164,6 +165,8 @@ const MemberPage = () => {
       message.error("请选择需要发消息的学员");
       return;
     }
+    setMid(0);
+    setVisiable(true);
   };
 
   const editMulti = () => {
@@ -419,6 +422,7 @@ const MemberPage = () => {
   const resetData = () => {
     setPage(1);
     setList([]);
+    setSelectedRowKeys([]);
     setRefresh(!refresh);
   };
 
@@ -432,6 +436,16 @@ const MemberPage = () => {
 
   return (
     <div className="meedu-main-body">
+      <SendMessageDialog
+        open={visiable}
+        mid={mid}
+        ids={selectedRowKeys}
+        onCancel={() => setVisiable(false)}
+        onSuccess={() => {
+          setVisiable(false);
+          resetData();
+        }}
+      ></SendMessageDialog>
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
           <PerButton
@@ -449,7 +463,7 @@ const MemberPage = () => {
             class="ml-10"
             icon={null}
             p="member.store"
-            onClick={() => sendMessageMulti()}
+            onClick={() => navigate("/member/import")}
             disabled={null}
           />
           <PerButton
@@ -458,7 +472,7 @@ const MemberPage = () => {
             class="ml-10"
             icon={null}
             p="member.message.send"
-            onClick={() => navigate("/member/import")}
+            onClick={() => sendMessageMulti()}
             disabled={null}
           />
           <PerButton

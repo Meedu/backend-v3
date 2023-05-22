@@ -14,3 +14,5 @@ export * from "./select-resources/index";
 export * from "./select-resources/multiIndex";
 export * from "./thumb-bar";
 export * from "./user-import";
+export * from "./tags-tooltip";
+export * from "./vhtml-tooltip";

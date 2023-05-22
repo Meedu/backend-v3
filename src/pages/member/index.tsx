@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { member } from "../../api/index";
-import { PerButton } from "../../components";
+import { PerButton, TagsTooltip, VhtmlTooltip } from "../../components";
 import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat } from "../../utils/index";
@@ -44,6 +44,9 @@ const MemberPage = () => {
   const [keywords, setKeywords] = useState<string>("");
   const [drawer, setDrawer] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
+  const [userRemark, setUserRemark] = useState<any>({});
+  const [mid, setMid] = useState(0);
+  const [visiable, setVisiable] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
 
   useEffect(() => {
@@ -68,6 +71,10 @@ const MemberPage = () => {
       .then((res: any) => {
         setList(res.data.data.data);
         setTotal(res.data.data.total);
+        let userRemark = res.data.user_remarks;
+        if (userRemark.length !== 0) {
+          setUserRemark(userRemark);
+        }
         setLoading(false);
       })
       .catch((e) => {
@@ -161,11 +168,220 @@ const MemberPage = () => {
     },
     {
       title: "积分",
-      width: 150,
+      width: "8%",
       dataIndex: "credit1",
       render: (credit1: number) => <span>{credit1}</span>,
     },
+    {
+      title: "标签",
+      width: "10%",
+      render: (_, record: any) => (
+        <>
+          {record.tags.length > 0 && (
+            <TagsTooltip tags={record.tags}></TagsTooltip>
+          )}
+          {record.tags.length === 0 && <span>-</span>}
+        </>
+      ),
+    },
+    {
+      title: "备注信息",
+      width: "9%",
+      render: (_, record: any) => (
+        <>
+          {userRemark[record.id] && (
+            <VhtmlTooltip label={userRemark[record.id].remark}></VhtmlTooltip>
+          )}
+          {!userRemark[record.id] && <span>-</span>}
+        </>
+      ),
+    },
+    {
+      title: "注册时间",
+      width: "14%",
+      dataIndex: "created_at",
+      render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
+    },
+    {
+      title: "标签",
+      width: "6%",
+      render: (_, record: any) => (
+        <>
+          {record.is_lock === 1 && <span className="c-red">·冻结</span>}
+          {record.is_lock !== 1 && <span className="c-green">·正常</span>}
+        </>
+      ),
+    },
+    {
+      title: "操作",
+      width: "10%",
+      fixed: "right",
+      render: (_, record: any) => {
+        const items: MenuProps["items"] = [
+          {
+            key: "1",
+            label: (
+              <PerButton
+                type="link"
+                text="编辑资料"
+                class="c-primary"
+                icon={null}
+                p="member.update"
+                onClick={() => {
+                  updateMember(record.id);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "2",
+            label: (
+              <PerButton
+                type="link"
+                text="站内消息"
+                class="c-primary"
+                icon={null}
+                p="member.message.send"
+                onClick={() => {
+                  setMid(record.id);
+                  setVisiable(true);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "3",
+            label: (
+              <PerButton
+                type="link"
+                text={lockText(record)}
+                class="c-red"
+                icon={null}
+                p="member.update"
+                onClick={() => {
+                  lockMember(record);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "4",
+            label: (
+              <PerButton
+                type="link"
+                text="删除账号"
+                class="c-red"
+                icon={null}
+                p="member.destroy"
+                onClick={() => {
+                  removeMember(record.id);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+        ];
+        return (
+          <Space>
+            <PerButton
+              type="link"
+              text="详情"
+              class="c-primary"
+              icon={null}
+              p="member.detail"
+              onClick={() => {
+                navigate("/member/" + record.id);
+              }}
+              disabled={null}
+            />
+            <Dropdown menu={{ items }}>
+              <Button
+                type="link"
+                className="c-primary"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Space size="small" align="center">
+                  更多
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+          </Space>
+        );
+      },
+    },
   ];
+
+  const updateMember = (id: number) => {};
+
+  const lockMember = (item: any) => {
+    let text = "冻结后此账号将无法登录，确认冻结？";
+    let value = 1;
+    if (item.is_lock === 1) {
+      text = "解冻后此账号将正常登录，确认解冻？";
+      value = 0;
+    }
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: text,
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        member
+          .editMulti({
+            user_ids: [item.id],
+            field: "is_lock",
+            value: value,
+          })
+          .then(() => {
+            message.success("成功");
+            resetData();
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const removeMember = (uid: number) => {
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: "即将删除此账号，确认操作？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        member.destroy(uid).then(() => {
+          message.success("成功");
+          resetData();
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const resetData = () => {
+    setPage(1);
+    setList([]);
+    setRefresh(!refresh);
+  };
+
+  const lockText = (item: any) => {
+    let text = "冻结账号";
+    if (item.is_lock === 1) {
+      text = "解冻账号";
+    }
+    return text;
+  };
 
   return (
     <div className="meedu-main-body">

@@ -23,3 +23,7 @@ export function update(id: number, params: any) {
 export function destroy(id: number) {
   return client.destroy(`/backend/api/v2/member/${id}`);
 }
+
+export function editMulti(params: any) {
+  return client.put(`/backend/api/v1/member/field/multi`, params);
+}

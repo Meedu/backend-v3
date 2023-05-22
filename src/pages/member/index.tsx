@@ -8,7 +8,6 @@ import {
   Button,
   DatePicker,
   Space,
-  Tabs,
   Dropdown,
   Modal,
 } from "antd";
@@ -24,6 +23,7 @@ import { dateFormat } from "../../utils/index";
 import { SendMessageDialog } from "./components/message-send";
 import { ConfigUpdateDialog } from "./components/config-update";
 import { MemberCreateDialog } from "./components/create";
+import { MemberUpdateDialog } from "./components/update";
 import filterIcon from "../../assets/img/icon-filter.png";
 import filterHIcon from "../../assets/img/icon-filter-h.png";
 const { confirm } = Modal;
@@ -480,6 +480,17 @@ const MemberPage = () => {
           resetData();
         }}
       ></MemberCreateDialog>
+      <MemberUpdateDialog
+        id={mid}
+        open={showUpdateWin}
+        roles={roles}
+        onCancel={() => setShowUpdateWin(false)}
+        onSuccess={() => {
+          setShowUpdateWin(false);
+          setMid(0);
+          resetData();
+        }}
+      ></MemberUpdateDialog>
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
           <PerButton

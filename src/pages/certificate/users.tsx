@@ -131,6 +131,7 @@ const CertificateUsersPage = () => {
   };
 
   const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },

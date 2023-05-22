@@ -75,7 +75,7 @@ const SnapshotImagesPage = () => {
 
   const resetList = () => {
     setList([]);
-
+    setSelectedRowKeys([]);
     setRefresh(!refresh);
   };
 
@@ -137,6 +137,7 @@ const SnapshotImagesPage = () => {
   };
 
   const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },

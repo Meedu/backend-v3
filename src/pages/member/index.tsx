@@ -22,6 +22,7 @@ import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat } from "../../utils/index";
 import { SendMessageDialog } from "./components/message-send";
+import { ConfigUpdateDialog } from "./components/config-update";
 import filterIcon from "../../assets/img/icon-filter.png";
 import filterHIcon from "../../assets/img/icon-filter-h.png";
 const { confirm } = Modal;
@@ -54,6 +55,7 @@ const MemberPage = () => {
   const [userRemark, setUserRemark] = useState<any>({});
   const [mid, setMid] = useState(0);
   const [visiable, setVisiable] = useState(false);
+  const [editVisible, setEditVisible] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
 
   useEffect(() => {
@@ -130,12 +132,14 @@ const MemberPage = () => {
     setPage(1);
     setSize(10);
     setList([]);
+    setSelectedRowKeys([]);
     setKeywords("");
     setCreatedAts([]);
     setCreatedAt([]);
     setTagId([]);
     setRoleId([]);
     setRefresh(!refresh);
+    console.log(selectedRowKeys);
   };
 
   const paginationProps = {
@@ -153,6 +157,7 @@ const MemberPage = () => {
   };
 
   const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },
@@ -174,6 +179,7 @@ const MemberPage = () => {
       message.error("请先勾选要批量设置的学员");
       return;
     }
+    setEditVisible(true);
   };
 
   const columns: ColumnsType<DataType> = [
@@ -446,6 +452,17 @@ const MemberPage = () => {
           resetData();
         }}
       ></SendMessageDialog>
+      <ConfigUpdateDialog
+        tags={tags}
+        roles={roles}
+        open={editVisible}
+        ids={selectedRowKeys}
+        onCancel={() => setEditVisible(false)}
+        onSuccess={() => {
+          setEditVisible(false);
+          resetData();
+        }}
+      ></ConfigUpdateDialog>
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
           <PerButton

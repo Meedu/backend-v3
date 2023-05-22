@@ -135,6 +135,7 @@ const PromoCodePage = () => {
     setPage(1);
     setSize(10);
     setList([]);
+    setSelectedRowKeys([]);
     setKey("");
     setUserId("");
     setCreatedAts([]);
@@ -205,6 +206,7 @@ const PromoCodePage = () => {
   ];
 
   const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },

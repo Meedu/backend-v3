@@ -71,6 +71,7 @@ const CodeExchangerCodesPage = () => {
     setPage(1);
     setSize(50);
     setList([]);
+    setSelectedRowKeys([]);
     setCode("");
     setUserId("");
     setRefresh(!refresh);
@@ -109,6 +110,7 @@ const CodeExchangerCodesPage = () => {
   const resetData = () => {
     setPage(1);
     setList([]);
+    setSelectedRowKeys([]);
     setRefresh(!refresh);
   };
 
@@ -297,6 +299,7 @@ const CodeExchangerCodesPage = () => {
   ];
 
   const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },

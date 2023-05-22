@@ -138,6 +138,7 @@ const WendaPage = () => {
     setPage(1);
     setSize(10);
     setList([]);
+    setSelectedRowKeys([]);
     setKeywords("");
     setUserId("");
     setCategoryId([]);
@@ -183,6 +184,7 @@ const WendaPage = () => {
   };
 
   const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },

@@ -82,6 +82,7 @@ const WithdrawOrdersPage = () => {
     setPage(1);
     setSize(10);
     setList([]);
+    setSelectedRowKeys([]);
     setUserId("");
     setStatus(-1);
     setRefresh(!refresh);
@@ -169,6 +170,7 @@ const WithdrawOrdersPage = () => {
   ];
 
   const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },

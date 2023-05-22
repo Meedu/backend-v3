@@ -35,3 +35,7 @@ export function sendMessageMulti(params: any) {
 export function sendMessage(id: number, params: any) {
   return client.post(`/backend/api/v1/member/${id}/message`, params);
 }
+
+export function userImport(params: any) {
+  return client.post("/backend/api/v1/member/import", params);
+}

@@ -80,3 +80,12 @@ export function passwordRules(value: any) {
     return "密码至少包含大写字母，小写字母，数字，且不少于12位";
   }
 }
+
+export function getUrl() {
+  return (
+    window.location.protocol +
+    "//" +
+    window.location.host +
+    window.location.pathname
+  );
+}

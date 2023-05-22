@@ -11,6 +11,7 @@ import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
 import MemberPage from "../pages/member/index";
 import MemberImportPage from "../pages/member/import";
+import MemberDetailPage from "../pages/member/detail";
 import SnapshotPage from "../pages/snapshot/index";
 import SnapshotImagesPage from "../pages/snapshot/images";
 import CertificatePage from "../pages/certificate/index";
@@ -120,6 +121,7 @@ const routes: RouteObject[] = [
           },
           { path: "/member/index", element: <MemberPage /> },
           { path: "/member/import", element: <MemberImportPage /> },
+          { path: "/member/:memberId", element: <MemberDetailPage /> },
           { path: "/snapshot/index", element: <SnapshotPage /> },
           { path: "/snapshot/images", element: <SnapshotImagesPage /> },
           { path: "/certificate/index", element: <CertificatePage /> },

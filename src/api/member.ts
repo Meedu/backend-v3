@@ -39,3 +39,7 @@ export function sendMessage(id: number, params: any) {
 export function userImport(params: any) {
   return client.post("/backend/api/v1/member/import", params);
 }
+
+export function detail(id: number) {
+  return client.get(`/backend/api/v1/member/${id}/detail`, {});
+}

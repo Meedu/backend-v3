@@ -13,6 +13,7 @@ import MemberPage from "../pages/member/index";
 import MemberImportPage from "../pages/member/import";
 import MemberDetailPage from "../pages/member/detail";
 import MemberProfilelPage from "../pages/member/profile";
+import MemberTagsPage from "../pages/member/tags/index";
 import SnapshotPage from "../pages/snapshot/index";
 import SnapshotImagesPage from "../pages/snapshot/images";
 import CertificatePage from "../pages/certificate/index";
@@ -127,6 +128,7 @@ const routes: RouteObject[] = [
             path: "/member/profile/:memberId",
             element: <MemberProfilelPage />,
           },
+          { path: "/member/tag/index", element: <MemberTagsPage /> },
           { path: "/snapshot/index", element: <SnapshotPage /> },
           { path: "/snapshot/images", element: <SnapshotImagesPage /> },
           { path: "/certificate/index", element: <CertificatePage /> },

@@ -48,7 +48,7 @@ export const TagsDialog = (props: PropsInterface) => {
     }
     setLoading(true);
     member
-      .tagUpdate(props.id, {
+      .tagRecharge(props.id, {
         tag_ids: values.tag_ids.join(","),
       })
       .then((res: any) => {
@@ -106,7 +106,7 @@ export const TagsDialog = (props: PropsInterface) => {
                     <Button
                       type="link"
                       className="c-primary"
-                      onClick={() => navigate("member/tag/index")}
+                      onClick={() => navigate("/member/tag/index")}
                     >
                       标签管理
                     </Button>

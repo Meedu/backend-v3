@@ -93,6 +93,30 @@ export function IOSRecharge(params: any) {
   return client.post(`/backend/addons/TemplateOne/member/recharge`, params);
 }
 
-export function tagUpdate(id: number, params: any) {
+export function tagRecharge(id: number, params: any) {
   return client.put(`/backend/api/v1/member/${id}/tags`, params);
+}
+
+export function tagList(params: any) {
+  return client.get(`/backend/api/v1/member/tag/index`, params);
+}
+
+export function tagCreate() {
+  return client.get(`/backend/api/v1/member/tag/create`, {});
+}
+
+export function tagStore(params: any) {
+  return client.post(`/backend/api/v1/member/tag/create`, params);
+}
+
+export function tagDetail(id: number) {
+  return client.get(`/backend/api/v1/member/tag/${id}`, {});
+}
+
+export function tagUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/member/tag/${id}`, params);
+}
+
+export function tagDestroy(id: number) {
+  return client.destroy(`/backend/api/v1/member/tag/${id}`);
 }

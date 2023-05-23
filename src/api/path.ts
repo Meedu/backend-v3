@@ -23,3 +23,7 @@ export function update(id: number, params: any) {
 export function destroy(id: number) {
   return client.destroy(`/backend/addons/LearningPaths/path/${id}`);
 }
+
+export function users(id: number, params: any) {
+  return client.get(`/backend/addons/LearningPaths/path/${id}/users`, params);
+}

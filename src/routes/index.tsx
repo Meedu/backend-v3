@@ -14,6 +14,8 @@ import MemberImportPage from "../pages/member/import";
 import MemberDetailPage from "../pages/member/detail";
 import MemberProfilelPage from "../pages/member/profile";
 import MemberTagsPage from "../pages/member/tags/index";
+import MemberTagsCreatePage from "../pages/member/tags/create";
+import MemberTagsUpdatePage from "../pages/member/tags/update";
 import SnapshotPage from "../pages/snapshot/index";
 import SnapshotImagesPage from "../pages/snapshot/images";
 import CertificatePage from "../pages/certificate/index";
@@ -129,6 +131,8 @@ const routes: RouteObject[] = [
             element: <MemberProfilelPage />,
           },
           { path: "/member/tag/index", element: <MemberTagsPage /> },
+          { path: "/member/tag/create", element: <MemberTagsCreatePage /> },
+          { path: "/member/tag/update", element: <MemberTagsUpdatePage /> },
           { path: "/snapshot/index", element: <SnapshotPage /> },
           { path: "/snapshot/images", element: <SnapshotImagesPage /> },
           { path: "/certificate/index", element: <CertificatePage /> },

@@ -87,7 +87,7 @@ const MemberTagsPage = () => {
             type="link"
             className="c-primary"
             onClick={() => {
-              navigate("/member/tag/" + record.id);
+              navigate("/member/tag/update?id=" + record.id);
             }}
           >
             编辑

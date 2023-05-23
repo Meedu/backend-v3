@@ -63,3 +63,10 @@ export function userVideos(params: any) {
 export function userInviteRecords(id: number, params: any) {
   return client.get(`/backend/api/v1/member/${id}/detail/userInvite`, params);
 }
+
+export function userCredit1(id: number, params: any) {
+  return client.get(
+    `/backend/api/v1/member/${id}/detail/credit1Records`,
+    params
+  );
+}

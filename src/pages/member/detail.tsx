@@ -12,6 +12,7 @@ import { UserOrdersComp } from "./detail/orders";
 import { UserVodWatchRecordsComp } from "./detail/vod-watch-records";
 import { UserVideoWatchRecordsComp } from "./detail/video-watch-records";
 import { UserInviteComp } from "./detail/invite";
+import { UserCredit1Comp } from "./detail/credit1";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
 
@@ -376,6 +377,9 @@ const MemberDetailPage = () => {
           )}
           {courseTabActive === "invite" && (
             <UserInviteComp id={Number(params.memberId)}></UserInviteComp>
+          )}
+          {courseTabActive === "credit1" && (
+            <UserCredit1Comp id={Number(params.memberId)}></UserCredit1Comp>
           )}
         </div>
       </div>

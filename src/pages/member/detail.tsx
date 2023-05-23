@@ -10,6 +10,7 @@ import { dateFormat } from "../../utils/index";
 import { MemberUpdateDialog } from "./components/update";
 import { CreditDialog } from "./components/credit-dialog";
 import { IOSDialog } from "./components/iOS-dialog";
+import { TagsDialog } from "./components/tags-dialog";
 import { UserOrdersComp } from "./detail/orders";
 import { UserVodWatchRecordsComp } from "./detail/vod-watch-records";
 import { UserVideoWatchRecordsComp } from "./detail/video-watch-records";
@@ -223,6 +224,16 @@ const MemberDetailPage = () => {
           getUser();
         }}
       ></IOSDialog>
+      <TagsDialog
+        tags={tags}
+        id={Number(params.memberId)}
+        open={showTagsWin}
+        onCancel={() => setShowTagsWin(false)}
+        onSuccess={() => {
+          setShowTagsWin(false);
+          getUser();
+        }}
+      ></TagsDialog>
       <div className="float-left bg-white br-15 p-30">
         <BackBartment title="学员详情" />
         <div className={styles["user-info-box"]}>

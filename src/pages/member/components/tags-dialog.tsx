@@ -1,37 +1,56 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Input, message, Space } from "antd";
+import { Modal, Form, Input, message, Button, Select, Space } from "antd";
+import { useNavigate } from "react-router-dom";
 import { member } from "../../../api/index";
 import { HelperText } from "../../../components";
 
 interface PropsInterface {
   open: boolean;
   id: number;
+  tags: any[];
   onCancel: () => void;
   onSuccess: () => void;
 }
 
-export const CreditDialog = (props: PropsInterface) => {
+export const TagsDialog = (props: PropsInterface) => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (props.open) {
       form.setFieldsValue({
-        credit1: "",
-        remark: "",
+        tag_ids: [],
       });
     }
-  }, [props.open]);
+    if (props.id) {
+      getUser();
+    }
+  }, [props.open, props.id]);
+
+  const getUser = () => {
+    member.edit(props.id).then((res: any) => {
+      let data = [];
+      if (res.data.tags) {
+        for (let i = 0; i < res.data.tags.length; i++) {
+          data.push(res.data.tags[i].id);
+        }
+      }
+      form.setFieldsValue({
+        tag_ids: data,
+      });
+    });
+  };
 
   const onFinish = (values: any) => {
     if (loading) {
       return;
     }
     setLoading(true);
-    let data = { user_id: props.id };
-    Object.assign(data, values);
     member
-      .credit1Change(data)
+      .tagUpdate(props.id, {
+        tag_ids: values.tag_ids.join(","),
+      })
       .then((res: any) => {
         setLoading(false);
         message.success("成功！");
@@ -50,7 +69,7 @@ export const CreditDialog = (props: PropsInterface) => {
     <>
       {props.open && (
         <Modal
-          title="积分变动"
+          title="变动iOS余额"
           onCancel={() => {
             props.onCancel();
           }}
@@ -64,7 +83,7 @@ export const CreditDialog = (props: PropsInterface) => {
           <div className="float-left mt-30">
             <Form
               form={form}
-              name="credit-dailog"
+              name="IOS-dailog"
               labelCol={{ span: 3 }}
               wrapperCol={{ span: 21 }}
               initialValues={{ remember: true }}
@@ -72,39 +91,27 @@ export const CreditDialog = (props: PropsInterface) => {
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
-              <Form.Item
-                label="变动额度"
-                name="credit1"
-                rules={[{ required: true, message: "请输入变动额度!" }]}
-              >
+              <Form.Item label="学员标签" name="tag_ids">
                 <Space align="baseline" style={{ height: 32 }}>
-                  <Form.Item
-                    name="credit1"
-                    rules={[{ required: true, message: "请输入变动额度!" }]}
-                  >
-                    <Input
-                      type="number"
+                  <Form.Item name="tag_ids">
+                    <Select
                       style={{ width: 300 }}
-                      placeholder="请输入变动额度"
+                      mode="multiple"
                       allowClear
+                      placeholder="请选择学员标签"
+                      options={props.tags}
                     />
                   </Form.Item>
-                  <div className="ml-10">
-                    <HelperText text="正数增加积分，负数减少积分"></HelperText>
+                  <div>
+                    <Button
+                      type="link"
+                      className="c-primary"
+                      onClick={() => navigate("member/tag/index")}
+                    >
+                      标签管理
+                    </Button>
                   </div>
                 </Space>
-              </Form.Item>
-              <Form.Item
-                label="变动说明"
-                name="remark"
-                rules={[{ required: true, message: "请输入变动说明!" }]}
-              >
-                <Input.TextArea
-                  style={{ width: 300 }}
-                  placeholder="请输入变动说明"
-                  allowClear
-                  rows={3}
-                />
               </Form.Item>
             </Form>
           </div>

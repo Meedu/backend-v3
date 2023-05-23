@@ -17,7 +17,8 @@ export const IOSDialog = (props: PropsInterface) => {
   useEffect(() => {
     if (props.open) {
       form.setFieldsValue({
-        message: "",
+        amount: "",
+        remark: "",
       });
     }
   }, [props.open]);

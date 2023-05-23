@@ -92,3 +92,7 @@ export function credit1Change(params: any) {
 export function IOSRecharge(params: any) {
   return client.post(`/backend/addons/TemplateOne/member/recharge`, params);
 }
+
+export function tagUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/member/${id}/tags`, params);
+}

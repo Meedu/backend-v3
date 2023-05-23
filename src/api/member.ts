@@ -88,3 +88,7 @@ export function userIOSRecords(params: any) {
 export function credit1Change(params: any) {
   return client.post(`/backend/api/v1/member/credit1/change`, params);
 }
+
+export function IOSRecharge(params: any) {
+  return client.post(`/backend/addons/TemplateOne/member/recharge`, params);
+}

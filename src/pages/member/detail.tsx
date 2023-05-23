@@ -9,6 +9,7 @@ import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat } from "../../utils/index";
 import { MemberUpdateDialog } from "./components/update";
 import { CreditDialog } from "./components/credit-dialog";
+import { IOSDialog } from "./components/iOS-dialog";
 import { UserOrdersComp } from "./detail/orders";
 import { UserVodWatchRecordsComp } from "./detail/vod-watch-records";
 import { UserVideoWatchRecordsComp } from "./detail/video-watch-records";
@@ -29,7 +30,7 @@ const MemberDetailPage = () => {
   const [showCreditWin, setShowCreditWin] = useState<boolean>(false);
   const [showRemarkWin, setShowRemarkWin] = useState<boolean>(false);
   const [showTagsWin, setShowTagsWin] = useState<boolean>(false);
-  const [showIOSWin, setShowIOSWinn] = useState<boolean>(false);
+  const [showIOSWin, setShowIOSWin] = useState<boolean>(false);
   const [roles, setRoles] = useState<any>([]);
   const [tags, setTags] = useState<any>([]);
   const [courseTabActive, setCourseTabActive] = useState<string>("order");
@@ -180,11 +181,17 @@ const MemberDetailPage = () => {
     setShowCreditWin(true);
   };
 
-  const changeTags = () => {};
+  const changeTags = () => {
+    setShowTagsWin(true);
+  };
 
-  const changeRemark = () => {};
+  const changeRemark = () => {
+    setShowRemarkWin(true);
+  };
 
-  const rechargeIOSCredit = () => {};
+  const rechargeIOSCredit = () => {
+    setShowIOSWin(true);
+  };
 
   return (
     <div className={styles["user-main-body"]}>
@@ -207,6 +214,15 @@ const MemberDetailPage = () => {
           getUser();
         }}
       ></CreditDialog>
+      <IOSDialog
+        id={Number(params.memberId)}
+        open={showIOSWin}
+        onCancel={() => setShowIOSWin(false)}
+        onSuccess={() => {
+          setShowIOSWin(false);
+          getUser();
+        }}
+      ></IOSDialog>
       <div className="float-left bg-white br-15 p-30">
         <BackBartment title="学员详情" />
         <div className={styles["user-info-box"]}>

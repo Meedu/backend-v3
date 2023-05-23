@@ -70,3 +70,10 @@ export function userCredit1(id: number, params: any) {
     params
   );
 }
+
+export function userBalanceRecords(params: any) {
+  return client.get(
+    `/backend/addons/multi_level_share/member/balanceRecords`,
+    params
+  );
+}

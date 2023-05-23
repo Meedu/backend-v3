@@ -47,3 +47,11 @@ export function detail(id: number) {
 export function userOrders(id: number, params: any) {
   return client.get(`/backend/api/v1/member/${id}/detail/userOrders`, params);
 }
+
+export function userVodWatchRecords(params: any) {
+  return client.get(`/backend/api/v2/member/courses`, params);
+}
+
+export function userVideoWatchRecords(params: any) {
+  return client.get(`/backend/api/v2/member/course/progress`, params);
+}

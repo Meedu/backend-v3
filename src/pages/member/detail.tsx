@@ -9,6 +9,7 @@ import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat } from "../../utils/index";
 import { MemberUpdateDialog } from "./components/update";
 import { UserOrdersComp } from "./detail/orders";
+import { UserVodWatchRecordsComp } from "./detail/vod-watch-records";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
 
@@ -360,6 +361,11 @@ const MemberDetailPage = () => {
         <div className="float-left mt-30">
           {courseTabActive === "order" && (
             <UserOrdersComp id={Number(params.memberId)}></UserOrdersComp>
+          )}
+          {courseTabActive === "vod-watch-records" && (
+            <UserVodWatchRecordsComp
+              id={Number(params.memberId)}
+            ></UserVodWatchRecordsComp>
           )}
         </div>
       </div>

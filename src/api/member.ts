@@ -77,3 +77,10 @@ export function userBalanceRecords(params: any) {
     params
   );
 }
+
+export function userIOSRecords(params: any) {
+  return client.get(
+    `/backend/addons/TemplateOne/member/credit2Records`,
+    params
+  );
+}

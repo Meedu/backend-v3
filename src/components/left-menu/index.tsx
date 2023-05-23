@@ -59,7 +59,7 @@ const items = [
       getItem("录播课", "/course/vod/index", null, null, null, "course"),
       getItem(
         "直播课",
-        "/course/live/index",
+        "/live/course/index",
         null,
         null,
         null,
@@ -67,7 +67,7 @@ const items = [
       ),
       getItem(
         "电子书",
-        "/course/book/index",
+        "/meedubook/book/index",
         null,
         null,
         null,
@@ -75,7 +75,7 @@ const items = [
       ),
       getItem(
         "图文",
-        "/course/topic/index",
+        "/topic/index",
         null,
         null,
         null,
@@ -91,7 +91,7 @@ const items = [
       ),
       getItem(
         "学习路径",
-        "/course/path/index",
+        "/learningpath/path/index",
         null,
         null,
         null,

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { message, Button, Space, Modal, Tag } from "antd";
+import { message, Button, Space, Modal, Tag, Radio } from "antd";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./detail.module.scss";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +7,10 @@ import { member } from "../../api/index";
 import { PerButton, BackBartment } from "../../components";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat } from "../../utils/index";
+import { MemberUpdateDialog } from "./components/update";
+import { UserOrdersComp } from "./detail/orders";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+const { confirm } = Modal;
 
 const MemberDetailPage = () => {
   const dispatch = useDispatch();
@@ -14,6 +18,12 @@ const MemberDetailPage = () => {
   const params = useParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<any>({});
+  const [showUpdateWin, setShowUpdateWin] = useState<boolean>(false);
+  const [roles, setRoles] = useState<any>([]);
+  const [tags, setTags] = useState<any>([]);
+  const [courseTabActive, setCourseTabActive] = useState<string>("order");
+  const [courseTypes, setCourseTypes] = useState<any>([]);
+  const user = useSelector((state: any) => state.loginUser.value.user);
   const enabledAddons = useSelector(
     (state: any) => state.enabledAddonsConfig.value.enabledAddons
   );
@@ -25,7 +35,64 @@ const MemberDetailPage = () => {
 
   useEffect(() => {
     getUser();
+    getParams();
   }, [params.memberId]);
+
+  useEffect(() => {
+    let types = [
+      {
+        name: "订单明细",
+        key: "order",
+      },
+    ];
+    if (checkPermission("v2.member.courses")) {
+      types.push({
+        name: "录播课学习",
+        key: "vod-watch-records",
+      });
+    }
+    if (checkPermission("v2.member.videos")) {
+      types.push({
+        name: "单独订阅课时",
+        key: "video-watch-records",
+      });
+    }
+    types.push(
+      ...[
+        {
+          name: "邀请明细",
+          key: "invite",
+        },
+        {
+          name: "积分明细",
+          key: "credit1",
+        },
+      ]
+    );
+    if (
+      enabledAddons["MultiLevelShare"] &&
+      checkPermission("addons.MultiLevelShare.member.balanceRecords")
+    ) {
+      types.push({
+        name: "邀请余额明细",
+        key: "balanceRecords",
+      });
+    }
+    if (
+      enabledAddons["TemplateOne"] &&
+      checkPermission("addons.TemplateOne.memberCredit2Records.list")
+    ) {
+      types.push({
+        name: "iOS余额明细",
+        key: "iOSRecords",
+      });
+    }
+    setCourseTypes(types);
+  }, [enabledAddons, user]);
+
+  const checkPermission = (val: string) => {
+    return typeof user.permissions[val] !== "undefined";
+  };
 
   const getUser = () => {
     if (loading) {
@@ -43,7 +110,60 @@ const MemberDetailPage = () => {
       });
   };
 
-  const lockMember = () => {};
+  const getParams = () => {
+    member.create({}).then((res: any) => {
+      let roles = res.data.roles;
+      let arr: any = [];
+      roles.map((item: any) => {
+        arr.push({
+          label: item.name,
+          value: item.id,
+        });
+      });
+      setRoles(arr);
+      let tags = res.data.tags;
+      let arr2: any = [];
+      tags.map((item: any) => {
+        arr2.push({
+          label: item.name,
+          value: item.id,
+        });
+      });
+      setTags(arr2);
+    });
+  };
+
+  const lockMember = () => {
+    let text = "冻结后此账号将无法登录，确认冻结？";
+    let value = 1;
+    if (userData.is_lock === 1) {
+      text = "解冻后此账号将正常登录，确认解冻？";
+      value = 0;
+    }
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: text,
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        member
+          .editMulti({
+            user_ids: [Number(params.memberId)],
+            field: "is_lock",
+            value: value,
+          })
+          .then(() => {
+            message.success("成功");
+            getUser();
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
 
   const changeCredit = () => {};
 
@@ -55,6 +175,16 @@ const MemberDetailPage = () => {
 
   return (
     <div className={styles["user-main-body"]}>
+      <MemberUpdateDialog
+        id={Number(params.memberId)}
+        open={showUpdateWin}
+        roles={roles}
+        onCancel={() => setShowUpdateWin(false)}
+        onSuccess={() => {
+          setShowUpdateWin(false);
+          getUser();
+        }}
+      ></MemberUpdateDialog>
       <div className="float-left bg-white br-15 p-30">
         <BackBartment title="学员详情" />
         <div className={styles["user-info-box"]}>
@@ -67,7 +197,11 @@ const MemberDetailPage = () => {
                 {userData.nick_name}
               </div>
               <div className={styles["buttons"]}>
-                <Button type="link" className={styles["real-profile"]}>
+                <Button
+                  type="link"
+                  className={styles["real-profile"]}
+                  onClick={() => setShowUpdateWin(true)}
+                >
                   修改资料
                 </Button>
                 <Button
@@ -204,7 +338,31 @@ const MemberDetailPage = () => {
           </div>
         </div>
       </div>
-      <div className="float-left bg-white br-15 p-30 mt-30"></div>
+      <div
+        className="float-left bg-white br-15 p-30 mt-30"
+        style={{ textAlign: "left" }}
+      >
+        <Radio.Group
+          size="large"
+          defaultValue={courseTabActive}
+          buttonStyle="solid"
+          onChange={(e) => {
+            setCourseTabActive(e.target.value);
+          }}
+        >
+          {courseTypes.length > 0 &&
+            courseTypes.map((item: any) => (
+              <Radio.Button key={item.key} value={item.key}>
+                {item.name}
+              </Radio.Button>
+            ))}
+        </Radio.Group>
+        <div className="float-left mt-30">
+          {courseTabActive === "order" && (
+            <UserOrdersComp id={Number(params.memberId)}></UserOrdersComp>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

@@ -43,3 +43,7 @@ export function userImport(params: any) {
 export function detail(id: number) {
   return client.get(`/backend/api/v1/member/${id}/detail`, {});
 }
+
+export function userOrders(id: number, params: any) {
+  return client.get(`/backend/api/v1/member/${id}/detail/userOrders`, params);
+}

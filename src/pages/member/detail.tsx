@@ -10,6 +10,7 @@ import { dateFormat } from "../../utils/index";
 import { MemberUpdateDialog } from "./components/update";
 import { UserOrdersComp } from "./detail/orders";
 import { UserVodWatchRecordsComp } from "./detail/vod-watch-records";
+import { UserVideoWatchRecordsComp } from "./detail/video-watch-records";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
 
@@ -366,6 +367,11 @@ const MemberDetailPage = () => {
             <UserVodWatchRecordsComp
               id={Number(params.memberId)}
             ></UserVodWatchRecordsComp>
+          )}
+          {courseTabActive === "video-watch-records" && (
+            <UserVideoWatchRecordsComp
+              id={Number(params.memberId)}
+            ></UserVideoWatchRecordsComp>
           )}
         </div>
       </div>

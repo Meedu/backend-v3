@@ -55,3 +55,7 @@ export function userVodWatchRecords(params: any) {
 export function userVideoWatchRecords(params: any) {
   return client.get(`/backend/api/v2/member/course/progress`, params);
 }
+
+export function userVideos(params: any) {
+  return client.get(`/backend/api/v2/member/videos`, params);
+}

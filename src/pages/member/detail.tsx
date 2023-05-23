@@ -8,6 +8,7 @@ import { PerButton, BackBartment } from "../../components";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat } from "../../utils/index";
 import { MemberUpdateDialog } from "./components/update";
+import { CreditDialog } from "./components/credit-dialog";
 import { UserOrdersComp } from "./detail/orders";
 import { UserVodWatchRecordsComp } from "./detail/vod-watch-records";
 import { UserVideoWatchRecordsComp } from "./detail/video-watch-records";
@@ -25,6 +26,10 @@ const MemberDetailPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<any>({});
   const [showUpdateWin, setShowUpdateWin] = useState<boolean>(false);
+  const [showCreditWin, setShowCreditWin] = useState<boolean>(false);
+  const [showRemarkWin, setShowRemarkWin] = useState<boolean>(false);
+  const [showTagsWin, setShowTagsWin] = useState<boolean>(false);
+  const [showIOSWin, setShowIOSWinn] = useState<boolean>(false);
   const [roles, setRoles] = useState<any>([]);
   const [tags, setTags] = useState<any>([]);
   const [courseTabActive, setCourseTabActive] = useState<string>("order");
@@ -171,7 +176,9 @@ const MemberDetailPage = () => {
     });
   };
 
-  const changeCredit = () => {};
+  const changeCredit = () => {
+    setShowCreditWin(true);
+  };
 
   const changeTags = () => {};
 
@@ -191,6 +198,15 @@ const MemberDetailPage = () => {
           getUser();
         }}
       ></MemberUpdateDialog>
+      <CreditDialog
+        id={Number(params.memberId)}
+        open={showCreditWin}
+        onCancel={() => setShowCreditWin(false)}
+        onSuccess={() => {
+          setShowCreditWin(false);
+          getUser();
+        }}
+      ></CreditDialog>
       <div className="float-left bg-white br-15 p-30">
         <BackBartment title="学员详情" />
         <div className={styles["user-info-box"]}>

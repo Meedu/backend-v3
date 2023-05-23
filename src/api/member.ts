@@ -84,3 +84,7 @@ export function userIOSRecords(params: any) {
     params
   );
 }
+
+export function credit1Change(params: any) {
+  return client.post(`/backend/api/v1/member/credit1/change`, params);
+}

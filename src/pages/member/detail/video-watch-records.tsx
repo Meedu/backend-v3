@@ -21,9 +21,6 @@ export const UserVideoWatchRecordsComp = (props: PropsInterface) => {
   const [size, setSize] = useState(8);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [updateId, setUpdateId] = useState(0);
-  const [tit, setTit] = useState<string>("");
-  const [showAddWin, setShowAddWin] = useState<boolean>(false);
 
   useEffect(() => {
     getData();

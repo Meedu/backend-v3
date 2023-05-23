@@ -59,3 +59,7 @@ export function userVideoWatchRecords(params: any) {
 export function userVideos(params: any) {
   return client.get(`/backend/api/v2/member/videos`, params);
 }
+
+export function userInviteRecords(id: number, params: any) {
+  return client.get(`/backend/api/v1/member/${id}/detail/userInvite`, params);
+}

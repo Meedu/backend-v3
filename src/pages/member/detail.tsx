@@ -11,6 +11,7 @@ import { MemberUpdateDialog } from "./components/update";
 import { UserOrdersComp } from "./detail/orders";
 import { UserVodWatchRecordsComp } from "./detail/vod-watch-records";
 import { UserVideoWatchRecordsComp } from "./detail/video-watch-records";
+import { UserInviteComp } from "./detail/invite";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
 
@@ -372,6 +373,9 @@ const MemberDetailPage = () => {
             <UserVideoWatchRecordsComp
               id={Number(params.memberId)}
             ></UserVideoWatchRecordsComp>
+          )}
+          {courseTabActive === "invite" && (
+            <UserInviteComp id={Number(params.memberId)}></UserInviteComp>
           )}
         </div>
       </div>

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, message, Space } from "antd";
-import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { path } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../../components";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { LearnPathCategoryCreateDialog } from "../components/category-create";
+import { LearnPathCategoryUpdateDialog } from "../components/category-update";
 const { confirm } = Modal;
 
 interface DataType {
@@ -16,7 +17,6 @@ interface DataType {
 
 const LearnPathCategoryPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [page, setPage] = useState(1);
@@ -179,6 +179,25 @@ const LearnPathCategoryPage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="学习路径分类" />
+      <LearnPathCategoryCreateDialog
+        categories={list}
+        open={showAddWin}
+        onCancel={() => setShowAddWin(false)}
+        onSuccess={() => {
+          resetData();
+          setShowAddWin(false);
+        }}
+      ></LearnPathCategoryCreateDialog>
+      <LearnPathCategoryUpdateDialog
+        id={updateId}
+        categories={list}
+        open={showUpdateWin}
+        onCancel={() => setShowUpdateWin(false)}
+        onSuccess={() => {
+          resetData();
+          setShowUpdateWin(false);
+        }}
+      ></LearnPathCategoryUpdateDialog>
       <div className="float-left  mt-30 mb-30">
         <PerButton
           type="primary"

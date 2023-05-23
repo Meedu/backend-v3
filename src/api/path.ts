@@ -33,5 +33,21 @@ export function categoryList(params: any) {
 }
 
 export function categoryDestroy(id: number) {
-  return client.destroy(`/backend/addons/LearningPaths/path/${id}`);
+  return client.destroy(`/backend/addons/LearningPaths/category/${id}`);
+}
+
+export function categoryCreate() {
+  return client.get(`/backend/addons/LearningPaths/category/creates`, {});
+}
+
+export function categoryStore(params: any) {
+  return client.post("/backend/addons/LearningPaths/category/create", params);
+}
+
+export function categoryDetail(id: number) {
+  return client.get(`/backend/addons/LearningPaths/category/${id}`, {});
+}
+
+export function categoryUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/LearningPaths/category/${id}`, params);
 }

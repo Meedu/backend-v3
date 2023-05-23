@@ -213,7 +213,7 @@ const MemberDetailPage = () => {
                 <Button
                   type="link"
                   className={styles["edit-profile"]}
-                  onClick={() => navigate("/member/profile")}
+                  onClick={() => navigate("/member/profile/" + params.memberId)}
                 >
                   实名信息
                 </Button>

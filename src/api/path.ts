@@ -27,3 +27,11 @@ export function destroy(id: number) {
 export function users(id: number, params: any) {
   return client.get(`/backend/addons/LearningPaths/path/${id}/users`, params);
 }
+
+export function categoryList(params: any) {
+  return client.get(`/backend/addons/LearningPaths/category/index`, params);
+}
+
+export function categoryDestroy(id: number) {
+  return client.destroy(`/backend/addons/LearningPaths/path/${id}`);
+}

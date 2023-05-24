@@ -10,6 +10,7 @@ import HomePage from "../pages/home";
 import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
 import CoursePage from "../pages/course/index";
+import CourseCategoryPage from "../pages/course/category/index";
 import LearnPathPage from "../pages/learningpath/index";
 import LearnPathCreatePage from "../pages/learningpath/create";
 import LearnPathUpdatePage from "../pages/learningpath/update";
@@ -133,6 +134,10 @@ const routes: RouteObject[] = [
             element: <ChangePasswordPage />,
           },
           { path: "/course/vod/index", element: <CoursePage /> },
+          {
+            path: "/course/vod/category/index",
+            element: <CourseCategoryPage />,
+          },
           { path: "/learningpath/path/index", element: <LearnPathPage /> },
           {
             path: "/learningpath/path/create",

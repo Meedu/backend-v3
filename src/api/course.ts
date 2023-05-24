@@ -45,3 +45,27 @@ export function videoList(params: any) {
 export function userImport(id: number, params: any) {
   return client.post(`/backend/api/v1/course/${id}/subscribe/import`, params);
 }
+
+export function categoryList(params: any) {
+  return client.get(`/backend/api/v1/courseCategory`, params);
+}
+
+export function categoryDestroy(id: number) {
+  return client.destroy(`/backend/api/v1/courseCategory/${id}`);
+}
+
+export function categoryCreate() {
+  return client.get(`/backend/api/v1/courseCategory/create`, {});
+}
+
+export function categoryStore(params: any) {
+  return client.post("/backend/api/v1/courseCategory", params);
+}
+
+export function categoryDetail(id: number) {
+  return client.get(`/backend/api/v1/courseCategory/${id}`, {});
+}
+
+export function categoryUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/courseCategory/${id}`, params);
+}

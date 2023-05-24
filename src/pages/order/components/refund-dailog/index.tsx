@@ -121,6 +121,7 @@ export const RefundDialog = (props: PropsInterface) => {
                   allowClear
                   rows={4}
                   maxLength={64}
+                  showCount
                 />
               </Form.Item>
             </Form>

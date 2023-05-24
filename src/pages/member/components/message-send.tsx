@@ -76,7 +76,7 @@ export const SendMessageDialog = (props: PropsInterface) => {
             <Form
               form={form}
               name="message-send-dailog"
-              labelCol={{ span: 6}}
+              labelCol={{ span: 6 }}
               wrapperCol={{ span: 18 }}
               initialValues={{ remember: true }}
               onFinish={onFinish}
@@ -94,6 +94,7 @@ export const SendMessageDialog = (props: PropsInterface) => {
                   allowClear
                   rows={4}
                   maxLength={500}
+                  showCount
                 />
               </Form.Item>
             </Form>

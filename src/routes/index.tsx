@@ -13,6 +13,8 @@ import LearnPathPage from "../pages/learningpath/index";
 import LearnPathUserPage from "../pages/learningpath/user";
 import LearnPathCategoryPage from "../pages/learningpath/category/index";
 import LearnPathStepPage from "../pages/learningpath/step/index";
+import LearnPathStepCreatePage from "../pages/learningpath/step/create";
+import LearnPathStepUpdatePage from "../pages/learningpath/step/update";
 import MemberPage from "../pages/member/index";
 import MemberImportPage from "../pages/member/import";
 import MemberDetailPage from "../pages/member/detail";
@@ -136,6 +138,14 @@ const routes: RouteObject[] = [
           {
             path: "/learningpath/step/index",
             element: <LearnPathStepPage />,
+          },
+          {
+            path: "/learningpath/step/create",
+            element: <LearnPathStepCreatePage />,
+          },
+          {
+            path: "/learningpath/step/update",
+            element: <LearnPathStepUpdatePage />,
           },
           { path: "/member/index", element: <MemberPage /> },
           { path: "/member/import", element: <MemberImportPage /> },

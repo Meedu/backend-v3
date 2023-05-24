@@ -90,7 +90,9 @@ const LearnPathStepPage = () => {
             icon={null}
             p="addons.learnPaths.step.update"
             onClick={() => {
-              navigate("/learningpath/step/update?id=" + record.id);
+              navigate(
+                "/learningpath/step/update?id=" + record.id + "&path_id=" + id
+              );
             }}
             disabled={null}
           />
@@ -122,7 +124,7 @@ const LearnPathStepPage = () => {
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除此分类？",
+      content: "确认删除此步骤？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
@@ -132,7 +134,7 @@ const LearnPathStepPage = () => {
         }
         setLoading(true);
         path
-          .categoryDestroy(id)
+          .stepDestroy(id)
           .then(() => {
             setLoading(false);
             message.success("删除成功");

@@ -12,6 +12,7 @@ import ChangePasswordPage from "../pages/administrator/change-password";
 import LearnPathPage from "../pages/learningpath/index";
 import LearnPathUserPage from "../pages/learningpath/user";
 import LearnPathCategoryPage from "../pages/learningpath/category/index";
+import LearnPathStepPage from "../pages/learningpath/step/index";
 import MemberPage from "../pages/member/index";
 import MemberImportPage from "../pages/member/import";
 import MemberDetailPage from "../pages/member/detail";
@@ -131,6 +132,10 @@ const routes: RouteObject[] = [
           {
             path: "/learningpath/path/category/index",
             element: <LearnPathCategoryPage />,
+          },
+          {
+            path: "/learningpath/step/index",
+            element: <LearnPathStepPage />,
           },
           { path: "/member/index", element: <MemberPage /> },
           { path: "/member/import", element: <MemberImportPage /> },

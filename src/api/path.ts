@@ -37,7 +37,7 @@ export function categoryDestroy(id: number) {
 }
 
 export function categoryCreate() {
-  return client.get(`/backend/addons/LearningPaths/category/creates`, {});
+  return client.get(`/backend/addons/LearningPaths/category/create`, {});
 }
 
 export function categoryStore(params: any) {
@@ -50,4 +50,28 @@ export function categoryDetail(id: number) {
 
 export function categoryUpdate(id: number, params: any) {
   return client.put(`/backend/addons/LearningPaths/category/${id}`, params);
+}
+
+export function stepList(params: any) {
+  return client.get(`/backend/addons/LearningPaths/v2/step/index`, params);
+}
+
+export function stepDestroy(id: number) {
+  return client.destroy(`/backend/addons/LearningPaths/v2/step/${id}`);
+}
+
+export function stepCreate() {
+  return client.get(`/backend/addons/LearningPaths/v2/step/create`, {});
+}
+
+export function stepStore(params: any) {
+  return client.post("/backend/addons/LearningPaths/v2/step/create", params);
+}
+
+export function stepDetail(id: number) {
+  return client.get(`/backend/addons/LearningPaths/v2/step/${id}`, {});
+}
+
+export function stepUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/LearningPaths/v2/step/${id}`, params);
 }

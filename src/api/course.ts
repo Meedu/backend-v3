@@ -69,3 +69,11 @@ export function categoryDetail(id: number) {
 export function categoryUpdate(id: number, params: any) {
   return client.put(`/backend/api/v1/courseCategory/${id}`, params);
 }
+
+export function commentList(params: any) {
+  return client.get(`/backend/api/v1/course_comment`, params);
+}
+
+export function commentDestroy(params: any) {
+  return client.post(`/backend/api/v1/course_comment/delete`, params);
+}

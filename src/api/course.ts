@@ -5,8 +5,25 @@ import client from "./internal/httpClient";
 export function list(params: any) {
   return client.get(`/backend/api/v1/course`, params);
 }
+
+export function create() {
+  return client.get(`/backend/api/v1/course/create`, {});
+}
+
+export function store(params: any) {
+  return client.post("/backend/api/v1/course", params);
+}
+
 export function detail(id: number) {
-  return client.get(`/api/v1/course/${id}`, {});
+  return client.get(`/backend/api/v1/course/${id}`, {});
+}
+
+export function destroy(id: number) {
+  return client.destroy(`/backend/api/v1/course/${id}`);
+}
+
+export function update(id: number, params: any) {
+  return client.put(`/backend/api/v1/course/${id}`, params);
 }
 
 // 获取播放地址
@@ -23,4 +40,8 @@ export function record(courseId: number, hourId: number, duration: number) {
 
 export function videoList(params: any) {
   return client.get(`/backend/api/v1/video`, params);
+}
+
+export function userImport(id: number, params: any) {
+  return client.post(`/backend/api/v1/course/${id}/subscribe/import`, params);
 }

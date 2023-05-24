@@ -9,6 +9,7 @@ import LoginPage from "../pages/login";
 import HomePage from "../pages/home";
 import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
+import CoursePage from "../pages/course/index";
 import LearnPathPage from "../pages/learningpath/index";
 import LearnPathCreatePage from "../pages/learningpath/create";
 import LearnPathUpdatePage from "../pages/learningpath/update";
@@ -131,6 +132,7 @@ const routes: RouteObject[] = [
             path: "/administrator/change-password",
             element: <ChangePasswordPage />,
           },
+          { path: "/course/vod/index", element: <CoursePage /> },
           { path: "/learningpath/path/index", element: <LearnPathPage /> },
           {
             path: "/learningpath/path/create",

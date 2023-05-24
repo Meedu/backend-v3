@@ -38,10 +38,6 @@ export function record(courseId: number, hourId: number, duration: number) {
   });
 }
 
-export function videoList(params: any) {
-  return client.get(`/backend/api/v1/video`, params);
-}
-
 export function userImport(id: number, params: any) {
   return client.post(`/backend/api/v1/course/${id}/subscribe/import`, params);
 }
@@ -76,4 +72,52 @@ export function commentList(params: any) {
 
 export function commentDestroy(params: any) {
   return client.post(`/backend/api/v1/course_comment/delete`, params);
+}
+
+export function videoList(params: any) {
+  return client.get(`/backend/api/v1/video`, params);
+}
+
+export function videoDestoryMulti(params: any) {
+  return client.post(`/backend/api/v1/video/delete/multi`, params);
+}
+
+export function videoCreate(id: number) {
+  return client.get(`/backend/api/v1/course_chapter/${id}`, {});
+}
+
+export function videoStore(params: any) {
+  return client.post("/backend/api/v1/video", params);
+}
+
+export function videoDetail(id: number) {
+  return client.get(`/backend/api/v1/video/${id}`, {});
+}
+
+export function videoUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/video/${id}`, params);
+}
+
+export function videoSubscribe(id: number, params: any) {
+  return client.get(`/backend/api/v1/video/${id}/subscribes`, params);
+}
+
+export function videoSubscribeDestory(id: number, params: any) {
+  return client.get(`/backend/api/v1/video/${id}/subscribe/delete`, params);
+}
+
+export function videoWatchRecords(id: number, params: any) {
+  return client.get(`/backend/api/v1/video/${id}/watch/records`, params);
+}
+
+export function videoImportAct(params: any) {
+  return client.post("/backend/api/v1/video/import", params);
+}
+
+export function videoCommentList(params: any) {
+  return client.get(`/backend/api/v1/video_comment`, params);
+}
+
+export function videoCommentDestroy(params: any) {
+  return client.post(`/backend/api/v1/video_comment/delete`, params);
 }

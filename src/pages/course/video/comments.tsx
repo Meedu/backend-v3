@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { Table, Modal, message, Button, Input, Select, DatePicker } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
-import { course } from "../../api/index";
-import { titleAction } from "../../store/user/loginUserSlice";
-import { PerButton, BackBartment } from "../../components";
-import { dateFormat } from "../../utils/index";
+import { course } from "../../../api/index";
+import { titleAction } from "../../../store/user/loginUserSlice";
+import { PerButton, BackBartment } from "../../../components";
+import { dateFormat } from "../../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
@@ -16,7 +16,7 @@ interface DataType {
   user_id: number;
 }
 
-const CourseCommentsPage = () => {
+const CourseVideoCommentsPage = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -33,8 +33,8 @@ const CourseCommentsPage = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
 
   useEffect(() => {
-    document.title = "课程评论";
-    dispatch(titleAction("课程评论"));
+    document.title = "课时评论";
+    dispatch(titleAction("课时评论"));
     getParams();
   }, []);
 
@@ -43,8 +43,8 @@ const CourseCommentsPage = () => {
   }, [page, size, refresh]);
 
   const getParams = () => {
-    course.list({ keywords: null, page: 1, size: 10 }).then((res: any) => {
-      let courses = res.data.courses.data;
+    course.videoList({ keywords: null, page: 1, size: 10 }).then((res: any) => {
+      let courses = res.data.videos.data;
       const box: any = [];
       for (let i = 0; i < courses.length; i++) {
         box.push({
@@ -62,11 +62,11 @@ const CourseCommentsPage = () => {
     }
     setLoading(true);
     course
-      .commentList({
+      .videoCommentList({
         page: page,
         size: size,
         user_id: user_id,
-        course_id: course_id,
+        video_id: course_id,
         created_at: created_at,
       })
       .then((res: any) => {
@@ -99,7 +99,7 @@ const CourseCommentsPage = () => {
         }
         setLoading(true);
         course
-          .commentDestroy({ ids: selectedRowKeys })
+          .videoCommentDestroy({ ids: selectedRowKeys })
           .then(() => {
             setLoading(false);
             message.success("成功");
@@ -176,9 +176,9 @@ const CourseCommentsPage = () => {
       ),
     },
     {
-      title: "课程",
+      title: "课时",
       render: (_, record: any) => (
-        <>{record.course && <span>{record.course.title}</span>}</>
+        <>{record.video && <span>{record.video.title}</span>}</>
       ),
     },
     {
@@ -204,7 +204,7 @@ const CourseCommentsPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="课程评论" />
+      <BackBartment title="课时评论" />
       <div className="float-left j-b-flex mb-30 mt-30">
         <div className="d-flex">
           <PerButton
@@ -212,7 +212,7 @@ const CourseCommentsPage = () => {
             text="删除"
             class=""
             icon={null}
-            p="course_comment.destroy"
+            p="video_comment.destroy"
             onClick={() => delMulti()}
             disabled={null}
           />
@@ -234,7 +234,7 @@ const CourseCommentsPage = () => {
               setCourseId(e);
             }}
             allowClear
-            placeholder="课程"
+            placeholder="课时"
             options={courses}
           />
           <RangePicker
@@ -279,4 +279,4 @@ const CourseCommentsPage = () => {
   );
 };
 
-export default CourseCommentsPage;
+export default CourseVideoCommentsPage;

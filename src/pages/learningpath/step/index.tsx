@@ -88,7 +88,7 @@ const LearnPathStepPage = () => {
             text="编辑"
             class="c-primary"
             icon={null}
-            p="addons.learnPaths.category.update"
+            p="addons.learnPaths.step.update"
             onClick={() => {
               navigate("/learningpath/step/update?id=" + record.id);
             }}
@@ -99,7 +99,7 @@ const LearnPathStepPage = () => {
             text="删除"
             class="c-red"
             icon={null}
-            p="addons.learnPaths.category.delete"
+            p="addons.learnPaths.step.delete"
             onClick={() => {
               destory(record.id);
             }}

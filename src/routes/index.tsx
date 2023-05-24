@@ -13,6 +13,7 @@ import CoursePage from "../pages/course/index";
 import CourseCategoryPage from "../pages/course/category/index";
 import CourseCommentsPage from "../pages/course/comments";
 import CourseVideoCommentsPage from "../pages/course/video/comments";
+import CourseVideoImportPage from "../pages/course/video/import";
 import LearnPathPage from "../pages/learningpath/index";
 import LearnPathCreatePage from "../pages/learningpath/create";
 import LearnPathUpdatePage from "../pages/learningpath/update";
@@ -147,6 +148,10 @@ const routes: RouteObject[] = [
           {
             path: "/course/vod/video/comments",
             element: <CourseVideoCommentsPage />,
+          },
+          {
+            path: "/course/vod/video-import",
+            element: <CourseVideoImportPage />,
           },
           { path: "/learningpath/path/index", element: <LearnPathPage /> },
           {

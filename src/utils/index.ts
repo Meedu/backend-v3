@@ -82,10 +82,5 @@ export function passwordRules(value: any) {
 }
 
 export function getUrl() {
-  return (
-    window.location.protocol +
-    "//" +
-    window.location.host +
-    window.location.pathname
-  );
+  return window.location.protocol + "//" + window.location.host;
 }

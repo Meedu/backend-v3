@@ -2,20 +2,20 @@ import React, { useState, useEffect } from "react";
 import { message, Upload, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { member } from "../../api/index";
+import { course } from "../../../api/index";
 import * as XLSX from "xlsx";
-import { titleAction } from "../../store/user/loginUserSlice";
-import { BackBartment } from "../../components";
-import { getUrl } from "../../utils/index";
+import { titleAction } from "../../../store/user/loginUserSlice";
+import { BackBartment } from "../../../components";
+import { getUrl } from "../../../utils/index";
 
-const MemberImportPage = () => {
+const CourseVideoImportPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "学员批量导入";
-    dispatch(titleAction("学员批量导入"));
+    document.title = "课时批量导入";
+    dispatch(titleAction("课时批量导入"));
   }, []);
 
   const uploadProps = {
@@ -55,19 +55,18 @@ const MemberImportPage = () => {
         //空行
         continue;
       }
-      let arr: any = [];
-      tmpItem.map((item: any) => {
-        arr.push(item);
-      });
-      data.push(arr);
+      tmpItem.splice(7, 0, 1000);
+      tmpItem.splice(9, 0, "");
+      tmpItem.splice(10, 0, "");
+      data.push(tmpItem);
     }
 
     storeBatchTableCertData(data);
   };
 
   const storeBatchTableCertData = (data: any) => {
-    member
-      .userImport({ users: data })
+    course
+      .videoImportAct({ line: 3, data: data })
       .then(() => {
         setLoading(false);
         message.success("导入成功！");
@@ -89,13 +88,13 @@ const MemberImportPage = () => {
   };
 
   const download = () => {
-    let url = getUrl() + "/template/学员批量导入模板.xlsx";
+    let url = getUrl() + "/template/课时批量导入模板.xlsx";
     window.open(url);
   };
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="学员批量导入" />
+      <BackBartment title="课时批量导入" />
       <div className="user-import-box">
         <div className="float-left d-flex mb-30x">
           <div>
@@ -111,7 +110,7 @@ const MemberImportPage = () => {
               className="c-primary"
               onClick={() => download()}
             >
-              下载「学员批量导入模板」
+              下载「课时批量导入模板」
             </Button>
           </div>
         </div>
@@ -120,4 +119,4 @@ const MemberImportPage = () => {
   );
 };
 
-export default MemberImportPage;
+export default CourseVideoImportPage;

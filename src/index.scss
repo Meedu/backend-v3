@@ -526,3 +526,9 @@ textarea.ant-input {
 .original-charge {
   text-decoration: line-through;
 }
+
+.ant-space-item {
+  .ant-dropdown-trigger {
+    padding: 0 7px;
+  }
+}

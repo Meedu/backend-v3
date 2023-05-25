@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { BackBartment } from "../../components";
 import { WatchRecords } from "./components/watch-records";
+import { SubUsers } from "./components/sub-users";
 
 const CourseUsersPage = () => {
   const params = useParams();
@@ -44,6 +45,9 @@ const CourseUsersPage = () => {
       <div className="float-left">
         {resourceActive === "watch-records" && (
           <WatchRecords id={Number(params.courseId)}></WatchRecords>
+        )}
+        {resourceActive === "sub-users" && (
+          <SubUsers id={Number(params.courseId)}></SubUsers>
         )}
       </div>
     </div>

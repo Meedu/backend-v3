@@ -139,3 +139,15 @@ export function recordsDetail(id: number, userId: number, params: any) {
     params
   );
 }
+
+export function subUsers(id: number, params: any) {
+  return client.get(`/backend/api/v1/course/${id}/subscribes`, params);
+}
+
+export function subUsersAdd(id: number, params: any) {
+  return client.post(`/backend/api/v1/course/${id}/subscribe/create`, params);
+}
+
+export function subUsersDel(id: number, params: any) {
+  return client.get(`/backend/api/v1/course/${id}/subscribe/delete`, params);
+}

@@ -151,3 +151,15 @@ export function subUsersAdd(id: number, params: any) {
 export function subUsersDel(id: number, params: any) {
   return client.get(`/backend/api/v1/course/${id}/subscribe/delete`, params);
 }
+
+export function attachList(params: any) {
+  return client.get(`/backend/api/v1/course_attach`, params);
+}
+
+export function attachStore(params: any) {
+  return client.post(`/backend/api/v1/course_attach`, params);
+}
+
+export function attachDestory(id: number) {
+  return client.destroy(`/backend/api/v1/course_attach/${id}`);
+}

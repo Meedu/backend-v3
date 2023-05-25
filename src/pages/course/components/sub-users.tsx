@@ -4,7 +4,7 @@ import type { ColumnsType } from "antd/es/table";
 import { course } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { PerButton } from "../../../components";
+import { PerButton, UserImportDialog } from "../../../components";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 import moment from "moment";
@@ -303,6 +303,17 @@ export const SubUsers = (props: PropsInterface) => {
           pagination={paginationProps}
         />
       </div>
+      <UserImportDialog
+        open={importDialog}
+        id={props.id}
+        type="vod"
+        name="学员批量导入模板"
+        onCancel={() => setImportDialog(false)}
+        onSuccess={() => {
+          setImportDialog(false);
+          resetData();
+        }}
+      ></UserImportDialog>
     </div>
   );
 };

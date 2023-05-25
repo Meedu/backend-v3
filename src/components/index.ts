@@ -16,3 +16,4 @@ export * from "./thumb-bar";
 export * from "./user-import";
 export * from "./tags-tooltip";
 export * from "./vhtml-tooltip";
+export * from "./user-add";

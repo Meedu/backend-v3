@@ -4,7 +4,11 @@ import type { ColumnsType } from "antd/es/table";
 import { course } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { PerButton, UserImportDialog } from "../../../components";
+import {
+  PerButton,
+  UserImportDialog,
+  UserAddDialog,
+} from "../../../components";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 import moment from "moment";
@@ -235,6 +239,26 @@ export const SubUsers = (props: PropsInterface) => {
     });
   };
 
+  const userAddChange = (rows: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    course
+      .subUsersAdd(props.id, {
+        user_id: rows,
+      })
+      .then(() => {
+        setLoading(false);
+        message.success("成功");
+        setShowUserAddWin(false);
+        resetData();
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
   return (
     <div className="float-left">
       <div className="float-left j-b-flex mb-30">
@@ -314,6 +338,13 @@ export const SubUsers = (props: PropsInterface) => {
           resetData();
         }}
       ></UserImportDialog>
+      <UserAddDialog
+        open={showUserAddWin}
+        onCancel={() => setShowUserAddWin(false)}
+        onSuccess={(rows: any) => {
+          userAddChange(rows);
+        }}
+      ></UserAddDialog>
     </div>
   );
 };

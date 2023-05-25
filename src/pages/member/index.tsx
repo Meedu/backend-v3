@@ -142,7 +142,6 @@ const MemberPage = () => {
     setTagId([]);
     setRoleId([]);
     setRefresh(!refresh);
-    console.log(selectedRowKeys);
   };
 
   const paginationProps = {

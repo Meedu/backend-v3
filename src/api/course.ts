@@ -121,3 +121,21 @@ export function videoCommentList(params: any) {
 export function videoCommentDestroy(params: any) {
   return client.post(`/backend/api/v1/video_comment/delete`, params);
 }
+
+export function recordsList(id: number, params: any) {
+  return client.get(`/backend/api/v1/course/${id}/watch/records`, params);
+}
+
+export function recordsDestroy(id: number, params: any) {
+  return client.post(
+    `/backend/api/v1/course/${id}/watch/records/delete`,
+    params
+  );
+}
+
+export function recordsDetail(id: number, userId: number, params: any) {
+  return client.get(
+    `/backend/api/v1/course/${id}/user/${userId}/watch/records`,
+    params
+  );
+}

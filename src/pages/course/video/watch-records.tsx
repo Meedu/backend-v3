@@ -155,14 +155,14 @@ const CourseVideoRecordsPage = () => {
     {
       title: "开始时间",
       width: 200,
-      dataIndex: "watched_at",
-      render: (watched_at: string) => <span>{dateFormat(watched_at)}</span>,
+      dataIndex: "created_at",
+      render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
     },
     {
       title: "看完时间",
       width: 200,
-      dataIndex: "created_at",
-      render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
+      dataIndex: "watched_at",
+      render: (watched_at: string) => <span>{dateFormat(watched_at)}</span>,
     },
   ];
 

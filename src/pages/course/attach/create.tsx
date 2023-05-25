@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { Modal, Space, Form, Input, Upload, Button, message } from "antd";
-import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { course } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
-import { ExclamationCircleFilled } from "@ant-design/icons";
-import { PerButton, BackBartment, HelperText } from "../../../components";
-const { confirm } = Modal;
+import { BackBartment, HelperText } from "../../../components";
 
 const CourseAttachCreatePage = () => {
   const [form] = Form.useForm();
@@ -17,6 +14,7 @@ const CourseAttachCreatePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [cid, setCid] = useState(Number(result.get("course_id")));
   const [fileName, setFileName] = useState<string>("");
+  const [file, setFile] = useState<any>(null);
 
   useEffect(() => {
     document.title = "添加课程附件";
@@ -32,9 +30,12 @@ const CourseAttachCreatePage = () => {
       return;
     }
     setLoading(true);
-    values.course_id = cid;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", values.name);
+    formData.append("course_id", String(cid));
     course
-      .attachStore(values)
+      .attachStore(formData)
       .then((res: any) => {
         setLoading(false);
         message.success("成功！");
@@ -58,7 +59,6 @@ const CourseAttachCreatePage = () => {
       }
       setLoading(true);
       const f = file;
-      console.log(f);
       if (f.size > 10240000) {
         message.error("上传附件大小不能超过10MB");
         setLoading(false);
@@ -67,8 +67,8 @@ const CourseAttachCreatePage = () => {
       setFileName(f.name);
       form.setFieldsValue({
         name: f.name,
-        file: f,
       });
+      setFile(f);
       setLoading(false);
       return false;
     },

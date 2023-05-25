@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { Modal, Table, Button, message } from "antd";
+import { Modal, Table, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { course } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
-import { dateFormat } from "../../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { PerButton, BackBartment } from "../../../components";
 const { confirm } = Modal;
@@ -35,7 +34,7 @@ const CourseAttachPage = () => {
 
   useEffect(() => {
     getData();
-  }, [cid]);
+  }, [cid, refresh]);
 
   const getData = () => {
     if (loading) {

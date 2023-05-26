@@ -19,6 +19,7 @@ import CourseAttachPage from "../pages/course/attach/index";
 import CourseAttachCreatePage from "../pages/course/attach/create";
 import CourseVideoPage from "../pages/course/video/index";
 import CourseVideoRecordsPage from "../pages/course/video/watch-records";
+import CourseVideoSubscribePage from "../pages/course/video/subscribe";
 import LearnPathPage from "../pages/learningpath/index";
 import LearnPathCreatePage from "../pages/learningpath/create";
 import LearnPathUpdatePage from "../pages/learningpath/update";
@@ -168,6 +169,10 @@ const routes: RouteObject[] = [
           {
             path: "/course/vod/video/watch-records",
             element: <CourseVideoRecordsPage />,
+          },
+          {
+            path: "/course/vod/video/subscribe",
+            element: <CourseVideoSubscribePage />,
           },
           { path: "/learningpath/path/index", element: <LearnPathPage /> },
           {

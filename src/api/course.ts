@@ -163,3 +163,23 @@ export function attachStore(params: any) {
 export function attachDestory(id: number) {
   return client.destroy(`/backend/api/v1/course_attach/${id}`);
 }
+
+export function chaptersList(id: number, params: any) {
+  return client.get(`/backend/api/v1/course_chapter/${id}`, params);
+}
+
+export function chaptersDestroy(id: number, ids: any) {
+  return client.destroy(`/backend/api/v1/course_chapter/${id}/${ids}`);
+}
+
+export function chaptersStore(id: number, params: any) {
+  return client.post(`/backend/api/v1/course_chapter/${id}`, params);
+}
+
+export function chaptersDetail(id: number, ids: any) {
+  return client.get(`backend/api/v1/course_chapter/${id}/${ids}`, {});
+}
+
+export function chaptersUpdate(id: number, ids: any, params: any) {
+  return client.put(`/backend/api/v1/course_chapter/${id}/${ids}`, params);
+}

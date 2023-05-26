@@ -183,3 +183,25 @@ export function chaptersDetail(id: number, ids: any) {
 export function chaptersUpdate(id: number, ids: any, params: any) {
   return client.put(`/backend/api/v1/course_chapter/${id}/${ids}`, params);
 }
+
+export function aliyunHlsList(params: any) {
+  return client.get(`/backend/addons/AliyunHls/videos`, params);
+}
+
+export function aliyunHlsSubmit(params: any) {
+  return client.post(
+    `/backend/addons/AliyunHls/videos/submitTransTask`,
+    params
+  );
+}
+
+export function tencentHlsList(params: any) {
+  return client.get(`/backend/addons/TencentCloudHls/videos`, params);
+}
+
+export function tencentHlsSubmit(params: any) {
+  return client.post(
+    `/backend/addons/TencentCloudHls/videos/submitTransTask`,
+    params
+  );
+}

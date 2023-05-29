@@ -92,6 +92,7 @@ import CreditMallUpdatePage from "../pages/creditMall/update";
 import CreditMallOrdersPage from "../pages/creditMall/orders/index";
 import CreditMallOrdersUpdatePage from "../pages/creditMall/orders/update";
 import CreditMallOrdersSendPage from "../pages/creditMall/orders/send";
+import SystemConfigPage from "../pages/system/config/index";
 
 import ErrorPage from "../pages/error";
 
@@ -354,6 +355,7 @@ const routes: RouteObject[] = [
           },
           { path: "/stats/content/index", element: <StatsContentPage /> },
           { path: "/stats/member/index", element: <StatsMemberPage /> },
+          { path: "/system/index", element: <SystemConfigPage /> },
         ],
       },
       {

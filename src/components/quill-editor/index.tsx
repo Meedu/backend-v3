@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.scss";
 import ReactQuill from "react-quill";
+import { SelectImage } from "../../components";
 import "react-quill/dist/quill.snow.css";
+import "katex/dist/katex.css";
 
 interface PropInterface {
   height: number;
@@ -10,15 +12,15 @@ interface PropInterface {
   setContent: (value: string) => void;
 }
 
-export const QuillEditor: React.FC<PropInterface> = ({
-  height,
-  isFormula,
-  defautValue,
-  setContent,
-}) => {
+declare const window: any;
+
+export const QuillEditor: React.FC<PropInterface> = (props) => {
+  const { height, isFormula, defautValue, setContent } = props;
+  let refs: any = useRef(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [value, setValue] = useState("");
-  const [modules, setModules] = useState<any>({
+  const [showUploadImage, setShowUploadImage] = useState<boolean>(false);
+  const modules = {
     toolbar: {
       container: [
         ["bold", "italic", "underline", "strike"],
@@ -31,13 +33,22 @@ export const QuillEditor: React.FC<PropInterface> = ({
         ["formula"],
         ["link", "video", "image"],
       ],
+      handlers: {},
     },
     formula: isFormula,
-  });
+  };
+  const imageHandler = () => {
+    setShowUploadImage(true);
+    console.log(111);
+  };
 
   useEffect(() => {
     if (value) {
-      setContent(value);
+      let text = "";
+      if (value !== "<p><br></p>") {
+        text = value;
+      }
+      setContent(text);
     }
   }, [value]);
 
@@ -50,6 +61,7 @@ export const QuillEditor: React.FC<PropInterface> = ({
   return (
     <>
       <ReactQuill
+        ref={refs}
         className="quill-editor-box"
         style={{ height: height }}
         theme="snow"

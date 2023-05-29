@@ -10,6 +10,8 @@ import HomePage from "../pages/home";
 import DashboardPage from "../pages/dashboard";
 import ChangePasswordPage from "../pages/administrator/change-password";
 import CoursePage from "../pages/course/index";
+import CourseCreatePage from "../pages/course/create";
+import CourseUpdatePage from "../pages/course/update";
 import CourseCategoryPage from "../pages/course/category/index";
 import CourseCommentsPage from "../pages/course/comments";
 import CourseVideoCommentsPage from "../pages/course/video/comments";
@@ -147,6 +149,8 @@ const routes: RouteObject[] = [
             element: <ChangePasswordPage />,
           },
           { path: "/course/vod/index", element: <CoursePage /> },
+          { path: "/course/vod/create", element: <CourseCreatePage /> },
+          { path: "/course/vod/update", element: <CourseUpdatePage /> },
           {
             path: "/course/vod/category/index",
             element: <CourseCategoryPage />,

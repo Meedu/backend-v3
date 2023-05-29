@@ -14,7 +14,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { creditMall } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
-import { BackBartment, UploadImageButton, HelperText } from "../../components";
+import {
+  BackBartment,
+  UploadImageButton,
+  HelperText,
+  QuillEditor,
+} from "../../components";
 
 const CreditMallUpdatePage = () => {
   const result = new URLSearchParams(useLocation().search);
@@ -23,6 +28,7 @@ const CreditMallUpdatePage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [resourceActive, setResourceActive] = useState<string>("base");
+  const [defautValue, setDefautValue] = useState("");
   const [title, setTitle] = useState<string>("");
   const [thumb, setThumb] = useState<string>("");
   const [is_v, setIsV] = useState(0);
@@ -70,6 +76,7 @@ const CreditMallUpdatePage = () => {
       setIsV(data.is_v);
       setVId(data.v_id);
       setType(data.v_type);
+      setDefautValue(data.desc);
     });
   };
 
@@ -198,12 +205,16 @@ const CreditMallUpdatePage = () => {
               label="介绍"
               name="desc"
               rules={[{ required: true, message: "请输入介绍!" }]}
+              style={{ height: 440 }}
             >
-              <Input.TextArea
-                style={{ width: "100%", minHeight: 400 }}
-                placeholder="请输入内容"
-                allowClear
-              />
+              <QuillEditor
+                height={400}
+                defautValue={defautValue}
+                isFormula={false}
+                setContent={(value: string) => {
+                  form.setFieldsValue({ desc: value });
+                }}
+              ></QuillEditor>
             </Form.Item>
             <Form.Item
               label="库存"

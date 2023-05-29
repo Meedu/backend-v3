@@ -20,6 +20,7 @@ import {
   SelectResources,
   UploadImageButton,
   HelperText,
+  QuillEditor,
 } from "../../components";
 
 const CreditMallCreatePage = () => {
@@ -252,12 +253,16 @@ const CreditMallCreatePage = () => {
               label="介绍"
               name="desc"
               rules={[{ required: true, message: "请输入介绍!" }]}
+              style={{ height: 440 }}
             >
-              <Input.TextArea
-                style={{ width: "100%", minHeight: 400 }}
-                placeholder="请输入内容"
-                allowClear
-              />
+              <QuillEditor
+                height={400}
+                defautValue=""
+                isFormula={false}
+                setContent={(value: string) => {
+                  form.setFieldsValue({ desc: value });
+                }}
+              ></QuillEditor>
             </Form.Item>
             <Form.Item
               label="库存"

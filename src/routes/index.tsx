@@ -95,7 +95,7 @@ import CreditMallOrdersPage from "../pages/creditMall/orders/index";
 import CreditMallOrdersUpdatePage from "../pages/creditMall/orders/update";
 import CreditMallOrdersSendPage from "../pages/creditMall/orders/send";
 import SystemConfigPage from "../pages/system/config/index";
-
+import SystemPlayerConfigPage from "../pages/system/config/playerConfig";
 import ErrorPage from "../pages/error";
 
 let RootPage: any = null;
@@ -360,6 +360,7 @@ const routes: RouteObject[] = [
           { path: "/stats/content/index", element: <StatsContentPage /> },
           { path: "/stats/member/index", element: <StatsMemberPage /> },
           { path: "/system/index", element: <SystemConfigPage /> },
+          { path: "/system/playerConfig", element: <SystemPlayerConfigPage /> },
         ],
       },
       {

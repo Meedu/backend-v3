@@ -208,6 +208,7 @@ const CreditMallUpdatePage = () => {
               style={{ height: 440 }}
             >
               <QuillEditor
+                mode=""
                 height={400}
                 defautValue={defautValue}
                 isFormula={false}

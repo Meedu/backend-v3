@@ -120,3 +120,7 @@ export function tagUpdate(id: number, params: any) {
 export function tagDestroy(id: number) {
   return client.destroy(`/backend/api/v1/member/tag/${id}`);
 }
+
+export function remarkUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/member/${id}/remark`, params);
+}

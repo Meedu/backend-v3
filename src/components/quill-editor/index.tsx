@@ -9,30 +9,41 @@ interface PropInterface {
   height: number;
   isFormula: boolean;
   defautValue: string;
+  mode: string;
   setContent: (value: string) => void;
 }
 
 declare const window: any;
 
 export const QuillEditor: React.FC<PropInterface> = (props) => {
-  const { height, isFormula, defautValue, setContent } = props;
+  const { height, isFormula, defautValue, mode, setContent } = props;
   let refs: any = useRef(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [value, setValue] = useState("");
   const [showUploadImage, setShowUploadImage] = useState<boolean>(false);
   const modules = {
     toolbar: {
-      container: [
-        ["bold", "italic", "underline", "strike"],
-        ["blockquote", "code-block"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        [{ size: ["small", false, "large", "huge"] }],
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        [{ color: [] }, { background: [] }],
-        [{ align: [] }],
-        ["formula"],
-        ["link", "video", "image"],
-      ],
+      container:
+        mode && mode === "remark"
+          ? [
+              ["bold", "italic", "underline", "strike"],
+              ["blockquote", "code-block"],
+              [{ list: "ordered" }, { list: "bullet" }],
+              [{ size: ["small", false, "large", "huge"] }],
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ color: [] }, { background: [] }],
+            ]
+          : [
+              ["bold", "italic", "underline", "strike"],
+              ["blockquote", "code-block"],
+              [{ list: "ordered" }, { list: "bullet" }],
+              [{ size: ["small", false, "large", "huge"] }],
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ color: [] }, { background: [] }],
+              [{ align: [] }],
+              ["formula"],
+              ["link", "video", "image"],
+            ],
       handlers: {},
     },
     formula: isFormula,

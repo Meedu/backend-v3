@@ -11,6 +11,7 @@ import { MemberUpdateDialog } from "./components/update";
 import { CreditDialog } from "./components/credit-dialog";
 import { IOSDialog } from "./components/iOS-dialog";
 import { TagsDialog } from "./components/tags-dialog";
+import { RemarkDialog } from "./components/remark-dailog";
 import { UserOrdersComp } from "./detail/orders";
 import { UserVodWatchRecordsComp } from "./detail/vod-watch-records";
 import { UserVideoWatchRecordsComp } from "./detail/video-watch-records";
@@ -234,6 +235,15 @@ const MemberDetailPage = () => {
           getUser();
         }}
       ></TagsDialog>
+      <RemarkDialog
+        id={Number(params.memberId)}
+        open={showRemarkWin}
+        onCancel={() => setShowRemarkWin(false)}
+        onSuccess={() => {
+          setShowRemarkWin(false);
+          getUser();
+        }}
+      ></RemarkDialog>
       <div className="float-left bg-white br-15 p-30">
         <BackBartment title="学员详情" />
         <div className={styles["user-info-box"]}>

@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { message, Modal, Button, Tabs } from "antd";
-import { system } from "../../../api/index";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import systemIcon from "../../../assets/images/config/system.png";
 import paymentIocn from "../../../assets/images/config/payment.png";
@@ -21,9 +19,19 @@ import searchIcon from "../../../assets/images/config/search.png";
 import importIcon from "../../../assets/images/config/import.png";
 import h5Icon from "../../../assets/images/config/h5.png";
 import weixinIcon from "../../../assets/images/config/weixin.png";
+import playerIcon from "../../../assets/images/config/player.png";
+import liveIcon from "../../../assets/images/config/live.png";
+import bookIcon from "../../../assets/images/config/book.png";
+import topicIcon from "../../../assets/images/config/topic.png";
+import wendaIcon from "../../../assets/images/config/wenda.png";
+import sendvipIcon from "../../../assets/images/config/sendvip.png";
+import multishareIcon from "../../../assets/images/config/multishare.png";
+import tgIcon from "../../../assets/images/config/tg.png";
+import credictIcon from "../../../assets/images/config/credict.png";
 
 const SystemConfigPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const enabledAddons = useSelector(
     (state: any) => state.enabledAddonsConfig.value.enabledAddons
@@ -132,6 +140,64 @@ const SystemConfigPage = () => {
       sign: "",
     },
   ];
+  const courses = [
+    {
+      name: "播放器配置",
+      value: "播放器配置",
+      images: playerIcon,
+      sign: "",
+    },
+    {
+      name: "直播服务配置",
+      value: "直播",
+      images: liveIcon,
+      sign: "Zhibo",
+    },
+    {
+      name: "电子书推荐",
+      value: "电子书",
+      images: bookIcon,
+      sign: "MeeduBooks",
+    },
+    {
+      name: "图文推荐",
+      value: "图文",
+      images: topicIcon,
+      sign: "MeeduTopics",
+    },
+    {
+      name: "问答配置",
+      value: "问答",
+      images: wendaIcon,
+      sign: "Wenda",
+    },
+  ];
+  const market = [
+    {
+      name: "注册送会员",
+      value: "注册送VIP",
+      images: sendvipIcon,
+      sign: "",
+    },
+    {
+      name: "三级分销",
+      value: "三级分销",
+      images: multishareIcon,
+      sign: "MultiLevelShare",
+    },
+    {
+      name: "团购配置",
+      value: "团购",
+      images: tgIcon,
+      sign: "TuanGou",
+    },
+    {
+      name: "积分配置",
+      value: "积分",
+      images: credictIcon,
+      sign: "",
+    },
+  ];
 
   useEffect(() => {
     document.title = "系统配置";
@@ -152,7 +218,37 @@ const SystemConfigPage = () => {
     }
   };
 
-  const goConfig = (value: string) => {};
+  const goConfig = (value: string) => {
+    if (value === "播放器配置") {
+      navigate("/system/playerConfig");
+    } else if (value === "积分") {
+      navigate("/system/creditSignConfig");
+    } else if (value === "直播") {
+      navigate("/system/liveConfig");
+    } else if (value === "短信") {
+      navigate("/system/messageConfig");
+    } else if (value === "图片存储") {
+      navigate("/system/saveImagesConfig");
+    } else if (value === "视频加密") {
+      navigate("/system/videoHlsConfig");
+    } else if (value === "微信公众号") {
+      navigate("/system/mp_wechatConfig");
+    } else if (value === "图文") {
+      navigate("/system/topicConfig");
+    } else if (value === "电子书") {
+      navigate("/system/bookConfig");
+    } else if (value === "支付") {
+      navigate("/system/paymentConfig");
+    } else if (value === "视频") {
+      navigate("/system/videoSaveConfig");
+    } else if (value === "IOS") {
+      navigate("/system/iosConfig");
+    } else if (value === "微信小程序") {
+      navigate("/system/wechat_miniConfig");
+    } else {
+      navigate("/system/config?key=" + value);
+    }
+  };
 
   return (
     <div className={styles["config-box"]}>
@@ -162,6 +258,44 @@ const SystemConfigPage = () => {
           {groups.map((item: any, index: number) => {
             return (
               check(item.sign) && (
+                <div
+                  key={index}
+                  className={styles["item"]}
+                  onClick={() => goConfig(item.value)}
+                >
+                  <img src={item.images} />
+                  <span>{item.name}</span>
+                </div>
+              )
+            );
+          })}
+        </div>
+      </div>
+      <div className={styles["options"]}>
+        <div className={styles["title"]}>课程配置</div>
+        <div className={styles["body"]}>
+          {courses.map((item: any, index: number) => {
+            return (
+              (enabledAddons[item.sign] === 1 || item.sign === "") && (
+                <div
+                  key={index}
+                  className={styles["item"]}
+                  onClick={() => goConfig(item.value)}
+                >
+                  <img src={item.images} />
+                  <span>{item.name}</span>
+                </div>
+              )
+            );
+          })}
+        </div>
+      </div>
+      <div className={styles["options"]}>
+        <div className={styles["title"]}>营销配置</div>
+        <div className={styles["body"]}>
+          {market.map((item: any, index: number) => {
+            return (
+              (enabledAddons[item.sign] === 1 || item.sign === "") && (
                 <div
                   key={index}
                   className={styles["item"]}

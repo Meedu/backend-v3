@@ -100,6 +100,7 @@ import SystemLiveConfigPage from "../pages/system/config/liveConfig";
 import SystemPaymentConfigPage from "../pages/system/config/paymentConfig";
 import SystemMpWechatConfigPage from "../pages/system/config/mp_wechatConfig";
 import SystemMessageConfigPage from "../pages/system/config/messageConfig";
+import SystemVideoSaveConfigPage from "../pages/system/config/videoSaveConfig";
 import ErrorPage from "../pages/error";
 
 let RootPage: any = null;
@@ -377,6 +378,10 @@ const routes: RouteObject[] = [
           {
             path: "/system/messageConfig",
             element: <SystemMessageConfigPage />,
+          },
+          {
+            path: "/system/videoSaveConfig",
+            element: <SystemVideoSaveConfigPage />,
           },
         ],
       },

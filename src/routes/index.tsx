@@ -102,6 +102,7 @@ import SystemMpWechatConfigPage from "../pages/system/config/mp_wechatConfig";
 import SystemMessageConfigPage from "../pages/system/config/messageConfig";
 import SystemVideoSaveConfigPage from "../pages/system/config/videoSaveConfig";
 import SystemImagesSaveConfigPage from "../pages/system/config/saveImagesConfig";
+import SystemvVideoHlsConfigPage from "../pages/system/config/videoHlsConfig";
 import ErrorPage from "../pages/error";
 
 let RootPage: any = null;
@@ -387,6 +388,10 @@ const routes: RouteObject[] = [
           {
             path: "/system/saveImagesConfig",
             element: <SystemImagesSaveConfigPage />,
+          },
+          {
+            path: "/system/videoHlsConfig",
+            element: <SystemvVideoHlsConfigPage />,
           },
         ],
       },

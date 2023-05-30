@@ -1,15 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  Form,
-  Input,
-  message,
-  Button,
-  Row,
-  Col,
-  Space,
-  Switch,
-  Upload,
-} from "antd";
+import { Form, Input, message, Button, Row, Col, Switch } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";

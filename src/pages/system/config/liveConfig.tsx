@@ -1,21 +1,11 @@
 import { useState, useEffect } from "react";
-import {
-  Form,
-  Input,
-  message,
-  Button,
-  Row,
-  Col,
-  Space,
-  Switch,
-  Select,
-} from "antd";
+import { Form, Input, message, Button, Switch, Select } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { system } from "../../../api/index";
 import { checkUrl } from "../../../utils/index";
-import { BackBartment, HelperText } from "../../../components";
+import { BackBartment } from "../../../components";
 
 const SystemLiveConfigPage = () => {
   const dispatch = useDispatch();

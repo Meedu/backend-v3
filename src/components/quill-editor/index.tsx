@@ -3,7 +3,6 @@ import styles from "./index.module.scss";
 import ReactQuill from "react-quill";
 import { SelectImage } from "../../components";
 import "react-quill/dist/quill.snow.css";
-import "katex/dist/katex.css";
 
 interface PropInterface {
   height: number;

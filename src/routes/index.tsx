@@ -97,6 +97,7 @@ import CreditMallOrdersSendPage from "../pages/creditMall/orders/send";
 import SystemConfigPage from "../pages/system/config/index";
 import SystemPlayerConfigPage from "../pages/system/config/playerConfig";
 import SystemLiveConfigPage from "../pages/system/config/liveConfig";
+import SystemPaymentConfigPage from "../pages/system/config/paymentConfig";
 import ErrorPage from "../pages/error";
 
 let RootPage: any = null;
@@ -363,6 +364,10 @@ const routes: RouteObject[] = [
           { path: "/system/index", element: <SystemConfigPage /> },
           { path: "/system/playerConfig", element: <SystemPlayerConfigPage /> },
           { path: "/system/liveConfig", element: <SystemLiveConfigPage /> },
+          {
+            path: "/system/paymentConfig",
+            element: <SystemPaymentConfigPage />,
+          },
         ],
       },
       {

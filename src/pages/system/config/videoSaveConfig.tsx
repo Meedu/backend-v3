@@ -62,8 +62,8 @@ const SystemVideoSaveConfigPage = () => {
   ];
 
   useEffect(() => {
-    document.title = "视频";
-    dispatch(titleAction("视频"));
+    document.title = "视频存储";
+    dispatch(titleAction("视频存储"));
     getDetail();
   }, []);
 
@@ -213,7 +213,7 @@ const SystemVideoSaveConfigPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="视频"></BackBartment>
+      <BackBartment title="视频存储"></BackBartment>
       <div className="float-left">
         <Form
           form={form}

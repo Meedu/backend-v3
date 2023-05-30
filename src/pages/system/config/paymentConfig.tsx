@@ -14,7 +14,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { system } from "../../../api/index";
-import { checkUrl } from "../../../utils/index";
 import { BackBartment, HelperText, QuillEditor } from "../../../components";
 
 const SystemPaymentConfigPage = () => {

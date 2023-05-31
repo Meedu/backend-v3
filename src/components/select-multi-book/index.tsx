@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Modal, message, Table, Input, Button } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import type { ColumnsType } from "antd/es/table";
-import { book } from "../../../api/index";
+import { book } from "../../api/index";
 
 interface DataType {
   id: React.Key;
@@ -9,11 +10,13 @@ interface DataType {
 }
 
 interface PropsInterface {
+  open: boolean;
   selected: any;
-  onChange: (result: any) => void;
+  onSelected: (result: any) => void;
+  onCancel: () => void;
 }
 
-export const BookComp = (props: PropsInterface) => {
+export const SelectBookMulti = (props: PropsInterface) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [page, setPage] = useState(1);
@@ -21,6 +24,7 @@ export const BookComp = (props: PropsInterface) => {
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [keywords, setKeywords] = useState<string>("");
+  const [selectedKey, setSelectedKey] = useState<any>([]);
 
   useEffect(() => {
     getData();
@@ -102,16 +106,9 @@ export const BookComp = (props: PropsInterface) => {
       let newbox: any = [];
       if (row) {
         for (var i = 0; i < row.length; i++) {
-          let item = {
-            type: "book",
-            id: row[i].id,
-            title: row[i].name,
-            thumb: row[i].thumb,
-            charge: row[i].charge,
-          };
-          newbox.push(item);
+          newbox.push(row[i].id);
         }
-        props.onChange(newbox);
+        setSelectedKey(newbox);
       }
     },
     getCheckboxProps: (record: any) => ({
@@ -120,44 +117,74 @@ export const BookComp = (props: PropsInterface) => {
   };
 
   return (
-    <div className="float-left">
-      <div className="float-left mb-15">
-        <Input
-          value={keywords}
-          onChange={(e) => {
-            setKeywords(e.target.value);
+    <>
+      {props.open && (
+        <Modal
+          title="选择电子书"
+          closable={false}
+          onCancel={() => {
+            props.onCancel();
           }}
-          allowClear
-          style={{ width: 150 }}
-          placeholder="关键字"
-        />
-        <Button className="ml-10" onClick={resetList}>
-          清空
-        </Button>
-        <Button
-          className="ml-10"
-          type="primary"
-          onClick={() => {
-            setPage(1);
-            setRefresh(!refresh);
+          open={true}
+          width={900}
+          maskClosable={false}
+          onOk={() => {
+            if (!selectedKey || selectedKey.length === 0) {
+              message.error("请先选择内容");
+              return;
+            }
+            props.onSelected(selectedKey);
           }}
         >
-          筛选
-        </Button>
-      </div>
-      <div className="float-left mb-15">
-        <Table
-          rowSelection={{
-            type: "checkbox",
-            ...rowSelection,
-          }}
-          loading={loading}
-          columns={columns}
-          dataSource={list}
-          rowKey={(record) => record.id}
-          pagination={paginationProps}
-        />
-      </div>
-    </div>
+          <div
+            className="float-left mt-20"
+            style={{
+              maxHeight: 520,
+              overflowX: "hidden",
+              overflowY: "auto",
+              marginBottom: 10,
+            }}
+          >
+            <div className="float-left mb-15">
+              <Input
+                value={keywords}
+                onChange={(e) => {
+                  setKeywords(e.target.value);
+                }}
+                allowClear
+                style={{ width: 150 }}
+                placeholder="关键字"
+              />
+              <Button className="ml-10" onClick={resetList}>
+                清空
+              </Button>
+              <Button
+                className="ml-10"
+                type="primary"
+                onClick={() => {
+                  setPage(1);
+                  setRefresh(!refresh);
+                }}
+              >
+                筛选
+              </Button>
+            </div>
+            <div className="float-left mb-15">
+              <Table
+                rowSelection={{
+                  type: "checkbox",
+                  ...rowSelection,
+                }}
+                loading={loading}
+                columns={columns}
+                dataSource={list}
+                rowKey={(record) => record.id}
+                pagination={paginationProps}
+              />
+            </div>
+          </div>
+        </Modal>
+      )}
+    </>
   );
 };

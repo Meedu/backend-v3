@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import { Form, Input, message, Button } from "antd";
-import styles from "./topicConfig.module.scss";
+import styles from "./bookConfig.module.scss";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
-import { system, topic } from "../../../api/index";
+import { system, book } from "../../../api/index";
 import {
   BackBartment,
-  SelectTopicMulti,
+  SelectBookMulti,
   HelperText,
   ThumbBar,
   CloseIcon,
 } from "../../../components";
 
-const SystemTopicConfigPage = () => {
+const SystemBookConfigPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -21,24 +21,23 @@ const SystemTopicConfigPage = () => {
   const [courses, setCourses] = useState<any>([]);
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
-  const [showTopicWin, setShowTopicWin] = useState<boolean>(false);
+  const [showBookWin, setShowBookWin] = useState<boolean>(false);
   const [selected, setSelected] = useState<any>([]);
 
   useEffect(() => {
-    document.title = "图文推荐";
-    dispatch(titleAction("图文推荐"));
-
+    document.title = "电子书推荐";
+    dispatch(titleAction("电子书推荐"));
     getDetail();
   }, []);
 
   const getDetail = () => {
     system.setting().then((res: any) => {
-      let configData = res.data["图文"];
+      let configData = res.data["电子书"];
       let data: any = [];
       for (let index in configData) {
         if (
           configData[index].key ===
-          "meedu.addons.meedu_topics.pc_list_page_rec_ids"
+          "meedu.addons.meedu_books.pc_list_page_rec_ids"
         ) {
           if (configData[index].value && configData[index].value.length > 0) {
             data = configData[index].value.split(",").map(Number);
@@ -50,7 +49,7 @@ const SystemTopicConfigPage = () => {
     });
   };
   const getCourse = (sel: any) => {
-    topic
+    book
       .list({
         page: 1,
         size: 100000,
@@ -82,7 +81,7 @@ const SystemTopicConfigPage = () => {
     system
       .saveSetting({
         config: {
-          "meedu.addons.meedu_topics.pc_list_page_rec_ids": selected.join(","),
+          "meedu.addons.meedu_books.pc_list_page_rec_ids": selected.join(","),
         },
       })
       .then((res: any) => {
@@ -111,22 +110,22 @@ const SystemTopicConfigPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="图文推荐"></BackBartment>
-      <SelectTopicMulti
+      <BackBartment title="电子书推荐"></BackBartment>
+      <SelectBookMulti
         selected={selected}
-        open={showTopicWin}
-        onCancel={() => setShowTopicWin(false)}
+        open={showBookWin}
+        onCancel={() => setShowBookWin(false)}
         onSelected={(arr: any) => {
           let box = [...selected];
           box = box.concat(arr);
           setSelected(box);
-          setShowTopicWin(false);
+          setShowBookWin(false);
           checkThumbox(courses, box);
         }}
-      ></SelectTopicMulti>
+      ></SelectBookMulti>
       <div className="float-left d-flex mt-30 mb-30">
         <div>
-          <Button type="primary" onClick={() => setShowTopicWin(true)}>
+          <Button type="primary" onClick={() => setShowBookWin(true)}>
             添加推荐
           </Button>
         </div>
@@ -146,9 +145,9 @@ const SystemTopicConfigPage = () => {
                 <CloseIcon />
               </div>
               <ThumbBar
-                width={80}
+                width={60}
                 value={item.thumb}
-                height={60}
+                height={80}
                 title={""}
                 border={4}
               ></ThumbBar>
@@ -174,4 +173,4 @@ const SystemTopicConfigPage = () => {
   );
 };
 
-export default SystemTopicConfigPage;
+export default SystemBookConfigPage;

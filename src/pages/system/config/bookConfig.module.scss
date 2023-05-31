@@ -1,0 +1,19 @@
+.thumb-box {
+  width: 970px;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .item {
+    width: 60px;
+    height: 80px;
+    position: relative;
+    margin-right: 37px;
+    margin-bottom: 37px;
+    .btn-del {
+      position: absolute;
+      right: -7.5px;
+      top: -7.5px;
+    }
+  }
+}

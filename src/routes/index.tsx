@@ -108,6 +108,7 @@ import SystemIOSConfigPage from "../pages/system/config/iosConfig";
 import SystemCreditSignConfigPage from "../pages/system/config/creditSignConfig";
 import SystemNormalConfigPage from "../pages/system/config/config";
 import SystemTopicConfigPage from "../pages/system/config/topicConfig";
+import SystemBookConfigPage from "../pages/system/config/bookConfig";
 import ErrorPage from "../pages/error";
 
 let RootPage: any = null;
@@ -409,6 +410,7 @@ const routes: RouteObject[] = [
           },
           { path: "/system/config", element: <SystemNormalConfigPage /> },
           { path: "/system/topicConfig", element: <SystemTopicConfigPage /> },
+          { path: "/system/bookConfig", element: <SystemBookConfigPage /> },
         ],
       },
       {

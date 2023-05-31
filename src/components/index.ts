@@ -19,3 +19,4 @@ export * from "./vhtml-tooltip";
 export * from "./user-add";
 export * from "./quill-editor";
 export * from "./select-image";
+export * from "./select-multi-topic";

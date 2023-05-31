@@ -17,6 +17,7 @@ const SystemNormalConfigPage = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [config, setConfig] = useState<any>({});
+  const [thumb, setThumb] = useState<any>({});
   const [key, setKey] = useState(String(result.get("key")));
 
   useEffect(() => {
@@ -38,6 +39,11 @@ const SystemNormalConfigPage = () => {
         for (let index2 in configData[index]) {
           let item = configData[index][index2];
           let params: any = {};
+          if (item.field_type === "image") {
+            let box: any = thumb;
+            box[item.key] = item.value;
+            setThumb(box);
+          }
           if (item.field_type === "switch") {
             params[item.key] = Number(item.value);
             form.setFieldsValue(params);
@@ -147,7 +153,7 @@ const SystemNormalConfigPage = () => {
                         let params: any = {};
                         params[c.key] = url;
                         form.setFieldsValue(params);
-                        setThumb(url);
+                        setThumb(params);
                       }}
                     ></UploadImageButton>
                   </Form.Item>
@@ -160,7 +166,7 @@ const SystemNormalConfigPage = () => {
                         let params: any = {};
                         params[c.key] = url;
                         form.setFieldsValue(params);
-                        setThumb(url);
+                        setThumb(params);
                       }}
                     ></UploadImageButton>
                   </Form.Item>
@@ -175,7 +181,7 @@ const SystemNormalConfigPage = () => {
                           let params: any = {};
                           params[c.key] = url;
                           form.setFieldsValue(params);
-                          setThumb(url);
+                          setThumb(params);
                         }}
                       ></UploadImageButton>
                     </Form.Item>
@@ -206,17 +212,16 @@ const SystemNormalConfigPage = () => {
                     />
                   </Form.Item>
                 )}
-
                 {c.name === "网站Logo" &&
                   c.field_type === "image" &&
-                  c.value && <img src={c.value} width={200} />}
+                  thumb[c.key] && <img src={thumb[c.key]} width={200} />}
                 {c.name === "默认头像" &&
                   c.field_type === "image" &&
-                  c.value && <img src={c.value} width={100} />}
+                  thumb[c.key] && <img src={thumb[c.key]} width={100} />}
                 {c.name !== "网站Logo" &&
                   c.name !== "默认头像" &&
                   c.field_type === "image" &&
-                  c.value && <img src={c.value} />}
+                  thumb[c.key] && <img src={thumb[c.key]} />}
                 {c.help && (
                   <div className="form-helper-text">
                     <span>{c.help}</span>

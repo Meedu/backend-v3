@@ -104,6 +104,7 @@ import SystemVideoSaveConfigPage from "../pages/system/config/videoSaveConfig";
 import SystemImagesSaveConfigPage from "../pages/system/config/saveImagesConfig";
 import SystemvVideoHlsConfigPage from "../pages/system/config/videoHlsConfig";
 import SystemWechatMiniConfigPage from "../pages/system/config/wechat_miniConfig";
+import SystemIOSConfigPage from "../pages/system/config/iosConfig";
 import ErrorPage from "../pages/error";
 
 let RootPage: any = null;
@@ -398,6 +399,7 @@ const routes: RouteObject[] = [
             path: "/system/wechat_miniConfig",
             element: <SystemWechatMiniConfigPage />,
           },
+          { path: "/system/iosConfig", element: <SystemIOSConfigPage /> },
         ],
       },
       {

@@ -57,13 +57,17 @@ const SystemMpWechatConfigPage = () => {
           configData[index].key === "meedu.mp_wechat.enabled_oauth_login"
         ) {
           form.setFieldsValue({
-            "meedu.mp_wechat.enabled_oauth_login": configData[index].value,
+            "meedu.mp_wechat.enabled_oauth_login": Number(
+              configData[index].value
+            ),
           });
         } else if (
           configData[index].key === "meedu.mp_wechat.enabled_scan_login"
         ) {
           form.setFieldsValue({
-            "meedu.mp_wechat.enabled_scan_login": configData[index].value,
+            "meedu.mp_wechat.enabled_scan_login": Number(
+              configData[index].value
+            ),
           });
         } else if (
           configData[index].key === "meedu.mp_wechat.scan_login_alert"
@@ -73,7 +77,7 @@ const SystemMpWechatConfigPage = () => {
           });
         } else if (configData[index].key === "meedu.mp_wechat.enabled_share") {
           form.setFieldsValue({
-            "meedu.mp_wechat.enabled_share": configData[index].value,
+            "meedu.mp_wechat.enabled_share": Number(configData[index].value),
           });
         } else if (configData[index].key === "meedu.mp_wechat.share.title") {
           form.setFieldsValue({

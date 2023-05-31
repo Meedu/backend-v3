@@ -167,7 +167,9 @@ const SystemLiveConfigPage = () => {
           configData[index].key === "meedu.addons.zhibo.tencent.webrtc_play"
         ) {
           form.setFieldsValue({
-            "meedu.addons.zhibo.tencent.webrtc_play": configData[index].value,
+            "meedu.addons.zhibo.tencent.webrtc_play": Number(
+              configData[index].value
+            ),
           });
         } else if (
           configData[index].key === "meedu.addons.zhibo.go-meedu.internal_url"

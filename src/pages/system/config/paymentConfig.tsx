@@ -29,7 +29,7 @@ const SystemPaymentConfigPage = () => {
       for (let index in configData) {
         if (configData[index].key === "meedu.payment.alipay.enabled") {
           form.setFieldsValue({
-            "meedu.payment.alipay.enabled": configData[index].value,
+            "meedu.payment.alipay.enabled": Number(configData[index].value),
           });
         } else if (configData[index].key === "pay.alipay.app_id") {
           form.setFieldsValue({
@@ -45,7 +45,7 @@ const SystemPaymentConfigPage = () => {
           });
         } else if (configData[index].key === "meedu.payment.wechat.enabled") {
           form.setFieldsValue({
-            "meedu.payment.wechat.enabled": configData[index].value,
+            "meedu.payment.wechat.enabled": Number(configData[index].value),
           });
         } else if (configData[index].key === "pay.wechat.app_id") {
           form.setFieldsValue({
@@ -65,7 +65,7 @@ const SystemPaymentConfigPage = () => {
           });
         } else if (configData[index].key === "meedu.payment.handPay.enabled") {
           form.setFieldsValue({
-            "meedu.payment.handPay.enabled": configData[index].value,
+            "meedu.payment.handPay.enabled": Number(configData[index].value),
           });
         } else if (
           configData[index].key === "meedu.payment.handPay.introduction"
@@ -86,7 +86,9 @@ const SystemPaymentConfigPage = () => {
           configData[index].key === "meedu.payment.wechat-jsapi.enabled"
         ) {
           form.setFieldsValue({
-            "meedu.payment.wechat-jsapi.enabled": configData[index].value,
+            "meedu.payment.wechat-jsapi.enabled": Number(
+              configData[index].value
+            ),
           });
         }
       }

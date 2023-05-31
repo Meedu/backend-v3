@@ -47,8 +47,9 @@ const SystemPlayerConfigPage = () => {
           configData[index].key === "meedu.system.player.enabled_bullet_secret"
         ) {
           form.setFieldsValue({
-            "meedu.system.player.enabled_bullet_secret":
-              configData[index].value,
+            "meedu.system.player.enabled_bullet_secret": Number(
+              configData[index].value
+            ),
           });
         } else if (
           configData[index].key === "meedu.system.player.bullet_secret.text"

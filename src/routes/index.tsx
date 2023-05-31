@@ -106,6 +106,7 @@ import SystemvVideoHlsConfigPage from "../pages/system/config/videoHlsConfig";
 import SystemWechatMiniConfigPage from "../pages/system/config/wechat_miniConfig";
 import SystemIOSConfigPage from "../pages/system/config/iosConfig";
 import SystemCreditSignConfigPage from "../pages/system/config/creditSignConfig";
+import SystemNormalConfigPage from "../pages/system/config/config";
 import ErrorPage from "../pages/error";
 
 let RootPage: any = null;
@@ -405,6 +406,7 @@ const routes: RouteObject[] = [
             path: "/system/creditSignConfig",
             element: <SystemCreditSignConfigPage />,
           },
+          { path: "/system/config", element: <SystemNormalConfigPage /> },
         ],
       },
       {

@@ -194,7 +194,7 @@ const LivePage = () => {
     },
     {
       title: "讲师/助教",
-      width: "8%",
+      width: "10%",
       render: (_, record: any) => (
         <>
           <span>{record.teacher.name}</span>
@@ -214,7 +214,7 @@ const LivePage = () => {
     },
     {
       title: "下一场直播时间",
-      width: "18%",
+      width: "16%",
       render: (_, record: any) => (
         <>
           {record.status === 2 && (

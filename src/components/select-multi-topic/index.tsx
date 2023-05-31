@@ -99,14 +99,7 @@ export const SelectTopicMulti = (props: PropsInterface) => {
       let newbox: any = [];
       if (row) {
         for (var i = 0; i < row.length; i++) {
-          let item = {
-            type: "book",
-            id: row[i].id,
-            title: row[i].name,
-            thumb: row[i].thumb,
-            charge: row[i].charge,
-          };
-          newbox.push(item);
+          newbox.push(row[i].id);
         }
         setSelectedKey(newbox);
       }
@@ -137,7 +130,7 @@ export const SelectTopicMulti = (props: PropsInterface) => {
           }}
         >
           <div
-            className="float-left"
+            className="float-left mt-20"
             style={{
               maxHeight: 520,
               overflowX: "hidden",

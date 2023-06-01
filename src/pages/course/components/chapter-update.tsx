@@ -75,7 +75,7 @@ export const CourseChapterUpdateDialog = (props: PropsInterface) => {
           <div className="float-left mt-30">
             <Form
               form={form}
-              name="learnPath-update-dailog"
+              name="course-chapter-update-dailog"
               labelCol={{ span: 3 }}
               wrapperCol={{ span: 21 }}
               initialValues={{ remember: true }}

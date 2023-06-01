@@ -123,3 +123,23 @@ export function videoDetail(id: number) {
 export function videoUpdate(id: number, params: any) {
   return client.put(`/backend/addons/zhibo/course_video/${id}`, params);
 }
+
+export function chaptersList(params: any) {
+  return client.get(`/backend/addons/zhibo/course_chapter/index`, params);
+}
+
+export function chaptersDestroy(id: number) {
+  return client.destroy(`/backend/addons/zhibo/course_chapter/${id}`);
+}
+
+export function chaptersStore(params: any) {
+  return client.post(`/backend/addons/zhibo/course_chapter/create`, params);
+}
+
+export function chaptersDetail(id: number) {
+  return client.get(`backend/addons/zhibo/course_chapter/${id}`, {});
+}
+
+export function chaptersUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/zhibo/course_chapter/${id}`, params);
+}

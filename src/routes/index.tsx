@@ -33,6 +33,7 @@ import LiveUsersPage from "../pages/live/users";
 import LiveVideoPage from "../pages/live/video/index";
 import LiveVideoCreatePage from "../pages/live/video/create";
 import LiveVideoUpdatePage from "../pages/live/video/update";
+import LiveChapterPage from "../pages/live/chapter/index";
 import LearnPathPage from "../pages/learningpath/index";
 import LearnPathCreatePage from "../pages/learningpath/create";
 import LearnPathUpdatePage from "../pages/learningpath/update";
@@ -232,6 +233,7 @@ const routes: RouteObject[] = [
             path: "/live/course/video/update",
             element: <LiveVideoUpdatePage />,
           },
+          { path: "/live/course/chapter/index", element: <LiveChapterPage /> },
           { path: "/learningpath/path/index", element: <LearnPathPage /> },
           {
             path: "/learningpath/path/create",

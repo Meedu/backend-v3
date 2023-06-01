@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Modal, Form, Input, message, Space } from "antd";
-import { course } from "../../../api/index";
+import { live } from "../../../api/index";
 import { HelperText } from "../../../components";
 
 interface PropsInterface {
@@ -17,7 +17,7 @@ export const CourseChapterCreateDialog = (props: PropsInterface) => {
   useEffect(() => {
     if (props.open) {
       form.setFieldsValue({
-        title: "",
+        name: "",
         sort: "",
       });
     }
@@ -28,8 +28,9 @@ export const CourseChapterCreateDialog = (props: PropsInterface) => {
       return;
     }
     setLoading(true);
-    course
-      .chaptersStore(props.cid, values)
+    values.course_id = props.cid;
+    live
+      .chaptersStore(values)
       .then((res: any) => {
         setLoading(false);
         message.success("成功！");
@@ -62,7 +63,7 @@ export const CourseChapterCreateDialog = (props: PropsInterface) => {
           <div className="float-left mt-30">
             <Form
               form={form}
-              name="course-chapter-create-dailog"
+              name="live-chapter-create-dailog"
               labelCol={{ span: 3 }}
               wrapperCol={{ span: 21 }}
               initialValues={{ remember: true }}
@@ -72,7 +73,7 @@ export const CourseChapterCreateDialog = (props: PropsInterface) => {
             >
               <Form.Item
                 label="章节名称"
-                name="title"
+                name="name"
                 rules={[{ required: true, message: "请输入章节名称!" }]}
               >
                 <Input

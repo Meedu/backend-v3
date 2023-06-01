@@ -1,35 +1,49 @@
 import { useEffect, useState } from "react";
 import { Modal, Form, Input, message, Space } from "antd";
-import { course } from "../../../api/index";
+import { live } from "../../../api/index";
 import { HelperText } from "../../../components";
 
 interface PropsInterface {
   open: boolean;
+  id: number;
   cid: number;
   onCancel: () => void;
   onSuccess: () => void;
 }
 
-export const CourseChapterCreateDialog = (props: PropsInterface) => {
+export const CourseChapterUpdateDialog = (props: PropsInterface) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (props.open) {
       form.setFieldsValue({
-        title: "",
+        name: "",
         sort: "",
       });
     }
-  }, [props.open, props.cid]);
+    if (props.id > 0 && props.cid) {
+      getDetail();
+    }
+  }, [props.open, props.cid, props.id]);
+
+  const getDetail = () => {
+    live.chaptersDetail(props.id).then((res: any) => {
+      form.setFieldsValue({
+        name: res.data.name,
+        sort: res.data.sort,
+      });
+    });
+  };
 
   const onFinish = (values: any) => {
     if (loading) {
       return;
     }
     setLoading(true);
-    course
-      .chaptersStore(props.cid, values)
+    values.course_id = props.cid;
+    live
+      .chaptersUpdate(props.id, values)
       .then((res: any) => {
         setLoading(false);
         message.success("成功！");
@@ -48,7 +62,7 @@ export const CourseChapterCreateDialog = (props: PropsInterface) => {
     <>
       {props.open && (
         <Modal
-          title="添加章节"
+          title="编辑章节"
           onCancel={() => {
             props.onCancel();
           }}
@@ -62,7 +76,7 @@ export const CourseChapterCreateDialog = (props: PropsInterface) => {
           <div className="float-left mt-30">
             <Form
               form={form}
-              name="course-chapter-create-dailog"
+              name="live-chapter-update-dailog"
               labelCol={{ span: 3 }}
               wrapperCol={{ span: 21 }}
               initialValues={{ remember: true }}
@@ -72,7 +86,7 @@ export const CourseChapterCreateDialog = (props: PropsInterface) => {
             >
               <Form.Item
                 label="章节名称"
-                name="title"
+                name="name"
                 rules={[{ required: true, message: "请输入章节名称!" }]}
               >
                 <Input

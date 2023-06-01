@@ -80,7 +80,7 @@ export const CourseCategoryCreateDialog = (props: PropsInterface) => {
           <div className="float-left mt-30">
             <Form
               form={form}
-              name="learnPath-create-dailog"
+              name="live-category-create-dailog"
               labelCol={{ span: 3 }}
               wrapperCol={{ span: 21 }}
               initialValues={{ remember: true }}

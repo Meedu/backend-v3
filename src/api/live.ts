@@ -47,3 +47,27 @@ export function categoryDetail(id: number) {
 export function categoryUpdate(id: number, params: any) {
   return client.put(`/backend/addons/zhibo/course_category/${id}`, params);
 }
+
+export function teacherList(params: any) {
+  return client.get(`/backend/addons/zhibo/teacher/index`, params);
+}
+
+export function teacherDestroy(id: number) {
+  return client.destroy(`/backend/addons/zhibo/teacher/${id}`);
+}
+
+export function teacherCreate() {
+  return client.get(`/backend/addons/zhibo/teacher/create`, {});
+}
+
+export function teacherStore(params: any) {
+  return client.post("/backend/addons/zhibo/teacher/create", params);
+}
+
+export function teacherDetail(id: number) {
+  return client.get(`/backend/addons/zhibo/teacher/${id}`, {});
+}
+
+export function teacherUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/zhibo/teacher/${id}`, params);
+}

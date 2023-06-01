@@ -417,6 +417,14 @@ textarea.ant-input {
   }
 }
 
+.eyes-link {
+  color: #606266;
+  &:hover {
+    color: #3ca7fa;
+    opacity: 0.8;
+  }
+}
+
 .meedu-main-body {
   width: 100%;
   height: auto;

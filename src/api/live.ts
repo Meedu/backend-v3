@@ -99,3 +99,27 @@ export function teacherDetail(id: number) {
 export function teacherUpdate(id: number, params: any) {
   return client.put(`/backend/addons/zhibo/teacher/${id}`, params);
 }
+
+export function videoList(params: any) {
+  return client.get(`/backend/addons/zhibo/course_video/index`, params);
+}
+
+export function videoDestory(id: number) {
+  return client.destroy(`/backend/addons/zhibo/course_video/${id}`);
+}
+
+export function videoCreate() {
+  return client.get(`/backend/addons/zhibo/course_video/create`, {});
+}
+
+export function videoStore(params: any) {
+  return client.post("/backend/addons/zhibo/course_video/create", params);
+}
+
+export function videoDetail(id: number) {
+  return client.get(`/backend/addons/zhibo/course_video/${id}`, {});
+}
+
+export function videoUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/zhibo/course_video/${id}`, params);
+}

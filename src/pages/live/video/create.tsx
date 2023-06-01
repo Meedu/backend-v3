@@ -29,14 +29,16 @@ const LiveVideoCreatePage = () => {
   const getParams = () => {
     live.videoCreate().then((res: any) => {
       var data = res.data.chapters[id];
-      let arr: any = [];
-      for (var i = 0; i < data.length; i++) {
-        arr.push({
-          label: data[i].name,
-          value: data[i].id,
-        });
+      if (data && data.length > 0) {
+        let arr: any = [];
+        for (var i = 0; i < data.length; i++) {
+          arr.push({
+            label: data[i].name,
+            value: data[i].id,
+          });
+        }
+        setChapters(arr);
       }
-      setChapters(arr);
     });
   };
 

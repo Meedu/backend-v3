@@ -34,11 +34,15 @@ export class HttpClient {
 
     this.axios.interceptors.response.use(
       (response: AxiosResponse) => {
-        let code = response.data.status; //业务返回代码
+        let status = response.data.status;
+        let code = response.data.code; //业务返回代码
         let msg = response.data.message; //错误消息
 
-        if (code === 0) {
+        if (status === 0) {
           return Promise.resolve(response);
+        } else if (code === 401) {
+          message.error("请重新登录");
+          GoLogin();
         } else {
           message.error(msg);
         }

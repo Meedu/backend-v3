@@ -24,6 +24,22 @@ export function update(id: number, params: any) {
   return client.put(`/backend/addons/zhibo/course/${id}`, params);
 }
 
+export function comment(params: any) {
+  return client.get(`/backend/addons/zhibo/course_comment`, params);
+}
+
+export function commentDestoryMulti(params: any) {
+  return client.post(`/backend/addons/zhibo/course_comment/delete`, params);
+}
+
+export function commentCheck(params: any) {
+  return client.post(`/backend/addons/zhibo/course_comment/check`, params);
+}
+
+export function userImport(id: number, params: any) {
+  return client.post(`/backend/addons/zhibo/course/${id}/user/import`, params);
+}
+
 export function categoryList(params: any) {
   return client.get(`/backend/addons/zhibo/course_category/index`, params);
 }

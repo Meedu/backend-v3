@@ -28,6 +28,7 @@ import CourseTencentPage from "../pages/course/video/tencent-hls";
 import LivePage from "../pages/live/index";
 import LiveCategoryPage from "../pages/live/category/index";
 import LiveTeacherPage from "../pages/live/teacher/index";
+import LiveCommentsPage from "../pages/live/comment";
 import LearnPathPage from "../pages/learningpath/index";
 import LearnPathCreatePage from "../pages/learningpath/create";
 import LearnPathUpdatePage from "../pages/learningpath/update";
@@ -216,6 +217,7 @@ const routes: RouteObject[] = [
             element: <LiveCategoryPage />,
           },
           { path: "/live/teacher/index", element: <LiveTeacherPage /> },
+          { path: "/live/course/comment", element: <LiveCommentsPage /> },
           { path: "/learningpath/path/index", element: <LearnPathPage /> },
           {
             path: "/learningpath/path/create",

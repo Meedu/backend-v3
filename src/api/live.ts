@@ -40,6 +40,18 @@ export function userImport(id: number, params: any) {
   return client.post(`/backend/addons/zhibo/course/${id}/user/import`, params);
 }
 
+export function userList(id: number, params: any) {
+  return client.get(`/backend/addons/zhibo/course/${id}/users`, params);
+}
+
+export function userDel(id: number, params: any) {
+  return client.post(`/backend/addons/zhibo/course/${id}/user/del`, params);
+}
+
+export function userAdd(id: number, params: any) {
+  return client.post(`/backend/addons/zhibo/course/${id}/user/add`, params);
+}
+
 export function categoryList(params: any) {
   return client.get(`/backend/addons/zhibo/course_category/index`, params);
 }

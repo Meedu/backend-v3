@@ -26,6 +26,8 @@ import CourseChapterPage from "../pages/course/chapter/index";
 import CourseAliyunPage from "../pages/course/video/aliyun-hls";
 import CourseTencentPage from "../pages/course/video/tencent-hls";
 import LivePage from "../pages/live/index";
+import LiveCreatePage from "../pages/live/create";
+import LiveUpdatePage from "../pages/live/update";
 import LiveCategoryPage from "../pages/live/category/index";
 import LiveTeacherPage from "../pages/live/teacher/index";
 import LiveCommentsPage from "../pages/live/comment";
@@ -217,6 +219,8 @@ const routes: RouteObject[] = [
             element: <CourseTencentPage />,
           },
           { path: "/live/course/index", element: <LivePage /> },
+          { path: "/live/course/create", element: <LiveCreatePage /> },
+          { path: "/live/course/update", element: <LiveUpdatePage /> },
           {
             path: "/live/course/category/index",
             element: <LiveCategoryPage />,

@@ -9,6 +9,7 @@ import { dateFormat } from "../../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
+import moment from "moment";
 
 interface DataType {
   id: React.Key;
@@ -202,6 +203,10 @@ const CourseVideoCommentsPage = () => {
     },
   };
 
+  const disabledDate = (current: any) => {
+    return current && current >= moment().endOf("day"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
+  };
+
   return (
     <div className="meedu-main-body">
       <BackBartment title="课时评论" />
@@ -238,6 +243,7 @@ const CourseVideoCommentsPage = () => {
             options={courses}
           />
           <RangePicker
+            disabledDate={disabledDate}
             format={"YYYY-MM-DD"}
             value={createdAts}
             style={{ marginLeft: 10 }}

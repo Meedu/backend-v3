@@ -11,9 +11,10 @@ import {
   Select,
   Row,
   Col,
+  Modal,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { course } from "../../api/index";
+import { book } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
   BackBartment,
@@ -22,79 +23,37 @@ import {
   HelperText,
   QuillEditor,
 } from "../../components";
-import dayjs from "dayjs";
 import moment from "moment";
 
-const CourseUpdatePage = () => {
-  const result = new URLSearchParams(useLocation().search);
+const BookCreatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [isFree, setIsFree] = useState(0);
+  const [charge, setCharge] = useState(0);
   const [thumb, setThumb] = useState<string>("");
-  const [defautValue, setDefautValue] = useState("");
-  const [id, setId] = useState(Number(result.get("id")));
+  const [visiable, setVisiable] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "编辑录播课程";
-    dispatch(titleAction("编辑录播课程"));
+    document.title = "新建电子书";
+    dispatch(titleAction("新建电子书"));
+    form.setFieldsValue({ is_show: 1, is_free: 0, is_vip_free: 0 });
+    setIsFree(0);
+    setVisiable(false);
     getParams();
   }, []);
 
-  useEffect(() => {
-    setId(Number(result.get("id")));
-    getDetail();
-  }, [result.get("id")]);
-
-  const getDetail = () => {
-    if (id === 0) {
-      return;
-    }
-    course.detail(id).then((res: any) => {
-      var data = res.data;
-      form.setFieldsValue({
-        category_id: data.category_id,
-        title: data.title,
-        thumb: data.thumb,
-        is_show: data.is_show,
-        is_free: data.is_free,
-        short_description: data.short_description,
-        original_desc: data.original_desc,
-        charge: data.charge,
-        published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
-      });
-      setIsFree(data.is_free);
-      setDefautValue(data.original_desc);
-      setThumb(data.thumb);
-    });
-  };
-
   const getParams = () => {
-    course.create().then((res: any) => {
+    book.create().then((res: any) => {
       let categories = res.data.categories;
       const box: any = [];
       for (let i = 0; i < categories.length; i++) {
-        if (categories[i].children.length > 0) {
-          box.push({
-            label: categories[i].name,
-            value: categories[i].id,
-          });
-          let children = categories[i].children;
-          for (let j = 0; j < children.length; j++) {
-            children[j].name = "|----" + children[j].name;
-            box.push({
-              label: children[j].name,
-              value: children[j].id,
-            });
-          }
-        } else {
-          box.push({
-            label: categories[i].name,
-            value: categories[i].id,
-          });
-        }
+        box.push({
+          label: categories[i].name,
+          value: categories[i].id,
+        });
       }
       setCategories(box);
     });
@@ -108,11 +67,11 @@ const CourseUpdatePage = () => {
       values.charge = 0;
     }
     if (Number(values.charge) % 1 !== 0) {
-      message.error("课程价格必须为整数型");
+      message.error("电子书价格必须为整数");
       return;
     }
     if (values.is_free === 0 && Number(values.charge) <= 0) {
-      message.error("课程未设置免费时价格应该大于0");
+      message.error("电子书未设置免费时价格应该大于0");
       return;
     }
     values.render_desc = values.original_desc;
@@ -120,12 +79,12 @@ const CourseUpdatePage = () => {
       "YYYY-MM-DD HH:mm"
     );
     setLoading(true);
-    course
-      .update(id, values)
+    book
+      .store(values)
       .then((res: any) => {
         setLoading(false);
         message.success("保存成功！");
-        navigate(-1);
+        setVisiable(true);
       })
       .catch((e) => {
         setLoading(false);
@@ -146,7 +105,7 @@ const CourseUpdatePage = () => {
 
   const isVChange = (checked: boolean) => {
     if (checked) {
-      form.setFieldsValue({ is_free: 1 });
+      form.setFieldsValue({ is_free: 1, charge: 0 });
       setIsFree(1);
     } else {
       form.setFieldsValue({ is_free: 0 });
@@ -154,13 +113,34 @@ const CourseUpdatePage = () => {
     }
   };
 
+  const isVipChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ is_vip_free: 1 });
+    } else {
+      form.setFieldsValue({ is_vip_free: 0 });
+    }
+  };
+
+  const goVideo = () => {
+    book
+      .list({
+        page: 1,
+        size: 1,
+        sort: "id",
+        order: "desc",
+      })
+      .then((res: any) => {
+        navigate("/meedubook/article/index?bid=" + res.data.data.data[0].id);
+      });
+  };
+
   return (
     <div className="meedu-main-body">
-      <BackBartment title="编辑录播课程" />
+      <BackBartment title="新建电子书" />
       <div className="float-left mt-30">
         <Form
           form={form}
-          name="course-update"
+          name="book-create"
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
           initialValues={{ remember: true }}
@@ -169,13 +149,13 @@ const CourseUpdatePage = () => {
           autoComplete="off"
         >
           <Form.Item
-            name="category_id"
+            name="cid"
             label="所属分类"
             rules={[{ required: true, message: "请选择所属分类!" }]}
           >
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
-                name="category_id"
+                name="cid"
                 rules={[{ required: true, message: "请选择所属分类!" }]}
               >
                 <Select
@@ -191,9 +171,9 @@ const CourseUpdatePage = () => {
                   text="分类管理"
                   class="c-primary"
                   icon={null}
-                  p="courseCategory"
+                  p="addons.meedu_books.book_category.list"
                   onClick={() => {
-                    navigate("/course/vod/category/index");
+                    navigate("/meedubook/category/index");
                   }}
                   disabled={null}
                 />
@@ -201,25 +181,25 @@ const CourseUpdatePage = () => {
             </Space>
           </Form.Item>
           <Form.Item
-            label="课程名称"
-            name="title"
-            rules={[{ required: true, message: "请输入课程名称!" }]}
+            label="电子书名称"
+            name="name"
+            rules={[{ required: true, message: "请输入电子书名称!" }]}
           >
             <Input
               style={{ width: 300 }}
-              placeholder="请输入课程名称"
+              placeholder="请输入电子书名称"
               allowClear
             />
           </Form.Item>
           <Form.Item
-            label="课程封面"
+            label="电子书封面"
             name="thumb"
-            rules={[{ required: true, message: "请上传课程封面!" }]}
+            rules={[{ required: true, message: "请上传电子书封面!" }]}
           >
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
                 name="thumb"
-                rules={[{ required: true, message: "请上传课程封面!" }]}
+                rules={[{ required: true, message: "请上传电子书封面!" }]}
               >
                 <UploadImageButton
                   text="上传封面"
@@ -230,7 +210,7 @@ const CourseUpdatePage = () => {
                 ></UploadImageButton>
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="长宽比4:3，建议尺寸：400x300像素"></HelperText>
+                <HelperText text="长宽比3:4，建议尺寸：300x400像素"></HelperText>
               </div>
             </Space>
           </Form.Item>
@@ -239,11 +219,11 @@ const CourseUpdatePage = () => {
               <Col span={3}></Col>
               <Col span={21}>
                 <div
-                  className="contain-thumb-box"
+                  className="normal-thumb-box"
                   style={{
                     backgroundImage: `url(${thumb})`,
-                    width: 200,
-                    height: 150,
+                    width: 90,
+                    height: 120,
                   }}
                 ></div>
               </Col>
@@ -268,10 +248,25 @@ const CourseUpdatePage = () => {
                     placeholder="单位：元"
                     allowClear
                     type="number"
+                    onChange={(e) => {
+                      setCharge(Number(e.target.value));
+                    }}
                   />
                 </Form.Item>
                 <div className="ml-10">
                   <HelperText text="最小单位“元”，不支持小数"></HelperText>
+                </div>
+              </Space>
+            </Form.Item>
+          )}
+          {charge > 0 && (
+            <Form.Item label="会员免费" name="is_vip_free">
+              <Space align="baseline" style={{ height: 32 }}>
+                <Form.Item name="is_vip_free" valuePropName="checked">
+                  <Switch onChange={isVipChange} />
+                </Form.Item>
+                <div className="ml-10">
+                  <HelperText text="如果开启该选项，则购买VIP会员的学员可以无需购买即可观看该电子书。"></HelperText>
                 </div>
               </Space>
             </Form.Item>
@@ -304,13 +299,13 @@ const CourseUpdatePage = () => {
                 <Switch onChange={onSwitch} />
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="关闭后此课程在前台隐藏显示"></HelperText>
+                <HelperText text="关闭后电子书在前台隐藏显示"></HelperText>
               </div>
             </Space>
           </Form.Item>
           <Form.Item
             label="简短介绍"
-            name="short_description"
+            name="short_desc"
             rules={[{ required: true, message: "请输入简短介绍!" }]}
           >
             <Input.TextArea
@@ -332,7 +327,7 @@ const CourseUpdatePage = () => {
               <QuillEditor
                 mode=""
                 height={800}
-                defautValue={defautValue}
+                defautValue=""
                 isFormula={false}
                 setContent={(value: string) => {
                   form.setFieldsValue({ original_desc: value });
@@ -360,8 +355,33 @@ const CourseUpdatePage = () => {
           </div>
         </div>
       </div>
+      {visiable && (
+        <Modal
+          title=""
+          onCancel={() => {
+            setVisiable(false);
+            navigate("/meedubook/book/index", { replace: true });
+          }}
+          cancelText="暂不添加"
+          okText="立即添加"
+          open={true}
+          width={500}
+          maskClosable={false}
+          onOk={() => {
+            setVisiable(false);
+            goVideo();
+          }}
+        >
+          <div
+            className="text-center"
+            style={{ marginTop: 30, marginBottom: 30 }}
+          >
+            <span>新建电子书成功，请在电子书中添加文章吧！</span>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };
 
-export default CourseUpdatePage;
+export default BookCreatePage;

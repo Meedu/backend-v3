@@ -234,7 +234,7 @@ const LearnPathCreatePage = () => {
                 />
               </Form.Item>
               <div className="ml-10">
-                <HelperText text="上架时间越晚，排序越靠"></HelperText>
+                <HelperText text="上架时间越晚，排序越靠前"></HelperText>
               </div>
             </Space>
           </Form.Item>

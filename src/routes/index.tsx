@@ -37,6 +37,8 @@ import LiveVideoCreatePage from "../pages/live/video/create";
 import LiveVideoUpdatePage from "../pages/live/video/update";
 import LiveChapterPage from "../pages/live/chapter/index";
 import BookPage from "../pages/book/index";
+import BookCreatePage from "../pages/book/create";
+import BookUpdatePage from "../pages/book/update";
 import BookCategoryPage from "../pages/book/category/index";
 import BookCommentsPage from "../pages/book/comments";
 import BookArticleCommentsPage from "../pages/book/article/comments";
@@ -243,6 +245,8 @@ const routes: RouteObject[] = [
           },
           { path: "/live/course/chapter/index", element: <LiveChapterPage /> },
           { path: "/meedubook/book/index", element: <BookPage /> },
+          { path: "/meedubook/book/create", element: <BookCreatePage /> },
+          { path: "/meedubook/book/update", element: <BookUpdatePage /> },
           { path: "/meedubook/category/index", element: <BookCategoryPage /> },
           { path: "/meedubook/book/comment", element: <BookCommentsPage /> },
           {

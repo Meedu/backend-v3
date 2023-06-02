@@ -50,6 +50,7 @@ import BookUsersPage from "../pages/book/users";
 import TopicPage from "../pages/topic/index";
 import TopicCategoryPage from "../pages/topic/category/index";
 import TopicCommentsPage from "../pages/topic/comment";
+import TopicUsersPage from "../pages/topic/users";
 import LearnPathPage from "../pages/learningpath/index";
 import LearnPathCreatePage from "../pages/learningpath/create";
 import LearnPathUpdatePage from "../pages/learningpath/update";
@@ -275,6 +276,7 @@ const routes: RouteObject[] = [
           { path: "/topic/index", element: <TopicPage /> },
           { path: "/topic/category/index", element: <TopicCategoryPage /> },
           { path: "/topic/comment", element: <TopicCommentsPage /> },
+          { path: "/topic/order", element: <TopicUsersPage /> },
           { path: "/learningpath/path/index", element: <LearnPathPage /> },
           {
             path: "/learningpath/path/create",

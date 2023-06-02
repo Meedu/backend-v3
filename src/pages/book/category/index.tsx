@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Table, Modal, message, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
-import { live } from "../../../api/index";
+import { book } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../../components";
 import { ExclamationCircleFilled } from "@ant-design/icons";
@@ -15,7 +15,7 @@ interface DataType {
   name: string;
 }
 
-const LiveCategoryPage = () => {
+const BookCategoryPage = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -25,8 +25,8 @@ const LiveCategoryPage = () => {
   const [updateId, setUpdateId] = useState<number>(0);
 
   useEffect(() => {
-    document.title = "直播课程分类";
-    dispatch(titleAction("直播课程分类"));
+    document.title = "电子书分类管理";
+    dispatch(titleAction("电子书分类管理"));
   }, []);
 
   useEffect(() => {
@@ -38,31 +38,10 @@ const LiveCategoryPage = () => {
       return;
     }
     setLoading(true);
-    live
+    book
       .categoryList({})
       .then((res: any) => {
-        const box: any = [];
-        let categories = res.data;
-        for (let i = 0; i < categories.length; i++) {
-          if (categories[i].children.length > 0) {
-            box.push({
-              name: categories[i].name,
-              id: categories[i].id,
-              sort: categories[i].sort,
-              children: categories[i].children,
-              courses_count: categories[i].courses_count,
-            });
-          } else {
-            box.push({
-              name: categories[i].name,
-              id: categories[i].id,
-              sort: categories[i].sort,
-              courses_count: categories[i].courses_count,
-            });
-          }
-        }
-        setList(box);
-        setTotal(res.data.total);
+        setList(res.data);
         setLoading(false);
       })
       .catch((e) => {
@@ -86,11 +65,6 @@ const LiveCategoryPage = () => {
       render: (_, record: any) => <span>{record.name} </span>,
     },
     {
-      title: "下属课程",
-      width: 150,
-      render: (_, record: any) => <span>{record.courses_count}个</span>,
-    },
-    {
       title: "操作",
       width: 160,
       fixed: "right",
@@ -101,7 +75,7 @@ const LiveCategoryPage = () => {
             text="编辑"
             class="c-primary"
             icon={null}
-            p="addons.Zhibo.course_category.update"
+            p="addons.meedu_books.book_category.update"
             onClick={() => {
               setUpdateId(record.id);
               setShowUpdateWin(true);
@@ -113,7 +87,7 @@ const LiveCategoryPage = () => {
             text="删除"
             class="c-red"
             icon={null}
-            p="addons.Zhibo.course_category.delete"
+            p="addons.meedu_books.book_category.delete"
             onClick={() => {
               destory(record.id);
             }}
@@ -145,7 +119,7 @@ const LiveCategoryPage = () => {
           return;
         }
         setLoading(true);
-        live
+        book
           .categoryDestroy(id)
           .then(() => {
             setLoading(false);
@@ -164,9 +138,8 @@ const LiveCategoryPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="直播课程分类" />
+      <BackBartment title="电子书分类管理" />
       <CourseCategoryCreateDialog
-        categories={list}
         open={showAddWin}
         onCancel={() => setShowAddWin(false)}
         onSuccess={() => {
@@ -176,7 +149,6 @@ const LiveCategoryPage = () => {
       ></CourseCategoryCreateDialog>
       <CourseCategoryUpdateDialog
         id={updateId}
-        categories={list}
         open={showUpdateWin}
         onCancel={() => setShowUpdateWin(false)}
         onSuccess={() => {
@@ -190,7 +162,7 @@ const LiveCategoryPage = () => {
           text="添加分类"
           class=""
           icon={null}
-          p="addons.Zhibo.course_category.store"
+          p="addons.meedu_books.book_category.store"
           onClick={() => setShowAddWin(true)}
           disabled={null}
         />
@@ -208,4 +180,4 @@ const LiveCategoryPage = () => {
   );
 };
 
-export default LiveCategoryPage;
+export default BookCategoryPage;

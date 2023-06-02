@@ -29,9 +29,38 @@ export function comments(params: any) {
 }
 
 export function commentDestoryMulti(params: any) {
-  return client.post(`/backend/addons/meedu_books/book_comment/destroy/multi`, params);
+  return client.post(
+    `/backend/addons/meedu_books/book_comment/destroy/multi`,
+    params
+  );
 }
 
 export function commentMulti(params: any) {
-  return client.post(`/backend/addons/meedu_books/book_comment/checked`, params);
+  return client.post(
+    `/backend/addons/meedu_books/book_comment/checked`,
+    params
+  );
+}
+
+export function categoryList(params: any) {
+  return client.get(`/backend/addons/meedu_books/book_category/index`, params);
+}
+
+export function categoryDestroy(id: number) {
+  return client.destroy(`/backend/addons/meedu_books/book_category/${id}`);
+}
+
+export function categoryStore(params: any) {
+  return client.post(
+    "/backend/addons/meedu_books/book_category/create",
+    params
+  );
+}
+
+export function categoryDetail(id: number) {
+  return client.get(`/backend/addons/meedu_books/book_category/${id}`, {});
+}
+
+export function categoryUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/meedu_books/book_category/${id}`, params);
 }

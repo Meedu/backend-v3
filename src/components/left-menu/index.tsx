@@ -344,6 +344,10 @@ const children2Parent: any = {
   "^/singlepage": ["decoration"],
   "^/course": ["courses"],
   "^/K12": ["courses"],
+  "^/live": ["courses"],
+  "^/meedubook": ["courses"],
+  "^/topic": ["courses"],
+  "^/learningpath": ["courses"],
   "^/system": ["system"],
   "^/systemLog": ["system"],
 };

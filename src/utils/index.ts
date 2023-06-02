@@ -84,3 +84,11 @@ export function passwordRules(value: any) {
 export function getUrl() {
   return window.location.protocol + "//" + window.location.host;
 }
+
+export function saveEditorKey(key: string) {
+  window.localStorage.setItem("meedu-editor-key", key);
+}
+
+export function getEditorKey() {
+  return window.localStorage.getItem("meedu-editor-key");
+}

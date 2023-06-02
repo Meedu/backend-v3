@@ -237,6 +237,10 @@ h1 {
   float: left;
 }
 
+.flex {
+  display: flex;
+}
+
 .d-flex {
   display: flex;
   align-items: center;
@@ -277,6 +281,14 @@ h1 {
 
 .flex-1 {
   flex: 1;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
 }
 
 .ml-10 {

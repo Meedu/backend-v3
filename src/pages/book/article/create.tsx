@@ -4,6 +4,7 @@ import {
   Button,
   Input,
   message,
+  Modal,
   Form,
   DatePicker,
   Switch,
@@ -19,10 +20,12 @@ import {
   HelperText,
   QuillEditor,
 } from "../../../components";
-import dayjs from "dayjs";
+import { getEditorKey, saveEditorKey } from "../../../utils/index";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+const { confirm } = Modal;
 import moment from "moment";
 
-const BookArticleUpdatePage = () => {
+const BookArticleCreatePage = () => {
   const result = new URLSearchParams(useLocation().search);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -30,14 +33,22 @@ const BookArticleUpdatePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [charge, setCharge] = useState(0);
-  const [defautValue, setDefautValue] = useState("");
+  const [current, setCurrent] = useState("");
   const [editor, setEditor] = useState("");
-  const [id, setId] = useState(Number(result.get("id")));
-  const [bid, setBid] = useState(Number(result.get("bid")));
+  const [bid, setBid] = useState(Number(result.get("book_id")));
+  const tools = [
+    { label: "Markdown", value: "markdown" },
+    { label: "富文本编辑器", value: "quill" },
+  ];
 
   useEffect(() => {
-    document.title = "编辑电子书文章";
-    dispatch(titleAction("编辑电子书文章"));
+    document.title = "添加电子书文章";
+    dispatch(titleAction("添加电子书文章"));
+    form.setFieldsValue({
+      book_cid: [],
+      is_show: 1,
+      trySee: 0,
+    });
     if (bid) {
       getParams();
       getBook();
@@ -45,30 +56,19 @@ const BookArticleUpdatePage = () => {
   }, [bid]);
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-    setBid(Number(result.get("bid")));
-    getDetail();
-  }, [result.get("id"), result.get("bid")]);
+    setBid(Number(result.get("book_id")));
+  }, [result.get("book_id")]);
 
-  const getDetail = () => {
-    if (id === 0) {
-      return;
+  useEffect(() => {
+    let localCurrent = getEditorKey();
+    if (localCurrent === "markdown") {
+      setEditor("MARKDOWN");
+    } else {
+      setEditor("FULLEDITOR");
     }
-    book.articleDetail(id).then((res: any) => {
-      var data = res.data;
-      form.setFieldsValue({
-        book_cid: data.book_cid == 0 ? [] : data.book_cid,
-        title: data.title,
-        is_show: data.is_show,
-        trySee: data.charge === 0 ? 1 : 0,
-        original_content: data.original_content,
-        charge: data.charge,
-        published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
-      });
-      setEditor(data.editor);
-      setDefautValue(data.original_content);
-    });
-  };
+    let current = localCurrent ? localCurrent : "quill";
+    setCurrent(current);
+  }, [getEditorKey()]);
 
   const getParams = () => {
     book.articleCreate({}).then((res: any) => {
@@ -94,7 +94,11 @@ const BookArticleUpdatePage = () => {
     if (loading) {
       return;
     }
-    if (editor !== "MARKDOWN") {
+
+    if (getEditorKey() === "markdown") {
+      values.editor = "MARKDOWN";
+    } else {
+      values.editor = "FULLEDITOR";
       values.render_content = values.original_content;
     }
     values.bid = bid;
@@ -103,7 +107,7 @@ const BookArticleUpdatePage = () => {
     );
     setLoading(true);
     book
-      .articleUpdate(id, values)
+      .articleStore(values)
       .then((res: any) => {
         setLoading(false);
         message.success("保存成功！");
@@ -136,11 +140,11 @@ const BookArticleUpdatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="编辑电子书文章" />
+      <BackBartment title="添加电子书文章" />
       <div className="float-left mt-30">
         <Form
           form={form}
-          name="book-article-update"
+          name="book-article-create"
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
           initialValues={{ remember: true }}
@@ -230,20 +234,48 @@ const BookArticleUpdatePage = () => {
             rules={[{ required: true, message: "请输入文章内容!" }]}
             style={{ height: 840 }}
           >
-            <div className="w-800px">
-              {editor === "MARKDOWN" ? (
-                <></>
-              ) : (
-                <QuillEditor
-                  mode=""
-                  height={800}
-                  defautValue={defautValue}
-                  isFormula={false}
-                  setContent={(value: string) => {
-                    form.setFieldsValue({ original_content: value });
+            <div className="flex flex-row">
+              <div className="w-800px">
+                {editor === "MARKDOWN" ? (
+                  <></>
+                ) : (
+                  <QuillEditor
+                    mode=""
+                    height={800}
+                    defautValue=""
+                    isFormula={false}
+                    setContent={(value: string) => {
+                      form.setFieldsValue({ original_content: value });
+                    }}
+                  ></QuillEditor>
+                )}
+              </div>
+              <div className="ml-30">
+                <Select
+                  value={current}
+                  style={{ width: 150 }}
+                  onChange={(e) => {
+                    confirm({
+                      title: "警告",
+                      icon: <ExclamationCircleFilled />,
+                      content: "切换编辑器将清空已编辑文章内容，是否切换？",
+                      centered: true,
+                      okText: "确认",
+                      cancelText: "取消",
+                      onOk() {
+                        setCurrent(e);
+                        saveEditorKey(e);
+                      },
+                      onCancel() {
+                        console.log("Cancel");
+                      },
+                    });
                   }}
-                ></QuillEditor>
-              )}
+                  allowClear
+                  placeholder="请选择"
+                  options={tools}
+                />
+              </div>
             </div>
           </Form.Item>
         </Form>
@@ -270,4 +302,4 @@ const BookArticleUpdatePage = () => {
   );
 };
 
-export default BookArticleUpdatePage;
+export default BookArticleCreatePage;

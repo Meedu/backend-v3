@@ -137,7 +137,7 @@ export function chaptersStore(params: any) {
 }
 
 export function chaptersDetail(id: number) {
-  return client.get(`backend/addons/zhibo/course_chapter/${id}`, {});
+  return client.get(`/backend/addons/zhibo/course_chapter/${id}`, {});
 }
 
 export function chaptersUpdate(id: number, params: any) {

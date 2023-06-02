@@ -41,7 +41,9 @@ import BookCreatePage from "../pages/book/create";
 import BookUpdatePage from "../pages/book/update";
 import BookCategoryPage from "../pages/book/category/index";
 import BookCommentsPage from "../pages/book/comments";
+import BookArticlePage from "../pages/book/article/index";
 import BookArticleCommentsPage from "../pages/book/article/comments";
+import BookChapterPage from "../pages/book/chapter/index";
 import BookUsersPage from "../pages/book/users";
 import LearnPathPage from "../pages/learningpath/index";
 import LearnPathCreatePage from "../pages/learningpath/create";
@@ -250,11 +252,13 @@ const routes: RouteObject[] = [
           { path: "/meedubook/book/update", element: <BookUpdatePage /> },
           { path: "/meedubook/category/index", element: <BookCategoryPage /> },
           { path: "/meedubook/book/comment", element: <BookCommentsPage /> },
+          { path: "/meedubook/article/index", element: <BookArticlePage /> },
           {
             path: "/meedubook/article/comment",
             element: <BookArticleCommentsPage />,
           },
           { path: "/meedubook/book/users", element: <BookUsersPage /> },
+          { path: "/meedubook/chapter/index", element: <BookChapterPage /> },
           { path: "/learningpath/path/index", element: <LearnPathPage /> },
           {
             path: "/learningpath/path/create",

@@ -177,7 +177,7 @@ export function chaptersStore(id: number, params: any) {
 }
 
 export function chaptersDetail(id: number, ids: any) {
-  return client.get(`backend/api/v1/course_chapter/${id}/${ids}`, {});
+  return client.get(`/backend/api/v1/course_chapter/${id}/${ids}`, {});
 }
 
 export function chaptersUpdate(id: number, ids: any, params: any) {

@@ -121,3 +121,23 @@ export function userDel(id: number, params: any) {
 export function userAdd(id: number, params: any) {
   return client.post(`/backend/addons/meedu_books/book/${id}/user/add`, params);
 }
+
+export function chaptersList(params: any) {
+  return client.get(`/backend/addons/meedu_books/book_chapter/index`, params);
+}
+
+export function chaptersDestroy(id: number) {
+  return client.destroy(`/backend/addons/meedu_books/book_chapter/${id}`);
+}
+
+export function chaptersStore(params: any) {
+  return client.post(`/backend/addons/meedu_books/book_chapter/create`, params);
+}
+
+export function chaptersDetail(id: number) {
+  return client.get(`/backend/addons/meedu_books/book_chapter/${id}`, {});
+}
+
+export function chaptersUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/meedu_books/book_chapter/${id}`, params);
+}

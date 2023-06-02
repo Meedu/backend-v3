@@ -109,3 +109,15 @@ export function articleCommentMulti(params: any) {
     params
   );
 }
+
+export function userList(id: number, params: any) {
+  return client.get(`/backend/addons/meedu_books/book/${id}/users`, params);
+}
+
+export function userDel(id: number, params: any) {
+  return client.post(`/backend/addons/meedu_books/book/${id}/user/del`, params);
+}
+
+export function userAdd(id: number, params: any) {
+  return client.post(`/backend/addons/meedu_books/book/${id}/user/add`, params);
+}

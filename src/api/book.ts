@@ -64,3 +64,48 @@ export function categoryDetail(id: number) {
 export function categoryUpdate(id: number, params: any) {
   return client.put(`/backend/addons/meedu_books/book_category/${id}`, params);
 }
+
+export function articleList(params: any) {
+  return client.get(`/backend/addons/meedu_books/book_article/index`, params);
+}
+
+export function articleCreate(params: any) {
+  return client.get(`/backend/addons/meedu_books/book_article/create`, params);
+}
+
+export function articleDestroy(id: number) {
+  return client.destroy(`/backend/addons/meedu_books/book_article/${id}`);
+}
+
+export function articleStore(params: any) {
+  return client.post("/backend/addons/meedu_books/book_article/create", params);
+}
+
+export function articleDetail(id: number) {
+  return client.get(`/backend/addons/meedu_books/book_article/${id}`, {});
+}
+
+export function articleUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/meedu_books/book_article/${id}`, params);
+}
+
+export function articleComments(params: any) {
+  return client.get(
+    `/backend/addons/meedu_books/article_comment/index`,
+    params
+  );
+}
+
+export function articleCommentDestoryMulti(params: any) {
+  return client.post(
+    `/backend/addons/meedu_books/article_comment/destroy/multi`,
+    params
+  );
+}
+
+export function articleCommentMulti(params: any) {
+  return client.post(
+    `/backend/addons/meedu_books/article_comment/checked`,
+    params
+  );
+}

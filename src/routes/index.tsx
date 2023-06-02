@@ -42,6 +42,7 @@ import BookUpdatePage from "../pages/book/update";
 import BookCategoryPage from "../pages/book/category/index";
 import BookCommentsPage from "../pages/book/comments";
 import BookArticlePage from "../pages/book/article/index";
+import BookArticleUpdatePage from "../pages/book/article/update";
 import BookArticleCommentsPage from "../pages/book/article/comments";
 import BookChapterPage from "../pages/book/chapter/index";
 import BookUsersPage from "../pages/book/users";
@@ -253,6 +254,10 @@ const routes: RouteObject[] = [
           { path: "/meedubook/category/index", element: <BookCategoryPage /> },
           { path: "/meedubook/book/comment", element: <BookCommentsPage /> },
           { path: "/meedubook/article/index", element: <BookArticlePage /> },
+          {
+            path: "/meedubook/article/update",
+            element: <BookArticleUpdatePage />,
+          },
           {
             path: "/meedubook/article/comment",
             element: <BookArticleCommentsPage />,

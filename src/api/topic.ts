@@ -51,3 +51,23 @@ export function userDel(params: any) {
 export function userAdd(params: any) {
   return client.post(`/backend/addons/meedu_topics/order/user/add`, params);
 }
+
+export function categoryList(params: any) {
+  return client.get(`/backend/addons/meedu_topics/category/index`, params);
+}
+
+export function categoryDestroy(id: number) {
+  return client.destroy(`/backend/addons/meedu_topics/category/${id}`);
+}
+
+export function categoryStore(params: any) {
+  return client.post("/backend/addons/meedu_topics/category/create", params);
+}
+
+export function categoryDetail(id: number) {
+  return client.get(`/backend/addons/meedu_topics/category/${id}`, {});
+}
+
+export function categoryUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/meedu_topics/category/${id}`, params);
+}

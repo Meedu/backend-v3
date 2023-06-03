@@ -35,3 +35,15 @@ export function refundList(params: any) {
 export function refundComplete(id: number, params: any) {
   return client.get(`/backend/addons/TuanGou/refunds/${id}/handler`, params);
 }
+
+export function tuanList(id: number, params: any) {
+  return client.get(`/backend/addons/TuanGou/goods/${id}/items`, params);
+}
+
+export function tuanDetail(id: number, itemId: number) {
+  return client.get(`/backend/addons/TuanGou/goods/${id}/item/${itemId}`, {});
+}
+
+export function tuanComplete(params: any) {
+  return client.get(`/backend/addons/TuanGou/goods/item/complete`, params);
+}

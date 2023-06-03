@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Input, message, Form, Space, DatePicker } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { miaosha } from "../../api/index";
+import { tuangou } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { HelperText, BackBartment, SelectResources } from "../../components";
 const { RangePicker } = DatePicker;
 import moment from "moment";
 
-const MiaoshaCreatePage = () => {
+const TuangouCreatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,8 +20,8 @@ const MiaoshaCreatePage = () => {
   const [showSelectResWin, setShowSelectResWin] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "添加秒杀课程";
-    dispatch(titleAction("添加秒杀课程"));
+    document.title = "添加团购商品";
+    dispatch(titleAction("添加团购商品"));
   }, []);
 
   const onFinish = (values: any) => {
@@ -29,11 +29,15 @@ const MiaoshaCreatePage = () => {
       return;
     }
     if (values.charge < 0) {
-      message.error("请输入正确的秒杀价");
+      message.error("请输入正确的团购价");
       return;
     }
-    if (values.num < 0) {
-      message.error("请输入正确的库存");
+    if (values.people_num < 2) {
+      message.error("组团成功人数最少为2个");
+      return;
+    }
+    if (values.time_limit < 0) {
+      message.error("请输入正确的有效期");
       return;
     }
     setLoading(true);
@@ -41,13 +45,14 @@ const MiaoshaCreatePage = () => {
     values.original_charge = original_charge;
     values.goods_title = title;
     values.goods_thumb = thumb;
-    values.end_at = moment(new Date(values.started_at[1])).format(
+    values.other_id = values.goods_id;
+    values.ended_at = moment(new Date(values.started_at[1])).format(
       "YYYY-MM-DD HH:mm"
     );
     values.started_at = moment(new Date(values.started_at[0])).format(
       "YYYY-MM-DD HH:mm"
     );
-    miaosha
+    tuangou
       .store(values)
       .then((res: any) => {
         setLoading(false);
@@ -65,7 +70,7 @@ const MiaoshaCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加秒杀课程" />
+      <BackBartment title="添加团购商品" />
       <SelectResources
         open={showSelectResWin}
         enabledResource={"vod,live,book,learnPath"}
@@ -88,7 +93,7 @@ const MiaoshaCreatePage = () => {
       <div className="float-left mt-30">
         <Form
           form={form}
-          name="miaosha-create"
+          name="tuangou-create"
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
           initialValues={{ remember: true }}
@@ -111,18 +116,18 @@ const MiaoshaCreatePage = () => {
             </Button>
           </Form.Item>
           <Form.Item
-            label="秒杀价"
+            label="团购价"
             name="charge"
-            rules={[{ required: true, message: "请输入秒杀价!" }]}
+            rules={[{ required: true, message: "请输入团购价!" }]}
           >
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
                 name="charge"
-                rules={[{ required: true, message: "请输入秒杀价!" }]}
+                rules={[{ required: true, message: "请输入团购价!" }]}
               >
                 <Input
                   style={{ width: 300 }}
-                  placeholder="请输入秒杀价"
+                  placeholder="请输入团购价"
                   allowClear
                   type="number"
                 />
@@ -133,27 +138,69 @@ const MiaoshaCreatePage = () => {
             </Space>
           </Form.Item>
           <Form.Item
-            label="库存"
-            name="num"
-            rules={[{ required: true, message: "请输入库存!" }]}
+            label="组团成功人数"
+            name="people_num"
+            rules={[{ required: true, message: "请输入组团成功人数!" }]}
           >
-            <Input
-              type="number"
-              style={{ width: 300 }}
-              placeholder="请输入库存"
-              allowClear
-            />
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item
+                name="people_num"
+                rules={[{ required: true, message: "请输入组团成功人数!" }]}
+              >
+                <Input
+                  type="number"
+                  style={{ width: 300 }}
+                  placeholder="请输入组团成功人数"
+                  allowClear
+                />
+              </Form.Item>
+              <div className="ml-10">
+                <HelperText text="组团达到指定人数即为组团成功。原则上最少为2个人。"></HelperText>
+              </div>
+            </Space>
+          </Form.Item>
+          <Form.Item
+            label="有效期"
+            name="time_limit"
+            rules={[{ required: true, message: "请输入有效期!" }]}
+          >
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item
+                name="time_limit"
+                rules={[{ required: true, message: "请输入有效期!" }]}
+              >
+                <Input
+                  type="number"
+                  style={{ width: 300 }}
+                  placeholder="单位：天"
+                  allowClear
+                />
+              </Form.Item>
+              <div className="ml-10">
+                <HelperText text="团长开团时刻起多少天内有效，失败的话将自动转为退款订单"></HelperText>
+              </div>
+            </Space>
           </Form.Item>
           <Form.Item
             label="活动时间"
             name="started_at"
             rules={[{ required: true, message: "请输入活动时间!" }]}
           >
-            <RangePicker
-              format={"YYYY-MM-DD HH:mm"}
-              showTime
-              placeholder={["开始时间", "结束时间"]}
-            />
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item
+                name="started_at"
+                rules={[{ required: true, message: "请输入活动时间!" }]}
+              >
+                <RangePicker
+                  format={"YYYY-MM-DD HH:mm"}
+                  showTime
+                  placeholder={["开始时间", "结束时间"]}
+                />
+              </Form.Item>
+              <div className="ml-10">
+                <HelperText text="团购开始时间，时间达到之后，学员才能参与团购"></HelperText>
+              </div>
+            </Space>
           </Form.Item>
         </Form>
       </div>
@@ -179,4 +226,4 @@ const MiaoshaCreatePage = () => {
   );
 };
 
-export default MiaoshaCreatePage;
+export default TuangouCreatePage;

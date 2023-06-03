@@ -132,7 +132,7 @@ const MiaoshaUpdatePage = () => {
           <Form.Item
             label="活动时间"
             name="started_at"
-            rules={[{ required: true, message: "请输入库存!" }]}
+            rules={[{ required: true, message: "请输入活动时间!" }]}
           >
             <RangePicker
               format={"YYYY-MM-DD HH:mm"}

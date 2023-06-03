@@ -141,9 +141,11 @@ const BookUpdatePage = () => {
     if (checked) {
       form.setFieldsValue({ is_free: 1, charge: 0 });
       setIsFree(1);
+      setCharge(0);
     } else {
       form.setFieldsValue({ is_free: 0, charge: original_charge });
       setIsFree(0);
+      setCharge(original_charge);
     }
   };
 

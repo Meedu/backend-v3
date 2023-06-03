@@ -32,6 +32,6 @@ export function refundList(params: any) {
   return client.get("/backend/addons/TuanGou/refunds/index", params);
 }
 
-export function Complete(id: number, params: any) {
+export function refundComplete(id: number, params: any) {
   return client.get(`/backend/addons/TuanGou/refunds/${id}/handler`, params);
 }

@@ -120,6 +120,7 @@ import TuangouPage from "../pages/tuangou/index";
 import TuangouCreatePage from "../pages/tuangou/create";
 import TuangouUpdatePage from "../pages/tuangou/update";
 import TuangouOrdersPage from "../pages/tuangou/orders";
+import TuangouRefundPage from "../pages/tuangou/refund";
 import CreditMallPage from "../pages/creditMall/index";
 import CreditMallCreatePage from "../pages/creditMall/create";
 import CreditMallUpdatePage from "../pages/creditMall/update";
@@ -372,6 +373,7 @@ const routes: RouteObject[] = [
           { path: "/tuangou/goods/create", element: <TuangouCreatePage /> },
           { path: "/tuangou/goods/update", element: <TuangouUpdatePage /> },
           { path: "/tuangou/goods/order", element: <TuangouOrdersPage /> },
+          { path: "/tuangou/goods/refund", element: <TuangouRefundPage /> },
           { path: "/wenda/question/index", element: <WendaPage /> },
           {
             path: "/wenda/question/category/index",

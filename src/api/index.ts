@@ -21,6 +21,7 @@ export * as practice from "./practice";
 export * as mock from "./mock";
 export * as codeExchanger from "./codeExchanger";
 export * as miaosha from "./miaosha";
+export * as tuangou from "./tuangou";
 export * as creditMall from "./creditMall";
 export * as order from "./order";
 export * as snapshot from "./snapshot";

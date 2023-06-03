@@ -116,6 +116,7 @@ import MiaoshaPage from "../pages/miaosha/index";
 import MiaoshaCreatePage from "../pages/miaosha/create";
 import MiaoshaUpdatePage from "../pages/miaosha/update";
 import MiaoshaOrdersPage from "../pages/miaosha/orders";
+import TuangouPage from "../pages/tuangou/index";
 import CreditMallPage from "../pages/creditMall/index";
 import CreditMallCreatePage from "../pages/creditMall/create";
 import CreditMallUpdatePage from "../pages/creditMall/update";
@@ -364,6 +365,7 @@ const routes: RouteObject[] = [
           { path: "/miaosha/goods/create", element: <MiaoshaCreatePage /> },
           { path: "/miaosha/goods/update", element: <MiaoshaUpdatePage /> },
           { path: "/miaosha/orders/index", element: <MiaoshaOrdersPage /> },
+          { path: "/tuangou/goods/index", element: <TuangouPage /> },
           { path: "/wenda/question/index", element: <WendaPage /> },
           {
             path: "/wenda/question/category/index",

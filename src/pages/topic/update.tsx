@@ -26,9 +26,10 @@ import {
 import { getEditorKey, saveEditorKey } from "../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
+import dayjs from "dayjs";
 import moment from "moment";
 
-const TopicCreatePage = () => {
+const TopicUpdatePage = () => {
   const result = new URLSearchParams(useLocation().search);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const TopicCreatePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [charge, setCharge] = useState(0);
+  const [original_charge, setOriginalCharge] = useState(0);
   const [isFree, setIsFree] = useState(0);
   const [thumb, setThumb] = useState<string>("");
   const [current, setCurrent] = useState("");
@@ -44,18 +46,54 @@ const TopicCreatePage = () => {
     { label: "Markdown", value: "markdown" },
     { label: "富文本编辑器", value: "quill" },
   ];
+  const [freeValue, setFreeValue] = useState("");
+  const [defautValue, setDefautValue] = useState("");
+  const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
-    document.title = "新建图文";
-    dispatch(titleAction("新建图文"));
-    setIsFree(0);
-    form.setFieldsValue({
-      is_show: 1,
-      is_free: 0,
-      is_vip_free: false,
-    });
+    document.title = "编辑图文";
+    dispatch(titleAction("编辑图文"));
+
     getParams();
   }, []);
+
+  useEffect(() => {
+    setId(Number(result.get("id")));
+    getDetail();
+  }, [result.get("id")]);
+
+  const getDetail = () => {
+    if (id === 0) {
+      return;
+    }
+    topic.detail(id).then((res: any) => {
+      var data = res.data;
+      form.setFieldsValue({
+        cid: data.cid,
+        title: data.title,
+        thumb: data.thumb,
+        is_show: data.is_show,
+        is_vip_free: data.is_vip_free,
+        short_desc: data.short_desc,
+        original_content: data.original_content,
+        free_content: data.free_content,
+        charge: data.charge,
+        sorted_at: dayjs(data.sorted_at, "YYYY-MM-DD HH:mm"),
+      });
+      if (data.charge > 0) {
+        form.setFieldsValue({ is_free: 0 });
+        setIsFree(0);
+      } else {
+        form.setFieldsValue({ is_free: 1 });
+        setIsFree(1);
+      }
+      setCharge(data.charge);
+      setDefautValue(data.original_content);
+      setFreeValue(data.free_content);
+      setOriginalCharge(data.charge);
+      setThumb(data.thumb);
+    });
+  };
 
   useEffect(() => {
     let localCurrent = getEditorKey();
@@ -116,7 +154,7 @@ const TopicCreatePage = () => {
     values.is_need_login = 0;
     setLoading(true);
     topic
-      .store(values)
+      .update(id, values)
       .then((res: any) => {
         setLoading(false);
         message.success("保存成功！");
@@ -153,18 +191,19 @@ const TopicCreatePage = () => {
       setIsFree(1);
       setCharge(0);
     } else {
-      form.setFieldsValue({ is_free: 0 });
+      form.setFieldsValue({ is_free: 0, original_charge });
+      setCharge(original_charge);
       setIsFree(0);
     }
   };
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="新建图文" />
+      <BackBartment title="编辑图文" />
       <div className="float-left mt-30">
         <Form
           form={form}
-          name="topic-create"
+          name="topic-update"
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
           initialValues={{ remember: true }}
@@ -336,7 +375,7 @@ const TopicCreatePage = () => {
                       <QuillEditor
                         mode=""
                         height={800}
-                        defautValue=""
+                        defautValue={freeValue}
                         isFormula={false}
                         setContent={(value: string) => {
                           form.setFieldsValue({ free_content: value });
@@ -386,7 +425,7 @@ const TopicCreatePage = () => {
                       <QuillEditor
                         mode=""
                         height={800}
-                        defautValue=""
+                        defautValue={defautValue}
                         isFormula={false}
                         setContent={(value: string) => {
                           form.setFieldsValue({ original_content: value });
@@ -439,7 +478,7 @@ const TopicCreatePage = () => {
                     <QuillEditor
                       mode=""
                       height={800}
-                      defautValue=""
+                      defautValue={defautValue}
                       isFormula={false}
                       setContent={(value: string) => {
                         form.setFieldsValue({ original_content: value });
@@ -500,4 +539,4 @@ const TopicCreatePage = () => {
   );
 };
 
-export default TopicCreatePage;
+export default TopicUpdatePage;

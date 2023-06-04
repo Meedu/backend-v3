@@ -145,6 +145,7 @@ import SystemNormalConfigPage from "../pages/system/config/config";
 import SystemTopicConfigPage from "../pages/system/config/topicConfig";
 import SystemBookConfigPage from "../pages/system/config/bookConfig";
 import ErrorPage from "../pages/error";
+import PaperCategoryPage from "../pages/exam/category/index";
 
 let RootPage: any = null;
 if (getToken()) {
@@ -502,6 +503,10 @@ const routes: RouteObject[] = [
           { path: "/system/config", element: <SystemNormalConfigPage /> },
           { path: "/system/topicConfig", element: <SystemTopicConfigPage /> },
           { path: "/system/bookConfig", element: <SystemBookConfigPage /> },
+          {
+            path: "/exam/paper/category/index",
+            element: <PaperCategoryPage />,
+          },
         ],
       },
       {

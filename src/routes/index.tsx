@@ -147,6 +147,8 @@ import SystemBookConfigPage from "../pages/system/config/bookConfig";
 import ErrorPage from "../pages/error";
 import PaperCategoryPage from "../pages/exam/category/index";
 import PracticePage from "../pages/exam/practice/index";
+import PracticeCreatePage from "../pages/exam/practice/create";
+import PracticeUpdatePage from "../pages/exam/practice/update";
 
 let RootPage: any = null;
 if (getToken()) {
@@ -509,6 +511,8 @@ const routes: RouteObject[] = [
             element: <PaperCategoryPage />,
           },
           { path: "/exam/practice/index", element: <PracticePage /> },
+          { path: "/exam/practice/create", element: <PracticeCreatePage /> },
+          {path: "/exam/practice/update", element:<PracticeUpdatePage/>}
         ],
       },
       {

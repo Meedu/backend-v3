@@ -240,9 +240,11 @@ const PracticePage = () => {
           return;
         }
         setLoading(true);
+        var ids = [];
+        ids.push(id);
         practice
           .destroy({
-            ids: id,
+            ids: ids,
           })
           .then(() => {
             setLoading(false);

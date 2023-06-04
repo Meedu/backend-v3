@@ -13,7 +13,7 @@ export function store(params: any) {
 }
 
 export function detail(id: number) {
-  return client.get(`/backend/addons/Paper/practice/${id}}`, {});
+  return client.get(`/backend/addons/Paper/practice/${id}`, {});
 }
 
 export function destroy(params: any) {

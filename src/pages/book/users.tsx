@@ -305,6 +305,7 @@ const BookUsersPage = () => {
         />
       </div>
       <UserAddDialog
+        type=""
         open={showUserAddWin}
         onCancel={() => setShowUserAddWin(false)}
         onSuccess={(rows: any) => {

@@ -339,6 +339,7 @@ export const SubUsers = (props: PropsInterface) => {
         }}
       ></UserImportDialog>
       <UserAddDialog
+        type=""
         open={showUserAddWin}
         onCancel={() => setShowUserAddWin(false)}
         onSuccess={(rows: any) => {

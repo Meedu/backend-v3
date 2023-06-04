@@ -14,12 +14,14 @@ interface DataType {
 
 interface PropInterface {
   open: boolean;
+  type: string;
   onCancel: () => void;
   onSuccess: (selectedRows: any) => void;
 }
 
 export const UserAddDialog: React.FC<PropInterface> = ({
   open,
+  type,
   onCancel,
   onSuccess,
 }) => {
@@ -35,6 +37,7 @@ export const UserAddDialog: React.FC<PropInterface> = ({
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [otherKeys, setOtherKeys] = useState<any>([]);
 
   useEffect(() => {
     getData();
@@ -80,7 +83,11 @@ export const UserAddDialog: React.FC<PropInterface> = ({
       message.error("请选择需要操作的学员");
       return;
     }
-    onSuccess(selectedRowKeys);
+    if (type === "mobile") {
+      onSuccess(otherKeys);
+    } else {
+      onSuccess(selectedRowKeys);
+    }
   };
 
   const resetList = () => {
@@ -150,6 +157,15 @@ export const UserAddDialog: React.FC<PropInterface> = ({
     selectedRowKeys: selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
+      if (type === "mobile") {
+        let box: any = [];
+        selectedRows.map((item: any) => {
+          box.push(item.mobile);
+        });
+        setOtherKeys(box);
+      } else {
+        setOtherKeys([]);
+      }
     },
   };
 

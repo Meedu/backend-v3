@@ -331,6 +331,7 @@ const LiveUsersPage = () => {
         }}
       ></UserImportDialog>
       <UserAddDialog
+        type=""
         open={showUserAddWin}
         onCancel={() => setShowUserAddWin(false)}
         onSuccess={(rows: any) => {

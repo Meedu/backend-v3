@@ -73,7 +73,7 @@ const MockPaperPage = () => {
   };
 
   const getParams = () => {
-    mock.create().then((res: any) => {
+    mock.create({}).then((res: any) => {
       let categories = res.data.categories;
       const box: any = [];
       for (let i = 0; i < categories.length; i++) {

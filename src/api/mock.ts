@@ -4,8 +4,8 @@ export function list(params: any) {
   return client.get(`/backend/addons/Paper/mock_paper/index`, params);
 }
 
-export function create() {
-  return client.get(`/backend/addons/Paper/mock_paper/create`, {});
+export function create(params: any) {
+  return client.get(`/backend/addons/Paper/mock_paper/create`, params);
 }
 
 export function store(params: any) {

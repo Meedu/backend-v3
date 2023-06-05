@@ -892,3 +892,13 @@ textarea.ant-input {
     padding-top: 15px;
   }
 }
+
+.question-list-render {
+  p {
+    img {
+      display: inline-block;
+      max-width: 100px !important;
+      vertical-align: middle;
+    }
+  }
+}

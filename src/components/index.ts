@@ -22,3 +22,4 @@ export * from "./select-image";
 export * from "./select-multi-topic";
 export * from "./close-icon";
 export * from "./select-multi-book";
+export * from "./question-render";

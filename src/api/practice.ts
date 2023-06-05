@@ -75,3 +75,31 @@ export function chaptersDetail(id: number) {
 export function chaptersUpdate(id: number, params: any) {
   return client.put(`/backend/addons/Paper/practice_chapter/${id}`, params);
 }
+
+export function questionList(id: number, params: any) {
+  return client.get(
+    `/backend/addons/Paper/practice_chapter/${id}/questions`,
+    params
+  );
+}
+
+export function questionCreate(id: number, params: any) {
+  return client.get(
+    `/backend/addons/Paper/practice_chapter/${id}/questions/params`,
+    params
+  );
+}
+
+export function questionDestoryMulti(id: number, params: any) {
+  return client.post(
+    `/backend/addons/Paper/practice_chapter/${id}/questions/delete`,
+    params
+  );
+}
+
+export function questionStoreMulti(id: number, params: any) {
+  return client.post(
+    `/backend/addons/Paper/practice_chapter/${id}/questions`,
+    params
+  );
+}

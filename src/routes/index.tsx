@@ -154,6 +154,7 @@ import PracticeUsersProgressPage from "../pages/exam/practice/progress";
 import PracticeChaptersPage from "../pages/exam/practice/chapter/index";
 import PracticeChapterCreatePage from "../pages/exam/practice/chapter/create";
 import PracticeChapterUpdatePage from "../pages/exam/practice/chapter/update";
+import PracticeQuestionPage from "../pages/exam/practice/chapter/question";
 
 let RootPage: any = null;
 if (getToken()) {
@@ -534,6 +535,10 @@ const routes: RouteObject[] = [
           {
             path: "/exam/practice/chapter/update",
             element: <PracticeChapterUpdatePage />,
+          },
+          {
+            path: "/exam/practice/chapter/question/index",
+            element: <PracticeQuestionPage />,
           },
         ],
       },

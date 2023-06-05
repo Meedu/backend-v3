@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { BackBartment } from "../../../components";
 import { WatchRecords } from "./components/watch-records";
+import { SubUsers } from "./components/sub-users";
 
 const MockPaperUsersPage = () => {
   const result = new URLSearchParams(useLocation().search);
@@ -73,10 +74,7 @@ const MockPaperUsersPage = () => {
         {resourceActive === "watch-records" && (
           <WatchRecords id={id}></WatchRecords>
         )}
-        {resourceActive === "sub-users" && (
-          <></>
-          //   <SubUsers id={id}></SubUsers>
-        )}
+        {resourceActive === "sub-users" && <SubUsers id={id}></SubUsers>}
         {resourceActive === "statistics" && <></>}
       </div>
     </div>

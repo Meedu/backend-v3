@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 interface PropInterface {
   type: "link" | "text" | "primary" | "default" | "danger";
   text: string;
-  p: string;
+  p: any;
   class: string;
   icon: any;
   onClick: () => void;
@@ -17,7 +17,19 @@ export const PerButton = (props: PropInterface) => {
     if (!user.permissions) {
       return false;
     }
-    return typeof user.permissions[props.p] !== "undefined";
+    if (Array.isArray(props.p)) {
+      let key = false;
+      if (props.p) {
+        for (let i = 0; i < props.p.length; i++) {
+          if (typeof user.permissions[props.p[i]] !== "undefined") {
+            key = true;
+          }
+        }
+      }
+      return key;
+    } else {
+      return typeof user.permissions[props.p] !== "undefined";
+    }
   };
   return (
     <>

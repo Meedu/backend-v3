@@ -157,6 +157,7 @@ import PracticeChapterUpdatePage from "../pages/exam/practice/chapter/update";
 import PracticeQuestionPage from "../pages/exam/practice/chapter/question";
 import PracticeQuestionCreatePage from "../pages/exam/practice/chapter/questionCreate";
 import MockPaperPage from "../pages/exam/mockpaper/index";
+import MockPaperUsersPage from "../pages/exam/mockpaper/users";
 import PaperPage from "../pages/exam/paper/index";
 
 let RootPage: any = null;
@@ -548,6 +549,7 @@ const routes: RouteObject[] = [
             element: <PracticeQuestionCreatePage />,
           },
           { path: "/exam/mockpaper/index", element: <MockPaperPage /> },
+          { path: "/exam/mockpaper/user", element: <MockPaperUsersPage /> },
           { path: "/exam/paper/index", element: <PaperPage /> },
         ],
       },

@@ -10,7 +10,7 @@ import {
   Modal,
 } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { mock } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { HelperText, BackBartment } from "../../../components";

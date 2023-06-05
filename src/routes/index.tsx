@@ -152,6 +152,8 @@ import PracticeUpdatePage from "../pages/exam/practice/update";
 import PracticeUsersPage from "../pages/exam/practice/user";
 import PracticeUsersProgressPage from "../pages/exam/practice/progress";
 import PracticeChaptersPage from "../pages/exam/practice/chapter/index";
+import PracticeChapterCreatePage from "../pages/exam/practice/chapter/create";
+import PracticeChapterUpdatePage from "../pages/exam/practice/chapter/update";
 
 let RootPage: any = null;
 if (getToken()) {
@@ -521,8 +523,18 @@ const routes: RouteObject[] = [
             path: "/exam/practice/progress",
             element: <PracticeUsersProgressPage />,
           },
-          {path: "/exam/practice/chapter/index",
-          element:<PracticeChaptersPage/>}
+          {
+            path: "/exam/practice/chapter/index",
+            element: <PracticeChaptersPage />,
+          },
+          {
+            path: "/exam/practice/chapter/create",
+            element: <PracticeChapterCreatePage />,
+          },
+          {
+            path: "/exam/practice/chapter/update",
+            element: <PracticeChapterUpdatePage />,
+          },
         ],
       },
       {

@@ -65,7 +65,7 @@ export function chaptersDestoryMulti(params: any) {
 }
 
 export function chaptersStore(params: any) {
-  return client.post(`/backend/addons/meedu_books/book_chapter/create`, params);
+  return client.post(`/backend/addons/Paper/practice_chapter/create`, params);
 }
 
 export function chaptersDetail(id: number) {

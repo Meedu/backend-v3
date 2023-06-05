@@ -92,7 +92,7 @@ const PracticeChaptersPage = () => {
             text="章节组卷"
             class="c-primary"
             icon={null}
-            p="addons.Paper.practice_chapter.question"
+            p="addons.Paper.practice_chapter.questions"
             onClick={() => {
               navigate("/exam/practice/chapter/question/index?id=" + record.id);
             }}

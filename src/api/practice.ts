@@ -48,3 +48,30 @@ export function userProgress(id: number, ids: any) {
     {}
   );
 }
+
+export function chapterList(params: any) {
+  return client.get(`/backend/addons/Paper/practice_chapter/index`, params);
+}
+
+export function chapterCreate() {
+  return client.get(`/backend/addons/Paper/practice_chapter/create`, {});
+}
+
+export function chaptersDestoryMulti(params: any) {
+  return client.post(
+    `/backend/addons/Paper/practice_chapter/delete/multi`,
+    params
+  );
+}
+
+export function chaptersStore(params: any) {
+  return client.post(`/backend/addons/meedu_books/book_chapter/create`, params);
+}
+
+export function chaptersDetail(id: number) {
+  return client.get(`/backend/addons/Paper/practice_chapter/${id}`, {});
+}
+
+export function chaptersUpdate(id: number, params: any) {
+  return client.put(`/backend/addons/Paper/practice_chapter/${id}`, params);
+}

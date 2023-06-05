@@ -6,6 +6,7 @@ import { titleAction } from "../../../store/user/loginUserSlice";
 import { BackBartment } from "../../../components";
 import { WatchRecords } from "./components/watch-records";
 import { SubUsers } from "./components/sub-users";
+import { Statistics } from "./components/statistics";
 
 const MockPaperUsersPage = () => {
   const result = new URLSearchParams(useLocation().search);
@@ -75,7 +76,7 @@ const MockPaperUsersPage = () => {
           <WatchRecords id={id}></WatchRecords>
         )}
         {resourceActive === "sub-users" && <SubUsers id={id}></SubUsers>}
-        {resourceActive === "statistics" && <></>}
+        {resourceActive === "statistics" && <Statistics id={id}></Statistics>}
       </div>
     </div>
   );

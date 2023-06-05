@@ -28,7 +28,7 @@ export function userPaper(id: number, params: any) {
   return client.get(`/backend/addons/Paper/mock_paper/${id}/records`, params);
 }
 
-export function stat(id: number, params: any) {
+export function stats(id: number, params: any) {
   return client.get(
     `/backend/addons/Paper/mock_paper/${id}/statistics`,
     params

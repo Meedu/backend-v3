@@ -902,3 +902,38 @@ textarea.ant-input {
     }
   }
 }
+
+.stat-paper-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  .stat-item {
+    text-align: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+
+    &:last-child {
+      border-right: 0;
+    }
+
+    .name {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-bottom: 30px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+    .value {
+      width: 100%;
+      height: auto;
+      float: left;
+      font-size: 24px;
+      font-weight: #333;
+    }
+  }
+}

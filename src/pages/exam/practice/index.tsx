@@ -12,11 +12,11 @@ import {
 import type { MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { practice } from "../../../api/index";
 import { DownOutlined } from "@ant-design/icons";
 import { titleAction } from "../../../store/user/loginUserSlice";
-import { PerButton, ThumbBar } from "../../../components";
+import { PerButton } from "../../../components";
 import { dateFormat } from "../../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;

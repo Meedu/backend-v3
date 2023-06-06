@@ -159,6 +159,7 @@ import PracticeQuestionCreatePage from "../pages/exam/practice/chapter/questionC
 import MockPaperPage from "../pages/exam/mockpaper/index";
 import MockPaperUsersPage from "../pages/exam/mockpaper/users";
 import MockPaperCreatePage from "../pages/exam/mockpaper/create";
+import MockPaperUpdatePage from "../pages/exam/mockpaper/update";
 import PaperPage from "../pages/exam/paper/index";
 
 let RootPage: any = null;
@@ -552,6 +553,7 @@ const routes: RouteObject[] = [
           { path: "/exam/mockpaper/index", element: <MockPaperPage /> },
           { path: "/exam/mockpaper/user", element: <MockPaperUsersPage /> },
           { path: "/exam/mockpaper/create", element: <MockPaperCreatePage /> },
+          { path: "/exam/mockpaper/update", element: <MockPaperUpdatePage /> },
           { path: "/exam/paper/index", element: <PaperPage /> },
         ],
       },

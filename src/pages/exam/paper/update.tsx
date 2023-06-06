@@ -9,13 +9,14 @@ import {
   Switch,
   Modal,
 } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { paper } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { HelperText, BackBartment } from "../../../components";
 
-const PaperCreatePage = () => {
+const PaperUpdatePage = () => {
+  const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -25,21 +26,60 @@ const PaperCreatePage = () => {
   const [isInvite, setIsInvite] = useState(0);
   const [categories, setCategories] = useState<any>([]);
   const [courses, setCourses] = useState<any>([]);
+  const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
-    document.title = "新建试卷";
-    dispatch(titleAction("新建试卷"));
-    form.setFieldsValue({
-      enabled_invite: 0,
-      is_free: 0,
-      is_skip_mark: 0,
-      is_vip_free: 0,
-      is_random: 0,
-    });
-    setIsFree(0);
-    setIsInvite(0);
+    document.title = "编辑试卷";
+    dispatch(titleAction("编辑试卷"));
     getParams();
   }, []);
+
+  useEffect(() => {
+    setId(Number(result.get("id")));
+    getDetail();
+  }, [result.get("id")]);
+
+  const getDetail = () => {
+    if (id === 0) {
+      return;
+    }
+    paper.detail(id).then((res: any) => {
+      var data = res.data.data;
+      form.setFieldsValue({
+        category_id: data.category_id,
+        title: data.title,
+        enabled_invite: data.enabled_invite,
+        is_vip_free: data.is_vip_free,
+        charge: data.charge,
+        expired_minutes: data.expired_minutes,
+        pass_score: data.pass_score,
+        is_skip_mark: data.is_skip_mark,
+        is_random: data.is_random,
+        try_times: data.try_times,
+      });
+      setCharge(data.charge);
+      setIsInvite(data.enabled_invite);
+      if (data.charge === 0) {
+        setIsFree(1);
+        form.setFieldsValue({ is_free: 1 });
+      } else {
+        setIsFree(0);
+        form.setFieldsValue({ is_free: 0 });
+      }
+      if (data.required_courses !== null) {
+        let ids =
+          data.required_courses.length === 0
+            ? []
+            : data.required_courses.split(",");
+        const arr: any = [];
+        ids.forEach((item: any) => {
+          arr.push(parseInt(item));
+        });
+        form.setFieldsValue({ required_courses: arr });
+      }
+    });
+  };
+
   const getParams = () => {
     paper.create().then((res: any) => {
       let categories = res.data.categories;
@@ -84,7 +124,7 @@ const PaperCreatePage = () => {
     setLoading(true);
     const ids = values.required_courses && values.required_courses.join(",");
     paper
-      .store({
+      .update(id, {
         rule: values.newRule,
         pass_score: values.pass_score,
         title: values.title,
@@ -152,7 +192,7 @@ const PaperCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="新建试卷" />
+      <BackBartment title="编辑试卷" />
       <div className="float-left mt-30">
         <Form
           form={form}
@@ -364,4 +404,4 @@ const PaperCreatePage = () => {
   );
 };
 
-export default PaperCreatePage;
+export default PaperUpdatePage;

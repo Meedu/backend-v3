@@ -161,6 +161,7 @@ import MockPaperUsersPage from "../pages/exam/mockpaper/users";
 import MockPaperCreatePage from "../pages/exam/mockpaper/create";
 import MockPaperUpdatePage from "../pages/exam/mockpaper/update";
 import PaperPage from "../pages/exam/paper/index";
+import PaperCreatePage from "../pages/exam/paper/create";
 
 let RootPage: any = null;
 if (getToken()) {
@@ -555,6 +556,7 @@ const routes: RouteObject[] = [
           { path: "/exam/mockpaper/create", element: <MockPaperCreatePage /> },
           { path: "/exam/mockpaper/update", element: <MockPaperUpdatePage /> },
           { path: "/exam/paper/index", element: <PaperPage /> },
+          { path: "/exam/paper/create", element: <PaperCreatePage /> },
         ],
       },
       {

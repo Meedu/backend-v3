@@ -7,6 +7,7 @@ import { PerButton, BackBartment } from "../../../components";
 import { question } from "../../../api/index";
 import { QChoice } from "./components/choice";
 import { QSelect } from "./components/select";
+import { QJudge } from "./components/judge";
 
 const QuestionCreatePage = () => {
   const dispatch = useDispatch();
@@ -265,13 +266,24 @@ const QuestionCreatePage = () => {
         <div className="float-left pl-200">
           {type === 1 && (
             <QChoice
+              question={null}
+              index={null}
               onChange={(question: any, list: any) => change(question, list)}
             ></QChoice>
           )}
           {type === 2 && (
             <QSelect
+              question={null}
+              index={null}
               onChange={(question: any, list: any) => change(question, list)}
             ></QSelect>
+          )}
+          {type === 5 && (
+            <QJudge
+              question={null}
+              index={null}
+              onChange={(question: any, list: any) => change(question, list)}
+            ></QJudge>
           )}
         </div>
       )}

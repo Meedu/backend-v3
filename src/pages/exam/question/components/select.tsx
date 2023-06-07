@@ -3,10 +3,16 @@ import { QuestionQuillEditor, HelperText } from "../../../../components";
 import { Select, Button, Input, message } from "antd";
 
 interface PropInterface {
+  question: any;
+  index: any;
   onChange: (question: any, list: any) => void;
 }
 
-export const QSelect: React.FC<PropInterface> = ({ onChange }) => {
+export const QSelect: React.FC<PropInterface> = ({
+  question,
+  index,
+  onChange,
+}) => {
   const [answers, setAnswers] = useState<any>([]);
   const [length, setLength] = useState(4);
   const [selectedAnswers, setSelectedAnswers] = useState<any>([]);
@@ -39,8 +45,22 @@ export const QSelect: React.FC<PropInterface> = ({ onChange }) => {
   }, [length]);
 
   useEffect(() => {
-    onChange(form, null);
+    onChange(form, index);
   }, [form]);
+
+  useEffect(() => {
+    if (question) {
+      lengthComp();
+      let answers = [];
+      if (question.answer && typeof question.answer === "string") {
+        answers = question.answer.split(",");
+      }
+      setAnswers(answers);
+      let obj = { ...form };
+      Object.assign(form, question);
+      setForm(obj);
+    }
+  }, [question]);
 
   useEffect(() => {
     if (selectedAnswers.length > 0) {
@@ -53,6 +73,15 @@ export const QSelect: React.FC<PropInterface> = ({ onChange }) => {
       setForm(obj);
     }
   }, [selectedAnswers]);
+
+  const lengthComp = () => {
+    for (let i = 1; i <= 10; i++) {
+      if (!question["option" + i]) {
+        setLength(Number(i - 1));
+        break;
+      }
+    }
+  };
 
   const add = () => {
     if (length >= 10) {
@@ -158,7 +187,7 @@ export const QSelect: React.FC<PropInterface> = ({ onChange }) => {
           <QuestionQuillEditor
             isFormula={true}
             height={40}
-            defautValue=""
+            defautValue={form.content}
             setContent={(value: string) => {
               let obj = { ...form };
               obj.content = value;
@@ -177,7 +206,7 @@ export const QSelect: React.FC<PropInterface> = ({ onChange }) => {
             <QuestionQuillEditor
               isFormula={true}
               height={40}
-              defautValue=""
+              defautValue={form["option" + Number(i + 1)]}
               setContent={(value: string) => {
                 let obj = { ...form };
                 obj["option" + Number(i + 1)] = value;
@@ -220,7 +249,7 @@ export const QSelect: React.FC<PropInterface> = ({ onChange }) => {
           <QuestionQuillEditor
             isFormula={true}
             height={40}
-            defautValue=""
+            defautValue={form.remark}
             setContent={(value: string) => {
               let obj = { ...form };
               obj.remark = value;

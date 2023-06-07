@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { QuestionQuillEditor, HelperText } from "../../../../components";
-import { Select, Button, Input, message } from "antd";
+import { Radio, Button, Input, message } from "antd";
+import type { RadioChangeEvent } from "antd";
 
 interface PropInterface {
   question: any;
@@ -8,40 +9,18 @@ interface PropInterface {
   onChange: (question: any, list: any) => void;
 }
 
-export const QChoice: React.FC<PropInterface> = ({
+export const QJudge: React.FC<PropInterface> = ({
   question,
   index,
   onChange,
 }) => {
   const [answers, setAnswers] = useState<any>([]);
-  const [length, setLength] = useState(4);
   const [form, setForm] = useState<any>({
     score: null,
     content: null,
     answer: null,
-    option1: null,
-    option2: null,
-    option3: null,
-    option4: null,
-    option5: null,
-    option6: null,
-    option7: null,
-    option8: null,
-    option9: null,
-    option10: null,
     remark: null,
   });
-
-  useEffect(() => {
-    let rows = [];
-    for (let i = 0; i < length; i++) {
-      rows.push({
-        label: "选项" + (i + 1),
-        value: "option" + (i + 1),
-      });
-    }
-    setAnswers(rows);
-  }, [length]);
 
   useEffect(() => {
     onChange(form, index);
@@ -49,40 +28,19 @@ export const QChoice: React.FC<PropInterface> = ({
 
   useEffect(() => {
     if (question) {
-      lengthComp();
-      let obj = { ...form };
-      Object.assign(form, question);
-      setForm(obj);
+      let obj: any = {};
+      Object.assign(obj, question);
+      obj.answer = parseInt(question.answer);
+      let newForm = { ...form };
+      Object.assign(form, obj);
+      setForm(newForm);
     }
   }, [question]);
 
-  const lengthComp = () => {
-    for (let i = 1; i <= 10; i++) {
-      if (!question["option" + i]) {
-        setLength(Number(i - 1));
-        break;
-      }
-    }
-  };
-
-  const add = () => {
-    if (length >= 10) {
-      message.error("最多10个选项");
-      return;
-    }
-    setLength(length + 1);
-  };
-
-  const del = () => {
-    if (length <= 2) {
-      message.error("至少得有两个选项");
-      return;
-    }
+  const onChanging = (e: RadioChangeEvent) => {
     let obj = { ...form };
-    obj.answer = null;
-    obj["option" + length] = null;
+    obj.answer = parseInt(e.target.value);
     setForm(obj);
-    setLength(length - 1);
   };
 
   return (
@@ -177,52 +135,16 @@ export const QChoice: React.FC<PropInterface> = ({
           ></QuestionQuillEditor>
         </div>
       </div>
-      {Array.from({ length: length }).map((_, i) => (
-        <div className="float-left mb-15" key={i}>
-          <div className="float-left helper-label mb-10">
-            <span className="c-red">*</span>
-            <span className="ml-5">选项{i + 1}</span>
-          </div>
-          <div className="float-left">
-            <QuestionQuillEditor
-              isFormula={true}
-              height={40}
-              defautValue={form["option" + Number(i + 1)]}
-              setContent={(value: string) => {
-                let obj = { ...form };
-                obj["option" + Number(i + 1)] = value;
-                setForm(obj);
-              }}
-            ></QuestionQuillEditor>
-          </div>
-        </div>
-      ))}
-      <div className="float-left mb-15">
-        <Button type="primary" onClick={() => add()}>
-          新增选项
-        </Button>
-        <Button type="primary" className="ml-10" onClick={() => del()} danger>
-          删除选项
-        </Button>
-      </div>
       <div className="float-left mb-15">
         <div className="float-left helper-label mb-10">
           <span className="c-red">*</span>
           <span className="ml-5">答案</span>
         </div>
         <div className="float-left">
-          <Select
-            style={{ width: 400 }}
-            value={form.answer}
-            onChange={(e) => {
-              let obj = { ...form };
-              obj.answer = e;
-              setForm(obj);
-            }}
-            allowClear
-            placeholder="答案"
-            options={answers}
-          />
+          <Radio.Group onChange={onChanging} value={form.answer}>
+            <Radio value={1}>正确</Radio>
+            <Radio value={0}>错误</Radio>
+          </Radio.Group>
         </div>
       </div>
       <div className="float-left">

@@ -92,7 +92,6 @@ const QuestionCreatePage = () => {
   };
 
   const save = () => {
-    console.log(formParams)
     if (loading) {
       return;
     }
@@ -164,7 +163,6 @@ const QuestionCreatePage = () => {
     let obj = { ...formParams };
     Object.assign(obj, question);
     setFormParams(obj);
-    console.log(obj)
     if (list) {
       setCapList(list);
     } else {

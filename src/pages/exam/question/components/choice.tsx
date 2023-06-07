@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { QuestionQuillEditor } from "../../../../components";
-import { Select, Button, Input } from "antd";
+import { QuestionQuillEditor, HelperText } from "../../../../components";
+import { Select, Button, Input, message } from "antd";
 
 interface PropInterface {
-  onChange: () => void;
+  onChange: (question: any, list: any) => void;
 }
 
 export const QChoice: React.FC<PropInterface> = ({ onChange }) => {
@@ -37,5 +37,185 @@ export const QChoice: React.FC<PropInterface> = ({ onChange }) => {
     setAnswers(rows);
   }, [length]);
 
-  return <div className="float-left"></div>;
+  useEffect(() => {
+    onChange(form, null);
+  }, [form]);
+
+  const add = () => {
+    if (length >= 10) {
+      message.error("最多10个选项");
+      return;
+    }
+    setLength(length + 1);
+  };
+
+  const del = () => {
+    if (length <= 2) {
+      message.error("至少得有两个选项");
+      return;
+    }
+    let obj = { ...form };
+    obj.answer = null;
+    obj["option" + length] = null;
+    setForm(obj);
+    setLength(length - 1);
+  };
+
+  return (
+    <div className="float-left">
+      <div className="float-left mb-15">
+        <div className="float-left helper-label mb-10">
+          <span className="c-red">*</span>
+          <span className="ml-5">分数</span>
+        </div>
+        <div className="float-left d-flex">
+          <div>
+            <Input
+              type="number"
+              value={form.score}
+              onChange={(e) => {
+                let obj = { ...form };
+                obj.score = e.target.value;
+                setForm(obj);
+              }}
+              allowClear
+              style={{ width: 200 }}
+              placeholder="分数"
+            />
+          </div>
+          <div className="ml-10">
+            <HelperText text="请输入整数。不支持小数。"></HelperText>
+          </div>
+          <div className="ml-10">
+            <span className="helper-text">常见分数</span>
+            <Button
+              type="link"
+              className="c-primary"
+              onClick={() => {
+                let obj = { ...form };
+                obj.score = 1;
+                setForm(obj);
+              }}
+            >
+              1分
+            </Button>
+            <Button
+              type="link"
+              className="c-primary"
+              onClick={() => {
+                let obj = { ...form };
+                obj.score = 2;
+                setForm(obj);
+              }}
+            >
+              2分
+            </Button>
+            <Button
+              type="link"
+              className="c-primary"
+              onClick={() => {
+                let obj = { ...form };
+                obj.score = 5;
+                setForm(obj);
+              }}
+            >
+              5分
+            </Button>
+            <Button
+              type="link"
+              className="c-primary"
+              onClick={() => {
+                let obj = { ...form };
+                obj.score = 10;
+                setForm(obj);
+              }}
+            >
+              10分
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className="float-left mb-15">
+        <div className="float-left helper-label mb-10">
+          <span className="c-red">*</span>
+          <span className="ml-5">试题内容</span>
+        </div>
+        <div className="float-left">
+          <QuestionQuillEditor
+            isFormula={true}
+            height={40}
+            defautValue=""
+            setContent={(value: string) => {
+              let obj = { ...form };
+              obj.content = value;
+              setForm(obj);
+            }}
+          ></QuestionQuillEditor>
+        </div>
+      </div>
+      {Array.from({ length: length }).map((_, i) => (
+        <div className="float-left mb-15" key={i}>
+          <div className="float-left helper-label mb-10">
+            <span className="c-red">*</span>
+            <span className="ml-5">选项{i + 1}</span>
+          </div>
+          <div className="float-left">
+            <QuestionQuillEditor
+              isFormula={true}
+              height={40}
+              defautValue=""
+              setContent={(value: string) => {
+                let obj = { ...form };
+                obj["option" + Number(i + 1)] = value;
+                setForm(obj);
+              }}
+            ></QuestionQuillEditor>
+          </div>
+        </div>
+      ))}
+      <div className="float-left mb-15">
+        <Button type="primary" onClick={() => add()}>
+          新增选项
+        </Button>
+        <Button type="primary" className="ml-10" onClick={() => del()} danger>
+          删除选项
+        </Button>
+      </div>
+      <div className="float-left mb-15">
+        <div className="float-left helper-label mb-10">
+          <span className="c-red">*</span>
+          <span className="ml-5">答案</span>
+        </div>
+        <div className="float-left">
+          <Select
+            style={{ width: 400 }}
+            value={form.answer}
+            onChange={(e) => {
+              let obj = { ...form };
+              obj.answer = e;
+              setForm(obj);
+            }}
+            allowClear
+            placeholder="答案"
+            options={answers}
+          />
+        </div>
+      </div>
+      <div className="float-left">
+        <div className="float-left helper-label mb-10">解析</div>
+        <div className="float-left">
+          <QuestionQuillEditor
+            isFormula={true}
+            height={40}
+            defautValue=""
+            setContent={(value: string) => {
+              let obj = { ...form };
+              obj.remark = value;
+              setForm(obj);
+            }}
+          ></QuestionQuillEditor>
+        </div>
+      </div>
+    </div>
+  );
 };

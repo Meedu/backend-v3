@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../../components";
 import { question } from "../../../api/index";
+import { QChoice } from "./components/choice";
 
 const QuestionCreatePage = () => {
   const dispatch = useDispatch();
@@ -91,12 +92,13 @@ const QuestionCreatePage = () => {
   };
 
   const save = () => {
+    console.log(formParams)
     if (loading) {
       return;
     }
     if (
       (formParams.type === 1 || formParams.type === 2) &&
-      !formParams.form.option2
+      !formParams.option2
     ) {
       message.error("至少得有两个选项");
       return;
@@ -115,7 +117,7 @@ const QuestionCreatePage = () => {
         return;
       }
     }
-    if (formParams.form.type === 6 && !formParams.score) {
+    if (formParams.type === 6 && !formParams.score) {
       message.warning("请至少添加一个子题");
       return;
     }
@@ -156,6 +158,18 @@ const QuestionCreatePage = () => {
       .catch((e) => {
         setLoading(false);
       });
+  };
+
+  const change = (question: any, list: any) => {
+    let obj = { ...formParams };
+    Object.assign(obj, question);
+    setFormParams(obj);
+    console.log(obj)
+    if (list) {
+      setCapList(list);
+    } else {
+      setCapList(null);
+    }
   };
 
   return (
@@ -248,12 +262,15 @@ const QuestionCreatePage = () => {
           </Form.Item>
         </Form>
       </div>
-      <div
-        className="float-left pl-200"
-        style={{ display: current === 1 ? "block" : "none" }}
-      >
-        {type === 1 && <span>选择题</span>}
-      </div>
+      {current === 1 && (
+        <div className="float-left pl-200">
+          {type === 1 && (
+            <QChoice
+              onChange={(question: any, list: any) => change(question, list)}
+            ></QChoice>
+          )}
+        </div>
+      )}
       <div className="bottom-menus">
         <div className="bottom-menus-box">
           <div>

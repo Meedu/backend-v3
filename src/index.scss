@@ -647,6 +647,12 @@ textarea.ant-input {
   text-align: left;
   white-space: pre-wrap;
   word-wrap: break-word;
+  p {
+    img {
+      display: inline-block;
+      max-width: 400px !important;
+    }
+  }
 }
 
 .quill-editor-box {
@@ -1024,4 +1030,13 @@ textarea.ant-input {
 .helper-label {
   font-size: 14px;
   color: #606266;
+}
+
+.quill-content {
+  p {
+    img {
+      display: inline-block;
+      max-width: 400px !important;
+    }
+  }
 }

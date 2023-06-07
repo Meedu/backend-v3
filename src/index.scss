@@ -1040,3 +1040,24 @@ textarea.ant-input {
     }
   }
 }
+
+.question-item {
+  position: relative;
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.05);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .btn-close {
+    position: absolute;
+    left: 0;
+    top: -18px;
+  }
+}

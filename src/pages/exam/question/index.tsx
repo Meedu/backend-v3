@@ -7,6 +7,7 @@ import { question } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { QuestionRender, PerButton } from "../../../components";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { PaperDetailDialog } from "../components/paper-detail";
 const { confirm } = Modal;
 
 interface DataType {
@@ -353,6 +354,11 @@ const QuestionPage = () => {
           </div>
         </Modal>
       )}
+      <PaperDetailDialog
+        open={showDialog}
+        onCancel={() => setShowDialog(false)}
+        results={failureResult}
+      ></PaperDetailDialog>
     </div>
   );
 };

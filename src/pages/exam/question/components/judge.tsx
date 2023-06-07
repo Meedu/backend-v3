@@ -14,7 +14,6 @@ export const QJudge: React.FC<PropInterface> = ({
   index,
   onChange,
 }) => {
-  const [answers, setAnswers] = useState<any>([]);
   const [form, setForm] = useState<any>({
     score: null,
     content: null,

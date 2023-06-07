@@ -15,14 +15,22 @@ interface PropInterface {
 }
 
 export const QCap: React.FC<PropInterface> = ({ question, onChange }) => {
-  const [header, setHeader] = useState<any>(null);
-  const [list, setList] = useState<any>([]);
-  const [form, setForm] = useState<any>({
-    content: null,
-    answer: null,
-    score: null,
-    remark: null,
-  });
+  const [header, setHeader] = useState<any>(
+    question ? JSON.parse(question.content).header : null
+  );
+  const [list, setList] = useState<any>(
+    question ? JSON.parse(question.content).questions : []
+  );
+  const [form, setForm] = useState<any>(
+    question
+      ? question
+      : {
+          content: null,
+          answer: null,
+          score: null,
+          remark: null,
+        }
+  );
   const [addForm, setAddForm] = useState<any>({
     type: null,
   });
@@ -35,19 +43,8 @@ export const QCap: React.FC<PropInterface> = ({ question, onChange }) => {
   ];
 
   useEffect(() => {
-    if (question) {
-      let obj = { ...form };
-      Object.assign(form, question);
-      setForm(obj);
-      let data = JSON.parse(question.content);
-      setList(data.questions);
-      setHeader(data.header);
-    }
-  }, [question]);
-
-  useEffect(() => {
     update();
-  }, [form, header]);
+  }, [form.remark, , header]);
 
   const add = () => {
     if (!addForm.type) {

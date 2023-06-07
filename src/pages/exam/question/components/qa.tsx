@@ -9,24 +9,20 @@ interface PropInterface {
 }
 
 export const QQa: React.FC<PropInterface> = ({ question, index, onChange }) => {
-  const [form, setForm] = useState<any>({
-    score: null,
-    content: null,
-    answer: null,
-    remark: null,
-  });
+  const [form, setForm] = useState<any>(
+    question
+      ? question
+      : {
+          score: null,
+          content: null,
+          answer: null,
+          remark: null,
+        }
+  );
 
   useEffect(() => {
     onChange(form, index);
   }, [form]);
-
-  useEffect(() => {
-    if (question) {
-      let newForm = { ...form };
-      Object.assign(form, question);
-      setForm(newForm);
-    }
-  }, [question]);
 
   return (
     <div className="float-left">

@@ -14,27 +14,20 @@ export const QJudge: React.FC<PropInterface> = ({
   index,
   onChange,
 }) => {
-  const [form, setForm] = useState<any>({
-    score: null,
-    content: null,
-    answer: null,
-    remark: null,
-  });
+  const [form, setForm] = useState<any>(
+    question
+      ? question
+      : {
+          score: null,
+          content: null,
+          answer: null,
+          remark: null,
+        }
+  );
 
   useEffect(() => {
     onChange(form, index);
-  }, [form]);
-
-  useEffect(() => {
-    if (question) {
-      let obj: any = {};
-      Object.assign(obj, question);
-      obj.answer = parseInt(question.answer);
-      let newForm = { ...form };
-      Object.assign(form, obj);
-      setForm(newForm);
-    }
-  }, [question]);
+  }, [form.score, form.content, form.answer, form.remark]);
 
   const onChanging = (e: RadioChangeEvent) => {
     let obj = { ...form };
@@ -140,7 +133,7 @@ export const QJudge: React.FC<PropInterface> = ({
           <span className="ml-5">答案</span>
         </div>
         <div className="float-left">
-          <Radio.Group onChange={onChanging} value={form.answer}>
+          <Radio.Group onChange={onChanging} value={parseInt(form.answer)}>
             <Radio value={1}>正确</Radio>
             <Radio value={0}>错误</Radio>
           </Radio.Group>

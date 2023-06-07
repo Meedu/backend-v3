@@ -14,12 +14,16 @@ export const QInput: React.FC<PropInterface> = ({
   onChange,
 }) => {
   const [length, setLength] = useState(1);
-  const [form, setForm] = useState<any>({
-    score: null,
-    content: null,
-    answer: null,
-    remark: null,
-  });
+  const [form, setForm] = useState<any>(
+    question
+      ? question
+      : {
+          score: null,
+          content: null,
+          answer: null,
+          remark: null,
+        }
+  );
   const [answers, setAnswers] = useState<any>([
     {
       a: null,
@@ -33,15 +37,14 @@ export const QInput: React.FC<PropInterface> = ({
 
   useEffect(() => {
     if (question) {
-      let newForm = { ...form };
-      Object.assign(form, question);
-      setForm(newForm);
       // 解析答案
-      if (question.answer && question.answer.substring(0, 5) === "v2:::") {
+      if (
+        question.answer &&
+        question.answer.toString().substring(0, 5) === "v2:::"
+      ) {
         let value = JSON.parse(question.answer.slice(5));
         setAnswers(value);
         setLength(value.length);
-        checkAnswers(value, value.length);
       }
     }
   }, [question]);

@@ -16,22 +16,26 @@ export const QSelect: React.FC<PropInterface> = ({
   const [answers, setAnswers] = useState<any>([]);
   const [length, setLength] = useState(4);
   const [selectedAnswers, setSelectedAnswers] = useState<any>([]);
-  const [form, setForm] = useState<any>({
-    score: null,
-    content: null,
-    answer: "",
-    option1: null,
-    option2: null,
-    option3: null,
-    option4: null,
-    option5: null,
-    option6: null,
-    option7: null,
-    option8: null,
-    option9: null,
-    option10: null,
-    remark: null,
-  });
+  const [form, setForm] = useState<any>(
+    question
+      ? question
+      : {
+          score: null,
+          content: null,
+          answer: "",
+          option1: null,
+          option2: null,
+          option3: null,
+          option4: null,
+          option5: null,
+          option6: null,
+          option7: null,
+          option8: null,
+          option9: null,
+          option10: null,
+          remark: null,
+        }
+  );
 
   useEffect(() => {
     let rows = [];
@@ -55,24 +59,10 @@ export const QSelect: React.FC<PropInterface> = ({
       if (question.answer && typeof question.answer === "string") {
         answers = question.answer.split(",");
       }
-      setAnswers(answers);
-      let obj = { ...form };
-      Object.assign(form, question);
-      setForm(obj);
+
+      setSelectedAnswers(answers);
     }
   }, [question]);
-
-  useEffect(() => {
-    if (selectedAnswers.length > 0) {
-      let obj = { ...form };
-      obj.answer = selectedAnswers.join(",");
-      setForm(obj);
-    } else {
-      let obj = { ...form };
-      form.answer = "";
-      setForm(obj);
-    }
-  }, [selectedAnswers]);
 
   const lengthComp = () => {
     for (let i = 1; i <= 10; i++) {
@@ -236,6 +226,15 @@ export const QSelect: React.FC<PropInterface> = ({
             value={selectedAnswers}
             onChange={(e) => {
               setSelectedAnswers(e);
+              if (e.length > 0) {
+                let obj = { ...form };
+                obj.answer = e.join(",");
+                setForm(obj);
+              } else {
+                let obj = { ...form };
+                form.answer = "";
+                setForm(obj);
+              }
             }}
             allowClear
             placeholder="答案"

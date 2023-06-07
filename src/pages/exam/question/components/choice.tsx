@@ -15,22 +15,26 @@ export const QChoice: React.FC<PropInterface> = ({
 }) => {
   const [answers, setAnswers] = useState<any>([]);
   const [length, setLength] = useState(4);
-  const [form, setForm] = useState<any>({
-    score: null,
-    content: null,
-    answer: null,
-    option1: null,
-    option2: null,
-    option3: null,
-    option4: null,
-    option5: null,
-    option6: null,
-    option7: null,
-    option8: null,
-    option9: null,
-    option10: null,
-    remark: null,
-  });
+  const [form, setForm] = useState<any>(
+    question
+      ? question
+      : {
+          score: null,
+          content: null,
+          answer: null,
+          option1: null,
+          option2: null,
+          option3: null,
+          option4: null,
+          option5: null,
+          option6: null,
+          option7: null,
+          option8: null,
+          option9: null,
+          option10: null,
+          remark: null,
+        }
+  );
 
   useEffect(() => {
     let rows = [];
@@ -45,14 +49,26 @@ export const QChoice: React.FC<PropInterface> = ({
 
   useEffect(() => {
     onChange(form, index);
-  }, [form]);
+  }, [
+    form.score,
+    form.content,
+    form.answer,
+    form.remark,
+    form.option1,
+    form.option2,
+    form.option3,
+    form.option4,
+    form.option5,
+    form.option6,
+    form.option7,
+    form.option8,
+    form.option9,
+    form.option10,
+  ]);
 
   useEffect(() => {
     if (question) {
       lengthComp();
-      let obj = { ...form };
-      Object.assign(form, question);
-      setForm(obj);
     }
   }, [question]);
 

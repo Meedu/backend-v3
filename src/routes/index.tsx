@@ -170,6 +170,7 @@ import QuestionPage from "../pages/exam/question/index";
 import QuestionCategoryPage from "../pages/exam/question/category/index";
 import QuestionImportPage from "../pages/exam/question/import";
 import QuestionCreatePage from "../pages/exam/question/create";
+import QuestionUpdatePage from "../pages/exam/question/update";
 
 let RootPage: any = null;
 if (getToken()) {
@@ -579,6 +580,7 @@ const routes: RouteObject[] = [
           },
           { path: "/exam/question/import", element: <QuestionImportPage /> },
           { path: "/exam/question/create", element: <QuestionCreatePage /> },
+          { path: "/exam/question/update", element: <QuestionUpdatePage /> },
         ],
       },
       {

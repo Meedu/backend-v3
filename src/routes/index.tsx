@@ -169,6 +169,7 @@ import PaperQuestionCreatePage from "../pages/exam/paper/questionadd";
 import QuestionPage from "../pages/exam/question/index";
 import QuestionCategoryPage from "../pages/exam/question/category/index";
 import QuestionImportPage from "../pages/exam/question/import";
+import QuestionCreatePage from "../pages/exam/question/create";
 
 let RootPage: any = null;
 if (getToken()) {
@@ -577,6 +578,7 @@ const routes: RouteObject[] = [
             element: <QuestionCategoryPage />,
           },
           { path: "/exam/question/import", element: <QuestionImportPage /> },
+          { path: "/exam/question/create", element: <QuestionCreatePage /> },
         ],
       },
       {

@@ -6,6 +6,7 @@ import { titleAction } from "../../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../../components";
 import { question } from "../../../api/index";
 import { QChoice } from "./components/choice";
+import { QSelect } from "./components/select";
 
 const QuestionCreatePage = () => {
   const dispatch = useDispatch();
@@ -266,6 +267,11 @@ const QuestionCreatePage = () => {
             <QChoice
               onChange={(question: any, list: any) => change(question, list)}
             ></QChoice>
+          )}
+          {type === 2 && (
+            <QSelect
+              onChange={(question: any, list: any) => change(question, list)}
+            ></QSelect>
           )}
         </div>
       )}

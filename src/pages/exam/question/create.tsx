@@ -8,6 +8,7 @@ import { question } from "../../../api/index";
 import { QChoice } from "./components/choice";
 import { QSelect } from "./components/select";
 import { QJudge } from "./components/judge";
+import { QInput } from "./components/input";
 
 const QuestionCreatePage = () => {
   const dispatch = useDispatch();
@@ -277,6 +278,13 @@ const QuestionCreatePage = () => {
               index={null}
               onChange={(question: any, list: any) => change(question, list)}
             ></QSelect>
+          )}
+          {type === 3 && (
+            <QInput
+              question={null}
+              index={null}
+              onChange={(question: any, list: any) => change(question, list)}
+            ></QInput>
           )}
           {type === 5 && (
             <QJudge

@@ -63,5 +63,45 @@
         color: #333333;
       }
     }
+
+    .left-arrrow {
+      position: absolute;
+      top: 75px;
+      left: 384px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .noleft-arrrow {
+      position: absolute;
+      top: 75px;
+      left: -15px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .certificate-blocks-box {
+      height: calc(100vh - 138px);
+      position: absolute;
+      top: 57px;
+      /* left: 70px; */
+      left: 0;
+      /* border-radius: 4px; */
+      /* will-change: contents; */
+      transition: left ease 0.5s;
+      width: 400px;
+      background-color: white;
+      box-sizing: border-box;
+      padding: 30px;
+      overflow-y: auto;
+      z-index: 11111;
+    }
   }
 }

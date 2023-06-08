@@ -14,7 +14,7 @@ export const BackBartment = (props: PropInterface) => {
   return (
     <div className={styles["back-bar-box"]}>
       <Button
-      style={{paddingLeft:0}}
+        style={{ paddingLeft: 0 }}
         icon={<LeftOutlined />}
         type="link"
         onClick={() => navigate(-1)}

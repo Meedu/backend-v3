@@ -30,6 +30,9 @@ const CertificateCreatePage = () => {
   const [imgHeight, setImgHeight] = useState(0);
   const [curBlockIndex, setCurBlockIndex] = useState<any>(null);
   const [rightIndex, setRightIndex] = useState<any>(null);
+  const [blocksData, setBlocksData] = useState<any>([]);
+  const [coursesData, setCoursesData] = useState<any>([]);
+  const [paperData, setPaperData] = useState<any>([]);
 
   useEffect(() => {
     document.title = "新建证书";
@@ -44,6 +47,28 @@ const CertificateCreatePage = () => {
       setUploadName("上传背景");
     }
   }, [thumb]);
+
+  useEffect(() => {
+    if (blocksData && blocksData.length > 0) {
+      let params = [];
+      for (let i = 0; i < blocksData.length; i++) {
+        if (blocksData[i].sign === "text-v1") {
+          params.push({
+            text: blocksData[i].config,
+          });
+        } else if (blocksData[i].sign === "image-v1") {
+          params.push({
+            image: blocksData[i].config,
+          });
+        } else if (blocksData[i].sign === "qrcode-v1") {
+          params.push({
+            qrcode: blocksData[i].config,
+          });
+        }
+      }
+      form.setFieldsValue({ params: params });
+    }
+  }, [blocksData]);
 
   const getImgInfo = () => {
     let img = new Image();
@@ -66,6 +91,20 @@ const CertificateCreatePage = () => {
     if (loading) {
       return;
     }
+    if (blocksData.length === 0) {
+      message.warning("请配置好证书元素");
+      return;
+    }
+    values.params = JSON.stringify(values.params);
+
+    let courses: any = [];
+    if (coursesData.length > 0) {
+      courses = courses.concat(coursesData);
+    }
+    if (paperData.length > 0) {
+      courses = courses.concat(paperData);
+    }
+    values.courses = courses;
     setLoading(true);
     certificate
       .store(values)
@@ -224,7 +263,7 @@ const CertificateCreatePage = () => {
                   </Row>
                   <Form.Item
                     label="证书元素"
-                    name="name"
+                    name="params"
                     rules={[{ required: true, message: "请配置好证书元素!" }]}
                   >
                     <HelperText text="拖动元素到证书背景上编辑参数"></HelperText>

@@ -12,6 +12,7 @@ import unfoldIcon from "../../assets/images/certificate/icon-unfold.png";
 import lowIcon from "../../assets/images/certificate/low.png";
 import highIcon from "../../assets/images/certificate/high.png";
 import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
+import { CertificateConfig } from "./components/certificate-config";
 
 const CertificateCreatePage = () => {
   const [form] = Form.useForm();
@@ -33,6 +34,7 @@ const CertificateCreatePage = () => {
   const [blocksData, setBlocksData] = useState<any>([]);
   const [coursesData, setCoursesData] = useState<any>([]);
   const [paperData, setPaperData] = useState<any>([]);
+  const [qrcodeStatus, setQrcodeStatus] = useState<any>(null);
 
   useEffect(() => {
     document.title = "新建证书";
@@ -122,6 +124,13 @@ const CertificateCreatePage = () => {
     console.log("Failed:", errorInfo);
   };
 
+  const createQrcode = (obj: any, val: boolean) => {
+    let box = [...blocksData];
+    box[curBlockIndex] = obj;
+    setBlocksData(box);
+    setQrcodeStatus(val);
+  };
+
   const changeSize = (val: number) => {
     if (!thumb) {
       message.error("请上传证书背景后在改变缩放比例");
@@ -180,7 +189,10 @@ const CertificateCreatePage = () => {
     },
   ];
 
-  const getIndex = (val: number) => {
+  const getIndex = (obj: any, val: boolean) => {
+    let box = [...blocksData];
+    box[curBlockIndex] = obj;
+    setBlocksData(box);
     setRightIndex(val);
   };
 
@@ -319,6 +331,11 @@ const CertificateCreatePage = () => {
                 关闭配置
               </Button>
             </div>
+            <CertificateConfig
+              block={blocksData[curBlockIndex]}
+              onCreate={(obj, val) => createQrcode(obj, val)}
+              onChange={(obj, val) => getIndex(obj, val)}
+            ></CertificateConfig>
           </div>
         )}
         <div className="bottom-menus">

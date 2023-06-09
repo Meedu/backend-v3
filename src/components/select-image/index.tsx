@@ -35,7 +35,7 @@ interface ImageItem {
 
 interface PropsInterface {
   open: boolean;
-  text: any;
+  from: number;
   onCancel: () => void;
   onSelected: (url: string) => void;
 }
@@ -67,6 +67,10 @@ export const SelectImage = (props: PropsInterface) => {
       name: "文章配图",
     },
   ];
+
+  useEffect(() => {
+    setFrom(props.from);
+  }, [props.from]);
 
   // 获取图片列表
   const getImageList = () => {

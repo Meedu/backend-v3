@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
-import { Form, Space, message, Button, Input, Row, Col } from "antd";
+import { Form, Space, message, Button, Input, Row, Col, Dropdown } from "antd";
+import type { MenuProps } from "antd";
 import styles from "./create.module.scss";
 import { useNavigate } from "react-router-dom";
-import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { certificate } from "../../api/index";
 import { HelperText, PerButton, UploadImageButton } from "../../components";
 import { titleAction } from "../../store/user/loginUserSlice";
 import foldIcon from "../../assets/images/certificate/icon-fold.png";
 import unfoldIcon from "../../assets/images/certificate/icon-unfold.png";
-import { LeftOutlined } from "@ant-design/icons";
+import lowIcon from "../../assets/images/certificate/low.png";
+import highIcon from "../../assets/images/certificate/high.png";
+import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 
 const CertificateCreatePage = () => {
   const [form] = Form.useForm();
@@ -26,6 +28,8 @@ const CertificateCreatePage = () => {
   const [originalHeight, setOriginalHeight] = useState(0);
   const [imgWidth, setImgWidth] = useState(0);
   const [imgHeight, setImgHeight] = useState(0);
+  const [curBlockIndex, setCurBlockIndex] = useState<any>(null);
+  const [rightIndex, setRightIndex] = useState<any>(null);
 
   useEffect(() => {
     document.title = "新建证书";
@@ -77,6 +81,68 @@ const CertificateCreatePage = () => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const changeSize = (val: number) => {
+    if (!thumb) {
+      message.error("请上传证书背景后在改变缩放比例");
+      return;
+    }
+    if (val === -1) {
+      if (size === 0.25) {
+        return;
+      }
+      let newSize = size - 0.25;
+      setSize(newSize);
+      setOriginalHeight(newSize * imgHeight);
+      setOriginalWidth(newSize * imgWidth);
+      setDragX(0.5 * (window.screen.width - newSize * imgWidth));
+      setDragY(106);
+    } else if (val === 0) {
+      if (size === 2) {
+        return;
+      }
+      let newSize = size + 0.25;
+      setSize(newSize);
+      setOriginalHeight(newSize * imgHeight);
+      setOriginalWidth(newSize * imgWidth);
+      setDragX(0.5 * (window.screen.width - newSize * imgWidth));
+      setDragY(106);
+    } else {
+      let newSize = val;
+      setSize(newSize);
+      setOriginalHeight(newSize * imgHeight);
+      setOriginalWidth(newSize * imgWidth);
+      setDragX(0.5 * (window.screen.width - newSize * imgWidth));
+      setDragY(106);
+    }
+  };
+
+  const itemsChoose: MenuProps["items"] = [
+    {
+      key: "1",
+      label: <span onClick={() => changeSize(2)}>200%</span>,
+    },
+    {
+      key: "2",
+      label: <span onClick={() => changeSize(1.5)}>150%</span>,
+    },
+    {
+      key: "3",
+      label: <span onClick={() => changeSize(1)}>100%</span>,
+    },
+    {
+      key: "4",
+      label: <span onClick={() => changeSize(0.5)}>50%</span>,
+    },
+    {
+      key: "5",
+      label: <span onClick={() => changeSize(0.25)}>25%</span>,
+    },
+  ];
+
+  const getIndex = (val: number) => {
+    setRightIndex(val);
   };
 
   return (
@@ -167,8 +233,55 @@ const CertificateCreatePage = () => {
               )}
             </Form>
           </div>
-          
         </div>
+        {thumb && (
+          <div
+            className={
+              curBlockIndex !== null
+                ? styles["choose-right-size-box"]
+                : styles["choose-size-box"]
+            }
+          >
+            <div
+              className={styles["tab_narrow"]}
+              onClick={() => changeSize(-1)}
+            >
+              <img src={lowIcon} width={12} height={12} />
+            </div>
+            <div className={styles["choose_size"]}>
+              <Dropdown menu={{ items: itemsChoose }}>
+                <span> {size * 100}% </span>
+              </Dropdown>
+            </div>
+            <div
+              className={styles["tab_enlarge"]}
+              onClick={() => changeSize(0)}
+            >
+              <img src={highIcon} width={12} height={12} />
+            </div>
+          </div>
+        )}
+        {curBlockIndex !== null && (
+          <div
+            className={
+              rightIndex
+                ? styles["act-certificate-config-box"]
+                : styles["certificate-config-box"]
+            }
+          >
+            <div className="float-left mb-15">
+              <Button
+                className="ml-15 mt-15"
+                icon={<CloseOutlined />}
+                onClick={() => {
+                  setCurBlockIndex(null);
+                }}
+              >
+                关闭配置
+              </Button>
+            </div>
+          </div>
+        )}
         <div className="bottom-menus">
           <div className="bottom-menus-box" style={{ left: 0, zIndex: 1000 }}>
             <div>

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { certificate } from "../../api/index";
-import { PerButton, UploadImageButton } from "../../components";
+import { HelperText, PerButton, UploadImageButton } from "../../components";
 import { titleAction } from "../../store/user/loginUserSlice";
 import foldIcon from "../../assets/images/certificate/icon-fold.png";
 import unfoldIcon from "../../assets/images/certificate/icon-unfold.png";
@@ -140,20 +140,34 @@ const CertificateCreatePage = () => {
                 ></UploadImageButton>
               </Form.Item>
               {thumb && (
-                <Row style={{ marginBottom: 22 }}>
-                  <Col span={6}></Col>
-                  <Col span={18}>
-                    <div className={styles["left-preview-box"]}>
-                      <img
-                        style={{ maxWidth: 180, width: "auto", maxHeight: 240 }}
-                        src={thumb}
-                      />
-                    </div>
-                  </Col>
-                </Row>
+                <>
+                  <Row style={{ marginBottom: 22 }}>
+                    <Col span={6}></Col>
+                    <Col span={18}>
+                      <div className={styles["left-preview-box"]}>
+                        <img
+                          style={{
+                            maxWidth: 180,
+                            width: "auto",
+                            maxHeight: 240,
+                          }}
+                          src={thumb}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Form.Item
+                    label="证书元素"
+                    name="name"
+                    rules={[{ required: true, message: "请配置好证书元素!" }]}
+                  >
+                    <HelperText text="拖动元素到证书背景上编辑参数"></HelperText>
+                  </Form.Item>
+                </>
               )}
             </Form>
           </div>
+          
         </div>
         <div className="bottom-menus">
           <div className="bottom-menus-box" style={{ left: 0, zIndex: 1000 }}>

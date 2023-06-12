@@ -18,6 +18,7 @@ import {
   PerButton,
   HelperText,
   QuillEditor,
+  MdEditor,
 } from "../../../components";
 import dayjs from "dayjs";
 import moment from "moment";
@@ -232,7 +233,13 @@ const BookArticleUpdatePage = () => {
           >
             <div className="w-800px">
               {editor === "MARKDOWN" ? (
-                <></>
+                <MdEditor
+                  height={800}
+                  defautValue={defautValue}
+                  setContent={(value: string) => {
+                    form.setFieldsValue({ original_content: value });
+                  }}
+                ></MdEditor>
               ) : (
                 <QuillEditor
                   mode=""

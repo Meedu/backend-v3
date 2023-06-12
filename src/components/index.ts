@@ -24,3 +24,4 @@ export * from "./close-icon";
 export * from "./select-multi-book";
 export * from "./question-render";
 export * from "./question-quill-editor";
+export * from "./md-editor";

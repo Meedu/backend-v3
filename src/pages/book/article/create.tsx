@@ -19,6 +19,7 @@ import {
   PerButton,
   HelperText,
   QuillEditor,
+  MdEditor,
 } from "../../../components";
 import { getEditorKey, saveEditorKey } from "../../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
@@ -237,7 +238,13 @@ const BookArticleCreatePage = () => {
             <div className="flex flex-row">
               <div className="w-800px">
                 {editor === "MARKDOWN" ? (
-                  <></>
+                  <MdEditor
+                    height={800}
+                    defautValue=""
+                    setContent={(value: string) => {
+                      form.setFieldsValue({ original_content: value });
+                    }}
+                  ></MdEditor>
                 ) : (
                   <QuillEditor
                     mode=""
@@ -271,7 +278,6 @@ const BookArticleCreatePage = () => {
                       },
                     });
                   }}
-                  allowClear
                   placeholder="请选择"
                   options={tools}
                 />

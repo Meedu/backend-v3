@@ -25,6 +25,8 @@ import CourseVideoSubscribePage from "../pages/course/video/subscribe";
 import CourseChapterPage from "../pages/course/chapter/index";
 import CourseAliyunPage from "../pages/course/video/aliyun-hls";
 import CourseTencentPage from "../pages/course/video/tencent-hls";
+import CourseVideoCreatePage from "../pages/course/video/create";
+import CourseVideoUpdatePage from "../pages/course/video/update";
 import LivePage from "../pages/live/index";
 import LiveCreatePage from "../pages/live/create";
 import LiveUpdatePage from "../pages/live/update";
@@ -271,6 +273,14 @@ const routes: RouteObject[] = [
           {
             path: "/course/vod/video/hls/tencent",
             element: <CourseTencentPage />,
+          },
+          {
+            path: "/course/vod/video/create",
+            element: <CourseVideoCreatePage />,
+          },
+          {
+            path: "/course/vod/video/update",
+            element: <CourseVideoUpdatePage />,
           },
           { path: "/live/course/index", element: <LivePage /> },
           { path: "/live/course/create", element: <LiveCreatePage /> },

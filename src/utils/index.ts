@@ -26,6 +26,13 @@ export function dateWholeFormat(dateStr: string) {
   return moment(dateStr).format("YYYY-MM-DD HH:mm:ss");
 }
 
+export function yearFormat(dateStr: string) {
+  if (!dateStr) {
+    return "";
+  }
+  return moment(dateStr).format("YYYY-MM-DD");
+}
+
 export function generateUUID(): string {
   let guid = "";
   for (let i = 1; i <= 32; i++) {

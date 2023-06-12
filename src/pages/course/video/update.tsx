@@ -21,9 +21,10 @@ import {
   PerButton,
   UploadVideoDialog,
 } from "../../../components";
+import dayjs from "dayjs";
 import moment from "moment";
 
-const CourseVideoCreatePage = () => {
+const CourseVideoUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const result = new URLSearchParams(useLocation().search);
@@ -37,6 +38,7 @@ const CourseVideoCreatePage = () => {
   const [title, setTitle] = useState<string>("");
   const [showUploadVideoWin, setShowUploadVideoWin] = useState<boolean>(false);
   const [cid, setCid] = useState(Number(result.get("course_id")));
+  const [id, setId] = useState(Number(result.get("id")));
   const types = [
     {
       key: "base",
@@ -49,19 +51,43 @@ const CourseVideoCreatePage = () => {
   ];
 
   useEffect(() => {
-    document.title = "添加课时";
-    dispatch(titleAction("添加课时"));
-    form.setFieldsValue({
-      ban_drag: 0,
-      is_show: 0,
-    });
+    document.title = "编辑课时";
+    dispatch(titleAction("编辑课时"));
     getParams();
     getCourse();
   }, [cid]);
 
   useEffect(() => {
     setCid(Number(result.get("course_id")));
-  }, [result.get("course_id")]);
+    setId(Number(result.get("id")));
+    getDetail();
+  }, [result.get("course_id"), result.get("id")]);
+
+  const getDetail = () => {
+    if (id === 0) {
+      return;
+    }
+    course.videoDetail(id).then((res: any) => {
+      var data = res.data.video;
+      form.setFieldsValue({
+        title: data.title,
+        chapter_id: data.chapter_id === 0 ? null : data.chapter_id,
+        is_show: data.is_show === 1 ? 0 : 1,
+        duration: data.duration,
+        free_seconds: data.free_seconds,
+        ban_drag: data.ban_drag,
+        aliyun_video_id: data.aliyun_video_id,
+        url: data.url,
+        tencent_video_id: data.tencent_video_id,
+        published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
+      });
+      if (data.charge > 0) {
+        setIsFree(0);
+      } else {
+        setIsFree(1);
+      }
+    });
+  };
 
   const getParams = () => {
     course.videoCreate(cid).then((res: any) => {
@@ -119,7 +145,7 @@ const CourseVideoCreatePage = () => {
     values.course_id = cid;
     setLoading(true);
     course
-      .videoStore(values)
+      .videoUpdate(id, values)
       .then((res: any) => {
         setLoading(false);
         navigate(-1);
@@ -155,7 +181,7 @@ const CourseVideoCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加课时" />
+      <BackBartment title="编辑课时" />
       <div className="center-tabs mb-30">
         <Tabs
           defaultActiveKey={resourceActive}
@@ -166,7 +192,7 @@ const CourseVideoCreatePage = () => {
       <div className="float-left">
         <Form
           form={form}
-          name="course-video-create"
+          name="course-video-update"
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
           initialValues={{ remember: true }}
@@ -182,7 +208,7 @@ const CourseVideoCreatePage = () => {
                 type="primary"
                 onClick={() => setShowUploadVideoWin(true)}
               >
-                <span>上传视频</span>
+                <span>重新上传视频</span>
                 {tit && <span className="ml-10">{tit}</span>}
               </Button>
             </Form.Item>
@@ -382,4 +408,4 @@ const CourseVideoCreatePage = () => {
   );
 };
 
-export default CourseVideoCreatePage;
+export default CourseVideoUpdatePage;

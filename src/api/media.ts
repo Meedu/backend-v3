@@ -5,6 +5,30 @@ export function imageList(params: any) {
 }
 
 export function videoList(params: any) {
+  return client.get("/backend/addons/LocalUpload/video/index", params);
+}
+
+export function destroyVideo(id: number) {
+  return client.destroy(`/backend/addons/LocalUpload/video/${id}`);
+}
+
+export function videoAliyunTokenRefresh(params: any) {
+  return client.post("/backend/api/v1/video/token/aliyun/refresh", params);
+}
+
+export function videoAliyunTokenCreate(params: any) {
+  return client.post("/backend/api/v1/video/token/aliyun/create", params);
+}
+
+export function videoTencentToken(params: any) {
+  return client.post("/backend/api/v1/video/token/tencent", params);
+}
+
+export function videoLocalUpload(params: any) {
+  return client.post("/backend/addons/LocalUpload/upload", params);
+}
+
+export function newVideoList(params: any) {
   return client.get("/backend/api/v1/media/videos/index", params);
 }
 
@@ -12,6 +36,6 @@ export function storeVideo(params: any) {
   return client.post("/backend/api/v1/media/videos/create", params);
 }
 
-export function destroyVideo(params: any) {
-  return client.post("/backend/api/v1/media/videos/delete/multi", params);
+export function newDestroyVideo(params: any) {
+  return client.post(`/backend/api/v1/media/videos/delete/multi`, params);
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import MDEditor from "@uiw/react-md-editor";
+import MDEditor, { commands } from "@uiw/react-md-editor";
 import { SelectImage } from "../../components";
 
 interface PropInterface {
@@ -12,6 +12,7 @@ interface PropInterface {
 export const MdEditor: React.FC<PropInterface> = (props) => {
   const { height, defautValue, setContent } = props;
   const [value, setValue] = useState("");
+  const [showUploadImage, setShowUploadImage] = useState<boolean>(false);
 
   useEffect(() => {
     if (defautValue) {
@@ -23,14 +24,74 @@ export const MdEditor: React.FC<PropInterface> = (props) => {
     <>
       <div style={{ height: height || 300 }}>
         <MDEditor
+          className="gooooooooo"
           height={height || 300}
           value={value}
           onChange={(newValue = "") => {
             setValue(newValue);
             setContent(newValue);
           }}
+          components={{
+            toolbar: (command, disabled, executeCommand) => {
+              //   console.log(command.keyCommand);
+              if (command.keyCommand === "image") {
+                return (
+                  <button
+                    aria-label="Insert image"
+                    disabled={disabled}
+                    onClick={(evn) => {
+                      evn.stopPropagation();
+                      setShowUploadImage(true);
+                      executeCommand(command, command.groupName);
+                    }}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 20 20">
+                      <path
+                        fill="currentColor"
+                        d="M15 9c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm4-7H1c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm-1 13l-6-5-2 2-4-5-4 8V4h16v11z"
+                      ></path>
+                    </svg>
+                  </button>
+                );
+              }
+            },
+          }}
         />
         <MDEditor.Markdown source={value} style={{ whiteSpace: "pre-wrap" }} />
+        <SelectImage
+          open={showUploadImage}
+          from={0}
+          onCancel={() => {
+            let newValue = value;
+            if (
+              newValue.indexOf(
+                "![image](https://example.com/your-image.png)"
+              ) != -1
+            ) {
+              newValue = newValue.replace(
+                "![image](https://example.com/your-image.png)",
+                ""
+              );
+              setValue(newValue);
+            }
+            setShowUploadImage(false);
+          }}
+          onSelected={(url) => {
+            let newValue = value;
+            if (
+              newValue.indexOf(
+                "![image](https://example.com/your-image.png)"
+              ) != -1
+            ) {
+              newValue = newValue.replace(
+                "![image](https://example.com/your-image.png)",
+                "![image](" + url + ")"
+              );
+              setValue(newValue);
+            }
+            setShowUploadImage(false);
+          }}
+        ></SelectImage>
       </div>
     </>
   );

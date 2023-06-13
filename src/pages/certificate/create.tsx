@@ -401,10 +401,7 @@ const CertificateCreatePage = () => {
         )}
         <Draggable
           bounds={{ right: 0, left: 0, top: 0, bottom: 0 }}
-          defaultPosition={{ x: dragX, y: dragY }}
-          position={{ x: dragX, y: dragY }}
           onDrag={(e: any) => {
-            console.log(e);
             setDragX(e.x);
             setDragY(e.y);
           }}
@@ -413,6 +410,8 @@ const CertificateCreatePage = () => {
             style={{
               width: originalWidth,
               height: originalHeight,
+              top: dragY,
+              left: dragX,
             }}
             className={styles["preview-box"]}
           >

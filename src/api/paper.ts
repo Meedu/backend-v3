@@ -103,3 +103,10 @@ export function submitScore(param: any) {
     param
   );
 }
+
+export function paperJoinRecord(paperId: number, recordId: number) {
+  return client.get(
+    `/backend/addons/Paper/paper/${paperId}/userPaper/${recordId}/render`,
+    {}
+  );
+}

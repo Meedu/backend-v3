@@ -31,3 +31,6 @@ yarn.lock
 .env
 
 template.php
+
+deploy-test.sh
+deploy-demo.sh

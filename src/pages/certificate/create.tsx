@@ -40,6 +40,7 @@ const CertificateCreatePage = () => {
   const [qrcodeStatus, setQrcodeStatus] = useState<any>(null);
   const xRef = useRef(0);
   const yRef = useRef(0);
+  const sizeRef = useRef(0);
 
   useEffect(() => {
     document.title = "新建证书";
@@ -64,7 +65,7 @@ const CertificateCreatePage = () => {
         passive: false,
       });
     };
-  }, [thumb]);
+  }, [thumb, imgHeight, imgWidth]);
 
   useEffect(() => {
     if (blocksData && blocksData.length > 0) {
@@ -106,7 +107,8 @@ const CertificateCreatePage = () => {
   useEffect(() => {
     xRef.current = dragX;
     yRef.current = dragY;
-  }, [dragX, dragY]);
+    sizeRef.current = size;
+  }, [dragX, dragY, size]);
 
   const keyDown = () => {
     document.onkeydown = (e) => {
@@ -222,20 +224,20 @@ const CertificateCreatePage = () => {
       return;
     }
     if (val === -1) {
-      if (size === 0.25) {
+      if (sizeRef.current === 0.25) {
         return;
       }
-      let newSize = size - 0.25;
+      let newSize = sizeRef.current - 0.25;
       setSize(newSize);
       setOriginalHeight(newSize * imgHeight);
       setOriginalWidth(newSize * imgWidth);
       setDragX(0.5 * (window.screen.width - newSize * imgWidth));
       setDragY(106);
     } else if (val === 0) {
-      if (size === 2) {
+      if (sizeRef.current === 2) {
         return;
       }
-      let newSize = size + 0.25;
+      let newSize = sizeRef.current + 0.25;
       setSize(newSize);
       setOriginalHeight(newSize * imgHeight);
       setOriginalWidth(newSize * imgWidth);

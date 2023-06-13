@@ -52,3 +52,10 @@ export function userAdd(id: number, params: any) {
     params
   );
 }
+
+export function mockPaperJoinRecord(paperId: number, recordId: number) {
+  return client.get(
+    `/backend/addons/Paper/mock_paper/${paperId}/userPaper/${recordId}`,
+    {}
+  );
+}

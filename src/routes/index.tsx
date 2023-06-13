@@ -162,6 +162,7 @@ import MockPaperPage from "../pages/exam/mockpaper/index";
 import MockPaperUsersPage from "../pages/exam/mockpaper/users";
 import MockPaperCreatePage from "../pages/exam/mockpaper/create";
 import MockPaperUpdatePage from "../pages/exam/mockpaper/update";
+import MockPaperReadPage from "../pages/exam/mockpaper/paperShow";
 import PaperPage from "../pages/exam/paper/index";
 import PaperCreatePage from "../pages/exam/paper/create";
 import PaperUpdatePage from "../pages/exam/paper/update";
@@ -578,6 +579,7 @@ const routes: RouteObject[] = [
           { path: "/exam/mockpaper/user", element: <MockPaperUsersPage /> },
           { path: "/exam/mockpaper/create", element: <MockPaperCreatePage /> },
           { path: "/exam/mockpaper/update", element: <MockPaperUpdatePage /> },
+          { path: "/exam/mockpaper/paperShow", element: <MockPaperReadPage /> },
           { path: "/exam/paper/index", element: <PaperPage /> },
           { path: "/exam/paper/create", element: <PaperCreatePage /> },
           { path: "/exam/paper/update", element: <PaperUpdatePage /> },

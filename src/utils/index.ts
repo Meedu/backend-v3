@@ -1,4 +1,5 @@
 import moment from "moment";
+declare const window: any;
 
 export function getToken(): string {
   return window.localStorage.getItem("meedu-admin-token") || "";
@@ -98,4 +99,54 @@ export function saveEditorKey(key: string) {
 
 export function getEditorKey() {
   return window.localStorage.getItem("meedu-editor-key");
+}
+
+export function codeRender(el: any) {
+  if (!el) {
+    return;
+  }
+  let blocks = el.querySelectorAll("pre") || el.querySelectorAll("code");
+  blocks.forEach((block: any) => {
+    window.hljs.highlightBlock(block);
+  });
+  return el;
+}
+
+export function latexRender(el: any) {
+  if (!el) {
+    return;
+  }
+  var reg1 = new RegExp("&nbsp;", "g");
+  var reg2 = new RegExp("&amp;", "g");
+  var reg3 = new RegExp("nbsp;", "g");
+  var reg4 = new RegExp("amp;", "g");
+  el.innerHTML = el.innerHTML.replace(reg1, "");
+  el.innerHTML = el.innerHTML.replace(reg2, "&");
+  el.innerHTML = el.innerHTML.replace(reg3, "");
+  el.innerHTML = el.innerHTML.replace(reg4, "");
+  window.renderMathInElement(el, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false },
+      { left: "\\[", right: "\\]", display: true },
+    ],
+    macros: {
+      "\\ge": "\\geqslant",
+      "\\le": "\\leqslant",
+      "\\geq": "\\geqslant",
+      "\\leq": "\\leqslant",
+    },
+    options: {
+      skipHtmlTags: ["noscript", "style", "textarea", "pre", "code"],
+      // 跳过mathjax处理的元素的类名，任何元素指定一个类 tex2jax_ignore 将被跳过，多个累=类名'class1|class2'
+      ignoreHtmlClass: "tex2jax_ignore",
+    },
+    svg: {
+      fontCache: "global",
+    },
+    throwOnError: false,
+  });
+
+  return el;
 }

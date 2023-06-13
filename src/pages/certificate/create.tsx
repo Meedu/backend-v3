@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Form, Space, message, Button, Input, Row, Col, Dropdown } from "antd";
 import type { MenuProps } from "antd";
+import Draggable from "react-draggable";
 import styles from "./create.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +14,8 @@ import lowIcon from "../../assets/images/certificate/low.png";
 import highIcon from "../../assets/images/certificate/high.png";
 import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 import { CertificateConfig } from "./components/certificate-config";
+
+declare const window: any;
 
 const CertificateCreatePage = () => {
   const [form] = Form.useForm();
@@ -35,6 +38,8 @@ const CertificateCreatePage = () => {
   const [coursesData, setCoursesData] = useState<any>([]);
   const [paperData, setPaperData] = useState<any>([]);
   const [qrcodeStatus, setQrcodeStatus] = useState<any>(null);
+  const xRef = useRef(0);
+  const yRef = useRef(0);
 
   useEffect(() => {
     document.title = "新建证书";
@@ -48,6 +53,17 @@ const CertificateCreatePage = () => {
     } else {
       setUploadName("上传背景");
     }
+
+    window.addEventListener("mousewheel", handleScroll, {
+      passive: false,
+    });
+    keyDown();
+
+    return () => {
+      window.removeEventListener("mousewheel", handleScroll, {
+        passive: false,
+      });
+    };
   }, [thumb]);
 
   useEffect(() => {
@@ -71,6 +87,75 @@ const CertificateCreatePage = () => {
       form.setFieldsValue({ params: params });
     }
   }, [blocksData]);
+
+  const handleScroll = (e: any) => {
+    if (e.ctrlKey || e.metaKey) {
+      // 取消浏览器默认的放大缩小网页行为
+      e.preventDefault();
+      // 判断是向上滚动还是向下滚动
+      if (e.deltaY > 0) {
+        // 放大重写，业务代码
+        changeSize(0);
+      } else {
+        // 缩小重写，业务代码
+        changeSize(-1);
+      }
+    }
+  };
+
+  useEffect(() => {
+    xRef.current = dragX;
+    yRef.current = dragY;
+  }, [dragX, dragY]);
+
+  const keyDown = () => {
+    document.onkeydown = (e) => {
+      let e1 = e || event || window.event;
+      if (
+        (e1.ctrlKey === true || e1.metaKey === true) &&
+        (e1.which === 61 ||
+          e1.which === 107 ||
+          e1.which === 173 ||
+          e1.which === 109 ||
+          e1.which === 187 ||
+          e1.which === 189)
+      ) {
+        e1.preventDefault();
+        if (e1.which === 187) {
+          changeSize(0);
+        } else if (e1.which === 189) {
+          changeSize(-1);
+        }
+      }
+      //键盘按键判断:左箭头-37;上箭头-38；右箭头-39;下箭头-40
+      if (e1 && e1.keyCode == 37) {
+        if (!thumb) {
+          return;
+        }
+        let value = xRef.current - 50;
+        setDragX(value);
+      } else if (e1 && e1.keyCode == 39) {
+        if (!thumb) {
+          return;
+        }
+        let value = xRef.current + 50;
+        setDragX(value);
+      } else if (e1 && e1.keyCode == 38) {
+        if (!thumb) {
+          return;
+        }
+
+        let value = yRef.current - 50;
+        setDragY(value);
+      } else if (e1 && e1.keyCode == 40) {
+        if (!thumb) {
+          return;
+        }
+        let value = yRef.current + 50;
+        setDragY(value);
+      }
+    };
+  };
 
   const getImgInfo = () => {
     let img = new Image();
@@ -249,7 +334,7 @@ const CertificateCreatePage = () => {
                 rules={[{ required: true, message: "请上传证书背景!" }]}
               >
                 <UploadImageButton
-                  text="上传背景"
+                  text={uploadName}
                   onSelected={(url) => {
                     form.setFieldsValue({ template_image: url });
                     setThumb(url);
@@ -312,6 +397,35 @@ const CertificateCreatePage = () => {
             </div>
           </div>
         )}
+        <Draggable
+          bounds={{ right: 0, left: 0, top: 0, bottom: 0 }}
+          defaultPosition={{ x: dragX, y: dragY }}
+          position={{ x: dragX, y: dragY }}
+          onDrag={(e: any) => {
+            console.log(e);
+            setDragX(e.x);
+            setDragY(e.y);
+          }}
+        >
+          <div
+            style={{
+              width: originalWidth,
+              height: originalHeight,
+            }}
+            className={styles["preview-box"]}
+          >
+            <div
+              style={{
+                backgroundImage: "url(" + thumb + ")",
+                backgroundPosition: "center center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+              className={styles["image-box"]}
+            ></div>
+          </div>
+        </Draggable>
+
         {curBlockIndex !== null && (
           <div
             className={

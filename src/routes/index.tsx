@@ -179,6 +179,7 @@ import SinglePage from "../pages/singlepage/index";
 import SingleCreatePage from "../pages/singlepage/create";
 import SingleUpdatePage from "../pages/singlepage/update";
 import CertificateCreatePage from "../pages/certificate/create";
+import CertificateUpdatePage from "../pages/certificate/update";
 
 let RootPage: any = null;
 if (getToken()) {
@@ -609,6 +610,7 @@ const routes: RouteObject[] = [
         element: <LoginPage />,
       },
       { path: "/certificate/create", element: <CertificateCreatePage /> },
+      { path: "/certificate/update", element: <CertificateUpdatePage /> },
       {
         path: "*",
         element: <ErrorPage />,

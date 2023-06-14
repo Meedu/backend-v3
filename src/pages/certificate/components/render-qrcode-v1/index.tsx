@@ -83,11 +83,13 @@ export const RenderQrcode: React.FC<PropInterface> = ({
       onMouseDown={() => onActive(current)}
     >
       <QRCode size={width} bordered={false} value={config.text} />
-      <div className={styles["item-options"]} style={{ top: 0, left: width }}>
-        <div className={styles["btn-item"]} onClick={() => blockDestroy()}>
-          <DeleteOutlined />
+      {status === current && (
+        <div className={styles["item-options"]} style={{ top: 0, left: width }}>
+          <div className={styles["btn-item"]} onClick={() => blockDestroy()}>
+            <DeleteOutlined />
+          </div>
         </div>
-      </div>
+      )}
     </Rnd>
   );
 };

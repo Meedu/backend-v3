@@ -43,36 +43,42 @@ export const CertificateConfig: React.FC<PropInterface> = ({
     const box = { ...obj };
     box.config.text += "${user.mobile}";
     setObj(box);
+    onChange(obj, false);
   };
 
   const addNo = () => {
     const box = { ...obj };
     box.config.text += "${cert.no}";
     setObj(box);
+    onChange(obj, false);
   };
 
   const addRealname = () => {
     const box = { ...obj };
     box.config.text += "${profile.real_name}";
     setObj(box);
+    onChange(obj, false);
   };
 
   const addIdno = () => {
     const box = { ...obj };
     box.config.text += "${profile.id_number}";
     setObj(box);
+    onChange(obj, false);
   };
 
   const addAge = () => {
     const box = { ...obj };
     box.config.text += "${profile.age}";
     setObj(box);
+    onChange(obj, false);
   };
 
   const addGender = () => {
     const box = { ...obj };
     box.config.text += "${profile.gender}";
     setObj(box);
+    onChange(obj, false);
   };
 
   return (
@@ -143,6 +149,7 @@ export const CertificateConfig: React.FC<PropInterface> = ({
                             const box = { ...obj };
                             box.config.text = e.target.value;
                             setObj(box);
+                            onChange(obj, false);
                           }}
                           style={{ width: "100%", resize: "none" }}
                           placeholder="此处填写文字内容"
@@ -162,6 +169,7 @@ export const CertificateConfig: React.FC<PropInterface> = ({
                             const box = { ...obj };
                             box.config.size = e.target.value;
                             setObj(box);
+                            onChange(obj, false);
                           }}
                           style={{ width: "100%" }}
                           placeholder="此处填写文字大小"
@@ -176,13 +184,13 @@ export const CertificateConfig: React.FC<PropInterface> = ({
                         <Input
                           value={obj.config.color}
                           type="color"
-                          allowClear
                           onChange={(e) => {
                             const box = { ...obj };
                             box.config.color = e.target.value;
                             setObj(box);
+                            onChange(obj, false);
                           }}
-                          style={{ width: "100%", padding: 0 }}
+                          style={{ width: 32, padding: 0 }}
                         />
                       </div>
                     </div>

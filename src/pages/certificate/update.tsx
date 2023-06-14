@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-import { Form, Space, message, Button, Input, Row, Col, Dropdown } from "antd";
+import { Form, message, Button, Input, Row, Col, Dropdown } from "antd";
 import type { MenuProps } from "antd";
 import Draggable from "react-draggable";
 import styles from "./create.module.scss";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { certificate } from "../../api/index";
 import {
   HelperText,
-  PerButton,
   UploadImageButton,
   SelectResourcesMulti,
 } from "../../components";
@@ -26,6 +25,7 @@ import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 import { CertificateConfig } from "./components/certificate-config";
 import { RenderImage } from "./components/render-image-v1";
 import { RenderQrcode } from "./components/render-qrcode-v1";
+import { RenderText } from "./components/render-text-v1";
 import { checkUrl } from "../../utils/index";
 import config from "../../js/config";
 
@@ -344,7 +344,7 @@ const CertificateUpdatePage = () => {
   };
 
   const createQrcode = (obj: any, val: boolean) => {
-    if (obj && val) {
+    if (obj) {
       let box = [...blocksData];
       box[curBlockIndex] = obj;
       setBlocksData(box);
@@ -879,7 +879,25 @@ const CertificateUpdatePage = () => {
                       }}
                     ></RenderQrcode>
                   ) : (
-                    <div key={index}>222</div>
+                    <RenderText
+                      key={index}
+                      current={index}
+                      status={curBlockIndex}
+                      size={size}
+                      config={item.config}
+                      onDragend={(sign: string, x: number, y: number) => {
+                        let box = [...blocksData];
+                        box[index].config.x = x;
+                        box[index].config.y = y;
+                        setBlocksData(box);
+                      }}
+                      onDel={(current: number) => {
+                        blockDestroy(current);
+                      }}
+                      onActive={(current: number) => {
+                        setCurBlockIndex(current);
+                      }}
+                    ></RenderText>
                   );
                 })}
             </div>

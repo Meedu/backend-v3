@@ -490,8 +490,8 @@ const CertificateCreatePage = () => {
                         return;
                       }
                       let defaultConfig = {
-                        x: e.clientX / sizeRef.current,
-                        y: e.clientY / sizeRef.current,
+                        x: (e.clientX - dragX) / sizeRef.current,
+                        y: (e.clientY - dragY) / sizeRef.current,
                         font: "default",
                         size: 40,
                         color: "#333333",
@@ -531,8 +531,8 @@ const CertificateCreatePage = () => {
                         return;
                       }
                       let defaultConfig = {
-                        x: e.clientX / sizeRef.current,
-                        y: e.clientY / sizeRef.current,
+                        x: (e.clientX - dragX) / sizeRef.current,
+                        y: (e.clientY - dragY) / sizeRef.current,
                         width: 200,
                         height: 200,
                         url: demoImg,
@@ -571,8 +571,8 @@ const CertificateCreatePage = () => {
                         return;
                       }
                       let defaultConfig = {
-                        x: e.clientX / sizeRef.current,
-                        y: e.clientY / sizeRef.current,
+                        x: (e.clientX - dragX) / sizeRef.current,
+                        y: (e.clientY - dragY) / sizeRef.current,
                         width: 200,
                         height: 200,
                         url:
@@ -744,37 +744,38 @@ const CertificateCreatePage = () => {
               ></div>
               {blocksData.length > 0 &&
                 blocksData.map((item: any, index: number) => {
-                  return (
-                    item &&
-                    item.sign === "image-v1" && (
-                      <RenderImage
-                        key={index}
-                        pWidth={dragX}
-                        pHeight={dragY}
-                        current={index}
-                        status={curBlockIndex}
-                        size={size}
-                        config={item.config}
-                        onChange={(width: number, height: number) => {
-                          let box = [...blocksData];
-                          box[index].config.width = width;
-                          box[index].config.height = height;
-                          setBlocksData(box);
-                        }}
-                        onDragend={(sign: string, x: number, y: number) => {
-                          let box = [...blocksData];
-                          box[index].config.x = x;
-                          box[index].config.y = y;
-                          setBlocksData(box);
-                        }}
-                        onDel={(current: number) => {
-                          blockDestroy(current);
-                        }}
-                        onActive={(current: number) => {
-                          setCurBlockIndex(current);
-                        }}
-                      ></RenderImage>
-                    )
+                  return item.sign === "image-v1" ? (
+                    <RenderImage
+                      key={index}
+                      pWidth={dragX}
+                      pHeight={dragY}
+                      current={index}
+                      status={curBlockIndex}
+                      size={size}
+                      config={item.config}
+                      onChange={(width: number, height: number) => {
+                        let box = [...blocksData];
+                        box[index].config.width = width;
+                        box[index].config.height = height;
+                        setBlocksData(box);
+                      }}
+                      onDragend={(sign: string, x: number, y: number) => {
+                        let box = [...blocksData];
+                        box[index].config.x = x;
+                        box[index].config.y = y;
+                        setBlocksData(box);
+                      }}
+                      onDel={(current: number) => {
+                        blockDestroy(current);
+                      }}
+                      onActive={(current: number) => {
+                        setCurBlockIndex(current);
+                      }}
+                    ></RenderImage>
+                  ) : item.sign === "qrcode-v1" ? (
+                    <></>
+                  ) : (
+                    <></>
                   );
                 })}
             </div>

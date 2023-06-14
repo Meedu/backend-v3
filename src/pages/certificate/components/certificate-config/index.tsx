@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, message, Table, Button, Input, Select, DatePicker } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import { Button, Input } from "antd";
 import styles from "./index.module.scss";
 import { SelectImage } from "../../../../components";
 

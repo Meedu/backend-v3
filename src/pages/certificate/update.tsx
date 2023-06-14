@@ -24,6 +24,7 @@ import demoImg from "../../assets/home/demo.png";
 import closeIcon from "../../assets/img/icon-close-h.png";
 import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 import { CertificateConfig } from "./components/certificate-config";
+import { RenderImage } from "./components/render-image-v1";
 import { checkUrl } from "../../utils/index";
 import config from "../../js/config";
 
@@ -409,7 +410,7 @@ const CertificateUpdatePage = () => {
   ];
 
   const getIndex = (obj: any, val: boolean) => {
-    if (obj && val) {
+    if (obj) {
       let box = [...blocksData];
       box[curBlockIndex] = obj;
       setBlocksData(box);
@@ -451,6 +452,13 @@ const CertificateUpdatePage = () => {
     } else {
       setPaperData([]);
     }
+  };
+
+  const blockDestroy = (index: number) => {
+    let box = [...blocksData];
+    box.splice(index, 1);
+    setBlocksData(box);
+    setCurBlockIndex(null);
   };
 
   return (
@@ -790,6 +798,7 @@ const CertificateUpdatePage = () => {
             </div>
           )}
           <Draggable
+            handle={".image-box"}
             bounds={{ right: 0, left: 0, top: 0, bottom: 0 }}
             onDrag={(e: any) => {
               setDragX(e.x);
@@ -813,15 +822,42 @@ const CertificateUpdatePage = () => {
                   backgroundRepeat: "no-repeat",
                 }}
                 className="image-box"
-              >
-                {blocksData.length > 0 &&
-                  blocksData.map((item: any, index: number) => {
-                    return (
-                      item &&
-                      item.sign === "image-v1" && <div key={index}>1111</div>
-                    );
-                  })}
-              </div>
+              ></div>
+              {blocksData.length > 0 &&
+                blocksData.map((item: any, index: number) => {
+                  return (
+                    item &&
+                    item.sign === "image-v1" && (
+                      <RenderImage
+                        key={index}
+                        pWidth={dragX}
+                        pHeight={dragY}
+                        current={index}
+                        status={curBlockIndex}
+                        size={size}
+                        config={item.config}
+                        onChange={(width: number, height: number) => {
+                          let box = [...blocksData];
+                          box[index].config.width = width;
+                          box[index].config.height = height;
+                          setBlocksData(box);
+                        }}
+                        onDragend={(sign: string, x: number, y: number) => {
+                          let box = [...blocksData];
+                          box[index].config.x = x;
+                          box[index].config.y = y;
+                          setBlocksData(box);
+                        }}
+                        onDel={(current: number) => {
+                          blockDestroy(current);
+                        }}
+                        onActive={(current: number) => {
+                          setCurBlockIndex(current);
+                        }}
+                      ></RenderImage>
+                    )
+                  );
+                })}
             </div>
           </Draggable>
 

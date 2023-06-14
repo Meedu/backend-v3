@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Modal } from "antd";
+import { QRCode, Modal } from "antd";
 import styles from "./index.module.scss";
 import { Rnd } from "react-rnd";
 import { ExclamationCircleFilled, DeleteOutlined } from "@ant-design/icons";
 const { confirm } = Modal;
 
 interface PropInterface {
-  pWidth: number;
-  pHeight: number;
   config: any;
   current: number;
   status: number;
@@ -18,9 +16,7 @@ interface PropInterface {
   onActive: (current: number) => void;
 }
 
-export const RenderImage: React.FC<PropInterface> = ({
-  pWidth,
-  pHeight,
+export const RenderQrcode: React.FC<PropInterface> = ({
   config,
   current,
   status,
@@ -36,13 +32,14 @@ export const RenderImage: React.FC<PropInterface> = ({
   const [y, setY] = useState(size * config.y);
 
   useEffect(() => {
+    console.log(config);
     if (config && size) {
       setWidth(size * config.width);
       setHeight(size * config.height);
       setX(size * config.x);
       setY(size * config.y);
     }
-  }, [config, size, status, current, pWidth, pHeight]);
+  }, [config, size, status, current]);
 
   const blockDestroy = () => {
     confirm({
@@ -73,7 +70,7 @@ export const RenderImage: React.FC<PropInterface> = ({
       onDrag={(e, d) => {
         setX(d.x);
         setY(d.y);
-        onDragend("image-v1", d.x / size, d.y / size);
+        onDragend("qrcode-v1", d.x / size, d.y / size);
       }}
       onResize={(e, direction, ref: any, delta, position) => {
         setWidth(parseInt(ref.style.width));
@@ -85,7 +82,7 @@ export const RenderImage: React.FC<PropInterface> = ({
       }}
       onMouseDown={() => onActive(current)}
     >
-      <img src={config.url} style={{ width: "100%", height: "100%" }} />
+      <QRCode size={width} bordered={false} value={config.text} />
       <div className={styles["item-options"]} style={{ top: 0, left: width }}>
         <div className={styles["btn-item"]} onClick={() => blockDestroy()}>
           <DeleteOutlined />

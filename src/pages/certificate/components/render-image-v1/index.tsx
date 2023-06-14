@@ -6,8 +6,6 @@ import { ExclamationCircleFilled, DeleteOutlined } from "@ant-design/icons";
 const { confirm } = Modal;
 
 interface PropInterface {
-  pWidth: number;
-  pHeight: number;
   config: any;
   current: number;
   status: number;
@@ -19,8 +17,6 @@ interface PropInterface {
 }
 
 export const RenderImage: React.FC<PropInterface> = ({
-  pWidth,
-  pHeight,
   config,
   current,
   status,
@@ -42,7 +38,7 @@ export const RenderImage: React.FC<PropInterface> = ({
       setX(size * config.x);
       setY(size * config.y);
     }
-  }, [config, size, status, current, pWidth, pHeight]);
+  }, [config, size, status, current]);
 
   const blockDestroy = () => {
     confirm({

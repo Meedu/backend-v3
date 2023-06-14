@@ -25,6 +25,7 @@ import closeIcon from "../../assets/img/icon-close-h.png";
 import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 import { CertificateConfig } from "./components/certificate-config";
 import { RenderImage } from "./components/render-image-v1";
+import { RenderQrcode } from "./components/render-qrcode-v1";
 import { checkUrl } from "../../utils/index";
 import config from "../../js/config";
 
@@ -180,7 +181,6 @@ const CertificateUpdatePage = () => {
         }
       }
       setBlocksData(arr);
-      console.log(arr);
       let relate_res = res.data.relate_res;
       if (relate_res) {
         let data = relate_res;
@@ -657,7 +657,7 @@ const CertificateUpdatePage = () => {
                         y: (e.clientY - dragY) / sizeRef.current,
                         width: 200,
                         height: 200,
-                        url:
+                        text:
                           checkUrl(config.url) + "addons/Cert/dist/index.html",
                       };
                       let box = [...blocksData];
@@ -829,8 +829,6 @@ const CertificateUpdatePage = () => {
                   return item.sign === "image-v1" ? (
                     <RenderImage
                       key={index}
-                      pWidth={dragX}
-                      pHeight={dragY}
                       current={index}
                       status={curBlockIndex}
                       size={size}
@@ -855,7 +853,31 @@ const CertificateUpdatePage = () => {
                       }}
                     ></RenderImage>
                   ) : item.sign === "qrcode-v1" ? (
-                    <div key={index}>111</div>
+                    <RenderQrcode
+                      key={index}
+                      current={index}
+                      status={curBlockIndex}
+                      size={size}
+                      config={item.config}
+                      onChange={(width: number, height: number) => {
+                        let box = [...blocksData];
+                        box[index].config.width = width;
+                        box[index].config.height = height;
+                        setBlocksData(box);
+                      }}
+                      onDragend={(sign: string, x: number, y: number) => {
+                        let box = [...blocksData];
+                        box[index].config.x = x;
+                        box[index].config.y = y;
+                        setBlocksData(box);
+                      }}
+                      onDel={(current: number) => {
+                        blockDestroy(current);
+                      }}
+                      onActive={(current: number) => {
+                        setCurBlockIndex(current);
+                      }}
+                    ></RenderQrcode>
                   ) : (
                     <div key={index}>222</div>
                   );

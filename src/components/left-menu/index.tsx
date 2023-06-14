@@ -39,14 +39,14 @@ const items = [
     [
       getItem("电脑端", "/decoration/pc", null, null, null, "viewBlock"),
       getItem("移动端", "/decoration/h5", null, null, null, "viewBlock"),
-      getItem(
-        "单页面",
-        "/singlepage/index",
-        null,
-        null,
-        null,
-        "addons.SinglePage.page.list"
-      ),
+      // getItem(
+      //   "单页面",
+      //   "/singlepage/index",
+      //   null,
+      //   null,
+      //   null,
+      //   "addons.SinglePage.page.list"
+      // ),
     ],
     null,
     null

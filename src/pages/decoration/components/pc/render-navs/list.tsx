@@ -3,6 +3,7 @@ import { Modal, Table, Button, Space, message } from "antd";
 import { system } from "../../../../../api";
 import type { ColumnsType } from "antd/es/table";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { NavsCreate } from "./create";
 const { confirm } = Modal;
 
 interface DataType {
@@ -153,6 +154,12 @@ export const NavsList: React.FC<PropInterface> = ({ open, onClose }) => {
     });
   };
 
+  const closeEvt = () => {
+    setShowCreateWin(false);
+    setShowEditWin(false);
+    getData();
+  };
+
   return (
     <>
       {open && (
@@ -177,6 +184,10 @@ export const NavsList: React.FC<PropInterface> = ({ open, onClose }) => {
               <Button onClick={() => onClose()}>取消</Button>
             </div>
           </div>
+          <NavsCreate
+            open={showCreateWin}
+            onClose={() => closeEvt()}
+          ></NavsCreate>
         </div>
       )}
     </>

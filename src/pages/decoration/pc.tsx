@@ -10,6 +10,7 @@ import { HelperText } from "../../components";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 import { RenderNavs } from "./components/pc/render-navs";
+import { NavsList } from "./components/pc/render-navs/list";
 import navIcon from "../../assets/images/decoration/h5/icon-nav.png";
 import announceIcon from "../../assets/images/decoration/h5/icon-announce.png";
 import bannerIcon from "../../assets/images/decoration/h5/icon-banner.png";
@@ -532,7 +533,7 @@ const DecorationPCPage = () => {
         </div>
       </div>
       <div className={styles["navs-box"]}>
-        <div className={styles["nav-item"]}>
+        <div className={styles["nav-item"]} onClick={() => setShowNavWin(true)}>
           <img src={navIcon} width={30} height={30} />
           导航管理
         </div>
@@ -555,6 +556,7 @@ const DecorationPCPage = () => {
           <RenderNavs reload={showNavWin}></RenderNavs>
         </div>
       </div>
+      <NavsList open={showNavWin} onClose={() => close()}></NavsList>
     </div>
   );
 };

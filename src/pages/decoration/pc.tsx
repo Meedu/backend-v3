@@ -26,6 +26,7 @@ import { RenderBook } from "./components/pc/render-book";
 import { RenderTopic } from "./components/pc/render-topic";
 import { RenderLearnPath } from "./components/pc/render-learn-path";
 import { RenderMiaosha } from "./components/pc/render-ms";
+import { RenderTuangou } from "./components/pc/render-tg";
 import { RenderCode } from "./components/pc/render-code";
 import { NavsList } from "./components/pc/render-navs/list";
 import { SlidersList } from "./components/pc/render-sliders/list";
@@ -712,6 +713,9 @@ const DecorationPCPage = () => {
                   )}
                   {item.sign === "pc-ms-v1" && (
                     <RenderMiaosha config={item.config_render}></RenderMiaosha>
+                  )}
+                  {item.sign === "pc-tg-v1" && (
+                    <RenderTuangou config={item.config_render}></RenderTuangou>
                   )}
                   {item.sign === "code" && (
                     <RenderCode config={item.config_render}></RenderCode>

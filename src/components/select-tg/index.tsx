@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, message, Table, Input, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { miaosha } from "../../api/index";
+import { tuangou } from "../../api/index";
 import { ThumbBar } from "../../components";
 
 interface DataType {
@@ -15,7 +15,7 @@ interface PropsInterface {
   onCancel: () => void;
 }
 
-export const SelectMiaosha = (props: PropsInterface) => {
+export const SelectTuangou = (props: PropsInterface) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [page, setPage] = useState(1);
@@ -34,7 +34,7 @@ export const SelectMiaosha = (props: PropsInterface) => {
       return;
     }
     setLoading(true);
-    miaosha
+    tuangou
       .list({
         page: 1,
         size: 10,
@@ -81,7 +81,7 @@ export const SelectMiaosha = (props: PropsInterface) => {
       render: (_, record: any) => <span>{record.id}</span>,
     },
     {
-      title: "秒杀课程",
+      title: "团购课程",
       render: (_, record: any) => (
         <>
           {record.goods_type === "book" ? (
@@ -105,7 +105,7 @@ export const SelectMiaosha = (props: PropsInterface) => {
       ),
     },
     {
-      title: "秒杀价",
+      title: "团购价",
       width: 120,
       dataIndex: "charge",
       render: (charge: number) => <span>￥{charge}</span>,

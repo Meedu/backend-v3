@@ -7,7 +7,7 @@ interface PropInterface {
   config: any;
 }
 
-export const RenderVod: React.FC<PropInterface> = ({ config }) => {
+export const RenderLive: React.FC<PropInterface> = ({ config }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
@@ -32,7 +32,7 @@ export const RenderVod: React.FC<PropInterface> = ({ config }) => {
               </div>
               <div className={styles["course-title"]}>{item.title}</div>
               <div className={styles["course-info"]}>
-                <div className={styles["sub"]}>
+                <div className={styles["videos-count"]}>
                   {item.category ? item.category.name : ""}
                 </div>
                 <div className={styles["charge"]}>

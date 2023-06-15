@@ -152,3 +152,17 @@
     line-height: 12px;
   }
 }
+
+.config-box {
+  position: absolute;
+  z-index: 10;
+  top: 112px;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  box-sizing: border-box;
+  background-color: white;
+  border-left: 1px solid #f2f2f2;
+  overflow-y: auto;
+  text-align: left;
+}

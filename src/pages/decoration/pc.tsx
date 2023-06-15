@@ -1,14 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import { Modal, message, Button, Input, Row, Col, Dropdown } from "antd";
-import type { MenuProps } from "antd";
-import Draggable from "react-draggable";
+import { useState, useEffect } from "react";
+import { Modal, message, Button } from "antd";
 import styles from "./pc.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { viewBlock } from "../../api/index";
-import { HelperText } from "../../components";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
+  CloseOutlined,
   UpOutlined,
   DownOutlined,
   CopyOutlined,
@@ -32,6 +30,7 @@ import { NavsList } from "./components/pc/render-navs/list";
 import { SlidersList } from "./components/pc/render-sliders/list";
 import { NoticeList } from "./components/pc/render-notice/list";
 import { LinksList } from "./components/pc/render-links/list";
+import { ConfigSetting } from "./components/h5/config/index";
 import navIcon from "../../assets/images/decoration/h5/icon-nav.png";
 import announceIcon from "../../assets/images/decoration/h5/icon-announce.png";
 import bannerIcon from "../../assets/images/decoration/h5/icon-banner.png";
@@ -505,6 +504,30 @@ const DecorationPCPage = () => {
     getData();
   };
 
+  const reloadData = (toBottom = false) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    viewBlock
+      .list({
+        platform: platform,
+        page: page,
+      })
+      .then((res: any) => {
+        setBlocks(res.data);
+        setCurBlockIndex(null);
+        setLoading(false);
+        if (toBottom) {
+          const $div: any = document.getElementById("pc-dec-preview-box");
+          $div.scrollTop = $div.scrollHeight;
+        }
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
   return (
     <div className={styles["bg"]}>
       <div className={styles["top-box"]}>
@@ -760,6 +783,25 @@ const DecorationPCPage = () => {
           <RenderLinks reload={showLinkWin}></RenderLinks>
         </div>
       </div>
+      {curBlockIndex !== null && (
+        <div className={styles["config-box"]}>
+          <div className="float-left mb-15">
+            <Button
+              className="ml-15 mt-15"
+              icon={<CloseOutlined />}
+              onClick={() => {
+                setCurBlockIndex(null);
+              }}
+            >
+              关闭配置
+            </Button>
+          </div>
+          <ConfigSetting
+            block={blocks[curBlockIndex]}
+            onUpdate={() => reloadData()}
+          ></ConfigSetting>
+        </div>
+      )}
       <NavsList open={showNavWin} onClose={() => close()}></NavsList>
       <SlidersList open={showListWin} onClose={() => close()}></SlidersList>
       <NoticeList open={showNoticeWin} onClose={() => close()}></NoticeList>

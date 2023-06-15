@@ -4,6 +4,7 @@ import { system } from "../../../../../api";
 import type { ColumnsType } from "antd/es/table";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { NavsCreate } from "./create";
+import { NavsUpdate } from "./update";
 const { confirm } = Modal;
 
 interface DataType {
@@ -188,6 +189,11 @@ export const NavsList: React.FC<PropInterface> = ({ open, onClose }) => {
             open={showCreateWin}
             onClose={() => closeEvt()}
           ></NavsCreate>
+          <NavsUpdate
+            open={showEditWin}
+            id={updateId}
+            onClose={() => closeEvt()}
+          ></NavsUpdate>
         </div>
       )}
     </>

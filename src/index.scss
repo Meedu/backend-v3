@@ -1633,3 +1633,14 @@ textarea.ant-input {
     }
   }
 }
+
+.func-link-item {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

@@ -4,11 +4,12 @@ import { system } from "../../../../../api";
 import { HelperText, PCLink } from "../../../../../components";
 
 interface PropInterface {
+  id: number;
   open: boolean;
   onClose: () => void;
 }
 
-export const NavsCreate: React.FC<PropInterface> = ({ open, onClose }) => {
+export const NavsUpdate: React.FC<PropInterface> = ({ id, open, onClose }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [navs, setNavs] = useState<any>([]);
@@ -17,16 +18,15 @@ export const NavsCreate: React.FC<PropInterface> = ({ open, onClose }) => {
 
   useEffect(() => {
     if (open) {
-      form.setFieldsValue({
-        parent_id: [],
-        sort: "",
-        name: "",
-        url: "",
-        blank: 0,
-      });
       getParams();
     }
   }, [open]);
+
+  useEffect(() => {
+    if (id) {
+      getDetail();
+    }
+  }, [id]);
 
   const getParams = () => {
     system.navsCreate().then((res: any) => {
@@ -38,6 +38,35 @@ export const NavsCreate: React.FC<PropInterface> = ({ open, onClose }) => {
         });
       }
       setNavs(box);
+    });
+  };
+
+  const getDetail = () => {
+    if (id === 0) {
+      return;
+    }
+    system.navsDetail(id).then((res: any) => {
+      let data = res.data;
+      if (data.parent_id === 0) {
+        form.setFieldsValue({
+          parent_id: [],
+        });
+      } else {
+        form.setFieldsValue({
+          parent_id: data.parent_id,
+        });
+      }
+      form.setFieldsValue({
+        sort: data.sort,
+        name: data.name,
+        url: data.url,
+        blank: data.blank,
+      });
+      if (data.url.match("https://") || data.url.match("http://")) {
+        setLinkStatus(true);
+      } else {
+        setLinkStatus(false);
+      }
     });
   };
 
@@ -54,7 +83,7 @@ export const NavsCreate: React.FC<PropInterface> = ({ open, onClose }) => {
     }
     setLoading(true);
     system
-      .navsStore(values)
+      .navsUpdate(id, values)
       .then((res: any) => {
         setLoading(false);
         message.success("成功！");
@@ -82,11 +111,11 @@ export const NavsCreate: React.FC<PropInterface> = ({ open, onClose }) => {
       {open && (
         <div className="meedu-dialog-mask">
           <div className="meedu-dialog-box">
-            <div className="meedu-dialog-header">添加导航</div>
+            <div className="meedu-dialog-header">编辑导航</div>
             <div className="meedu-dialog-body">
               <Form
                 form={form}
-                name="navs-create"
+                name="navs-update"
                 labelCol={{ span: 3 }}
                 wrapperCol={{ span: 21 }}
                 initialValues={{ remember: true }}

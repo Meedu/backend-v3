@@ -6,6 +6,7 @@ import { LiveV1Set } from "./live-v1";
 import { BookV1Set } from "./book-v1";
 import { TopicV1Set } from "./topic-v1";
 import { LearnPathV1Set } from "./learnPath-v1";
+import { MsV1Set } from "./ms-v1";
 
 interface PropInterface {
   block: any;
@@ -41,6 +42,10 @@ export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
             block={block}
             onUpdate={() => update()}
           ></LearnPathV1Set>
+        ))}
+      {block.sign === "h5-ms-v1" ||
+        (block.sign === "pc-ms-v1" && (
+          <MsV1Set block={block} onUpdate={() => update()}></MsV1Set>
         ))}
       {block.sign === "code" && (
         <CodeSet block={block} onUpdate={() => update()}></CodeSet>

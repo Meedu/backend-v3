@@ -34,3 +34,4 @@ export * from "./judge";
 export * from "./qa";
 export * from "./cap";
 export * from "./pc-link";
+export * from "./select-ms";

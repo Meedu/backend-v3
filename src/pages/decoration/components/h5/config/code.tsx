@@ -62,7 +62,7 @@ export const CodeSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
       <div className={styles["footer-button"]}>
         <Button
           type="primary"
-          className="w-100"
+          style={{ width: "100%" }}
           loading={loading}
           onClick={() => save()}
         >

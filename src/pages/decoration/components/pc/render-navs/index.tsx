@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { system } from "../../../../../api";
 import { DownOutlined } from "@ant-design/icons";
+import { NavsList } from "./list";
 
 interface PropInterface {
   reload: boolean;
@@ -61,6 +62,7 @@ export const RenderNavs: React.FC<PropInterface> = ({ reload }) => {
             </div>
           ))}
       </div>
+      <NavsList open={showListWin} onClose={() => close()}></NavsList>
     </div>
   );
 };

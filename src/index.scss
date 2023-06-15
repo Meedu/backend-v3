@@ -1487,9 +1487,10 @@ textarea.ant-input {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2001;
+  z-index: 100;
   transform: translateZ(1000px); /*这里是给safari用的*/
   background-color: rgba(0, 0, 0, 0.5);
+  text-align: left;
   .meedu-table-dialog-box {
     position: absolute;
     top: 50%;
@@ -1501,6 +1502,7 @@ textarea.ant-input {
     background-color: white;
     border-radius: 8px;
     animation: scaleBig 0.3s;
+
     .meedu-table-dialog-header {
       width: 100%;
       height: auto;

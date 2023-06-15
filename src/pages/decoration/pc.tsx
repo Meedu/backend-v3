@@ -12,9 +12,11 @@ import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 import { RenderNavs } from "./components/pc/render-navs";
 import { RenderSliders } from "./components/pc/render-sliders";
 import { RenderNotice } from "./components/pc/render-notice";
+import { RenderLinks } from "./components/pc/render-links";
 import { NavsList } from "./components/pc/render-navs/list";
 import { SlidersList } from "./components/pc/render-sliders/list";
 import { NoticeList } from "./components/pc/render-notice/list";
+import { LinksList } from "./components/pc/render-links/list";
 import navIcon from "../../assets/images/decoration/h5/icon-nav.png";
 import announceIcon from "../../assets/images/decoration/h5/icon-announce.png";
 import bannerIcon from "../../assets/images/decoration/h5/icon-banner.png";
@@ -566,17 +568,26 @@ const DecorationPCPage = () => {
       </div>
       <div className="pc-dec-preview-box">
         <div className="pc-box" style={{ width: previewWidth }}>
+          {/* 导航栏 */}
           <RenderNavs reload={showNavWin}></RenderNavs>
+
+          {/* 幻灯片 */}
           <RenderSliders
             reload={showListWin}
             width={previewWidth}
           ></RenderSliders>
+
+          {/* 公告  */}
           <RenderNotice reload={showNoticeWin}></RenderNotice>
+
+          {/* 友情链接  */}
+          <RenderLinks reload={showLinkWin}></RenderLinks>
         </div>
       </div>
       <NavsList open={showNavWin} onClose={() => close()}></NavsList>
       <SlidersList open={showListWin} onClose={() => close()}></SlidersList>
       <NoticeList open={showNoticeWin} onClose={() => close()}></NoticeList>
+      <LinksList open={showLinkWin} onClose={() => close()}></LinksList>
     </div>
   );
 };

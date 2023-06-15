@@ -132,3 +132,23 @@ export function announcementDetail(id: number) {
 export function announcementUpdate(id: number, params: any) {
   return client.put(`/backend/api/v1/announcement/${id}`, params);
 }
+
+export function linksList(params: any) {
+  return client.get(`/backend/api/v1/link`, params);
+}
+
+export function linksStore(params: any) {
+  return client.post(`/backend/api/v1/link`, params);
+}
+
+export function linksDestroy(id: number) {
+  return client.destroy(`/backend/api/v1/link/${id}`);
+}
+
+export function linksDetail(id: number) {
+  return client.get(`/backend/api/v1/link/${id}`, {});
+}
+
+export function linksUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/link/${id}`, params);
+}

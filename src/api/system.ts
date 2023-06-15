@@ -68,3 +68,27 @@ export function administratorDetail(id: number) {
 export function administratorUpdate(id: number, params: any) {
   return client.put(`/backend/api/v1/administrator/${id}`, params);
 }
+
+export function navsList(params: any) {
+  return client.get(`/backend/api/v1/nav`, params);
+}
+
+export function navsCreate() {
+  return client.get(`/backend/api/v1/nav/create`, {});
+}
+
+export function navsStore(params: any) {
+  return client.post(`/backend/api/v1/nav`, params);
+}
+
+export function navsDestroy(id: number) {
+  return client.destroy(`/backend/api/v1/nav/${id}`);
+}
+
+export function navsDetail(id: number) {
+  return client.get(`/backend/api/v1/nav/${id}`, {});
+}
+
+export function navsUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/nav/${id}`, params);
+}

@@ -114,6 +114,9 @@ export const SelectResources = (props: PropsInterface) => {
       }
     }
     setAvaliableResources(resources);
+    if (resources.length === 1) {
+      setResourceActive(resources[0].key);
+    }
   }, [enabledResourceMap, enabledAddons]);
 
   const onChange = (key: string) => {

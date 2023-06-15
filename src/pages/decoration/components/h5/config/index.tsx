@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./index.module.scss";
 import { CodeSet } from "./code";
 import { VodV1Set } from "./vod-v1";
+import { LiveV1Set } from "./live-v1";
 
 interface PropInterface {
   block: any;
@@ -19,6 +20,10 @@ export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
       {(block.sign === "h5-vod-v1" || block.sign === "pc-vod-v1") && (
         <VodV1Set block={block} onUpdate={() => update()}></VodV1Set>
       )}
+      {block.sign === "h5-live-v1" ||
+        (block.sign === "pc-live-v1" && (
+          <LiveV1Set block={block} onUpdate={() => update()}></LiveV1Set>
+        ))}
       {block.sign === "code" && (
         <CodeSet block={block} onUpdate={() => update()}></CodeSet>
       )}

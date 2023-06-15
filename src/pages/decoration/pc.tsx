@@ -10,6 +10,7 @@ import { HelperText } from "../../components";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 import { RenderNavs } from "./components/pc/render-navs";
+import { RenderSliders } from "./components/pc/render-sliders";
 import { NavsList } from "./components/pc/render-navs/list";
 import navIcon from "../../assets/images/decoration/h5/icon-nav.png";
 import announceIcon from "../../assets/images/decoration/h5/icon-announce.png";
@@ -554,6 +555,10 @@ const DecorationPCPage = () => {
       <div className="pc-dec-preview-box">
         <div className="pc-box" style={{ width: previewWidth }}>
           <RenderNavs reload={showNavWin}></RenderNavs>
+          <RenderSliders
+            reload={showListWin}
+            width={previewWidth}
+          ></RenderSliders>
         </div>
       </div>
       <NavsList open={showNavWin} onClose={() => close()}></NavsList>

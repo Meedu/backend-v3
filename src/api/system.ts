@@ -92,3 +92,23 @@ export function navsDetail(id: number) {
 export function navsUpdate(id: number, params: any) {
   return client.put(`/backend/api/v1/nav/${id}`, params);
 }
+
+export function slidersList(params: any) {
+  return client.get(`/backend/api/v1/slider`, params);
+}
+
+export function slidersStore(params: any) {
+  return client.post(`/backend/api/v1/slider`, params);
+}
+
+export function slidersDestroy(id: number) {
+  return client.destroy(`/backend/api/v1/slider/${id}`);
+}
+
+export function slidersDetail(id: number) {
+  return client.get(`/backend/api/v1/slider/${id}`, {});
+}
+
+export function slidersUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/slider/${id}`, params);
+}

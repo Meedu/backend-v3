@@ -5,6 +5,7 @@ import { VodV1Set } from "./vod-v1";
 import { LiveV1Set } from "./live-v1";
 import { BookV1Set } from "./book-v1";
 import { TopicV1Set } from "./topic-v1";
+import { LearnPathV1Set } from "./learnPath-v1";
 
 interface PropInterface {
   block: any;
@@ -33,6 +34,13 @@ export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
       {block.sign === "h5-topic-v1" ||
         (block.sign === "pc-topic-v1" && (
           <TopicV1Set block={block} onUpdate={() => update()}></TopicV1Set>
+        ))}
+      {block.sign === "h5-learnPath-v1" ||
+        (block.sign === "pc-learnPath-v1" && (
+          <LearnPathV1Set
+            block={block}
+            onUpdate={() => update()}
+          ></LearnPathV1Set>
         ))}
       {block.sign === "code" && (
         <CodeSet block={block} onUpdate={() => update()}></CodeSet>

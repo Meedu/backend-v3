@@ -23,6 +23,7 @@ import { RenderLinks } from "./components/pc/render-links";
 import { RenderVod } from "./components/pc/render-vod";
 import { RenderLive } from "./components/pc/render-live";
 import { RenderBook } from "./components/pc/render-book";
+import { RenderTopic } from "./components/pc/render-topic";
 import { RenderCode } from "./components/pc/render-code";
 import { NavsList } from "./components/pc/render-navs/list";
 import { SlidersList } from "./components/pc/render-sliders/list";
@@ -699,6 +700,9 @@ const DecorationPCPage = () => {
                   {item.sign === "pc-book-v1" && (
                     <RenderBook config={item.config_render}></RenderBook>
                   )}
+                  {item.sign === "pc-topic-v1" && (
+                    <RenderTopic config={item.config_render}></RenderTopic>
+                  )}
                   {item.sign === "code" && (
                     <RenderCode config={item.config_render}></RenderCode>
                   )}
@@ -727,7 +731,7 @@ const DecorationPCPage = () => {
                       {index !== blocks.length - 1 && (
                         <div
                           className="btn-item"
-                          onClick={() => moveTop(index, item)}
+                          onClick={() => moveBottom(index, item)}
                         >
                           <DownOutlined />
                         </div>

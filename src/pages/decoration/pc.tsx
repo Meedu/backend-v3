@@ -20,6 +20,7 @@ import { RenderNavs } from "./components/pc/render-navs";
 import { RenderSliders } from "./components/pc/render-sliders";
 import { RenderNotice } from "./components/pc/render-notice";
 import { RenderLinks } from "./components/pc/render-links";
+import { RenderVod } from "./components/pc/render-vod";
 import { RenderCode } from "./components/pc/render-code";
 import { NavsList } from "./components/pc/render-navs/list";
 import { SlidersList } from "./components/pc/render-sliders/list";
@@ -687,6 +688,9 @@ const DecorationPCPage = () => {
                   className={curBlockIndex === index ? "active item" : "item"}
                   onClick={() => setCurBlockIndex(index)}
                 >
+                  {item.sign === 'pc-vod-v1'&&(
+                    <RenderVod config={item.config_render}></RenderVod>
+                  )}
                   {item.sign === "code" && (
                     <RenderCode config={item.config_render}></RenderCode>
                   )}

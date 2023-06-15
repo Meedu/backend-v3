@@ -11,7 +11,10 @@ import { titleAction } from "../../store/user/loginUserSlice";
 import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 import { RenderNavs } from "./components/pc/render-navs";
 import { RenderSliders } from "./components/pc/render-sliders";
+import { RenderNotice } from "./components/pc/render-notice";
 import { NavsList } from "./components/pc/render-navs/list";
+import { SlidersList } from "./components/pc/render-sliders/list";
+import { NoticeList } from "./components/pc/render-notice/list";
 import navIcon from "../../assets/images/decoration/h5/icon-nav.png";
 import announceIcon from "../../assets/images/decoration/h5/icon-announce.png";
 import bannerIcon from "../../assets/images/decoration/h5/icon-banner.png";
@@ -538,15 +541,24 @@ const DecorationPCPage = () => {
           <img src={navIcon} width={30} height={30} />
           导航管理
         </div>
-        <div className={styles["nav-item"]}>
+        <div
+          className={styles["nav-item"]}
+          onClick={() => setShowNoticeWin(true)}
+        >
           <img src={announceIcon} width={30} height={30} />
           公告管理
         </div>
-        <div className={styles["nav-item"]}>
+        <div
+          className={styles["nav-item"]}
+          onClick={() => setShowListWin(true)}
+        >
           <img src={bannerIcon} width={30} height={30} />
           轮播图片
         </div>
-        <div className={styles["nav-item"]}>
+        <div
+          className={styles["nav-item"]}
+          onClick={() => setShowLinkWin(true)}
+        >
           <img src={linkIcon} width={30} height={30} />
           友情链接
         </div>
@@ -559,9 +571,12 @@ const DecorationPCPage = () => {
             reload={showListWin}
             width={previewWidth}
           ></RenderSliders>
+          <RenderNotice reload={showNoticeWin}></RenderNotice>
         </div>
       </div>
       <NavsList open={showNavWin} onClose={() => close()}></NavsList>
+      <SlidersList open={showListWin} onClose={() => close()}></SlidersList>
+      <NoticeList open={showNoticeWin} onClose={() => close()}></NoticeList>
     </div>
   );
 };

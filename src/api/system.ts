@@ -112,3 +112,23 @@ export function slidersDetail(id: number) {
 export function slidersUpdate(id: number, params: any) {
   return client.put(`/backend/api/v1/slider/${id}`, params);
 }
+
+export function announcementList(params: any) {
+  return client.get(`/backend/api/v1/announcement`, params);
+}
+
+export function announcementStore(params: any) {
+  return client.post(`/backend/api/v1/announcement`, params);
+}
+
+export function announcementDestroy(id: number) {
+  return client.destroy(`/backend/api/v1/announcement/${id}`);
+}
+
+export function announcementDetail(id: number) {
+  return client.get(`/backend/api/v1/announcement/${id}`, {});
+}
+
+export function announcementUpdate(id: number, params: any) {
+  return client.put(`/backend/api/v1/announcement/${id}`, params);
+}

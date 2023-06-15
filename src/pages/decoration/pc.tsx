@@ -22,6 +22,7 @@ import { RenderNotice } from "./components/pc/render-notice";
 import { RenderLinks } from "./components/pc/render-links";
 import { RenderVod } from "./components/pc/render-vod";
 import { RenderLive } from "./components/pc/render-live";
+import { RenderBook } from "./components/pc/render-book";
 import { RenderCode } from "./components/pc/render-code";
 import { NavsList } from "./components/pc/render-navs/list";
 import { SlidersList } from "./components/pc/render-sliders/list";
@@ -694,6 +695,9 @@ const DecorationPCPage = () => {
                   )}
                   {item.sign === "pc-live-v1" && (
                     <RenderLive config={item.config_render}></RenderLive>
+                  )}
+                  {item.sign === "pc-book-v1" && (
+                    <RenderBook config={item.config_render}></RenderBook>
                   )}
                   {item.sign === "code" && (
                     <RenderCode config={item.config_render}></RenderCode>

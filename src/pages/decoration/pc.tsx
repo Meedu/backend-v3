@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Form, message, Button, Input, Row, Col, Dropdown } from "antd";
+import { Modal, message, Button, Input, Row, Col, Dropdown } from "antd";
 import type { MenuProps } from "antd";
 import Draggable from "react-draggable";
 import styles from "./pc.module.scss";
@@ -8,11 +8,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { viewBlock } from "../../api/index";
 import { HelperText } from "../../components";
 import { titleAction } from "../../store/user/loginUserSlice";
-import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
+import {
+  UpOutlined,
+  DownOutlined,
+  CopyOutlined,
+  DeleteOutlined,
+  LeftOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 import { RenderNavs } from "./components/pc/render-navs";
 import { RenderSliders } from "./components/pc/render-sliders";
 import { RenderNotice } from "./components/pc/render-notice";
 import { RenderLinks } from "./components/pc/render-links";
+import { RenderCode } from "./components/pc/render-code";
 import { NavsList } from "./components/pc/render-navs/list";
 import { SlidersList } from "./components/pc/render-sliders/list";
 import { NoticeList } from "./components/pc/render-notice/list";
@@ -29,6 +37,7 @@ import pathIcon from "../../assets/images/decoration/h5/h5-learn-path-v1.png";
 import msIcon from "../../assets/images/decoration/h5/h5-ms-v1.png";
 import tgIcon from "../../assets/images/decoration/h5/h5-tg-v1.png";
 import codeIocn from "../../assets/images/decoration/h5/code.png";
+const { confirm } = Modal;
 
 const DecorationPCPage = () => {
   const dispatch = useDispatch();
@@ -398,6 +407,97 @@ const DecorationPCPage = () => {
       });
   };
 
+  const blockDestroy = (index: number, item: any) => {
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: "确认操作？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        if (loading) {
+          return;
+        }
+        setLoading(true);
+        viewBlock
+          .destroy(item.id)
+          .then(() => {
+            setLoading(false);
+            message.success("删除成功");
+            getData();
+          })
+          .catch((e) => {
+            setLoading(false);
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const blockCopy = (index: number, item: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    viewBlock
+      .store({
+        platform: item.platform,
+        page: item.page,
+        sign: item.sign,
+        sort: item.sort,
+        config: item.config_render,
+      })
+      .then(() => {
+        setLoading(false);
+        message.success("成功");
+        getData();
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
+  const moveTop = async (index: number, item: any) => {
+    if (index === 0) {
+      message.warning("已经是第一个啦");
+      return;
+    }
+    let changeItem = blocks[index - 1];
+
+    await viewBlock.update(item.id, {
+      sort: changeItem.sort,
+      config: item.config_render,
+    });
+    await viewBlock.update(changeItem.id, {
+      sort: item.sort,
+      config: changeItem.config_render,
+    });
+    setCurBlockIndex(null);
+    getData();
+  };
+
+  const moveBottom = async (index: number, item: any) => {
+    if (index === blocks.length - 1) {
+      message.warning("已经是最后一个啦");
+      return;
+    }
+    let changeItem = blocks[index + 1];
+
+    await viewBlock.update(item.id, {
+      sort: changeItem.sort,
+      config: item.config_render,
+    });
+    await viewBlock.update(changeItem.id, {
+      sort: item.sort,
+      config: changeItem.config_render,
+    });
+    setCurBlockIndex(null);
+    getData();
+  };
+
   return (
     <div className={styles["bg"]}>
       <div className={styles["top-box"]}>
@@ -579,6 +679,52 @@ const DecorationPCPage = () => {
 
           {/* 公告  */}
           <RenderNotice reload={showNoticeWin}></RenderNotice>
+
+          {blocks.length > 0 &&
+            blocks.map((item: any, index: number) => (
+              <div className="float-left" key={index}>
+                <div
+                  className={curBlockIndex === index ? "active item" : "item"}
+                  onClick={() => setCurBlockIndex(index)}
+                >
+                  {item.sign === "code" && (
+                    <RenderCode config={item.config_render}></RenderCode>
+                  )}
+                  {curBlockIndex === index && (
+                    <div className="item-options">
+                      <div
+                        className="btn-item"
+                        onClick={() => blockDestroy(index, item)}
+                      >
+                        <DeleteOutlined />
+                      </div>
+                      <div
+                        className="btn-item"
+                        onClick={() => blockCopy(index, item)}
+                      >
+                        <CopyOutlined />
+                      </div>
+                      {index !== 0 && (
+                        <div
+                          className="btn-item"
+                          onClick={() => moveTop(index, item)}
+                        >
+                          <UpOutlined />
+                        </div>
+                      )}
+                      {index !== blocks.length - 1 && (
+                        <div
+                          className="btn-item"
+                          onClick={() => moveTop(index, item)}
+                        >
+                          <DownOutlined />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
 
           {/* 友情链接  */}
           <RenderLinks reload={showLinkWin}></RenderLinks>

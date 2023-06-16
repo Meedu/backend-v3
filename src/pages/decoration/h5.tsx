@@ -22,6 +22,7 @@ import { RenderGzhV1 } from "./components/h5/render-gzh-v1";
 import { RenderImageGroup } from "./components/h5/render-image-group";
 import { RenderMpWechat } from "./components/h5/render-mp-wechat";
 import { RenderVod } from "./components/h5/render-vod";
+import { RenderLive } from "./components/h5/render-live";
 import sliderIcon from "../../assets/images/decoration/h5/slider.png";
 import navIcon from "../../assets/images/decoration/h5/grid-nav.png";
 import blankIcon from "../../assets/images/decoration/h5/blank.png";
@@ -111,117 +112,74 @@ const DecorationH5Page = () => {
     setLoading(true);
     // 默认数据
     let defaultConfig = null;
-    if (sign === "pc-vod-v1") {
+    if (sign === "grid-nav") {
+      defaultConfig = {
+        line_count: 4,
+        items: [
+          {
+            src: null,
+            name: "xxx",
+          },
+          {
+            src: null,
+            name: "xxx",
+          },
+          {
+            src: null,
+            name: "xxx",
+          },
+          {
+            src: null,
+            name: "xxx",
+          },
+        ],
+      };
+    } else if (sign === "slider") {
+      defaultConfig = [
+        {
+          src: null,
+          url: null,
+        },
+      ];
+    } else if (sign === "h5-vod-v1") {
       defaultConfig = {
         title: "录播课程",
         items: [
           {
             id: null,
-            title: "录播课程",
+            title: "xxx",
             thumb: null,
-            user_count: 0,
-            charge: 0,
-          },
-          {
-            id: null,
-            title: "录播课程",
-            thumb: null,
-            user_count: 0,
-            charge: 0,
-          },
-          {
-            id: null,
-            title: "录播课程",
-            thumb: null,
-            user_count: 0,
-            charge: 0,
-          },
-          {
-            id: null,
-            title: "录播课程",
-            thumb: null,
-            user_count: 0,
-            charge: 0,
           },
         ],
       };
-    } else if (sign === "pc-live-v1") {
+    } else if (sign === "h5-live-v1") {
       defaultConfig = {
         title: "直播课程",
         items: [
           {
             id: null,
-            title: "直播课程",
+            title: "直播课程一",
             thumb: null,
-            charge: 0,
-            videos_count: 0,
-            teacher: {
-              name: "教师xx",
-            },
           },
           {
             id: null,
-            title: "直播课程",
+            title: "直播课程二",
             thumb: null,
-            charge: 0,
-            videos_count: 0,
-            teacher: {
-              name: "教师xx",
-            },
-          },
-          {
-            id: null,
-            title: "直播课程",
-            thumb: null,
-            charge: 0,
-            videos_count: 0,
-            teacher: {
-              name: "教师xx",
-            },
-          },
-          {
-            id: null,
-            title: "直播课程",
-            thumb: null,
-            charge: 0,
-            videos_count: 0,
-            teacher: {
-              name: "教师xx",
-            },
           },
         ],
       };
-    } else if (sign === "pc-book-v1") {
+    } else if (sign === "h5-book-v1") {
       defaultConfig = {
         title: "电子书",
         items: [
           {
             id: null,
-            name: "电子书",
+            name: "电子书一",
             thumb: null,
-            charge: 0,
-          },
-          {
-            id: null,
-            name: "电子书",
-            thumb: null,
-            charge: 0,
-          },
-          {
-            id: null,
-            name: "电子书",
-            thumb: null,
-            charge: 0,
-          },
-          {
-            id: null,
-            name: "电子书",
-            thumb: null,
-            charge: 0,
           },
         ],
       };
-    } else if (sign === "pc-topic-v1") {
+    } else if (sign === "h5-topic-v1") {
       defaultConfig = {
         title: "图文",
         items: [
@@ -229,41 +187,10 @@ const DecorationH5Page = () => {
             id: null,
             title: "图文一",
             thumb: null,
-            view_times: 0,
-            category: {
-              name: "未知分类",
-            },
-          },
-          {
-            id: null,
-            title: "图文一",
-            thumb: null,
-            view_times: 0,
-            category: {
-              name: "未知分类",
-            },
-          },
-          {
-            id: null,
-            title: "图文一",
-            thumb: null,
-            view_times: 0,
-            category: {
-              name: "未知分类",
-            },
-          },
-          {
-            id: null,
-            title: "图文一",
-            thumb: null,
-            view_times: 0,
-            category: {
-              name: "未知分类",
-            },
           },
         ],
       };
-    } else if (sign === "pc-learnPath-v1") {
+    } else if (sign === "h5-learnPath-v1") {
       defaultConfig = {
         title: "学习路径",
         items: [
@@ -271,23 +198,10 @@ const DecorationH5Page = () => {
             id: null,
             name: "路径一",
             thumb: null,
-            charge: 0,
-            steps_count: 0,
-            courses_count: 0,
-            desc: "简单介绍",
-          },
-          {
-            id: null,
-            name: "路径一",
-            thumb: null,
-            charge: 0,
-            steps_count: 0,
-            courses_count: 0,
-            desc: "简单介绍",
           },
         ],
       };
-    } else if (sign === "pc-tg-v1") {
+    } else if (sign === "h5-tg-v1") {
       defaultConfig = {
         title: "团购",
         items: [
@@ -295,69 +209,59 @@ const DecorationH5Page = () => {
             id: null,
             goods_title: "团购商品一",
             goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "团购商品一",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "团购商品一",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "团购商品一",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
           },
         ],
       };
-    } else if (sign === "pc-ms-v1") {
+    } else if (sign === "h5-ms-v1") {
       defaultConfig = {
         title: "秒杀",
         items: [
           {
             id: null,
-            goods_title: "秒杀商品",
+            goods_title: "秒杀一",
             goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "秒杀商品",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "秒杀商品",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
-          },
-          {
-            id: null,
-            goods_title: "秒杀商品",
-            goods_thumb: null,
-            charge: 0,
-            original_charge: 0,
           },
         ],
       };
-    } else if (sign === "code") {
+    } else if (sign === "blank") {
       defaultConfig = {
-        html: null,
+        height: 10,
+        bgcolor: "#FFFFFF",
+      };
+    } else if (sign === "mp-wechat") {
+      defaultConfig = {
+        name: "微信公众号名称",
+        desc: "微信公众号简介",
+      };
+    } else if (sign === "image-group") {
+      defaultConfig = {
+        v: "v-4",
+        items: [
+          {
+            src: null,
+            url: null,
+          },
+          {
+            src: null,
+            url: null,
+          },
+          {
+            src: null,
+            url: null,
+          },
+          {
+            src: null,
+            url: null,
+          },
+        ],
+      };
+    } else if (sign === "h5-gzh-v1") {
+      defaultConfig = {
+        title: "公众号",
+        name: "公众号名称",
+        logo: null,
+        desc: "公众号引导",
+        qrcode: null,
       };
     }
 
@@ -687,6 +591,9 @@ const DecorationH5Page = () => {
                   )}
                   {item.sign === "h5-vod-v1" && (
                     <RenderVod config={item.config_render}></RenderVod>
+                  )}
+                  {item.sign === "h5-live-v1" && (
+                    <RenderLive config={item.config_render}></RenderLive>
                   )}
                   {item.sign === "blank" && (
                     <RenderBlank config={item.config_render}></RenderBlank>

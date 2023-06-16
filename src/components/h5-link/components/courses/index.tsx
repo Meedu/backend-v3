@@ -4,6 +4,12 @@ import { Select } from "antd";
 import { useSelector } from "react-redux";
 import { VodComp } from "./vod-comp";
 import { LiveComp } from "./live-comp";
+import { BookComp } from "./book-comp";
+import { TopicComp } from "./topic-comp";
+import { LearnPathComp } from "./learn-path-comp";
+import { PaperComp } from "./paper-comp";
+import { MockPaperComp } from "./mock-paper-comp";
+import { PracticeComp } from "./practice-comp";
 
 interface PropInterface {
   onChange: (value: any) => void;
@@ -102,6 +108,48 @@ export const H5Courses: React.FC<PropInterface> = ({ onChange }) => {
               onChange(value);
             }}
           ></LiveComp>
+        )}
+        {typeActive === "book" && (
+          <BookComp
+            onChange={(value: any) => {
+              onChange(value);
+            }}
+          ></BookComp>
+        )}
+        {typeActive === "topic" && (
+          <TopicComp
+            onChange={(value: any) => {
+              onChange(value);
+            }}
+          ></TopicComp>
+        )}
+        {typeActive === "learnPath" && (
+          <LearnPathComp
+            onChange={(value: any) => {
+              onChange(value);
+            }}
+          ></LearnPathComp>
+        )}
+        {typeActive === "paper" && (
+          <PaperComp
+            onChange={(value: any) => {
+              onChange(value);
+            }}
+          ></PaperComp>
+        )}
+        {typeActive === "mock-paper" && (
+          <MockPaperComp
+            onChange={(value: any) => {
+              onChange(value);
+            }}
+          ></MockPaperComp>
+        )}
+        {typeActive === "practice" && (
+          <PracticeComp
+            onChange={(value: any) => {
+              onChange(value);
+            }}
+          ></PracticeComp>
         )}
       </div>
     </div>

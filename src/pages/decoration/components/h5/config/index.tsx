@@ -11,6 +11,7 @@ import { TgV1Set } from "./tg-v1";
 import { GzhV1Set } from "./gzh-v1";
 import { ImageGroupSet } from "./image-group";
 import { SliderSet } from "./slider";
+import { BlankSet } from "./blank";
 
 interface PropInterface {
   block: any;
@@ -55,6 +56,9 @@ export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
       )}
       {block.sign === "code" && (
         <CodeSet block={block} onUpdate={() => update()}></CodeSet>
+      )}
+      {block.sign === "blank" && (
+        <BlankSet block={block} onUpdate={() => update()}></BlankSet>
       )}
       {block.sign === "image-group" && (
         <ImageGroupSet block={block} onUpdate={() => update()}></ImageGroupSet>

@@ -14,6 +14,22 @@ import {
   LeftOutlined,
   ExclamationCircleFilled,
 } from "@ant-design/icons";
+import { ConfigSetting } from "./components/h5/config/index";
+import { RenderSliders } from "./components/h5/render-sliders";
+import sliderIcon from "../../assets/images/decoration/h5/slider.png";
+import navIcon from "../../assets/images/decoration/h5/grid-nav.png";
+import blankIcon from "../../assets/images/decoration/h5/blank.png";
+import groupIcon from "../../assets/images/decoration/h5/image-group.png";
+import vodIcon from "../../assets/images/decoration/h5/h5-vod-v1.png";
+import liveIcon from "../../assets/images/decoration/h5/h5-live-v1.png";
+import bookIcon from "../../assets/images/decoration/h5/h5-book-v1.png";
+import topicIcon from "../../assets/images/decoration/h5/h5-topic-v1.png";
+import pathIcon from "../../assets/images/decoration/h5/h5-learn-path-v1.png";
+import msIcon from "../../assets/images/decoration/h5/h5-ms-v1.png";
+import tgIcon from "../../assets/images/decoration/h5/h5-tg-v1.png";
+import gzhIocn from "../../assets/images/decoration/h5/h5-gognzhoanghao-v1.png";
+import statusIcon from "../../assets/images/decoration/h5/status-bar.png";
+import searchIcon from "../../assets/images/decoration/h5/search-bar.png";
 const { confirm } = Modal;
 
 const DecorationH5Page = () => {
@@ -24,6 +40,428 @@ const DecorationH5Page = () => {
   const [page, setPage] = useState("h5-page-index");
   const [blocks, setBlocks] = useState<any>([]);
   const [curBlock, setCurBlock] = useState<any>(null);
+  const [lastSort, setLastSort] = useState(0);
+  const enabledAddons = useSelector(
+    (state: any) => state.enabledAddonsConfig.value.enabledAddons
+  );
+
+  useEffect(() => {
+    document.title = "移动端装修";
+    dispatch(titleAction("移动端装修"));
+  }, []);
+
+  useEffect(() => {
+    getData();
+  }, [page, platform]);
+
+  useEffect(() => {
+    let sort = 0;
+    if (blocks.length > 0) {
+      sort = blocks[blocks.length - 1].sort + 1;
+    }
+    setLastSort(sort);
+  }, [blocks]);
+
+  const getData = (toBottom = false) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    viewBlock
+      .list({
+        platform: platform,
+        page: page,
+      })
+      .then((res: any) => {
+        setBlocks(res.data);
+        setLoading(false);
+        setCurBlock(null);
+        if (toBottom) {
+          const $div: any = document.getElementById("h5-dec-preview-box");
+          $div.scrollTop = $div.scrollHeight;
+        }
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
+  const dragChange = (e: any, sign: string) => {
+    let screenWidth = document.body.clientWidth;
+    let priewLeft = 0.5 * screenWidth - 188;
+    let priewright = 0.5 * screenWidth + 187;
+    if (e.clientX < priewLeft) {
+      return;
+    }
+    if (e.clientX > priewright) {
+      return;
+    }
+    if (e.clientY < 143) {
+      return;
+    }
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    // 默认数据
+    let defaultConfig = null;
+    if (sign === "pc-vod-v1") {
+      defaultConfig = {
+        title: "录播课程",
+        items: [
+          {
+            id: null,
+            title: "录播课程",
+            thumb: null,
+            user_count: 0,
+            charge: 0,
+          },
+          {
+            id: null,
+            title: "录播课程",
+            thumb: null,
+            user_count: 0,
+            charge: 0,
+          },
+          {
+            id: null,
+            title: "录播课程",
+            thumb: null,
+            user_count: 0,
+            charge: 0,
+          },
+          {
+            id: null,
+            title: "录播课程",
+            thumb: null,
+            user_count: 0,
+            charge: 0,
+          },
+        ],
+      };
+    } else if (sign === "pc-live-v1") {
+      defaultConfig = {
+        title: "直播课程",
+        items: [
+          {
+            id: null,
+            title: "直播课程",
+            thumb: null,
+            charge: 0,
+            videos_count: 0,
+            teacher: {
+              name: "教师xx",
+            },
+          },
+          {
+            id: null,
+            title: "直播课程",
+            thumb: null,
+            charge: 0,
+            videos_count: 0,
+            teacher: {
+              name: "教师xx",
+            },
+          },
+          {
+            id: null,
+            title: "直播课程",
+            thumb: null,
+            charge: 0,
+            videos_count: 0,
+            teacher: {
+              name: "教师xx",
+            },
+          },
+          {
+            id: null,
+            title: "直播课程",
+            thumb: null,
+            charge: 0,
+            videos_count: 0,
+            teacher: {
+              name: "教师xx",
+            },
+          },
+        ],
+      };
+    } else if (sign === "pc-book-v1") {
+      defaultConfig = {
+        title: "电子书",
+        items: [
+          {
+            id: null,
+            name: "电子书",
+            thumb: null,
+            charge: 0,
+          },
+          {
+            id: null,
+            name: "电子书",
+            thumb: null,
+            charge: 0,
+          },
+          {
+            id: null,
+            name: "电子书",
+            thumb: null,
+            charge: 0,
+          },
+          {
+            id: null,
+            name: "电子书",
+            thumb: null,
+            charge: 0,
+          },
+        ],
+      };
+    } else if (sign === "pc-topic-v1") {
+      defaultConfig = {
+        title: "图文",
+        items: [
+          {
+            id: null,
+            title: "图文一",
+            thumb: null,
+            view_times: 0,
+            category: {
+              name: "未知分类",
+            },
+          },
+          {
+            id: null,
+            title: "图文一",
+            thumb: null,
+            view_times: 0,
+            category: {
+              name: "未知分类",
+            },
+          },
+          {
+            id: null,
+            title: "图文一",
+            thumb: null,
+            view_times: 0,
+            category: {
+              name: "未知分类",
+            },
+          },
+          {
+            id: null,
+            title: "图文一",
+            thumb: null,
+            view_times: 0,
+            category: {
+              name: "未知分类",
+            },
+          },
+        ],
+      };
+    } else if (sign === "pc-learnPath-v1") {
+      defaultConfig = {
+        title: "学习路径",
+        items: [
+          {
+            id: null,
+            name: "路径一",
+            thumb: null,
+            charge: 0,
+            steps_count: 0,
+            courses_count: 0,
+            desc: "简单介绍",
+          },
+          {
+            id: null,
+            name: "路径一",
+            thumb: null,
+            charge: 0,
+            steps_count: 0,
+            courses_count: 0,
+            desc: "简单介绍",
+          },
+        ],
+      };
+    } else if (sign === "pc-tg-v1") {
+      defaultConfig = {
+        title: "团购",
+        items: [
+          {
+            id: null,
+            goods_title: "团购商品一",
+            goods_thumb: null,
+            charge: 0,
+            original_charge: 0,
+          },
+          {
+            id: null,
+            goods_title: "团购商品一",
+            goods_thumb: null,
+            charge: 0,
+            original_charge: 0,
+          },
+          {
+            id: null,
+            goods_title: "团购商品一",
+            goods_thumb: null,
+            charge: 0,
+            original_charge: 0,
+          },
+          {
+            id: null,
+            goods_title: "团购商品一",
+            goods_thumb: null,
+            charge: 0,
+            original_charge: 0,
+          },
+        ],
+      };
+    } else if (sign === "pc-ms-v1") {
+      defaultConfig = {
+        title: "秒杀",
+        items: [
+          {
+            id: null,
+            goods_title: "秒杀商品",
+            goods_thumb: null,
+            charge: 0,
+            original_charge: 0,
+          },
+          {
+            id: null,
+            goods_title: "秒杀商品",
+            goods_thumb: null,
+            charge: 0,
+            original_charge: 0,
+          },
+          {
+            id: null,
+            goods_title: "秒杀商品",
+            goods_thumb: null,
+            charge: 0,
+            original_charge: 0,
+          },
+          {
+            id: null,
+            goods_title: "秒杀商品",
+            goods_thumb: null,
+            charge: 0,
+            original_charge: 0,
+          },
+        ],
+      };
+    } else if (sign === "code") {
+      defaultConfig = {
+        html: null,
+      };
+    }
+
+    viewBlock
+      .store({
+        platform: platform,
+        page: page,
+        sign: sign,
+        sort: lastSort,
+        config: defaultConfig,
+      })
+      .then((res: any) => {
+        setLoading(false);
+        getData();
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
+  const blockDestroy = (index: number, item: any) => {
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: "确认操作？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        if (loading) {
+          return;
+        }
+        setLoading(true);
+        viewBlock
+          .destroy(item.id)
+          .then(() => {
+            setLoading(false);
+            message.success("删除成功");
+            getData();
+          })
+          .catch((e) => {
+            setLoading(false);
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const blockCopy = (index: number, item: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    viewBlock
+      .store({
+        platform: item.platform,
+        page: item.page,
+        sign: item.sign,
+        sort: item.sort,
+        config: item.config_render,
+      })
+      .then(() => {
+        setLoading(false);
+        message.success("成功");
+        getData();
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
+  const moveTop = async (index: number, item: any) => {
+    if (index === 0) {
+      message.warning("已经是第一个啦");
+      return;
+    }
+    let changeItem = blocks[index - 1];
+
+    await viewBlock.update(item.id, {
+      sort: changeItem.sort,
+      config: item.config_render,
+    });
+    await viewBlock.update(changeItem.id, {
+      sort: item.sort,
+      config: changeItem.config_render,
+    });
+    setCurBlock(null);
+    getData();
+  };
+
+  const moveBottom = async (index: number, item: any) => {
+    if (index === blocks.length - 1) {
+      message.warning("已经是最后一个啦");
+      return;
+    }
+    let changeItem = blocks[index + 1];
+
+    await viewBlock.update(item.id, {
+      sort: changeItem.sort,
+      config: item.config_render,
+    });
+    await viewBlock.update(changeItem.id, {
+      sort: item.sort,
+      config: changeItem.config_render,
+    });
+    setCurBlock(null);
+    getData();
+  };
 
   return (
     <div className={styles["bg"]}>
@@ -35,7 +473,254 @@ const DecorationH5Page = () => {
         <div className={styles["line"]}></div>
         <div className={styles["name"]}>移动端首页</div>
       </div>
-      
+      <div className="main-body">
+        <div className={styles["blocks-box"]}>
+          <div className={styles["title"]}>拖动添加板块</div>
+          <div className={styles["blocks"]}>
+            <div
+              className={styles["block-item"]}
+              draggable
+              onDragEnd={(e: any) => {
+                dragChange(e, "slider");
+              }}
+            >
+              <div className={styles["btn"]}>
+                <div className={styles["icon"]}>
+                  <img src={sliderIcon} width={44} height={44} />
+                </div>
+                <div className={styles["name"]}>幻灯片</div>
+              </div>
+            </div>
+            <div
+              className={styles["block-item"]}
+              draggable
+              onDragEnd={(e: any) => {
+                dragChange(e, "grid-nav");
+              }}
+            >
+              <div className={styles["btn"]}>
+                <div className={styles["icon"]}>
+                  <img src={navIcon} width={44} height={44} />
+                </div>
+                <div className={styles["name"]}>宫格导航</div>
+              </div>
+            </div>
+            <div
+              className={styles["block-item"]}
+              draggable
+              onDragEnd={(e: any) => {
+                dragChange(e, "blank");
+              }}
+            >
+              <div className={styles["btn"]}>
+                <div className={styles["icon"]}>
+                  <img src={blankIcon} width={44} height={44} />
+                </div>
+                <div className={styles["name"]}>空白快</div>
+              </div>
+            </div>
+            <div
+              className={styles["block-item"]}
+              draggable
+              onDragEnd={(e: any) => {
+                dragChange(e, "image-group");
+              }}
+            >
+              <div className={styles["btn"]}>
+                <div className={styles["icon"]}>
+                  <img src={groupIcon} width={44} height={44} />
+                </div>
+                <div className={styles["name"]}>图片魔方</div>
+              </div>
+            </div>
+            <div
+              className={styles["block-item"]}
+              draggable
+              onDragEnd={(e: any) => {
+                dragChange(e, "h5-vod-v1");
+              }}
+            >
+              <div className={styles["btn"]}>
+                <div className={styles["icon"]}>
+                  <img src={vodIcon} width={44} height={44} />
+                </div>
+                <div className={styles["name"]}>录播</div>
+              </div>
+            </div>
+            {enabledAddons["Zhibo"] && (
+              <div
+                className={styles["block-item"]}
+                draggable
+                onDragEnd={(e: any) => {
+                  dragChange(e, "h5-live-v1");
+                }}
+              >
+                <div className={styles["btn"]}>
+                  <div className={styles["icon"]}>
+                    <img src={liveIcon} width={44} height={44} />
+                  </div>
+                  <div className={styles["name"]}>直播</div>
+                </div>
+              </div>
+            )}
+            {enabledAddons["MeeduBooks"] && (
+              <div
+                className={styles["block-item"]}
+                draggable
+                onDragEnd={(e: any) => {
+                  dragChange(e, "h5-book-v1");
+                }}
+              >
+                <div className={styles["btn"]}>
+                  <div className={styles["icon"]}>
+                    <img src={bookIcon} width={44} height={44} />
+                  </div>
+                  <div className={styles["name"]}>电子书</div>
+                </div>
+              </div>
+            )}
+            {enabledAddons["MeeduTopics"] && (
+              <div
+                className={styles["block-item"]}
+                draggable
+                onDragEnd={(e: any) => {
+                  dragChange(e, "h5-topic-v1");
+                }}
+              >
+                <div className={styles["btn"]}>
+                  <div className={styles["icon"]}>
+                    <img src={topicIcon} width={44} height={44} />
+                  </div>
+                  <div className={styles["name"]}>图文</div>
+                </div>
+              </div>
+            )}
+            {enabledAddons["LearningPaths"] && (
+              <div
+                className={styles["block-item"]}
+                draggable
+                onDragEnd={(e: any) => {
+                  dragChange(e, "h5-learnPath-v1");
+                }}
+              >
+                <div className={styles["btn"]}>
+                  <div className={styles["icon"]}>
+                    <img src={pathIcon} width={44} height={44} />
+                  </div>
+                  <div className={styles["name"]}>路径</div>
+                </div>
+              </div>
+            )}
+            {enabledAddons["MiaoSha"] && (
+              <div
+                className={styles["block-item"]}
+                draggable
+                onDragEnd={(e: any) => {
+                  dragChange(e, "h5-ms-v1");
+                }}
+              >
+                <div className={styles["btn"]}>
+                  <div className={styles["icon"]}>
+                    <img src={msIcon} width={44} height={44} />
+                  </div>
+                  <div className={styles["name"]}>秒杀</div>
+                </div>
+              </div>
+            )}
+            {enabledAddons["TuanGou"] && (
+              <div
+                className={styles["block-item"]}
+                draggable
+                onDragEnd={(e: any) => {
+                  dragChange(e, "h5-tg-v1");
+                }}
+              >
+                <div className={styles["btn"]}>
+                  <div className={styles["icon"]}>
+                    <img src={tgIcon} width={44} height={44} />
+                  </div>
+                  <div className={styles["name"]}>团购</div>
+                </div>
+              </div>
+            )}
+            <div
+              className={styles["block-item"]}
+              draggable
+              onDragEnd={(e: any) => {
+                dragChange(e, "h5-gzh-v1");
+              }}
+            >
+              <div className={styles["btn"]}>
+                <div className={styles["icon"]}>
+                  <img src={gzhIocn} width={44} height={44} />
+                </div>
+                <div className={styles["name"]}>公众号</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="h5-dec-preview-box">
+          <div className="status-bar">
+            <img src={statusIcon} style={{ width: "100%" }} height={26} />
+          </div>
+          <div className="search-bar">
+            <img src={searchIcon} style={{ width: "100%" }} height={50} />
+          </div>
+          {blocks.length > 0 &&
+            blocks.map((item: any, index: number) => (
+              <div className="float-left" key={index}>
+                <div
+                  className={curBlock === index ? "active item" : "item"}
+                  onClick={() => setCurBlock(index)}
+                >
+                  {item.sign === "slider" && (
+                    <RenderSliders config={item.config_render}></RenderSliders>
+                  )}
+                  {curBlock === index && (
+                    <div className="item-options">
+                      <div
+                        className="btn-item"
+                        onClick={() => blockDestroy(index, item)}
+                      >
+                        <DeleteOutlined />
+                      </div>
+                      <div
+                        className="btn-item"
+                        onClick={() => blockCopy(index, item)}
+                      >
+                        <CopyOutlined />
+                      </div>
+                      {index !== 0 && (
+                        <div
+                          className="btn-item"
+                          onClick={() => moveTop(index, item)}
+                        >
+                          <UpOutlined />
+                        </div>
+                      )}
+                      {index !== blocks.length - 1 && (
+                        <div
+                          className="btn-item"
+                          onClick={() => moveBottom(index, item)}
+                        >
+                          <DownOutlined />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+        </div>
+        {curBlock !== null && (
+          <div className={styles["config-box"]}>
+            <ConfigSetting
+              block={blocks[curBlock]}
+              onUpdate={() => getData()}
+            ></ConfigSetting>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

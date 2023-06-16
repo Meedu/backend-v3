@@ -10,6 +10,7 @@ import { MsV1Set } from "./ms-v1";
 import { TgV1Set } from "./tg-v1";
 import { GzhV1Set } from "./gzh-v1";
 import { ImageGroupSet } from "./image-group";
+import { SliderSet } from "./slider";
 
 interface PropInterface {
   block: any;
@@ -24,6 +25,9 @@ export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
 
   return (
     <div className={styles["config-index-box"]}>
+      {block.sign === "slider" && (
+        <SliderSet block={block} onUpdate={() => update()}></SliderSet>
+      )}
       {(block.sign === "h5-vod-v1" || block.sign === "pc-vod-v1") && (
         <VodV1Set block={block} onUpdate={() => update()}></VodV1Set>
       )}

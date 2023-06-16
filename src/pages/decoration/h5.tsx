@@ -23,6 +23,7 @@ import { RenderImageGroup } from "./components/h5/render-image-group";
 import { RenderMpWechat } from "./components/h5/render-mp-wechat";
 import { RenderVod } from "./components/h5/render-vod";
 import { RenderLive } from "./components/h5/render-live";
+import { RenderBook } from "./components/h5/render-book";
 import sliderIcon from "../../assets/images/decoration/h5/slider.png";
 import navIcon from "../../assets/images/decoration/h5/grid-nav.png";
 import blankIcon from "../../assets/images/decoration/h5/blank.png";
@@ -594,6 +595,9 @@ const DecorationH5Page = () => {
                   )}
                   {item.sign === "h5-live-v1" && (
                     <RenderLive config={item.config_render}></RenderLive>
+                  )}
+                  {item.sign === "h5-book-v1" && (
+                    <RenderBook config={item.config_render}></RenderBook>
                   )}
                   {item.sign === "blank" && (
                     <RenderBlank config={item.config_render}></RenderBlank>

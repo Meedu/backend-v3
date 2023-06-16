@@ -17,6 +17,8 @@ import {
 import { ConfigSetting } from "./components/h5/config/index";
 import { RenderSliders } from "./components/h5/render-sliders";
 import { RenderGridNav } from "./components/h5/render-grid-nav";
+import { RenderBlank } from "./components/h5/render-blank";
+import { RenderGzhV1 } from "./components/h5/render-gzh-v1";
 import sliderIcon from "../../assets/images/decoration/h5/slider.png";
 import navIcon from "../../assets/images/decoration/h5/grid-nav.png";
 import blankIcon from "../../assets/images/decoration/h5/blank.png";
@@ -679,6 +681,12 @@ const DecorationH5Page = () => {
                   )}
                   {item.sign === "grid-nav" && (
                     <RenderGridNav config={item.config_render}></RenderGridNav>
+                  )}
+                  {item.sign === "blank" && (
+                    <RenderBlank config={item.config_render}></RenderBlank>
+                  )}
+                  {item.sign === "h5-gzh-v1" && (
+                    <RenderGzhV1 config={item.config_render}></RenderGzhV1>
                   )}
                   {curBlock === index && (
                     <div className="item-options">

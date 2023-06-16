@@ -26,6 +26,7 @@ import { RenderLive } from "./components/h5/render-live";
 import { RenderBook } from "./components/h5/render-book";
 import { RenderTopic } from "./components/h5/render-topic";
 import { RenderLearnPath } from "./components/h5/render-learn-path";
+import { RenderTg } from "./components/h5/render-tg";
 import sliderIcon from "../../assets/images/decoration/h5/slider.png";
 import navIcon from "../../assets/images/decoration/h5/grid-nav.png";
 import blankIcon from "../../assets/images/decoration/h5/blank.png";
@@ -608,6 +609,9 @@ const DecorationH5Page = () => {
                     <RenderLearnPath
                       config={item.config_render}
                     ></RenderLearnPath>
+                  )}
+                  {item.sign === "h5-tg-v1" && (
+                    <RenderTg config={item.config_render}></RenderTg>
                   )}
                   {item.sign === "blank" && (
                     <RenderBlank config={item.config_render}></RenderBlank>

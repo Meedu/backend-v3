@@ -16,6 +16,7 @@ import {
 } from "@ant-design/icons";
 import { ConfigSetting } from "./components/h5/config/index";
 import { RenderSliders } from "./components/h5/render-sliders";
+import { RenderGridNav } from "./components/h5/render-grid-nav";
 import sliderIcon from "../../assets/images/decoration/h5/slider.png";
 import navIcon from "../../assets/images/decoration/h5/grid-nav.png";
 import blankIcon from "../../assets/images/decoration/h5/blank.png";
@@ -675,6 +676,9 @@ const DecorationH5Page = () => {
                 >
                   {item.sign === "slider" && (
                     <RenderSliders config={item.config_render}></RenderSliders>
+                  )}
+                  {item.sign === "grid-nav" && (
+                    <RenderGridNav config={item.config_render}></RenderGridNav>
                   )}
                   {curBlock === index && (
                     <div className="item-options">

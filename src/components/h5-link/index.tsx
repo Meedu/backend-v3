@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Radio, Button, Space, message, Switch } from "antd";
+import { Radio, Button, message } from "antd";
 import { useSelector } from "react-redux";
+import { H5Courses } from "./components/courses";
 
 interface PropInterface {
   open: boolean;
@@ -164,6 +165,13 @@ export const H5Link: React.FC<PropInterface> = ({
                         </Radio>
                       </div>
                     ))}
+                  {tabActive === "course" && (
+                    <H5Courses
+                      onChange={(value: any) => {
+                        setLink(value);
+                      }}
+                    ></H5Courses>
+                  )}
                 </div>
               </div>
             </div>

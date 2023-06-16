@@ -12,6 +12,7 @@ import { GzhV1Set } from "./gzh-v1";
 import { ImageGroupSet } from "./image-group";
 import { SliderSet } from "./slider";
 import { BlankSet } from "./blank";
+import { GridNavSet } from "./grid-nav";
 
 interface PropInterface {
   block: any;
@@ -28,6 +29,9 @@ export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
     <div className={styles["config-index-box"]}>
       {block.sign === "slider" && (
         <SliderSet block={block} onUpdate={() => update()}></SliderSet>
+      )}
+      {block.sign === "grid-nav" && (
+        <GridNavSet block={block} onUpdate={() => update()}></GridNavSet>
       )}
       {(block.sign === "h5-vod-v1" || block.sign === "pc-vod-v1") && (
         <VodV1Set block={block} onUpdate={() => update()}></VodV1Set>

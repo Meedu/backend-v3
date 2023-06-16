@@ -181,6 +181,7 @@ import SingleUpdatePage from "../pages/singlepage/update";
 import CertificateCreatePage from "../pages/certificate/create";
 import CertificateUpdatePage from "../pages/certificate/update";
 import DecorationPCPage from "../pages/decoration/pc";
+import DecorationH5Page from "../pages/decoration/h5";
 
 let RootPage: any = null;
 if (getToken()) {
@@ -613,6 +614,7 @@ const routes: RouteObject[] = [
       { path: "/certificate/create", element: <CertificateCreatePage /> },
       { path: "/certificate/update", element: <CertificateUpdatePage /> },
       { path: "/decoration/pc", element: <DecorationPCPage /> },
+      { path: "/decoration/h5", element: <DecorationH5Page /> },
       {
         path: "*",
         element: <ErrorPage />,

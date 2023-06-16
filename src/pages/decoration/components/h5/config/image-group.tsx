@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./image-group.module.scss";
 import { Input, Button, message } from "antd";
 import { viewBlock } from "../../../../../api/index";
-import { SelectImage } from "../../../../../components";
+import { SelectImage, H5Link } from "../../../../../components";
 import group1ActiveIcon from "../../../../../assets/images/decoration/h5/image-group-1-active.png";
 import group1Icon from "../../../../../assets/images/decoration/h5/image-group-1.png";
 import group2ActiveIcon from "../../../../../assets/images/decoration/h5/image-group-2-active.png";
@@ -457,6 +457,11 @@ export const ImageGroupSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
           uploadImage(url);
         }}
       ></SelectImage>
+      <H5Link
+        open={showLinkWin}
+        onClose={() => setShowLinkWin(false)}
+        onChange={(value: any) => linkChange(value)}
+      ></H5Link>
     </div>
   );
 };

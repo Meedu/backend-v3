@@ -36,3 +36,4 @@ export * from "./cap";
 export * from "./pc-link";
 export * from "./select-ms";
 export * from "./select-tg";
+export * from "./h5-link";

@@ -8,6 +8,7 @@ import { TopicV1Set } from "./topic-v1";
 import { LearnPathV1Set } from "./learnPath-v1";
 import { MsV1Set } from "./ms-v1";
 import { TgV1Set } from "./tg-v1";
+import { GzhV1Set } from "./gzh-v1";
 
 interface PropInterface {
   block: any;
@@ -49,6 +50,9 @@ export const ConfigSetting: React.FC<PropInterface> = ({ block, onUpdate }) => {
       )}
       {block.sign === "code" && (
         <CodeSet block={block} onUpdate={() => update()}></CodeSet>
+      )}
+      {block.sign === "h5-gzh-v1" && (
+        <GzhV1Set block={block} onUpdate={() => update()}></GzhV1Set>
       )}
     </div>
   );

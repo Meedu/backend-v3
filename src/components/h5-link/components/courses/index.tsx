@@ -3,6 +3,7 @@ import styles from "./index.module.scss";
 import { Select } from "antd";
 import { useSelector } from "react-redux";
 import { VodComp } from "./vod-comp";
+import { LiveComp } from "./live-comp";
 
 interface PropInterface {
   onChange: (value: any) => void;
@@ -91,10 +92,16 @@ export const H5Courses: React.FC<PropInterface> = ({ onChange }) => {
         {typeActive === "vod" && (
           <VodComp
             onChange={(value: any) => {
-              console.log(value);
               onChange(value);
             }}
           ></VodComp>
+        )}
+        {typeActive === "live" && (
+          <LiveComp
+            onChange={(value: any) => {
+              onChange(value);
+            }}
+          ></LiveComp>
         )}
       </div>
     </div>

@@ -21,6 +21,7 @@ import { RenderBlank } from "./components/h5/render-blank";
 import { RenderGzhV1 } from "./components/h5/render-gzh-v1";
 import { RenderImageGroup } from "./components/h5/render-image-group";
 import { RenderMpWechat } from "./components/h5/render-mp-wechat";
+import { RenderVod } from "./components/h5/render-vod";
 import sliderIcon from "../../assets/images/decoration/h5/slider.png";
 import navIcon from "../../assets/images/decoration/h5/grid-nav.png";
 import blankIcon from "../../assets/images/decoration/h5/blank.png";
@@ -683,6 +684,9 @@ const DecorationH5Page = () => {
                   )}
                   {item.sign === "grid-nav" && (
                     <RenderGridNav config={item.config_render}></RenderGridNav>
+                  )}
+                  {item.sign === "h5-vod-v1" && (
+                    <RenderVod config={item.config_render}></RenderVod>
                   )}
                   {item.sign === "blank" && (
                     <RenderBlank config={item.config_render}></RenderBlank>

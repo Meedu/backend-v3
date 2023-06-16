@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./gzh-v1.module.scss";
 import { Input, Button, message } from "antd";
 import { viewBlock } from "../../../../../api/index";
-import { CloseIcon, SelectImage, ThumbBar } from "../../../../../components";
+import { SelectImage } from "../../../../../components";
 import editIcon from "../../../../../assets/images/decoration/h5/h5-edit.png";
 
 interface PropInterface {

@@ -58,6 +58,7 @@ export const QuestionContentRender: React.FC<PropInterface> = ({
                   onClick={() => newPreviewImage(item)}
                 >
                   <ThumbBar
+                    title=""
                     value={item}
                     width={200}
                     height={200}

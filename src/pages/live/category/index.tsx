@@ -62,7 +62,6 @@ const LiveCategoryPage = () => {
           }
         }
         setList(box);
-        setTotal(res.data.total);
         setLoading(false);
       })
       .catch((e) => {

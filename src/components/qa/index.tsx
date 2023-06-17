@@ -10,7 +10,7 @@ import foldIcon from "../../assets/img/exam/fold.png";
 import unfoldIcon from "../../assets/img/exam/unfold.png";
 import uploadIcon from "../../assets/img/icon-handin.png";
 import config from "../../js/config";
-import { getToken } from "../../utils/index";
+import { getToken, checkUrl } from "../../utils/index";
 
 interface PropInterface {
   question: any;
@@ -112,7 +112,7 @@ export const QaComp: React.FC<PropInterface> = ({
     name: "file",
     multiple: false,
     method: "POST",
-    action: config.app_url + "/api/v2/upload/image",
+    action: checkUrl(config.url) + "api/v2/upload/image",
     headers: {
       Accept: "application/json",
       authorization: "Bearer " + getToken(),
@@ -216,6 +216,7 @@ export const QaComp: React.FC<PropInterface> = ({
                   onClick={() => PreviewImage(item, imageIndex)}
                 >
                   <ThumbBar
+                    title=""
                     value={item}
                     width={80}
                     height={80}

@@ -84,7 +84,7 @@ export const PCLink: React.FC<PropInterface> = ({
     if (enabledAddons["CodeExchanger"]) {
       links.push({
         name: "兑换码",
-        url: "/member/codeexchanger",
+        url: "/member/code-exchanger",
         active: "exchanger",
       });
     }

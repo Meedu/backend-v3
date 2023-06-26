@@ -25,21 +25,26 @@
     ></script>
     <!--公式渲染-->
     <link rel="stylesheet" href="/js/katex/katex.min.css" />
-    <script src="/js/katex/katex.min.js"></script>
-    <script src="/js/katex/contrib/auto-render.min.js"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/js/katex/katex.min.js"></script>
+    <script type="module" src="/js/katex/contrib/auto-render.min.js"></script>
+    <!--播放器-->
     <script
       crossorigin="anonymous"
       integrity="sha512-oHrfR/z2wkuRuaHrdZ9NhoT/o/1kteub+QvmQgVzOKK7NTvIKQMvnY9+/RR0+eW311o4lAE/YzzLXXmP2XUvig=="
       src="https://lib.baomitu.com/hls.js/1.1.4/hls.min.js"
     ></script>
-    <script src="./js/DPlayer.min.js" defer></script>
-    <script src="./js/katex/katex.min.js"></script>
-    <script src="./js/katex/contrib/auto-render.min.js"></script>
-    <script src="./js/aliyun-vod/aliyun-oss-sdk-5.2.0.min.js"></script>
-    <script src="./js/aliyun-vod/aliyun-upload-sdk-1.4.0.min.js"></script>
+    <script type="module" src="/js/DPlayer.min.js"></script>
+    <script
+      type="module"
+      src="/js/aliyun-vod/aliyun-oss-sdk-5.2.0.min.js"
+    ></script>
+    <script
+      type="module"
+      src="/js/aliyun-vod/aliyun-upload-sdk-1.4.0.min.js"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

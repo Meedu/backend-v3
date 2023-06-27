@@ -45,10 +45,16 @@ export const RenderTuangou: React.FC<PropInterface> = ({ config }) => {
               <div className={styles["ms-title"]}>{item.goods_title}</div>
               <div className={styles["ms-charge"]}>
                 <div className={styles["charge"]}>
-                  <div className={styles["now-charge"]}>
-                    <span className={styles["unit"]}>￥</span>
-                    {item.charge}
-                  </div>
+                  {item.charge === 0 ? (
+                    <div className={styles["now-charge"]}>
+                      <span className={styles["free"]}>免费</span>
+                    </div>
+                  ) : (
+                    <div className={styles["now-charge"]}>
+                      <span className={styles["unit"]}>￥</span>
+                      {item.charge}
+                    </div>
+                  )}
                   <div className={styles["ori-charge"]}>
                     <span className={styles["unit"]}>￥</span>
                     {item.original_charge}

@@ -33,10 +33,16 @@ export const RenderLearnPath: React.FC<PropInterface> = ({ config }) => {
               <div className={styles["path-body"]}>
                 <div className={styles["path-title"]}>{item.name}</div>
                 <div className={styles["path-charge"]}>
-                  <div className={styles["charge"]}>
-                    <span className={styles["unit"]}>￥</span>
-                    {item.charge}
-                  </div>
+                  {item.charge === 0 ? (
+                    <div className={styles["charge"]}>
+                      <span className={styles["free"]}>免费</span>
+                    </div>
+                  ) : (
+                    <div className={styles["charge"]}>
+                      <span className={styles["unit"]}>￥</span>
+                      {item.charge}
+                    </div>
+                  )}
                   <div className={styles["count"]}>
                     <span>{item.steps_count}个步骤</span>
                     <span className="ml-10">{item.courses_count}个课程</span>

@@ -14,6 +14,22 @@ export const RenderTopic: React.FC<PropInterface> = ({ config }) => {
     <div className="float-left">
       <div className={styles["title"]}>{config.title}</div>
       <div className={styles["topics-box"]}>
+        {config.items.length === 0 &&
+          Array.from({ length: 2 }).map((_, i) => (
+            <div className={styles["topic-item"]} key={i}>
+              <div className={styles["topic-thumb"]}>
+                <img src={backIcon} width={133} height={100} />
+              </div>
+              <div className={styles["topic-body"]}>
+                <div className={styles["topic-title"]}>图文一</div>
+                <div className={styles["topic-info"]}>
+                  <div className={styles["topic-category"]}>
+                    <span className={styles["category"]}>未知分类</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         {config.items.length > 0 &&
           config.items.map((item: any, index: number) => (
             <div className={styles["topic-item"]} key={index}>

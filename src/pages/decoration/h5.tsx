@@ -89,6 +89,7 @@ const DecorationH5Page = () => {
         setLoading(false);
         setCurBlock(null);
         if (toBottom) {
+          setCurBlock(blocks.length);
           const $div: any = document.getElementById("h5-dec-preview-box");
           $div.scrollTop = $div.scrollHeight;
         }
@@ -280,7 +281,8 @@ const DecorationH5Page = () => {
       })
       .then((res: any) => {
         setLoading(false);
-        getData();
+        getData(true);
+        message.success("添加成功");
       })
       .catch((e) => {
         setLoading(false);

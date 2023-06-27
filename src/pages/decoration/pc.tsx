@@ -105,6 +105,7 @@ const DecorationPCPage = () => {
         setBlocks(res.data);
         setLoading(false);
         if (toBottom) {
+          setCurBlockIndex(blocks.length);
           const $div: any = document.getElementById("pc-dec-preview-box");
           $div.scrollTop = $div.scrollHeight;
         }
@@ -406,7 +407,8 @@ const DecorationPCPage = () => {
       })
       .then((res: any) => {
         setLoading(false);
-        getData();
+        getData(true);
+        message.success("添加成功");
       })
       .catch((e) => {
         setLoading(false);

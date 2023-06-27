@@ -35,10 +35,16 @@ export const RenderLive: React.FC<PropInterface> = ({ config }) => {
                 <div className={styles["videos-count"]}>
                   {item.category ? item.category.name : ""}
                 </div>
-                <div className={styles["charge"]}>
-                  <span className={styles["unit"]}>￥</span>
-                  {item.charge}
-                </div>
+                {item.charge === 0 ? (
+                  <div className={styles["charge"]}>
+                    <span className={styles["free"]}>免费</span>
+                  </div>
+                ) : (
+                  <div className={styles["charge"]}>
+                    <span className={styles["unit"]}>￥</span>
+                    {item.charge}
+                  </div>
+                )}
               </div>
             </div>
           ))}

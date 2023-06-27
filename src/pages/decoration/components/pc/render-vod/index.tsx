@@ -14,6 +14,21 @@ export const RenderVod: React.FC<PropInterface> = ({ config }) => {
     <div className="float-left">
       <div className={styles["vod-title"]}>{config.title}</div>
       <div className={styles["vod-courses-box"]}>
+        {config.items.length === 0 &&
+          Array.from({ length: 4 }).map((_, i) => (
+            <div className={styles["vod-item"]} key={i}>
+              <div className={styles["course-thumb"]}>
+                <img src={backIcon} width={"100%"} />
+              </div>
+              <div className={styles["course-title"]}>录播课程</div>
+              <div className={styles["course-info"]}>
+                <div className={styles["sub"]}></div>
+                <div className={styles["charge"]}>
+                  <span className={styles["free"]}>免费</span>
+                </div>
+              </div>
+            </div>
+          ))}
         {config.items.length > 0 &&
           config.items.map((item: any, index: number) => (
             <div className={styles["vod-item"]} key={index}>
@@ -35,10 +50,16 @@ export const RenderVod: React.FC<PropInterface> = ({ config }) => {
                 <div className={styles["sub"]}>
                   {item.category ? item.category.name : ""}
                 </div>
-                <div className={styles["charge"]}>
-                  <span className={styles["unit"]}>￥</span>
-                  {item.charge}
-                </div>
+                {item.charge === 0 ? (
+                  <div className={styles["charge"]}>
+                    <span className={styles["free"]}>免费</span>
+                  </div>
+                ) : (
+                  <div className={styles["charge"]}>
+                    <span className={styles["unit"]}>￥</span>
+                    {item.charge}
+                  </div>
+                )}
               </div>
             </div>
           ))}

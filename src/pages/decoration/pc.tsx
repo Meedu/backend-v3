@@ -429,6 +429,7 @@ const DecorationPCPage = () => {
         viewBlock
           .destroy(item.id)
           .then(() => {
+            setCurBlockIndex(null);
             setLoading(false);
             message.success("删除成功");
             getData();

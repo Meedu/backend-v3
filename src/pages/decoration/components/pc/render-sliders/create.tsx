@@ -176,7 +176,7 @@ export const SlidersCreate: React.FC<PropInterface> = ({ open, onClose }) => {
             onClose={() => setShowLinkWin(false)}
             onChange={(value: any) => {
               if (value) {
-                form.setFieldsValue({ url: value.url });
+                form.setFieldsValue({ url: value });
               }
               setShowLinkWin(false);
             }}

@@ -123,11 +123,11 @@ export const PCLink: React.FC<PropInterface> = ({
   };
 
   const submit = () => {
-    if (link === null) {
+    if (!link) {
       message.warning("请选择链接");
       return;
     }
-    onChange(funcLinks[link]);
+    onChange(link);
   };
 
   return (
@@ -137,18 +137,18 @@ export const PCLink: React.FC<PropInterface> = ({
           <div className="meedu-dialog-box">
             <div className="meedu-dialog-header">选择链接</div>
             <div className="meedu-dialog-body">
-              {funcLinks.map((item: any, index: number) => (
-                <div className="func-link-item" key={index}>
-                  <Radio
-                    value={index}
-                    onChange={(e) => {
-                      setLink(e.target.value);
-                    }}
-                  >
-                    {item.name}
-                  </Radio>
-                </div>
-              ))}
+              <Radio.Group
+                onChange={(e) => {
+                  setLink(e.target.value);
+                }}
+                value={link}
+              >
+                {funcLinks.map((item: any, index: number) => (
+                  <div className="func-link-item" key={index}>
+                    <Radio value={item.url}>{item.name}</Radio>
+                  </div>
+                ))}
+              </Radio.Group>
             </div>
             <div className="meedu-dialog-footer">
               <Button type="primary" onClick={() => submit()}>

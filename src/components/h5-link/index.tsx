@@ -152,19 +152,20 @@ export const H5Link: React.FC<PropInterface> = ({
                   ))}
                 </div>
                 <div className="link-body">
-                  {tabActive === "func" &&
-                    funcLinks.map((item: any, index: number) => (
-                      <div className="h5-func-link-item" key={index}>
-                        <Radio
-                          value={link || ""}
-                          onChange={(e) => {
-                            setLink(item.url);
-                          }}
-                        >
-                          {item.name}
-                        </Radio>
-                      </div>
-                    ))}
+                  {tabActive === "func" && (
+                    <Radio.Group
+                      onChange={(e) => {
+                        setLink(e.target.value);
+                      }}
+                      value={link}
+                    >
+                      {funcLinks.map((item: any, index: number) => (
+                        <div className="h5-func-link-item" key={index}>
+                          <Radio value={item.url}>{item.name}</Radio>
+                        </div>
+                      ))}
+                    </Radio.Group>
+                  )}
                   {tabActive === "course" && (
                     <H5Courses
                       onChange={(value: any) => {

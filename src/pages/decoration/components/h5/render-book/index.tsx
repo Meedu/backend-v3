@@ -16,6 +16,24 @@ export const RenderBook: React.FC<PropInterface> = ({ config }) => {
         <div className={styles["more"]}>更多</div>
       </div>
       <div className={styles["body"]}>
+        {config.items.length === 0 &&
+          Array.from({ length: 2 }).map((_, i) => (
+            <div className={styles["book-item"]} key={i}>
+              <div className={styles["book-thumb"]}>
+                <img src={bookIcon} width={90} height={120} />
+              </div>
+              <div className={styles["book-body"]}>
+                <div className={styles["book-name"]}>电子书一</div>
+                <div className={styles["book-desc"]}></div>
+                <div className={styles["book-info"]}>
+                  <div className={styles["sub"]}></div>
+                  <div className={styles["price"]}>
+                    <span className={styles["free"]}>免费</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         {config.items.length > 0 &&
           config.items.map((item: any, index: number) => (
             <div className={styles["book-item"]} key={index}>
@@ -34,8 +52,15 @@ export const RenderBook: React.FC<PropInterface> = ({ config }) => {
                     <span>{item.user_count || 0}人已订阅</span>
                   </div>
                   <div className={styles["price"]}>
-                    <small className={styles["unit"]}>￥</small>
-                    <span>{item.charge || "XX"}</span>
+                    {!item.charge && (
+                      <span className={styles["free"]}>免费</span>
+                    )}
+                    {item.charge > 0 && (
+                      <>
+                        <small className={styles["unit"]}>￥</small>
+                        <span>{item.charge}</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

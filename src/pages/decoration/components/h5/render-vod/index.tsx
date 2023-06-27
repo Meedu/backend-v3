@@ -16,6 +16,23 @@ export const RenderVod: React.FC<PropInterface> = ({ config }) => {
         <div className={styles["more"]}>更多</div>
       </div>
       <div className={styles["body"]}>
+        {config.items.length === 0 &&
+          Array.from({ length: 2 }).map((_, i) => (
+            <div className={styles["course-item"]} key={i}>
+              <div className={styles["course-thumb"]}>
+                <img src={courseIcon} width={120} height={90} />
+              </div>
+              <div className={styles["course-body"]}>
+                <div className={styles["course-title"]}>录播课程</div>
+                <div className={styles["course-info"]}>
+                  <div className={styles["sub"]}></div>
+                  <div className={styles["price"]}>
+                    <span className={styles["free"]}>免费</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         {config.items.length > 0 &&
           config.items.map((item: any, index: number) => (
             <div className={styles["course-item"]} key={index}>
@@ -33,8 +50,15 @@ export const RenderVod: React.FC<PropInterface> = ({ config }) => {
                     <span>{item.user_count || 0}人已订阅</span>
                   </div>
                   <div className={styles["price"]}>
-                    <small>￥</small>
-                    {item.charge || "XX"}
+                    {!item.charge && (
+                      <span className={styles["free"]}>免费</span>
+                    )}
+                    {item.charge > 0 && (
+                      <>
+                        <small>￥</small>
+                        <span>{item.charge}</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

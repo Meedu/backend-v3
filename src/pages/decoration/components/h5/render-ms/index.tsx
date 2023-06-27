@@ -40,7 +40,7 @@ export const RenderMs: React.FC<PropInterface> = ({ config }) => {
                     ></ThumbBar>
                   )
                 ) : (
-                  <img src={courseIcon} width={120} height={80} />
+                  <img src={courseIcon} width={120} height={90} />
                 )}
               </div>
               <div className={styles["ms-body"]}>
@@ -55,8 +55,15 @@ export const RenderMs: React.FC<PropInterface> = ({ config }) => {
                     原价:￥{item.original_charge || "XX"}
                   </div>
                   <div className={styles["ms-charge"]}>
-                    <span className={styles["unit"]}>￥</span>
-                    {item.charge}
+                    {!item.charge && (
+                      <span className={styles["free"]}>免费</span>
+                    )}
+                    {item.charge > 0 && (
+                      <>
+                        <span className={styles["unit"]}>￥</span>
+                        {item.charge}
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

@@ -56,7 +56,7 @@
         .tg-thumb {
           position: relative;
           width: 120px;
-          height: auto;
+          height: 90px;
           border-radius: 4px;
           margin-right: 10px;
           overflow: hidden;
@@ -137,6 +137,11 @@
               .unit {
                 font-size: 14px;
                 line-height: 20px;
+              }
+              .free {
+                font-size: 14px;
+                line-height: 20px;
+                color: #04c877;
               }
             }
           }

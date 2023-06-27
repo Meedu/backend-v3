@@ -16,6 +16,18 @@ export const RenderTopic: React.FC<PropInterface> = ({ config }) => {
         <div className={styles["more"]}>更多</div>
       </div>
       <div className={styles["body"]}>
+        {config.items.length === 0 &&
+          Array.from({ length: 2 }).map((_, i) => (
+            <div className={styles["topic-item"]} key={i}>
+              <div className={styles["topic-body"]}>
+                <div className={styles["topic-title"]}>图文一</div>
+                <div className={styles["topic-info"]}></div>
+              </div>
+              <div className={styles["topic-thumb"]}>
+                <img src={courseIcon} width={120} height={90} />
+              </div>
+            </div>
+          ))}
         {config.items.length > 0 &&
           config.items.map((item: any, index: number) => (
             <div className={styles["topic-item"]} key={index}>

@@ -41,7 +41,7 @@ export const RenderTg: React.FC<PropInterface> = ({ config }) => {
                       ></ThumbBar>
                     )
                   ) : (
-                    <img src={courseIcon} width={120} height={80} />
+                    <img src={courseIcon} width={120} height={90} />
                   )}
                 </div>
                 <div className={styles["tg-body"]}>
@@ -58,8 +58,15 @@ export const RenderTg: React.FC<PropInterface> = ({ config }) => {
                       原价:￥{item.original_charge || 0}
                     </div>
                     <div className={styles["tg-charge"]}>
-                      <span className={styles["unit"]}>￥</span>
-                      {item.charge || "XX"}
+                      {!item.charge && (
+                        <span className={styles["free"]}>免费</span>
+                      )}
+                      {item.charge > 0 && (
+                        <>
+                          <span className={styles["unit"]}>￥</span>
+                          {item.charge}
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

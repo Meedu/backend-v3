@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
+import "dayjs/locale/zh-cn";
 import App from "./App";
 import "./index.scss"; //全局样式
 import AutoScorllTop from "./AutoTop";

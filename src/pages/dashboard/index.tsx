@@ -319,7 +319,7 @@ const DashboardPage = () => {
               </span>
 
               <span className={styles["el_item_increase"]}>
-                较昨日：
+                较上月：
                 {thisMonthPaidRate < 0 && (
                   <strong className="c-danger">{thisMonthPaidRate}%</strong>
                 )}

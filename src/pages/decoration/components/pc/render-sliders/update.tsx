@@ -22,6 +22,7 @@ export const SlidersUpdate: React.FC<PropInterface> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [thumb, setThumb] = useState<string>("");
   const [showLinkWin, setShowLinkWin] = useState<boolean>(false);
+  const [value, setValue] = useState<any>(null);
 
   useEffect(() => {
     if (open && id) {
@@ -41,6 +42,11 @@ export const SlidersUpdate: React.FC<PropInterface> = ({
         url: data.url,
       });
       setThumb(data.thumb);
+      if (data.url.match("https://") || data.url.match("http://")) {
+        setValue(null);
+      } else {
+        setValue(data.url);
+      }
     });
   };
 
@@ -186,6 +192,7 @@ export const SlidersUpdate: React.FC<PropInterface> = ({
             </div>
           </div>
           <PCLink
+            defautValue={value}
             open={showLinkWin}
             onClose={() => setShowLinkWin(false)}
             onChange={(value: any) => {

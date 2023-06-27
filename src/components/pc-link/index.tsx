@@ -4,12 +4,14 @@ import { useSelector } from "react-redux";
 
 interface PropInterface {
   open: boolean;
+  defautValue: any;
   onClose: () => void;
   onChange: (value: any) => void;
 }
 
 export const PCLink: React.FC<PropInterface> = ({
   open,
+  defautValue,
   onClose,
   onChange,
 }) => {
@@ -19,6 +21,10 @@ export const PCLink: React.FC<PropInterface> = ({
   const enabledAddons = useSelector(
     (state: any) => state.enabledAddonsConfig.value.enabledAddons
   );
+
+  useEffect(() => {
+    setLink(defautValue);
+  }, [defautValue]);
 
   useEffect(() => {
     if (open && enabledAddons) {
@@ -145,7 +151,9 @@ export const PCLink: React.FC<PropInterface> = ({
               >
                 {funcLinks.map((item: any, index: number) => (
                   <div className="func-link-item" key={index}>
-                    <Radio value={item.url}>{item.name}</Radio>
+                    <Radio value={item.url} checked={link === item.url}>
+                      {item.name}
+                    </Radio>
                   </div>
                 ))}
               </Radio.Group>

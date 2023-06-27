@@ -15,6 +15,7 @@ export const NavsUpdate: React.FC<PropInterface> = ({ id, open, onClose }) => {
   const [navs, setNavs] = useState<any>([]);
   const [linkStatus, setLinkStatus] = useState<boolean>(false);
   const [showLinkWin, setShowLinkWin] = useState<boolean>(false);
+  const [value, setValue] = useState<any>(null);
 
   useEffect(() => {
     if (open) {
@@ -62,9 +63,12 @@ export const NavsUpdate: React.FC<PropInterface> = ({ id, open, onClose }) => {
         url: data.url,
         blank: data.blank,
       });
+
       if (data.url.match("https://") || data.url.match("http://")) {
+        setValue(null);
         setLinkStatus(true);
       } else {
+        setValue(data.url);
         setLinkStatus(false);
       }
     });
@@ -226,6 +230,7 @@ export const NavsUpdate: React.FC<PropInterface> = ({ id, open, onClose }) => {
             </div>
           </div>
           <PCLink
+            defautValue={value}
             open={showLinkWin}
             onClose={() => setShowLinkWin(false)}
             onChange={(value: any) => {

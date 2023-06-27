@@ -172,6 +172,7 @@ export const SlidersCreate: React.FC<PropInterface> = ({ open, onClose }) => {
             </div>
           </div>
           <PCLink
+            defautValue={null}
             open={showLinkWin}
             onClose={() => setShowLinkWin(false)}
             onChange={(value: any) => {

@@ -49,7 +49,7 @@ export const NoticeCreate: React.FC<PropInterface> = ({ open, onClose }) => {
       {open && (
         <div className="meedu-dialog-mask">
           <div className="meedu-dialog-box">
-            <div className="meedu-dialog-header">添加导航</div>
+            <div className="meedu-dialog-header">添加公告</div>
             <div className="meedu-dialog-body">
               <Form
                 form={form}

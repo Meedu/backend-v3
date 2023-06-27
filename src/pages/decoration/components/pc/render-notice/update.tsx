@@ -64,7 +64,7 @@ export const NoticeUpdate: React.FC<PropInterface> = ({
       {open && (
         <div className="meedu-dialog-mask">
           <div className="meedu-dialog-box">
-            <div className="meedu-dialog-header">添加导航</div>
+            <div className="meedu-dialog-header">编辑公告</div>
             <div className="meedu-dialog-body">
               <Form
                 form={form}

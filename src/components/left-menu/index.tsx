@@ -323,39 +323,38 @@ const items = [
   ),
 ];
 
-const children2Parent: any = {
-  "^/role": ["operate"],
-  "^/creditMall": ["operate"],
-  "^/tuangou": ["operate"],
-  "^/miaosha": ["operate"],
-  "^/multi_level_share": ["operate"],
-  "^/wenda": ["operate"],
-  "^/codeExchanger": ["operate"],
-  "^/promocode": ["operate"],
-  "^/wechat": ["operate"],
-  "^/stats": ["stats"],
-  "^/exam": ["exam"],
-  "^/member": ["user"],
-  "^/snapshot": ["user"],
-  "^/certificate": ["user"],
-  "^/order": ["finance"],
-  "^/withdrawOrders": ["finance"],
-  "^/decoration": ["decoration"],
-  "^/singlepage": ["decoration"],
-  "^/course": ["courses"],
-  "^/K12": ["courses"],
-  "^/live": ["courses"],
-  "^/meedubook": ["courses"],
-  "^/topic": ["courses"],
-  "^/learningpath": ["courses"],
-  "^/system": ["system"],
-  "^/systemLog": ["system"],
-};
-
 export const LeftMenu: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useSelector((state: any) => state.loginUser.value.user);
+  const children2Parent: any = {
+    "^/role": ["operate"],
+    "^/creditMall": ["operate"],
+    "^/tuangou": ["operate"],
+    "^/miaosha": ["operate"],
+    "^/multi_level_share": ["operate"],
+    "^/wenda": ["operate"],
+    "^/codeExchanger": ["operate"],
+    "^/promocode": ["operate"],
+    "^/wechat": ["operate"],
+    "^/stats": ["stats"],
+    "^/exam": ["exam"],
+    "^/member": ["user"],
+    "^/snapshot": ["user"],
+    "^/certificate": ["user"],
+    "^/order": ["finance"],
+    "^/withdrawOrders": ["finance"],
+    "^/decoration": ["decoration"],
+    "^/singlepage": ["decoration"],
+    "^/course": ["courses"],
+    "^/K12": ["courses"],
+    "^/live": ["courses"],
+    "^/meedubook": ["courses"],
+    "^/topic": ["courses"],
+    "^/learningpath": ["courses"],
+    "^/system": ["system"],
+    "^/systemLog": ["system"],
+  };
 
   const hit = (pathname: string): string[] => {
     for (let p in children2Parent) {

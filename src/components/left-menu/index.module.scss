@@ -17,6 +17,8 @@
   width: 200px;
   height: 100%;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
 
   .App-logo {
     width: 112px;

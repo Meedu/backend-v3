@@ -5,6 +5,7 @@ import type { ColumnsType } from "antd/es/table";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { NavsCreate } from "./create";
 import { NavsUpdate } from "./update";
+import closeIcon from "../../../../../assets/img/close.png";
 const { confirm } = Modal;
 
 interface DataType {
@@ -78,7 +79,7 @@ export const NavsList: React.FC<PropInterface> = ({ open, onClose }) => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "排序值",
+      title: "排序",
       width: 120,
       render: (_, record: any) => <span>{record.sort}</span>,
     },
@@ -166,7 +167,14 @@ export const NavsList: React.FC<PropInterface> = ({ open, onClose }) => {
       {open && (
         <div className="meedu-dialog-mask">
           <div className="meedu-dialog-box">
-            <div className="meedu-dialog-header">首页导航</div>
+            <div className="meedu-dialog-header">
+              首页导航
+              <img
+                className="icon-close"
+                onClick={() => onClose()}
+                src={closeIcon}
+              />
+            </div>
             <div className="meedu-dialog-body">
               <div className="float-left mb-15">
                 <Button type="primary" onClick={() => setShowCreateWin(true)}>
@@ -180,9 +188,6 @@ export const NavsList: React.FC<PropInterface> = ({ open, onClose }) => {
                 rowKey={(record) => record.id}
                 pagination={false}
               />
-            </div>
-            <div className="meedu-dialog-footer">
-              <Button onClick={() => onClose()}>取消</Button>
             </div>
           </div>
           <NavsCreate

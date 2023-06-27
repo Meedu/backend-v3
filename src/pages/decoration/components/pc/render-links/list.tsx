@@ -5,6 +5,7 @@ import type { ColumnsType } from "antd/es/table";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { LinksCreate } from "./create";
 import { LinksUpdate } from "./update";
+import closeIcon from "../../../../../assets/img/close.png";
 const { confirm } = Modal;
 
 interface DataType {
@@ -139,7 +140,14 @@ export const LinksList: React.FC<PropInterface> = ({ open, onClose }) => {
       {open && (
         <div className="meedu-dialog-mask">
           <div className="meedu-dialog-box">
-            <div className="meedu-dialog-header">友情链接</div>
+            <div className="meedu-dialog-header">
+              友情链接
+              <img
+                className="icon-close"
+                onClick={() => onClose()}
+                src={closeIcon}
+              />
+            </div>
             <div className="meedu-dialog-body">
               <div className="float-left mb-15">
                 <Button type="primary" onClick={() => setShowCreateWin(true)}>
@@ -153,9 +161,6 @@ export const LinksList: React.FC<PropInterface> = ({ open, onClose }) => {
                 rowKey={(record) => record.id}
                 pagination={false}
               />
-            </div>
-            <div className="meedu-dialog-footer">
-              <Button onClick={() => onClose()}>取消</Button>
             </div>
           </div>
           <LinksCreate

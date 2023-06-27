@@ -6,6 +6,7 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import { dateFormat } from "../../../../../utils";
 import { NoticeCreate } from "./create";
 import { NoticeUpdate } from "./update";
+import closeIcon from "../../../../../assets/img/close.png";
 const { confirm } = Modal;
 
 interface DataType {
@@ -162,7 +163,14 @@ export const NoticeList: React.FC<PropInterface> = ({ open, onClose }) => {
       {open && (
         <div className="meedu-dialog-mask">
           <div className="meedu-dialog-box">
-            <div className="meedu-dialog-header">公告</div>
+            <div className="meedu-dialog-header">
+              公告
+              <img
+                className="icon-close"
+                onClick={() => onClose()}
+                src={closeIcon}
+              />
+            </div>
             <div className="meedu-dialog-body">
               <div className="float-left mb-15">
                 <Button type="primary" onClick={() => setShowCreateWin(true)}>
@@ -176,9 +184,6 @@ export const NoticeList: React.FC<PropInterface> = ({ open, onClose }) => {
                 rowKey={(record) => record.id}
                 pagination={paginationProps}
               />
-            </div>
-            <div className="meedu-dialog-footer">
-              <Button onClick={() => onClose()}>取消</Button>
             </div>
           </div>
           <NoticeCreate

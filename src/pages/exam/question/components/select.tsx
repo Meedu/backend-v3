@@ -232,7 +232,7 @@ export const QSelect: React.FC<PropInterface> = ({
                 setForm(obj);
               } else {
                 let obj = { ...form };
-                form.answer = "";
+                obj.answer = "";
                 setForm(obj);
               }
             }}

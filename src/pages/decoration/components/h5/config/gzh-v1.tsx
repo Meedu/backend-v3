@@ -78,7 +78,7 @@ export const GzhV1Set: React.FC<PropInterface> = ({ block, onUpdate }) => {
                 onChange={(e) => {
                   let value = e.target.value;
                   let obj = { ...config };
-                  config.name = value;
+                  obj.name = value;
                   setConfig(obj);
                 }}
               />
@@ -97,7 +97,7 @@ export const GzhV1Set: React.FC<PropInterface> = ({ block, onUpdate }) => {
                 onChange={(e) => {
                   let value = e.target.value;
                   let obj = { ...config };
-                  config.desc = value;
+                  obj.desc = value;
                   setConfig(obj);
                 }}
               />

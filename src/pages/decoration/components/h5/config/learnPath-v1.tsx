@@ -94,7 +94,7 @@ export const LearnPathV1Set: React.FC<PropInterface> = ({
                 onChange={(e) => {
                   let value = e.target.value;
                   let obj = { ...config };
-                  config.title = value;
+                  obj.title = value;
                   setConfig(obj);
                 }}
               />

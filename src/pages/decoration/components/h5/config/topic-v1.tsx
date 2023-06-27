@@ -91,7 +91,7 @@ export const TopicV1Set: React.FC<PropInterface> = ({ block, onUpdate }) => {
                 onChange={(e) => {
                   let value = e.target.value;
                   let obj = { ...config };
-                  config.title = value;
+                  obj.title = value;
                   setConfig(obj);
                 }}
               />

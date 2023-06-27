@@ -170,7 +170,7 @@ export const GridNavSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
                         onChange={(e) => {
                           let value = e.target.value;
                           let obj = { ...config };
-                          config.items[index].name = value;
+                          obj.items[index].name = value;
                           setConfig(obj);
                         }}
                       />
@@ -185,7 +185,7 @@ export const GridNavSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
                         onChange={(e) => {
                           let value = e.target.value;
                           let obj = { ...config };
-                          config.items[index].href = value;
+                          obj.items[index].href = value;
                           setConfig(obj);
                         }}
                       />

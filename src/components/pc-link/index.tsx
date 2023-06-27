@@ -123,7 +123,7 @@ export const PCLink: React.FC<PropInterface> = ({
   };
 
   const submit = () => {
-    if (!link) {
+    if (link === null) {
       message.warning("请选择链接");
       return;
     }

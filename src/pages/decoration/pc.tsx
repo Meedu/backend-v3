@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Modal, message, Button } from "antd";
+import { Modal, message, Button, Tooltip } from "antd";
 import styles from "./pc.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -748,33 +748,41 @@ const DecorationPCPage = () => {
                   )}
                   {curBlockIndex === index && (
                     <div className="item-options">
-                      <div
-                        className="btn-item"
-                        onClick={() => blockDestroy(index, item)}
-                      >
-                        <DeleteOutlined />
-                      </div>
-                      <div
-                        className="btn-item"
-                        onClick={() => blockCopy(index, item)}
-                      >
-                        <CopyOutlined />
-                      </div>
-                      {index !== 0 && (
+                      <Tooltip placement="top" title="删除模块">
                         <div
                           className="btn-item"
-                          onClick={() => moveTop(index, item)}
+                          onClick={() => blockDestroy(index, item)}
                         >
-                          <UpOutlined />
+                          <DeleteOutlined />
                         </div>
+                      </Tooltip>
+                      <Tooltip placement="top" title="复制模块">
+                        <div
+                          className="btn-item"
+                          onClick={() => blockCopy(index, item)}
+                        >
+                          <CopyOutlined />
+                        </div>
+                      </Tooltip>
+                      {index !== 0 && (
+                        <Tooltip placement="top" title="模块上移">
+                          <div
+                            className="btn-item"
+                            onClick={() => moveTop(index, item)}
+                          >
+                            <UpOutlined />
+                          </div>
+                        </Tooltip>
                       )}
                       {index !== blocks.length - 1 && (
-                        <div
-                          className="btn-item"
-                          onClick={() => moveBottom(index, item)}
-                        >
-                          <DownOutlined />
-                        </div>
+                        <Tooltip placement="top" title="模块下移">
+                          <div
+                            className="btn-item"
+                            onClick={() => moveBottom(index, item)}
+                          >
+                            <DownOutlined />
+                          </div>
+                        </Tooltip>
                       )}
                     </div>
                   )}

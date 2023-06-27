@@ -93,7 +93,7 @@ export const LearnPathComp = (props: PropsInterface) => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       let row: any = selectedRows[0];
       if (row) {
-        let link = "/pages/learnPath/show?id=" + row.id;
+        let link = "/packageA/learnPath/show?id=" + row.id;
         props.onChange(link);
       }
     },

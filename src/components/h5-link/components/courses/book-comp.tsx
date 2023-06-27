@@ -99,7 +99,7 @@ export const BookComp = (props: PropsInterface) => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       let row: any = selectedRows[0];
       if (row) {
-        let link = "/pages/book/show?id=" + row.id;
+        let link = "/packageA/book/show?id=" + row.id;
         props.onChange(link);
       }
     },

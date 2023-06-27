@@ -86,7 +86,11 @@ export const MockPaperComp = (props: PropsInterface) => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       let row: any = selectedRows[0];
       if (row) {
-        let link = "/packageA/exam/mock/show?id=" + row.id;
+        let link =
+          "/pages/webview/webview?course_type=mockRead&id=" +
+          row.id +
+          "&title=" +
+          row.title;
         props.onChange(link);
       }
     },

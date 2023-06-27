@@ -99,7 +99,7 @@ export const LiveComp = (props: PropsInterface) => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       let row: any = selectedRows[0];
       if (row) {
-        let link = "/pages/live/show?id=" + row.id;
+        let link = "/packageA/live/show?id=" + row.id;
         props.onChange(link);
       }
     },

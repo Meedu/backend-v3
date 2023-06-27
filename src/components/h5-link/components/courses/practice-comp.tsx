@@ -86,7 +86,11 @@ export const PracticeComp = (props: PropsInterface) => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       let row: any = selectedRows[0];
       if (row) {
-        let link = "/packageA/exam/practice/show?id=" + row.id;
+        let link =
+          "/pages/webview/webview?course_type=practiceRead&id=" +
+          row.id +
+          "&title=" +
+          row.name;
         props.onChange(link);
       }
     },

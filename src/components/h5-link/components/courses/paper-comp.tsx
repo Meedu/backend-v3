@@ -86,7 +86,11 @@ export const PaperComp = (props: PropsInterface) => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       let row: any = selectedRows[0];
       if (row) {
-        let link = "/packageA/exam/paper/show?id=" + row.id;
+        let link =
+          "/pages/webview/webview?course_type=paperRead&id=" +
+          row.id +
+          "&title=" +
+          row.title;
         props.onChange(link);
       }
     },

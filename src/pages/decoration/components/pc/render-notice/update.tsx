@@ -91,12 +91,12 @@ export const NoticeUpdate: React.FC<PropInterface> = ({
                   label="内容"
                   name="announcement"
                   rules={[{ required: true, message: "请输入内容!" }]}
-                  style={{ height: 540 }}
+                  style={{ height: 440 }}
                 >
                   <div className="w-800px">
                     <QuillEditor
                       mode=""
-                      height={500}
+                      height={400}
                       defautValue={defautValue}
                       isFormula={false}
                       setContent={(value: string) => {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./index.module.scss";
 import { ThumbBar } from "../../../../../components";
-import backIcon from "../../../../../assets/images/decoration/h5/course-back.png";
+import backIcon from "../../../../../assets/images/decoration/h5/book-back.png";
 
 interface PropInterface {
   config: any;

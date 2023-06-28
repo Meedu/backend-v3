@@ -210,7 +210,9 @@ const CourseVideoUpdatePage = () => {
               >
                 <span>重新选择视频</span>
                 {tit && (
-                  <span className="ml-10">{tit.replace(".mp4", "")}</span>
+                  <span className="ml-10">
+                    {tit.replace(".m3u8", "").replace(".mp4", "")}
+                  </span>
                 )}
               </Button>
             </Form.Item>
@@ -373,7 +375,9 @@ const CourseVideoUpdatePage = () => {
           form.setFieldsValue({ duration: video.duration });
           if (video.storage_driver === "aliyun") {
             if (!title) {
-              form.setFieldsValue({ title: video.title.replace(".mp4", "") });
+              form.setFieldsValue({
+                title: video.title.replace(".m3u8", "").replace(".mp4", ""),
+              });
             }
             form.setFieldsValue({
               aliyun_video_id: video.storage_file_id,
@@ -383,7 +387,9 @@ const CourseVideoUpdatePage = () => {
             setTit(video.title);
           } else if (video.storage_driver === "tencent") {
             if (!title) {
-              form.setFieldsValue({ title: video.title.replace(".mp4", "") });
+              form.setFieldsValue({
+                title: video.title.replace(".m3u8", "").replace(".mp4", ""),
+              });
             }
             form.setFieldsValue({
               aliyun_video_id: null,
@@ -393,7 +399,9 @@ const CourseVideoUpdatePage = () => {
             setTit(video.title);
           } else if (video.visit_url) {
             if (!title) {
-              form.setFieldsValue({ title: video.title.replace(".mp4", "") });
+              form.setFieldsValue({
+                title: video.title.replace(".m3u8", "").replace(".mp4", ""),
+              });
             }
             form.setFieldsValue({
               aliyun_video_id: null,

@@ -27,6 +27,8 @@ interface PropInterface {
   onSuccess: () => void;
 }
 
+declare const window: any;
+
 export const UploadVideoItem: React.FC<PropInterface> = ({
   open,
   onCancel,
@@ -40,7 +42,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
   const [isAliService, setIsAliService] = useState(false);
   const localFileList = useRef<any>([]);
   const [fileList, setFileList] = useState<any>([]);
-  const [localUploadFiles, setLocalUploadFiles] = useState<any>([]);
+  const aliRef = useRef<any>(null);
   const [upload, setUpload] = useState<any>({
     // 阿里云obj
     aliyun: null,
@@ -78,6 +80,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     } else if (service === "aliyun") {
       obj.service = "aliyun";
       setIsAliService(true);
+      aliyunInit();
     } else {
       obj.service = null;
       setIsNoService(false);
@@ -87,6 +90,97 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     }
     setUpload(obj);
   }, [service]);
+
+  const aliyunInit = () => {
+    aliRef.current = new window.AliyunUpload.Vod({
+      partSize: 1048576,
+      parallel: 5,
+      retryCount: 3,
+      retryDuration: 2,
+      onUploadstarted: (uploadInfo: any) => {
+        if (uploadInfo.videoId) {
+          media
+            .videoAliyunTokenRefresh({
+              video_id: uploadInfo.videoId,
+            })
+            .then((res: any) => {
+              aliRef.current.setUploadAuthAndAddress(
+                uploadInfo,
+                res.data.upload_auth,
+                res.data.upload_address,
+                res.data.video_id
+              );
+            });
+        } else {
+          media
+            .videoAliyunTokenCreate({
+              title: uploadInfo.file.name,
+              filename: uploadInfo.file.name,
+            })
+            .then((res: any) => {
+              aliRef.current.setUploadAuthAndAddress(
+                uploadInfo,
+                res.data.upload_auth,
+                res.data.upload_address,
+                res.data.video_id
+              );
+            });
+        }
+      },
+      onUploadSucceed: (uploadInfo: any) => {
+        let obj = { ...upload };
+        obj.fileId = uploadInfo.videoId;
+        setUpload(obj);
+        let fileId = uploadInfo.videoInfo.CateId;
+        let it = localFileList.current.find((o: any) => o.id === fileId);
+        if (it) {
+          it.status = 7;
+          it.result = null;
+          uploadSuccess(uploadInfo.videoId, "", fileId);
+        }
+        setFileList([...localFileList.current]);
+      },
+      onUploadFailed: (uploadInfo: any, code: any, message: any) => {
+        upRef.current--;
+        let obj = { ...upload };
+        obj.loading = false;
+        setUpload(obj);
+        let fileId = uploadInfo.videoInfo.CateId;
+        let it = localFileList.current.find((o: any) => o.id === fileId);
+        if (it) {
+          it.status = 5;
+          it.result = message;
+          uploadFailHandle(message);
+        }
+        setFileList([...localFileList.current]);
+      },
+      onUploadCanceled: (uploadInfo: any, message: any) => {
+        console.log(message);
+      },
+      onUploadProgress: (
+        uploadInfo: any,
+        totalSize: any,
+        loadedPercent: any
+      ) => {
+        let fileId = uploadInfo.videoInfo.CateId;
+        let it = localFileList.current.find((o: any) => o.id === fileId);
+        if (it) {
+          it.status = 1;
+          it.progress = Math.floor(loadedPercent * 100);
+        }
+        setFileList([...localFileList.current]);
+      },
+      onUploadTokenExpired: (uploadInfo: any) => {
+        media
+          .videoAliyunTokenRefresh({
+            video_id: uploadInfo.videoId,
+          })
+          .then((res: any) => {
+            aliRef.current.resumeUploadWithAuth(res.data.upload_auth);
+          });
+      },
+    });
+  };
 
   const uploadProps = {
     multiple: true,
@@ -128,7 +222,20 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     showUploadList: false,
   };
 
-  const aliyunUploadHandle = (fileId: any, file: any) => {};
+  const aliyunUploadHandle = (fileId: any, file: any) => {
+    if (aliRef.current) {
+      aliRef.current.addFile(
+        file,
+        null,
+        null,
+        null,
+        JSON.stringify({
+          Vod: { CateId: fileId },
+        })
+      );
+      aliRef.current.startUpload();
+    }
+  };
 
   const tencentUploadHandle = (fileId: any, file: any) => {
     const tcVod = new TcVod({

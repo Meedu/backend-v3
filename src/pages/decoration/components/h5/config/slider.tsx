@@ -17,6 +17,7 @@ export const SliderSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
   const [showLinkWin, setShowLinkWin] = useState<boolean>(false);
   const [curIndex, setCurIndex] = useState<any>(null);
   const [curLinkIndex, setCurLinkIndex] = useState<any>(null);
+  const [value, setValue] = useState<any>(null);
 
   useEffect(() => {
     if (block) {
@@ -139,7 +140,18 @@ export const SliderSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
                   <Button
                     type="link"
                     className="c-primary"
-                    onClick={() => selectLink(index)}
+                    onClick={() => {
+                      if (
+                        item.href &&
+                        (item.href.match("https://") ||
+                          item.href.match("http://"))
+                      ) {
+                        setValue(null);
+                      } else {
+                        setValue(item.href);
+                      }
+                      selectLink(index);
+                    }}
                   >
                     选择链接
                   </Button>
@@ -174,6 +186,7 @@ export const SliderSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
         }}
       ></SelectImage>
       <H5Link
+        defautValue={value}
         open={showLinkWin}
         onClose={() => setShowLinkWin(false)}
         onChange={(value: any) => linkChange(value)}

@@ -5,12 +5,14 @@ import { H5Courses } from "./components/courses";
 
 interface PropInterface {
   open: boolean;
+  defautValue: any;
   onClose: () => void;
   onChange: (value: any) => void;
 }
 
 export const H5Link: React.FC<PropInterface> = ({
   open,
+  defautValue,
   onClose,
   onChange,
 }) => {
@@ -34,6 +36,10 @@ export const H5Link: React.FC<PropInterface> = ({
       key: "course",
     },
   ];
+
+  useEffect(() => {
+    setLink(defautValue);
+  }, [defautValue]);
 
   useEffect(() => {
     if (open && enabledAddons) {
@@ -161,7 +167,9 @@ export const H5Link: React.FC<PropInterface> = ({
                     >
                       {funcLinks.map((item: any, index: number) => (
                         <div className="h5-func-link-item" key={index}>
-                          <Radio value={item.url}>{item.name}</Radio>
+                          <Radio value={item.url} checked={link === item.url}>
+                            {item.name}
+                          </Radio>
                         </div>
                       ))}
                     </Radio.Group>

@@ -18,6 +18,7 @@ export const GridNavSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
   const [curImageIndex, setCurImageIndex] = useState<any>(null);
   const [curLinkIndex, setCurLinkIndex] = useState<any>(null);
   const [lineCount, setLineCount] = useState(0);
+  const [value, setValue] = useState<any>(null);
 
   useEffect(() => {
     if (block) {
@@ -194,7 +195,18 @@ export const GridNavSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
                       type="link"
                       className="c-primary"
                       style={{ fontSize: 12 }}
-                      onClick={() => selectLink(index)}
+                      onClick={() => {
+                        if (
+                          item.href &&
+                          (item.href.match("https://") ||
+                            item.href.match("http://"))
+                        ) {
+                          setValue(null);
+                        } else {
+                          setValue(item.href);
+                        }
+                        selectLink(index);
+                      }}
                     >
                       选择
                     </Button>
@@ -230,6 +242,7 @@ export const GridNavSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
         }}
       ></SelectImage>
       <H5Link
+        defautValue={value}
         open={showLinkWin}
         onClose={() => setShowLinkWin(false)}
         onChange={(value: any) => linkChange(value)}

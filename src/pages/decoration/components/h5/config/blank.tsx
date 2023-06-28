@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./blank.module.scss";
 import { Input, Button, message, InputNumber } from "antd";
 import { viewBlock } from "../../../../../api/index";
-import { SelectImage, H5Link, CloseIcon } from "../../../../../components";
 
 interface PropInterface {
   block: any;

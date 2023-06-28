@@ -27,6 +27,7 @@ export const ImageGroupSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
   const [showLinkWin, setShowLinkWin] = useState<boolean>(false);
   const [curIndex, setCurIndex] = useState<any>(null);
   const [link, setLink] = useState<any>(null);
+  const [value, setValue] = useState<any>(null);
 
   useEffect(() => {
     if (block) {
@@ -429,6 +430,14 @@ export const ImageGroupSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
                   type="link"
                   className="c-primary"
                   onClick={() => {
+                    if (
+                      link &&
+                      (link.match("https://") || link.match("http://"))
+                    ) {
+                      setValue(null);
+                    } else {
+                      setValue(link);
+                    }
                     setShowLinkWin(true);
                   }}
                 >
@@ -458,6 +467,7 @@ export const ImageGroupSet: React.FC<PropInterface> = ({ block, onUpdate }) => {
         }}
       ></SelectImage>
       <H5Link
+        defautValue={value}
         open={showLinkWin}
         onClose={() => setShowLinkWin(false)}
         onChange={(value: any) => linkChange(value)}

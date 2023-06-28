@@ -56,9 +56,6 @@ const CourseVideoImportPage = () => {
         //空行
         continue;
       }
-      tmpItem.splice(7, 0, 1000);
-      tmpItem.splice(9, 0, "");
-      tmpItem.splice(10, 0, "");
       data.push(tmpItem);
     }
 

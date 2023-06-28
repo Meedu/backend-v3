@@ -404,7 +404,12 @@ const DecorationH5Page = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={sliderIcon} width={44} height={44} />
+                  <img
+                    draggable={false}
+                    src={sliderIcon}
+                    width={44}
+                    height={44}
+                  />
                 </div>
                 <div className={styles["name"]}>幻灯片</div>
               </div>
@@ -418,7 +423,7 @@ const DecorationH5Page = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={navIcon} width={44} height={44} />
+                  <img draggable={false} src={navIcon} width={44} height={44} />
                 </div>
                 <div className={styles["name"]}>宫格导航</div>
               </div>
@@ -432,7 +437,12 @@ const DecorationH5Page = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={blankIcon} width={44} height={44} />
+                  <img
+                    draggable={false}
+                    src={blankIcon}
+                    width={44}
+                    height={44}
+                  />
                 </div>
                 <div className={styles["name"]}>空白快</div>
               </div>
@@ -446,7 +456,12 @@ const DecorationH5Page = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={groupIcon} width={44} height={44} />
+                  <img
+                    draggable={false}
+                    src={groupIcon}
+                    width={44}
+                    height={44}
+                  />
                 </div>
                 <div className={styles["name"]}>图片魔方</div>
               </div>
@@ -460,7 +475,7 @@ const DecorationH5Page = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={vodIcon} width={44} height={44} />
+                  <img draggable={false} src={vodIcon} width={44} height={44} />
                 </div>
                 <div className={styles["name"]}>录播</div>
               </div>
@@ -475,7 +490,12 @@ const DecorationH5Page = () => {
               >
                 <div className={styles["btn"]}>
                   <div className={styles["icon"]}>
-                    <img src={liveIcon} width={44} height={44} />
+                    <img
+                      draggable={false}
+                      src={liveIcon}
+                      width={44}
+                      height={44}
+                    />
                   </div>
                   <div className={styles["name"]}>直播</div>
                 </div>
@@ -491,7 +511,12 @@ const DecorationH5Page = () => {
               >
                 <div className={styles["btn"]}>
                   <div className={styles["icon"]}>
-                    <img src={bookIcon} width={44} height={44} />
+                    <img
+                      draggable={false}
+                      src={bookIcon}
+                      width={44}
+                      height={44}
+                    />
                   </div>
                   <div className={styles["name"]}>电子书</div>
                 </div>
@@ -507,7 +532,12 @@ const DecorationH5Page = () => {
               >
                 <div className={styles["btn"]}>
                   <div className={styles["icon"]}>
-                    <img src={topicIcon} width={44} height={44} />
+                    <img
+                      draggable={false}
+                      src={topicIcon}
+                      width={44}
+                      height={44}
+                    />
                   </div>
                   <div className={styles["name"]}>图文</div>
                 </div>
@@ -523,7 +553,12 @@ const DecorationH5Page = () => {
               >
                 <div className={styles["btn"]}>
                   <div className={styles["icon"]}>
-                    <img src={pathIcon} width={44} height={44} />
+                    <img
+                      draggable={false}
+                      src={pathIcon}
+                      width={44}
+                      height={44}
+                    />
                   </div>
                   <div className={styles["name"]}>路径</div>
                 </div>
@@ -539,7 +574,12 @@ const DecorationH5Page = () => {
               >
                 <div className={styles["btn"]}>
                   <div className={styles["icon"]}>
-                    <img src={msIcon} width={44} height={44} />
+                    <img
+                      draggable={false}
+                      src={msIcon}
+                      width={44}
+                      height={44}
+                    />
                   </div>
                   <div className={styles["name"]}>秒杀</div>
                 </div>
@@ -555,7 +595,12 @@ const DecorationH5Page = () => {
               >
                 <div className={styles["btn"]}>
                   <div className={styles["icon"]}>
-                    <img src={tgIcon} width={44} height={44} />
+                    <img
+                      draggable={false}
+                      src={tgIcon}
+                      width={44}
+                      height={44}
+                    />
                   </div>
                   <div className={styles["name"]}>团购</div>
                 </div>
@@ -570,7 +615,7 @@ const DecorationH5Page = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={gzhIocn} width={44} height={44} />
+                  <img draggable={false} src={gzhIocn} width={44} height={44} />
                 </div>
                 <div className={styles["name"]}>公众号</div>
               </div>

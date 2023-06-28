@@ -554,7 +554,7 @@ const DecorationPCPage = () => {
           >
             <div className={styles["btn"]}>
               <div className={styles["icon"]}>
-                <img src={vodIcon} width={44} height={44} />
+                <img draggable={false} src={vodIcon} width={44} height={44} />
               </div>
               <div className={styles["name"]}>录播</div>
             </div>
@@ -569,7 +569,12 @@ const DecorationPCPage = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={liveIcon} width={44} height={44} />
+                  <img
+                    draggable={false}
+                    src={liveIcon}
+                    width={44}
+                    height={44}
+                  />
                 </div>
                 <div className={styles["name"]}>直播</div>
               </div>
@@ -585,7 +590,12 @@ const DecorationPCPage = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={bookIcon} width={44} height={44} />
+                  <img
+                    draggable={false}
+                    src={bookIcon}
+                    width={44}
+                    height={44}
+                  />
                 </div>
                 <div className={styles["name"]}>电子书</div>
               </div>
@@ -601,7 +611,12 @@ const DecorationPCPage = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={topicIcon} width={44} height={44} />
+                  <img
+                    draggable={false}
+                    src={topicIcon}
+                    width={44}
+                    height={44}
+                  />
                 </div>
                 <div className={styles["name"]}>图文</div>
               </div>
@@ -617,7 +632,12 @@ const DecorationPCPage = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={pathIcon} width={44} height={44} />
+                  <img
+                    draggable={false}
+                    src={pathIcon}
+                    width={44}
+                    height={44}
+                  />
                 </div>
                 <div className={styles["name"]}>路径</div>
               </div>
@@ -633,7 +653,7 @@ const DecorationPCPage = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={msIcon} width={44} height={44} />
+                  <img draggable={false} src={msIcon} width={44} height={44} />
                 </div>
                 <div className={styles["name"]}>秒杀</div>
               </div>
@@ -649,7 +669,7 @@ const DecorationPCPage = () => {
             >
               <div className={styles["btn"]}>
                 <div className={styles["icon"]}>
-                  <img src={tgIcon} width={44} height={44} />
+                  <img draggable={false} src={tgIcon} width={44} height={44} />
                 </div>
                 <div className={styles["name"]}>团购</div>
               </div>
@@ -664,7 +684,7 @@ const DecorationPCPage = () => {
           >
             <div className={styles["btn"]}>
               <div className={styles["icon"]}>
-                <img src={codeIocn} width={44} height={44} />
+                <img draggable={false} src={codeIocn} width={44} height={44} />
               </div>
               <div className={styles["name"]}>代码块</div>
             </div>

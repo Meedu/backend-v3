@@ -10,14 +10,12 @@ import {
   Tag,
   Upload,
 } from "antd";
-import type { ColumnsType } from "antd/es/table";
 import Dragger from "antd/es/upload/Dragger";
 import { media } from "../../api";
-import { parseVideo, getToken, checkUrl } from "../../utils/index";
+import { parseVideo } from "../../utils/index";
 import styles from "./index.module.scss";
 import { useSelector } from "react-redux";
 import { InboxOutlined } from "@ant-design/icons";
-import config from "../../js/config";
 import TcVod from "vod-js-sdk-v6";
 const { confirm } = Modal;
 

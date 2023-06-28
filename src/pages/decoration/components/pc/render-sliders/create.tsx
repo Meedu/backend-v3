@@ -129,16 +129,9 @@ export const SlidersCreate: React.FC<PropInterface> = ({ open, onClose }) => {
                     </Col>
                   </Row>
                 )}
-                <Form.Item
-                  label="链接地址"
-                  name="url"
-                  rules={[{ required: true, message: "填输入链接地址!" }]}
-                >
+                <Form.Item label="链接地址" name="url">
                   <Space align="baseline" style={{ height: 32 }}>
-                    <Form.Item
-                      name="url"
-                      rules={[{ required: true, message: "填输入链接地址!" }]}
-                    >
+                    <Form.Item name="url">
                       <Input
                         style={{ width: 300 }}
                         placeholder="填输入链接地址"

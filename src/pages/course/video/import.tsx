@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { message, Upload, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { course } from "../../../api/index";
 import * as XLSX from "xlsx";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { BackBartment } from "../../../components";
 import { getUrl } from "../../../utils/index";
@@ -74,14 +75,13 @@ const CourseVideoImportPage = () => {
       .catch((e) => {
         setLoading(false);
         let config = {
-          content: e.message,
-          duration: 15,
-          onClick: (e: any) => {
-            let dom = e.target;
-            if (dom.tagName === "svg" || dom.tagName === "path") {
-              message.destroy();
-            }
-          },
+          content: (
+            <>
+              <span className="mr-10">{e.message}</span>
+              <CloseCircleOutlined onClick={() => message.destroy()} />
+            </>
+          ),
+          duration: 0,
         };
         message.error(config);
       });

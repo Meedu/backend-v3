@@ -1805,3 +1805,13 @@ textarea.ant-input {
     margin-bottom: 0;
   }
 }
+
+.ant-message-error{
+  display: flex;
+  align-items: center;
+  .anticon-close-circle{
+    &:hover{
+      opacity: 0.8;
+    }
+  }
+}

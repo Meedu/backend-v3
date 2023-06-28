@@ -1622,7 +1622,6 @@ textarea.ant-input {
       float: left;
       box-sizing: border-box;
       padding: 30px;
-      line-height: 18px;
       position: relative;
       display: flex;
       flex-direction: row;
@@ -1630,10 +1629,10 @@ textarea.ant-input {
       font-size: 18px;
       font-weight: 400;
       color: #333333;
-      line-height: 18px;
+      line-height: 24px;
       .icon-close {
-        width: 18px;
-        height: 18px;
+        width: 24px;
+        height: 24px;
         cursor: pointer;
         &:hover {
           opacity: 0.8;

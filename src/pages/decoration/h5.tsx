@@ -577,7 +577,7 @@ const DecorationH5Page = () => {
             </div>
           </div>
         </div>
-        <div className="h5-dec-preview-box">
+        <div className="h5-dec-preview-box" id="h5-dec-preview-box">
           <div className="status-bar">
             <img src={statusIcon} style={{ width: "100%" }} height={26} />
           </div>

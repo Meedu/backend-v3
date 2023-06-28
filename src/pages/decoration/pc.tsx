@@ -699,7 +699,7 @@ const DecorationPCPage = () => {
         </div>
         <div className={styles["tip"]}>点击预览区直接编辑板块</div>
       </div>
-      <div className="pc-dec-preview-box">
+      <div className="pc-dec-preview-box" id="pc-dec-preview-box">
         <div className="pc-box" style={{ width: previewWidth }}>
           {/* 导航栏 */}
           <RenderNavs reload={showNavWin}></RenderNavs>

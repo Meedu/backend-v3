@@ -352,7 +352,7 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
   };
 
   const tableEmptyRender = () => {
-    return <Empty image={emptyIcon}  description={""} />;
+    return <Empty image={emptyIcon} description={""} />;
   };
 
   return (

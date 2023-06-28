@@ -208,7 +208,7 @@ const CourseVideoUpdatePage = () => {
                 type="primary"
                 onClick={() => setShowUploadVideoWin(true)}
               >
-                <span>重新上传视频</span>
+                <span>重新选择视频</span>
                 {tit && <span className="ml-10">{tit}</span>}
               </Button>
             </Form.Item>

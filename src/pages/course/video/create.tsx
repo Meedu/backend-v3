@@ -182,7 +182,7 @@ const CourseVideoCreatePage = () => {
                 type="primary"
                 onClick={() => setShowUploadVideoWin(true)}
               >
-                <span>上传视频</span>
+                <span>选择视频</span>
                 {tit && <span className="ml-10">{tit}</span>}
               </Button>
             </Form.Item>

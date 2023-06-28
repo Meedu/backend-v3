@@ -138,14 +138,7 @@ export const SlidersUpdate: React.FC<PropInterface> = ({
                   <Row style={{ marginBottom: 22 }}>
                     <Col span={3}></Col>
                     <Col span={21}>
-                      <div
-                        className="normal-thumb-box"
-                        style={{
-                          backgroundImage: `url(${thumb})`,
-                          width: 400,
-                          height: 100,
-                        }}
-                      ></div>
+                      <img src={thumb} width={279} height={90} />
                     </Col>
                   </Row>
                 )}

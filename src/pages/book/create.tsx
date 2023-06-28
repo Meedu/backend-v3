@@ -359,6 +359,7 @@ const BookCreatePage = () => {
       {visiable && (
         <Modal
           title=""
+          centered
           onCancel={() => {
             setVisiable(false);
             navigate("/meedubook/book/index", { replace: true });

@@ -351,6 +351,7 @@ const CourseCreatePage = () => {
       {visiable && (
         <Modal
           title=""
+          centered
           onCancel={() => {
             setVisiable(false);
             navigate("/course/vod/index", { replace: true });

@@ -492,6 +492,7 @@ const LiveCreatePage = () => {
       {visiable && (
         <Modal
           title=""
+          centered
           onCancel={() => {
             setVisiable(false);
             navigate("/live/course/index", { replace: true });

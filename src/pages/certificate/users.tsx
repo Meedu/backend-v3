@@ -7,7 +7,7 @@ import { certificate } from "../../api/index";
 import { PerButton, BackBartment, UserImportDialog } from "../../components";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { titleAction } from "../../store/user/loginUserSlice";
-import { dateFormat, getToken } from "../../utils/index";
+import { dateFormat, getToken, checkUrl } from "../../utils/index";
 import config from "../../js/config";
 const { confirm } = Modal;
 
@@ -193,8 +193,8 @@ const CertificateUsersPage = () => {
 
   const download = (uid: number) => {
     window.open(
-      config.url +
-        "/backend/addons/Cert/cert/" +
+      checkUrl(config.url) +
+        "backend/addons/Cert/cert/" +
         id +
         "/" +
         uid +

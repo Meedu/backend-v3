@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import {
   Button,
-  Row,
-  Col,
   Modal,
   Input,
   message,
-  Pagination,
   Table,
+  Empty,
+  ConfigProvider,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { media } from "../../api";
 import styles from "./index.module.scss";
 import { useSelector } from "react-redux";
-import { DurationText, PerButton } from "../../components";
+import { DurationText, PerButton, UploadVideoItem } from "../../components";
 import { yearFormat } from "../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import emptyIcon from "../../assets/images/upload-video/empty.png";
 const { confirm } = Modal;
 
 interface DataType {
@@ -59,6 +59,10 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
       getData();
     }
   }, [open, page, size, refresh]);
+
+  useEffect(() => {
+    resetList();
+  }, [openUploadItem]);
 
   useEffect(() => {
     if (service === "") {
@@ -343,6 +347,14 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
     onSuccess(selectedRows);
   };
 
+  const completeUpload = () => {
+    setOpenUploadItem(false);
+  };
+
+  const tableEmptyRender = () => {
+    return <Empty image={emptyIcon}  description={""} />;
+  };
+
   return (
     <>
       <Modal
@@ -412,17 +424,19 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
                     </div>
                   </div>
                   <div className="float-lef">
-                    <Table
-                      rowSelection={{
-                        type: "radio",
-                        ...rowSelection,
-                      }}
-                      loading={loading}
-                      columns={columns}
-                      dataSource={list}
-                      rowKey={(record) => record.id}
-                      pagination={paginationProps}
-                    />
+                    <ConfigProvider renderEmpty={tableEmptyRender}>
+                      <Table
+                        rowSelection={{
+                          type: "radio",
+                          ...rowSelection,
+                        }}
+                        loading={loading}
+                        columns={columns}
+                        dataSource={list}
+                        rowKey={(record) => record.id}
+                        pagination={paginationProps}
+                      />
+                    </ConfigProvider>
                   </div>
                 </>
               )}
@@ -488,6 +502,13 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
           </div>
         </div>
       </Modal>
+      <UploadVideoItem
+        open={openUploadItem}
+        onCancel={() => setOpenUploadItem(false)}
+        onSuccess={() => {
+          completeUpload();
+        }}
+      ></UploadVideoItem>
     </>
   );
 };

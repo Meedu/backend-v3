@@ -151,11 +151,6 @@ const CourseVideoCommentsPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "学员ID",
-      width: 120,
-      render: (_, record: any) => <span>{record.user_id}</span>,
-    },
-    {
       title: "学员",
       width: 300,
       render: (_, record: any) => (
@@ -223,7 +218,7 @@ const CourseVideoCommentsPage = () => {
           />
         </div>
         <div className="d-flex">
-          <Input
+          {/* <Input
             value={user_id}
             onChange={(e) => {
               setUserId(e.target.value);
@@ -241,7 +236,7 @@ const CourseVideoCommentsPage = () => {
             allowClear
             placeholder="课时"
             options={courses}
-          />
+          /> */}
           <RangePicker
             disabledDate={disabledDate}
             format={"YYYY-MM-DD"}

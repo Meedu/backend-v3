@@ -75,7 +75,7 @@ const CourseVideoImportPage = () => {
         setLoading(false);
         let config = {
           content: e.message,
-          duration: 0,
+          duration: 15,
           onClick: (e: any) => {
             let dom = e.target;
             if (dom.tagName === "svg" || dom.tagName === "path") {

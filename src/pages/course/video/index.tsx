@@ -29,6 +29,7 @@ const CourseVideoPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [cid, setCid] = useState(Number(result.get("course_id")));
+  const [title, setTitle] = useState(String(result.get("title")));
   const enabledAddons = useSelector(
     (state: any) => state.enabledAddonsConfig.value.enabledAddons
   );
@@ -40,7 +41,8 @@ const CourseVideoPage = () => {
 
   useEffect(() => {
     setCid(Number(result.get("course_id")));
-  }, [result.get("course_id")]);
+    setTitle(String(result.get("title")));
+  }, [result.get("course_id"), result.get("title")]);
 
   useEffect(() => {
     getData();
@@ -257,7 +259,7 @@ const CourseVideoPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="课时管理" />
+      <BackBartment title={title} />
       <div className="float-left mt-30">
         <PerButton
           type="primary"

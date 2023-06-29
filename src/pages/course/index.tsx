@@ -260,7 +260,12 @@ const CoursePage = () => {
               icon={null}
               p="video"
               onClick={() => {
-                navigate("/course/vod/video/index?course_id=" + record.id);
+                navigate(
+                  "/course/vod/video/index?course_id=" +
+                    record.id +
+                    "&title=" +
+                    record.title
+                );
               }}
               disabled={null}
             />

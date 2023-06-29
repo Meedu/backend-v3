@@ -19,12 +19,20 @@ import { InboxOutlined } from "@ant-design/icons";
 import TcVod from "vod-js-sdk-v6";
 import plupload from "plupload";
 import config from "../../js/config";
-const { confirm } = Modal;
 
 interface PropInterface {
   open: boolean;
   onCancel: () => void;
   onSuccess: () => void;
+}
+
+interface FileItem {
+  id: any;
+  file: any;
+  size: any;
+  result: any;
+  progress: number;
+  status: number;
 }
 
 declare const window: any;
@@ -41,7 +49,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
   const [isTenService, setIsTenService] = useState(false);
   const [isAliService, setIsAliService] = useState(false);
   const localFileList = useRef<any>([]);
-  const [fileList, setFileList] = useState<any>([]);
+  const [fileList, setFileList] = useState<FileItem[]>([]);
   const aliRef = useRef<any>(null);
   const plupRef = useRef<any>(null);
   const [upload, setUpload] = useState<any>({
@@ -55,12 +63,6 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     service: null,
     // 是否上传中
     loading: false,
-    // 上传进度
-    process: 0,
-    // 本地视频文件信息
-    file: null,
-    // 上传成功视频文件id
-    fileId: null,
   });
   const user = useSelector((state: any) => state.loginUser.value.user);
   const service = useSelector(
@@ -443,8 +445,8 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
       let index = localFileList.current.findIndex(
         (o: any) => o.id === result.fileId
       );
-      index && upload.aliyun && upload.aliyun.cancelFile(index);
-      index && upload.aliyun && upload.aliyun.deleteFile(index);
+      index && aliRef.current && aliRef.current.cancelFile(index);
+      index && aliRef.current && aliRef.current.deleteFile(index);
       setFileList([...localFileList.current]);
     } else if (isTenService) {
       if (!result.up) {
@@ -561,15 +563,9 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
                             </Button>
                           )}
 
-                          {record.status === 5 && (
-                            <>
-                              <Tag color="error">失败：{record.result}</Tag>
-                            </>
-                          )}
+                          {record.status === 5 && <Tag color="error">失败</Tag>}
                           {record.status === 7 && (
-                            <>
-                              <Tag color="success">成功</Tag>
-                            </>
+                            <Tag color="success">成功</Tag>
                           )}
                         </>
                       ),

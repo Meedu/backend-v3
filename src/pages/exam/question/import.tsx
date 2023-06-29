@@ -76,16 +76,16 @@ const QuestionImportPage = () => {
       })
       .catch((e) => {
         setLoading(false);
-        let config = {
-          content: (
-            <>
-              <span className="mr-10">{e.message}</span>
-              <CloseCircleOutlined onClick={() => message.destroy()} />
-            </>
-          ),
-          duration: 0,
-        };
-        message.error(config);
+        // let config = {
+        //   content: (
+        //     <>
+        //       <span className="mr-10">{e.message}</span>
+        //       <CloseCircleOutlined onClick={() => message.destroy()} />
+        //     </>
+        //   ),
+        //   duration: 0,
+        // };
+        // message.error(config);
       });
   };
 

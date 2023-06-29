@@ -1,15 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Button,
-  Row,
-  Col,
-  Modal,
-  Progress,
-  message,
-  Table,
-  Tag,
-  Upload,
-} from "antd";
+import { Button, Row, Col, Modal, Progress, message, Table, Tag } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import { media } from "../../api";
 import { parseVideo, checkUrl, getToken } from "../../utils/index";
@@ -52,6 +42,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
   const [fileList, setFileList] = useState<FileItem[]>([]);
   const aliRef = useRef<any>(null);
   const plupRef = useRef<any>(null);
+  const serviceRef = useRef<any>(null);
   const [upload, setUpload] = useState<any>({
     // 阿里云obj
     aliyun: null,
@@ -59,8 +50,6 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     up: null,
     //腾讯云
     ten: null,
-    // 上传服务商
-    service: null,
     // 是否上传中
     loading: false,
   });
@@ -70,29 +59,27 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
   );
 
   useEffect(() => {
-    let obj = { ...upload };
     if (service === "") {
-      obj.service = null;
+      serviceRef.current = null;
       setIsNoService(true);
     } else if (service === "local") {
-      obj.service = "local";
+      serviceRef.current = "local";
       setIsLocalService(true);
       pluploadInit();
     } else if (service === "tencent") {
-      obj.service = "tencent";
+      serviceRef.current = "tencent";
       setIsTenService(true);
     } else if (service === "aliyun") {
-      obj.service = "aliyun";
+      serviceRef.current = "aliyun";
       setIsAliService(true);
       aliyunInit();
     } else {
-      obj.service = null;
+      serviceRef.current = null;
       setIsNoService(false);
       setIsLocalService(false);
       setIsTenService(false);
       setIsAliService(false);
     }
-    setUpload(obj);
   }, [service]);
 
   const pluploadInit = () => {
@@ -286,7 +273,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
         let obj = { ...upload };
         obj.loading = true;
         setUpload(obj);
-        if (obj.service === "aliyun") {
+        if (serviceRef.current === "aliyun") {
           // 视频封面解析 || 视频时长解析
           let videoInfo = await parseVideo(file);
           // 添加到本地待上传
@@ -307,7 +294,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
           localFileList.current.push(item);
           setFileList([...localFileList.current]);
           aliyunUploadHandle(fileId, file);
-        } else if (obj.service === "tencent") {
+        } else if (serviceRef.current === "tencent") {
           // 视频封面解析 || 视频时长解析
           let videoInfo = await parseVideo(file);
           // 添加到本地待上传
@@ -328,7 +315,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
           localFileList.current.push(item);
           setFileList([...localFileList.current]);
           tencentUploadHandle(fileId, file);
-        } else if (obj.service === "local") {
+        } else if (serviceRef.current === "local") {
           plupRef.current.addFile(file, file.name);
         }
       } else {
@@ -415,7 +402,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
         duration: it.file.duration,
         thumb: thumb,
         size: it.size,
-        storage_driver: obj.service,
+        storage_driver: serviceRef.current,
         storage_file_id: fileId,
       })
       .then((res) => {

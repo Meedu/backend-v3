@@ -187,30 +187,33 @@ const TopicCommentsPage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="图文文章评论" />
-      <div className="float-left mb-30 mt-30">
-        <RangePicker
-          disabledDate={disabledDate}
-          format={"YYYY-MM-DD"}
-          value={createdAts}
-          onChange={(date, dateString) => {
-            setCreatedAt(dateString);
-            setCreatedAts(date);
-          }}
-          placeholder={["评论时间-开始", "评论时间-结束"]}
-        />
-        <Button className="ml-10" onClick={resetList}>
-          清空
-        </Button>
-        <Button
-          className="ml-10"
-          type="primary"
-          onClick={() => {
-            setPage(1);
-            setRefresh(!refresh);
-          }}
-        >
-          筛选
-        </Button>
+      <div className="float-left j-b-flex mb-30 mt-30">
+        <div className="d-flex"></div>
+        <div className="d-flex">
+          <RangePicker
+            disabledDate={disabledDate}
+            format={"YYYY-MM-DD"}
+            value={createdAts}
+            onChange={(date, dateString) => {
+              setCreatedAt(dateString);
+              setCreatedAts(date);
+            }}
+            placeholder={["评论时间-开始", "评论时间-结束"]}
+          />
+          <Button className="ml-10" onClick={resetList}>
+            清空
+          </Button>
+          <Button
+            className="ml-10"
+            type="primary"
+            onClick={() => {
+              setPage(1);
+              setRefresh(!refresh);
+            }}
+          >
+            筛选
+          </Button>
+        </div>
       </div>
       <div className="float-left">
         <Table

@@ -65,7 +65,7 @@ const BookChapterPage = () => {
       render: (_, record: any) => <span>{record.id}</span>,
     },
     {
-      title: "升序",
+      title: "排序",
       width: 150,
       render: (_, record: any) => <span>{record.sort}</span>,
     },

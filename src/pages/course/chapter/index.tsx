@@ -60,7 +60,7 @@ const CourseChapterPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "升序",
+      title: "排序",
       width: 150,
       render: (_, record: any) => <span>{record.sort}</span>,
     },

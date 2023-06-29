@@ -52,7 +52,7 @@ export const LinksList: React.FC<PropInterface> = ({ open, onClose }) => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "升序",
+      title: "排序",
       width: 120,
       render: (_, record: any) => <span>{record.sort}</span>,
     },

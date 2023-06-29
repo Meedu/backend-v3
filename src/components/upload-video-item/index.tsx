@@ -12,11 +12,13 @@ import {
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import { media } from "../../api";
-import { parseVideo } from "../../utils/index";
+import { parseVideo, checkUrl, getToken } from "../../utils/index";
 import styles from "./index.module.scss";
 import { useSelector } from "react-redux";
 import { InboxOutlined } from "@ant-design/icons";
 import TcVod from "vod-js-sdk-v6";
+import plupload from "plupload";
+import config from "../../js/config";
 const { confirm } = Modal;
 
 interface PropInterface {
@@ -41,6 +43,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
   const localFileList = useRef<any>([]);
   const [fileList, setFileList] = useState<any>([]);
   const aliRef = useRef<any>(null);
+  const plupRef = useRef<any>(null);
   const [upload, setUpload] = useState<any>({
     // 阿里云obj
     aliyun: null,
@@ -72,6 +75,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     } else if (service === "local") {
       obj.service = "local";
       setIsLocalService(true);
+      pluploadInit();
     } else if (service === "tencent") {
       obj.service = "tencent";
       setIsTenService(true);
@@ -88,6 +92,99 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     }
     setUpload(obj);
   }, [service]);
+
+  const pluploadInit = () => {
+    let url = checkUrl(config.url);
+    var uploader = new plupload.Uploader({
+      runtimes: "html5",
+      browse_button: "selectfiles",
+      chunk_size: "1MB",
+      multi_selection: true,
+      multipart: true,
+      headers: {
+        Authorization: "Bearer " + getToken(),
+        accept: "application/json",
+      },
+      url: url + "backend/addons/LocalUpload/upload",
+      filters: {
+        // mime_types: "video/mp4",
+        max_file_size: "1024mb",
+        prevent_duplicates: false, //不允许选取重复文件
+      },
+      init: {
+        PostInit: () => {},
+        FilesAdded: (up, files) => {
+          plupload.each(files, (file: any) => {
+            upRef.current++;
+            let item: any = {
+              id: file.id,
+              file: file,
+              size: file.size,
+              result: {
+                fileId: file.id,
+                up: null,
+              },
+              progress: 0,
+              status: 1,
+            };
+            localFileList.current.push(item);
+            setFileList([...localFileList.current]);
+          });
+          setUploadParam(uploader, false);
+        },
+        BeforeUpload: (up, file) => {
+          var url = URL.createObjectURL(file.getNative());
+          var audioElement = new Audio(url);
+          var duration = 0;
+          audioElement.addEventListener("loadedmetadata", (_event) => {
+            duration = audioElement.duration;
+            up.setOption("multipart_params", {
+              duration: duration,
+            });
+          });
+        },
+        FilesRemoved: (up, files) => {
+          let obj = { ...upload };
+          obj.loading = false;
+          setUpload(obj);
+        },
+        UploadProgress: (up, file) => {
+          let it = localFileList.current.find((o: any) => o.id === file.id);
+          if (it) {
+            it.result.up = up;
+            it.status = 1;
+            it.progress = parseInt(file.percent);
+          }
+          setFileList([...localFileList.current]);
+        },
+        FileUploaded: (up, file, info) => {
+          upRef.current--;
+          let obj = { ...upload };
+          obj.loading = false;
+          setUpload(obj);
+          let it = localFileList.current.find((o: any) => o.id === file.id);
+          let data = JSON.parse(info.response);
+          if (data.status === 0) {
+            message.success("上传成功");
+            it.status = 7;
+            it.result = null;
+          } else {
+            message.error(data.message);
+            it.status = 5;
+            it.result = data.message;
+            console.log(data);
+          }
+          setFileList([...localFileList.current]);
+        },
+      },
+    });
+    uploader.init();
+    plupRef.current = uploader;
+  };
+
+  const setUploadParam = (up: any, ret: boolean) => {
+    up.start();
+  };
 
   const aliyunInit = () => {
     aliRef.current = new window.AliyunUpload.Vod({
@@ -187,31 +284,50 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
         let obj = { ...upload };
         obj.loading = true;
         setUpload(obj);
-        // 视频封面解析 || 视频时长解析
-        let videoInfo = await parseVideo(file);
-        // 添加到本地待上传
-        upRef.current++;
-        let fileId = Math.random() * 100 + file.name;
-        let item: any = {
-          id: fileId,
-          file: file,
-          size: file.size,
-          result: {
-            fileId: fileId,
-            up: null,
-          },
-          progress: 0,
-          status: 1,
-        };
-        item.file.duration = videoInfo.duration;
-        localFileList.current.push(item);
-        setFileList([...localFileList.current]);
-
         if (obj.service === "aliyun") {
+          // 视频封面解析 || 视频时长解析
+          let videoInfo = await parseVideo(file);
+          // 添加到本地待上传
+          upRef.current++;
+          let fileId = Math.random() * 100 + file.name;
+          let item: any = {
+            id: fileId,
+            file: file,
+            size: file.size,
+            result: {
+              fileId: fileId,
+              up: null,
+            },
+            progress: 0,
+            status: 1,
+          };
+          item.file.duration = videoInfo.duration;
+          localFileList.current.push(item);
+          setFileList([...localFileList.current]);
           aliyunUploadHandle(fileId, file);
         } else if (obj.service === "tencent") {
+          // 视频封面解析 || 视频时长解析
+          let videoInfo = await parseVideo(file);
+          // 添加到本地待上传
+          upRef.current++;
+          let fileId = Math.random() * 100 + file.name;
+          let item: any = {
+            id: fileId,
+            file: file,
+            size: file.size,
+            result: {
+              fileId: fileId,
+              up: null,
+            },
+            progress: 0,
+            status: 1,
+          };
+          item.file.duration = videoInfo.duration;
+          localFileList.current.push(item);
+          setFileList([...localFileList.current]);
           tencentUploadHandle(fileId, file);
         } else if (obj.service === "local") {
+          plupRef.current.addFile(file, file.name);
         }
       } else {
         message.error(`${file.name} 并不是 mp4 视频文件`);
@@ -275,6 +391,13 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     setUpload(obj);
   };
 
+  const videoPlayEvt = () => {
+    let $div: any = document.getElementById("video-play");
+    let obj = { ...upload };
+    obj.file.duration = $div.duration;
+    setUpload(obj);
+  };
+
   const uploadSuccess = (fileId: any, thumb: string, id: any) => {
     upRef.current--;
     let it = localFileList.current.find((o: any) => o.id === id);
@@ -314,8 +437,8 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
 
   const cancelTask = (result: any) => {
     if (isLocalService) {
-      var fileItem = result.up.getFile(result.fileId);
-      fileItem && result.up.removeFile(fileItem);
+      var fileItem = plupRef.current.getFile(result.fileId);
+      fileItem && plupRef.current.removeFile(fileItem);
     } else if (isAliService) {
       let index = localFileList.current.findIndex(
         (o: any) => o.id === result.fileId
@@ -367,10 +490,13 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
         closable={false}
       >
         <div className={styles["header"]}>上传列表</div>
+        <div style={{ display: "none" }}>
+          <video id="video-play" onLoadedMetadata={videoPlayEvt}></video>
+        </div>
         <div className={styles["body"]}>
           <Row gutter={[0, 10]}>
             <Col span={24}>
-              <Dragger {...uploadProps}>
+              <Dragger id="selectfiles" {...uploadProps}>
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />
                 </p>

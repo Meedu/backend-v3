@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Button, Input, Select, DatePicker } from "antd";
+import { Table, Modal, message, Button, DatePicker } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { course } from "../../../api/index";
@@ -27,35 +27,18 @@ const CourseVideoCommentsPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [users, setUsers] = useState<any>({});
   const [user_id, setUserId] = useState("");
-  const [course_id, setCourseId] = useState<any>([]);
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
-  const [courses, setCourses] = useState<any>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
 
   useEffect(() => {
     document.title = "课时评论";
     dispatch(titleAction("课时评论"));
-    getParams();
   }, []);
 
   useEffect(() => {
     getData();
   }, [page, size, refresh]);
-
-  const getParams = () => {
-    course.videoList({ keywords: null, page: 1, size: 10 }).then((res: any) => {
-      let courses = res.data.videos.data;
-      const box: any = [];
-      for (let i = 0; i < courses.length; i++) {
-        box.push({
-          label: courses[i].title,
-          value: courses[i].id,
-        });
-      }
-      setCourses(box);
-    });
-  };
 
   const getData = () => {
     if (loading) {
@@ -67,7 +50,7 @@ const CourseVideoCommentsPage = () => {
         page: page,
         size: size,
         user_id: user_id,
-        video_id: course_id,
+        video_id: null,
         created_at: created_at,
       })
       .then((res: any) => {
@@ -122,7 +105,6 @@ const CourseVideoCommentsPage = () => {
     setList([]);
     setSelectedRowKeys([]);
     setUserId("");
-    setCourseId([]);
     setCreatedAts([]);
     setCreatedAt([]);
     setRefresh(!refresh);
@@ -218,25 +200,6 @@ const CourseVideoCommentsPage = () => {
           />
         </div>
         <div className="d-flex">
-          {/* <Input
-            value={user_id}
-            onChange={(e) => {
-              setUserId(e.target.value);
-            }}
-            allowClear
-            style={{ width: 150 }}
-            placeholder="学员ID"
-          />
-          <Select
-            style={{ width: 150, marginLeft: 10 }}
-            value={course_id}
-            onChange={(e) => {
-              setCourseId(e);
-            }}
-            allowClear
-            placeholder="课时"
-            options={courses}
-          /> */}
           <RangePicker
             disabledDate={disabledDate}
             format={"YYYY-MM-DD"}

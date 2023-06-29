@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Button, Input, Select, DatePicker } from "antd";
+import { Table, Modal, message, Button, DatePicker } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
 import { topic } from "../../api/index";
@@ -27,34 +27,17 @@ const TopicCommentsPage = () => {
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [user_id, setUserId] = useState("");
-  const [course_id, setCourseId] = useState<any>([]);
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
-  const [courses, setCourses] = useState<any>([]);
 
   useEffect(() => {
     document.title = "图文文章评论";
     dispatch(titleAction("图文文章评论"));
-    getParams();
   }, []);
 
   useEffect(() => {
     getData();
   }, [page, size, refresh]);
-
-  const getParams = () => {
-    topic.list({ keywords: null, page: 1, size: 10000 }).then((res: any) => {
-      let courses = res.data.data.data;
-      const box: any = [];
-      for (let i = 0; i < courses.length; i++) {
-        box.push({
-          label: courses[i].title,
-          value: courses[i].id,
-        });
-      }
-      setCourses(box);
-    });
-  };
 
   const getData = () => {
     if (loading) {
@@ -66,7 +49,7 @@ const TopicCommentsPage = () => {
         page: page,
         size: size,
         user_id: user_id,
-        topic_id: course_id,
+        topic_id: null,
         created_at: created_at,
       })
       .then((res: any) => {
@@ -118,7 +101,6 @@ const TopicCommentsPage = () => {
     setSize(10);
     setList([]);
     setUserId("");
-    setCourseId([]);
     setCreatedAts([]);
     setCreatedAt([]);
     setRefresh(!refresh);
@@ -145,16 +127,6 @@ const TopicCommentsPage = () => {
   };
 
   const columns: ColumnsType<DataType> = [
-    {
-      title: "ID",
-      width: 120,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
-      title: "学员ID",
-      width: 120,
-      render: (_, record: any) => <span>{record.user_id}</span>,
-    },
     {
       title: "学员",
       width: 300,
@@ -216,30 +188,10 @@ const TopicCommentsPage = () => {
     <div className="meedu-main-body">
       <BackBartment title="图文文章评论" />
       <div className="float-left mb-30 mt-30">
-        <Input
-          value={user_id}
-          onChange={(e) => {
-            setUserId(e.target.value);
-          }}
-          allowClear
-          style={{ width: 150 }}
-          placeholder="学员ID"
-        />
-        <Select
-          style={{ width: 150, marginLeft: 10 }}
-          value={course_id}
-          onChange={(e) => {
-            setCourseId(e);
-          }}
-          allowClear
-          placeholder="图文"
-          options={courses}
-        />
         <RangePicker
           disabledDate={disabledDate}
           format={"YYYY-MM-DD"}
           value={createdAts}
-          style={{ marginLeft: 10 }}
           onChange={(date, dateString) => {
             setCreatedAt(dateString);
             setCreatedAts(date);

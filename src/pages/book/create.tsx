@@ -210,7 +210,7 @@ const BookCreatePage = () => {
                 rules={[{ required: true, message: "请上传电子书封面!" }]}
               >
                 <UploadImageButton
-                  text="上传封面"
+                  text="选择图片"
                   onSelected={(url) => {
                     form.setFieldsValue({ thumb: url });
                     setThumb(url);

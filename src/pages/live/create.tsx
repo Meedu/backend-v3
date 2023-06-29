@@ -306,7 +306,7 @@ const LiveCreatePage = () => {
                   rules={[{ required: true, message: "请上传课程封面!" }]}
                 >
                   <UploadImageButton
-                    text="上传课程封面"
+                    text="选择图片"
                     onSelected={(url) => {
                       form.setFieldsValue({ thumb: url });
                       setThumb(url);

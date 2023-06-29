@@ -97,7 +97,6 @@ const CourseCreatePage = () => {
       .store(values)
       .then((res: any) => {
         setLoading(false);
-        message.success("保存成功！");
         setVisiable(true);
       })
       .catch((e) => {

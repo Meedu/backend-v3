@@ -213,7 +213,12 @@ const BookPage = () => {
               icon={null}
               p="addons.meedu_books.book_article.list"
               onClick={() => {
-                navigate("/meedubook/article/index?bid=" + record.id);
+                navigate(
+                  "/meedubook/article/index?bid=" +
+                    record.id +
+                    "&title=" +
+                    record.name
+                );
               }}
               disabled={null}
             />

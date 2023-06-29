@@ -28,6 +28,7 @@ const BookArticlePage = () => {
   const [category_id, setCategoryId] = useState([]);
   const [categories, setCategories] = useState<any>([]);
   const [id, setId] = useState(Number(result.get("bid")));
+  const [title, setTitle] = useState(String(result.get("title")));
 
   useEffect(() => {
     document.title = "电子书文章管理";
@@ -36,7 +37,8 @@ const BookArticlePage = () => {
 
   useEffect(() => {
     setId(Number(result.get("bid")));
-  }, [result.get("bid")]);
+    setTitle(String(result.get("title")));
+  }, [result.get("bid"), result.get("title")]);
 
   useEffect(() => {
     getData();
@@ -204,7 +206,7 @@ const BookArticlePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="电子书文章管理" />
+      <BackBartment title={title} />
       <div className="float-left j-b-flex mb-30 mt-30">
         <div className="d-flex">
           <PerButton

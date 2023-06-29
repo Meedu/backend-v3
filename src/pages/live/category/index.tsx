@@ -71,11 +71,6 @@ const LiveCategoryPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 150,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "排序",
       width: 150,
       render: (_, record: any) => <span>{record.sort}</span>,

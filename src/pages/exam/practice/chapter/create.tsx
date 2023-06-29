@@ -70,13 +70,13 @@ const PracticeChapterCreatePage = () => {
               allowClear
             />
           </Form.Item>
-          <Form.Item label="升序" name="sort">
+          <Form.Item label="排序" name="sort">
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item name="sort">
                 <Input
                   type="number"
                   style={{ width: 300 }}
-                  placeholder="请输入升序"
+                  placeholder="请输入排序"
                   allowClear
                 />
               </Form.Item>

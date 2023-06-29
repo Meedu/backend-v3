@@ -83,7 +83,6 @@ const BookCreatePage = () => {
       .store(values)
       .then((res: any) => {
         setLoading(false);
-        message.success("保存成功！");
         setVisiable(true);
       })
       .catch((e) => {
@@ -131,7 +130,9 @@ const BookCreatePage = () => {
         order: "desc",
       })
       .then((res: any) => {
-        navigate("/meedubook/article/index?bid=" + res.data.data.data[0].id);
+        navigate("/meedubook/article/index?bid=" + res.data.data.data[0].id, {
+          replace: true,
+        });
       });
   };
 

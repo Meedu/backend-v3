@@ -67,7 +67,6 @@ const PracticeCreatePage = () => {
       .store(values)
       .then((res: any) => {
         setLoading(false);
-        message.success("保存成功！");
         setVisiable(true);
       })
       .catch((e) => {
@@ -107,7 +106,10 @@ const PracticeCreatePage = () => {
         order: "desc",
       })
       .then((res: any) => {
-        navigate("/exam/practice/chapter/index?id=" + res.data.data.data[0].id);
+        navigate(
+          "/exam/practice/chapter/index?id=" + res.data.data.data[0].id,
+          { replace: true }
+        );
       });
   };
 

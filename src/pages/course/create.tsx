@@ -136,7 +136,8 @@ const CourseCreatePage = () => {
       })
       .then((res: any) => {
         navigate(
-          "/course/vod/video/index?course_id=" + res.data.courses.data[0].id
+          "/course/vod/video/index?course_id=" + res.data.courses.data[0].id,
+          { replace: true }
         );
       });
   };

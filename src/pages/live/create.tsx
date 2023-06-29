@@ -150,7 +150,8 @@ const LiveCreatePage = () => {
           "/live/course/video/index?id=" +
             res.data.data.data[0].id +
             "&title=" +
-            res.data.data.data[0].title
+            res.data.data.data[0].title,
+          { replace: true }
         );
       });
   };

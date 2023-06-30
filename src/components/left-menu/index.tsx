@@ -405,12 +405,103 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/meedubook") !== -1) {
       setSelectedKeys(["/meedubook/book/index"]);
       setOpenKeys(openKeyMerge("/meedubook"));
+    } else if (location.pathname.indexOf("/topic") !== -1) {
+      setSelectedKeys(["/topic/index"]);
+      setOpenKeys(openKeyMerge("/topic"));
+    } else if (location.pathname.indexOf("/learningpath") !== -1) {
+      setSelectedKeys(["/learningpath/path/index"]);
+      setOpenKeys(openKeyMerge("/learningpath"));
+    } else if (location.pathname.indexOf("/exam/question") !== -1) {
+      setSelectedKeys(["/exam/question/index"]);
+      setOpenKeys(openKeyMerge("/exam"));
+    } else if (location.pathname.indexOf("/exam/paper") !== -1) {
+      setSelectedKeys(["/exam/paper/index"]);
+      setOpenKeys(openKeyMerge("/exam"));
+    } else if (location.pathname.indexOf("/exam/mockpaper") !== -1) {
+      setSelectedKeys(["/exam/mockpaper/index"]);
+      setOpenKeys(openKeyMerge("/exam"));
+    } else if (location.pathname.indexOf("/exam/practice") !== -1) {
+      setSelectedKeys(["/exam/practice/index"]);
+      setOpenKeys(openKeyMerge("/exam"));
+    } else if (location.pathname.indexOf("/stats/member/index") !== -1) {
+      setSelectedKeys(["/stats/member/index"]);
+      setOpenKeys(openKeyMerge("/stats"));
+    } else if (location.pathname.indexOf("/member/") !== -1) {
+      setSelectedKeys(["/member/index"]);
+      setOpenKeys(openKeyMerge("/member"));
+    } else if (location.pathname.indexOf("/snapshot") !== -1) {
+      setSelectedKeys(["/snapshot/index"]);
+      setOpenKeys(openKeyMerge("/snapshot"));
+    } else if (location.pathname.indexOf("/certificate") !== -1) {
+      setSelectedKeys(["/certificate/index"]);
+      setOpenKeys(openKeyMerge("/certificate"));
+    } else if (location.pathname.indexOf("/creditMall") !== -1) {
+      setSelectedKeys(["/tuangou"]);
+      setOpenKeys(openKeyMerge("/creditMall"));
+    } else if (location.pathname.indexOf("/tuangou/goods") !== -1) {
+      setSelectedKeys(["/tuangou/goods/index"]);
+      setOpenKeys(openKeyMerge("/creditMall"));
+    } else if (location.pathname.indexOf("/miaosha/goods") !== -1) {
+      setSelectedKeys(["/miaosha/goods/index"]);
+      setOpenKeys(openKeyMerge("/miaosha"));
+    } else if (location.pathname.indexOf("/order/code-import") !== -1) {
+      setSelectedKeys(["/promocode"]);
+      setOpenKeys(openKeyMerge("/promocode"));
+    } else if (location.pathname.indexOf("/order/recharge") !== -1) {
+      setSelectedKeys(["/order/recharge"]);
+      setOpenKeys(openKeyMerge("/order"));
+    } else if (location.pathname.indexOf("/order") !== -1) {
+      setSelectedKeys(["/order/index"]);
+      setOpenKeys(openKeyMerge("/order"));
+    } else if (location.pathname.indexOf("/withdrawOrders") !== -1) {
+      setSelectedKeys(["/withdrawOrders"]);
+      setOpenKeys(openKeyMerge("/order"));
+    } else if (location.pathname.indexOf("/role") !== -1) {
+      setSelectedKeys(["/role"]);
+      setOpenKeys(openKeyMerge("/role"));
+    } else if (location.pathname.indexOf("/addrole") !== -1) {
+      setSelectedKeys(["/role"]);
+      setOpenKeys(openKeyMerge("/role"));
+    } else if (location.pathname.indexOf("/editrole") !== -1) {
+      setSelectedKeys(["/role"]);
+      setOpenKeys(openKeyMerge("/role"));
+    } else if (location.pathname.indexOf("/multi_level_share/goods") !== -1) {
+      setSelectedKeys(["/multi_level_share/goods/index"]);
+      setOpenKeys(openKeyMerge("/multi_level_share"));
+    } else if (location.pathname.indexOf("/wenda/question") !== -1) {
+      setSelectedKeys(["/wenda/question/index"]);
+      setOpenKeys(openKeyMerge("/wenda"));
+    } else if (location.pathname.indexOf("/codeExchanger") !== -1) {
+      setSelectedKeys(["/codeExchanger/index"]);
+      setOpenKeys(openKeyMerge("/codeExchanger"));
+    } else if (location.pathname.indexOf("/promocode") !== -1) {
+      setSelectedKeys(["/promocode"]);
+      setOpenKeys(openKeyMerge("/promocode"));
+    } else if (location.pathname.indexOf("/createcode") !== -1) {
+      setSelectedKeys(["/promocode"]);
+      setOpenKeys(openKeyMerge("/promocode"));
+    } else if (location.pathname.indexOf("/createmulticode") !== -1) {
+      setSelectedKeys(["/promocode"]);
+      setOpenKeys(openKeyMerge("/promocode"));
+    } else if (location.pathname.indexOf("/wechat/messagereply") !== -1) {
+      setSelectedKeys(["/wechat/messagereply/index"]);
+      setOpenKeys(openKeyMerge("/wechat"));
+    } else if (location.pathname.indexOf("/system/administrator") !== -1) {
+      setSelectedKeys(["/system/administrator"]);
+      setOpenKeys(openKeyMerge("/system"));
+    } else if (location.pathname.indexOf("/systemLog/index") !== -1) {
+      setSelectedKeys(["/systemLog/index"]);
+      setOpenKeys(openKeyMerge("/systemLog"));
+    } else if (location.pathname.indexOf("/system/application") !== -1) {
+      setSelectedKeys(["/system/application"]);
+      setOpenKeys(openKeyMerge("/system"));
+    } else if (location.pathname.indexOf("/system") !== -1) {
+      setSelectedKeys(["/system/index"]);
+      setOpenKeys(openKeyMerge("/system"));
     } else {
       setSelectedKeys([location.pathname]);
       setOpenKeys(openKeyMerge(location.pathname));
     }
-    console.log(selectedKeys);
-    console.log(openKeys);
   }, [location.pathname]);
 
   useEffect(() => {

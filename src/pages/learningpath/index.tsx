@@ -233,7 +233,12 @@ const LearnPathPage = () => {
               icon={null}
               p="addons.learnPaths.step.list"
               onClick={() => {
-                navigate("/learningpath/step/index?id=" + record.id);
+                navigate(
+                  "/learningpath/step/index?id=" +
+                    record.id +
+                    "&title=" +
+                    record.name
+                );
               }}
               disabled={null}
             />

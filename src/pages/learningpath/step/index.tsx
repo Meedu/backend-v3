@@ -22,6 +22,7 @@ const LearnPathStepPage = () => {
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(Number(result.get("id")));
+  const [title, setTitle] = useState(String(result.get("title")));
 
   useEffect(() => {
     document.title = "学习步骤";
@@ -30,7 +31,8 @@ const LearnPathStepPage = () => {
 
   useEffect(() => {
     setId(Number(result.get("id")));
-  }, [result.get("id")]);
+    setTitle(String(result.get("title")));
+  }, [result.get("id"), result.get("title")]);
 
   useEffect(() => {
     getData();
@@ -152,7 +154,7 @@ const LearnPathStepPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="学习步骤" />
+      <BackBartment title={title} />
       <div className="float-left  mt-30 mb-30">
         <PerButton
           type="primary"

@@ -5,6 +5,7 @@ import { Spin, Input, Button, message } from "antd";
 import { useDispatch } from "react-redux";
 import { login as loginApi, system } from "../../api/index";
 import { loginAction } from "../../store/user/loginUserSlice";
+import { setEnabledAddonsAction } from "../../store/enabledAddons/enabledAddonsConfigSlice";
 import {
   saveConfigAction,
   SystemConfigStoreInterface,
@@ -79,6 +80,7 @@ const LoginPage = () => {
       setToken(res.data.token); //将token写入本地
       await getSystemConfig(); //获取系统配置并写入store
       await getUser(); //获取登录用户的信息并写入store
+      await getAddons(); //获取权限
 
       navigate("/", { replace: true });
     } catch (e) {
@@ -91,6 +93,19 @@ const LoginPage = () => {
   const getUser = async () => {
     let res: any = await loginApi.getUser();
     dispatch(loginAction(res.data));
+  };
+
+  const getAddons = async () => {
+    let addonsRes: any = await system.addonsList();
+    let enabledAddons: any = {};
+    let count = 0;
+    for (let i = 0; i < addonsRes.data.length; i++) {
+      if (addonsRes.data[i].enabled) {
+        count += 1;
+        enabledAddons[addonsRes.data[i].sign] = 1;
+      }
+    }
+    dispatch(setEnabledAddonsAction({ addons: enabledAddons, count: count }));
   };
 
   const getSystemConfig = async () => {

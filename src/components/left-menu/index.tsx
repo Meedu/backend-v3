@@ -396,8 +396,21 @@ export const LeftMenu: React.FC = () => {
   };
 
   useEffect(() => {
-    setSelectedKeys([location.pathname]);
-    setOpenKeys(openKeyMerge(location.pathname));
+    if (location.pathname.indexOf("/course/vod") !== -1) {
+      setSelectedKeys(["/course/vod/index"]);
+      setOpenKeys(openKeyMerge("/course"));
+    } else if (location.pathname.indexOf("/live") !== -1) {
+      setSelectedKeys(["/live/course/index"]);
+      setOpenKeys(openKeyMerge("/live"));
+    } else if (location.pathname.indexOf("/meedubook") !== -1) {
+      setSelectedKeys(["/meedubook/book/index"]);
+      setOpenKeys(openKeyMerge("/meedubook"));
+    } else {
+      setSelectedKeys([location.pathname]);
+      setOpenKeys(openKeyMerge(location.pathname));
+    }
+    console.log(selectedKeys);
+    console.log(openKeys);
   }, [location.pathname]);
 
   useEffect(() => {

@@ -40,10 +40,11 @@ export const CourseCategoryUpdateDialog = (props: PropsInterface) => {
       box.push({
         label: props.categories[i].name,
         value: props.categories[i].id,
+        disabled: props.categories[i].id === props.id,
       });
     }
     setLocalCategories(box);
-  }, [props.categories]);
+  }, [props.categories, props.id]);
 
   const getDetail = () => {
     course.categoryDetail(props.id).then((res: any) => {

@@ -97,6 +97,7 @@ export const AdminLogComp = () => {
     {
       title: "备注",
       dataIndex: "version",
+      ellipsis: true,
       render: (_, record: any) => <code>{record.remark}</code>,
     },
   ];

@@ -38,8 +38,8 @@ const LiveUsersPage = () => {
   const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
-    document.title = "直播课程学员";
-    dispatch(titleAction("直播课程学员"));
+    document.title = "付费学员";
+    dispatch(titleAction("付费学员"));
   }, []);
 
   useEffect(() => {
@@ -250,7 +250,7 @@ const LiveUsersPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="直播课程学员" />
+      <BackBartment title="付费学员" />
       <div className="float-left j-b-flex mb-30 mt-30">
         <div className="d-flex">
           <Button type="primary" onClick={() => setShowUserAddWin(true)}>

@@ -137,8 +137,9 @@ const LiveVideoCreatePage = () => {
             name="estimate_duration"
             rules={[{ required: true, message: "请输入预估直播时长!" }]}
           >
-            <Space align="baseline" style={{ height: 32 }}>
+            <Space align="center">
               <Form.Item
+                style={{ marginBottom: 0 }}
                 name="estimate_duration"
                 rules={[{ required: true, message: "请输入预估直播时长!" }]}
               >

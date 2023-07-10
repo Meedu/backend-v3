@@ -454,6 +454,10 @@ textarea.ant-input {
   }
 }
 
+.ant-btn {
+  border-radius: 3px !important;
+}
+
 .eyes-link {
   color: #606266;
   &:hover {
@@ -1806,11 +1810,11 @@ textarea.ant-input {
   }
 }
 
-.ant-message-error{
+.ant-message-error {
   display: flex;
   align-items: center;
-  .anticon-close-circle{
-    &:hover{
+  .anticon-close-circle {
+    &:hover {
       opacity: 0.8;
     }
   }

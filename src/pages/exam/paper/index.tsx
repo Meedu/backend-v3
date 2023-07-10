@@ -60,7 +60,7 @@ const PaperPage = () => {
         size: size,
         sort: "id",
         order: "desc",
-        key: keywords,
+        keywords: keywords,
         category_id: category_id,
       })
       .then((res: any) => {

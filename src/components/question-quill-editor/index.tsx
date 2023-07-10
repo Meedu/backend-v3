@@ -19,19 +19,20 @@ export const QuestionQuillEditor: React.FC<PropInterface> = (props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [value, setValue] = useState("");
   const [showUploadImage, setShowUploadImage] = useState<boolean>(false);
-  const modules = {
-    toolbar: {
-      container: isFormula
-        ? ["image", "formula"]
-        : ["bold", "italic", "underline", "strike", "image"],
-      handlers: {},
-    },
-    formula: isFormula,
-  };
-  const imageHandler = () => {
-    setShowUploadImage(true);
-    console.log(111);
-  };
+  const modules = React.useMemo(
+    () => ({
+      toolbar: {
+        container: isFormula
+          ? ["image", "formula"]
+          : ["bold", "italic", "underline", "strike", "image"],
+        handlers: {
+          image: () => setShowUploadImage(true),
+        },
+      },
+      formula: isFormula,
+    }),
+    [isFormula]
+  );
 
   useEffect(() => {
     if (value) {
@@ -66,6 +67,18 @@ export const QuestionQuillEditor: React.FC<PropInterface> = (props) => {
         placeholder="请输入内容..."
         readOnly={false}
       />
+      <SelectImage
+        open={showUploadImage}
+        from={1}
+        onCancel={() => setShowUploadImage(false)}
+        onSelected={(url) => {
+          let quill = refs?.current.getEditor();
+          let length = quill.selection.savedRange.index;
+          quill.insertEmbed(length, "image", url);
+          quill.setSelection(length + 1);
+          setShowUploadImage(false);
+        }}
+      ></SelectImage>
     </>
   );
 };

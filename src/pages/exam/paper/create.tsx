@@ -391,6 +391,7 @@ const PaperCreatePage = () => {
             setVisiable(false);
             goVideo();
           }}
+          centered
         >
           <div
             className="text-center"

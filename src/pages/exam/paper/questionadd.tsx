@@ -175,8 +175,8 @@ const PaperQuestionCreatePage = () => {
           .questionStoreMulti(id, {
             s: selectedRowKeys,
           })
-          .then(() => {
-            message.success("成功");
+          .then((res: any) => {
+            message.success(res.message);
             resetData();
             setLoading(false);
           })

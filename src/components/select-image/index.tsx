@@ -1,14 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Row,
-  Col,
-  Modal,
-  Image,
-  Empty,
-  message,
-  Pagination,
-} from "antd";
+import { Row, Col, Modal, Empty, message, Pagination } from "antd";
 import { media } from "../../api";
 import styles from "./index.module.scss";
 import { UploadImageSub } from "../upload-image-button/upload-image-sub";

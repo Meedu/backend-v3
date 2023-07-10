@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.scss";
+import { Modal, Input, message, Select } from "antd";
 import ReactQuill from "react-quill";
 import { SelectImage } from "../../components";
 import "react-quill/dist/quill.snow.css";
@@ -11,14 +12,25 @@ interface PropInterface {
   setContent: (value: string) => void;
 }
 
-declare const window: any;
-
 export const QuestionQuillEditor: React.FC<PropInterface> = (props) => {
   const { height, isFormula, defautValue, setContent } = props;
   let refs: any = useRef(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [value, setValue] = useState("");
   const [showUploadImage, setShowUploadImage] = useState<boolean>(false);
+  const [formulaVisible, setFormulaVisible] = useState(false);
+  const [formulaType, setFormulaType] = useState(0);
+  const [formulaValue, setFormulaValue] = useState("");
+  const types = [
+    {
+      label: "单行公式",
+      value: 0,
+    },
+    {
+      label: "多行公式",
+      value: 1,
+    },
+  ];
   const modules = React.useMemo(
     () => ({
       toolbar: {
@@ -27,6 +39,7 @@ export const QuestionQuillEditor: React.FC<PropInterface> = (props) => {
           : ["bold", "italic", "underline", "strike", "image"],
         handlers: {
           image: () => setShowUploadImage(true),
+          formula: () => setFormulaVisible(true),
         },
       },
       formula: isFormula,
@@ -49,6 +62,27 @@ export const QuestionQuillEditor: React.FC<PropInterface> = (props) => {
       setValue(defautValue);
     }
   }, [defautValue]);
+
+  const confirmFormula = () => {
+    if (!formulaValue) {
+      setFormulaValue("");
+      message.error("请输入公式");
+      return;
+    }
+    let value = formulaValue;
+    if (formulaType === 1) {
+      value = "$$" + value + "$$";
+    } else {
+      value = "$" + value + "$";
+    }
+    let quill = refs?.current.getEditor();
+    let length = quill.selection.savedRange.index || 0;
+    quill.clipboard.dangerouslyPasteHTML(length, value);
+    quill.setSelection(length + value.length + 1);
+    setFormulaVisible(false);
+    setFormulaType(0);
+    setFormulaValue("");
+  };
 
   return (
     <>
@@ -79,6 +113,57 @@ export const QuestionQuillEditor: React.FC<PropInterface> = (props) => {
           setShowUploadImage(false);
         }}
       ></SelectImage>
+      <Modal
+        title="插入公式"
+        centered
+        onCancel={() => {
+          setFormulaVisible(false);
+        }}
+        cancelText="取 消"
+        okText="确 定"
+        open={formulaVisible}
+        width={960}
+        maskClosable={false}
+        onOk={() => {
+          confirmFormula();
+        }}
+      >
+        <div style={{ marginTop: 30, marginBottom: 15 }}>
+          <Select
+            style={{ width: 300 }}
+            value={formulaType}
+            onChange={(e) => {
+              setFormulaType(e);
+            }}
+            options={types}
+          />
+        </div>
+        <div className="text-center" style={{ marginBottom: 30 }}>
+          {formulaType === 0 && (
+            <Input
+              value={formulaValue}
+              onChange={(e) => {
+                setFormulaValue(e.target.value);
+              }}
+              allowClear
+              style={{ width: "100%" }}
+              placeholder="如：x^2+y^2+Dx+Ey+F=0"
+            />
+          )}
+          {formulaType === 1 && (
+            <Input.TextArea
+              value={formulaValue}
+              onChange={(e) => {
+                setFormulaValue(e.target.value);
+              }}
+              rows={4}
+              allowClear
+              style={{ width: "100%", resize: "none" }}
+              placeholder="如：x^2+y^2+Dx+Ey+F=0"
+            />
+          )}
+        </div>
+      </Modal>
     </>
   );
 };

@@ -46,24 +46,7 @@ const QuestionImportPage = () => {
 
   const handleImpotedJson = (jsonArr: any[], file: any) => {
     jsonArr.splice(0, 2); // 去掉表头[第一行规则描述,第二行表头名]
-    let data: any[] = [];
-    for (let i = 0; i < jsonArr.length; i++) {
-      let tmpItem = jsonArr[i];
-      if (typeof tmpItem === undefined) {
-        break;
-      }
-      if (tmpItem.length === 0) {
-        //空行
-        continue;
-      }
-      let arr: any = [];
-      tmpItem.map((item: any) => {
-        arr.push(item);
-      });
-      data.push(arr);
-    }
-
-    storeBatchTableCertData(data);
+    storeBatchTableCertData(jsonArr);
   };
 
   const storeBatchTableCertData = (data: any) => {

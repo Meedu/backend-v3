@@ -135,6 +135,7 @@ export const SelectBookMulti = (props: PropsInterface) => {
             }
             props.onSelected(selectedKey);
           }}
+          centered
         >
           <div
             className="float-left mt-20"

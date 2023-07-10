@@ -128,6 +128,7 @@ export const SelectTopicMulti = (props: PropsInterface) => {
             }
             props.onSelected(selectedKey);
           }}
+          centered
         >
           <div
             className="float-left mt-20"

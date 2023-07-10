@@ -88,6 +88,7 @@ export const WatchRecordsDetailDialog = (props: PropsInterface) => {
           width={1000}
           maskClosable={false}
           footer={null}
+          centered
         >
           <div className="mt-30">
             <Table

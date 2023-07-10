@@ -105,6 +105,7 @@ export const SelectImage = (props: PropsInterface) => {
           onCancel={() => {
             props.onCancel();
           }}
+          centered
           open={true}
           width={881}
           maskClosable={false}

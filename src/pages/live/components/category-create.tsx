@@ -76,6 +76,7 @@ export const CourseCategoryCreateDialog = (props: PropsInterface) => {
           onOk={() => {
             form.submit();
           }}
+          centered
         >
           <div className="float-left mt-30">
             <Form

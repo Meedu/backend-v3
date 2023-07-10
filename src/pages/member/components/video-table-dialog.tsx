@@ -139,6 +139,7 @@ export const VideoTableDialog = (props: PropsInterface) => {
           width={1000}
           maskClosable={false}
           footer={null}
+          centered
         >
           <div style={{ minHeight: 400 }} className="mt-30">
             <Table

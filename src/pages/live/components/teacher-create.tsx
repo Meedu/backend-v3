@@ -80,6 +80,7 @@ export const CourseTeacherCreateDialog = (props: PropsInterface) => {
           onOk={() => {
             form.submit();
           }}
+          centered
         >
           <div className="float-left mt-30">
             <Form

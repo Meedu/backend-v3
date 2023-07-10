@@ -69,6 +69,7 @@ export const RefundDialog = (props: PropsInterface) => {
           onOk={() => {
             form.submit();
           }}
+          centered
         >
           <div className="float-left mb-30 mt-30">
             <HelperText text="退款成功不会自动取消课程/会员绑定关系，需手动操作。"></HelperText>

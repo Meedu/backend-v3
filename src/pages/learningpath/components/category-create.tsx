@@ -76,6 +76,7 @@ export const LearnPathCategoryCreateDialog = (props: PropsInterface) => {
           onOk={() => {
             form.submit();
           }}
+          centered
         >
           <div className="float-left mt-30">
             <Form

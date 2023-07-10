@@ -146,6 +146,7 @@ export const SelectResources = (props: PropsInterface) => {
             }
             props.onSelected(selected);
           }}
+          centered
         >
           <div className="float-left">
             <Tabs

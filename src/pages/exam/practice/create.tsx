@@ -250,6 +250,7 @@ const PracticeCreatePage = () => {
               setVisiable(false);
               goVideo();
             }}
+            centered
           >
             <div
               className="text-center"

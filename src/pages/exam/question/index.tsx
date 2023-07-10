@@ -339,6 +339,7 @@ const QuestionPage = () => {
             setVisiable(false);
             setShowDialog(true);
           }}
+          centered
         >
           <div className="pt-20 pb-10 text-center">
             <span>{successTotal}道试题删除成功，</span>

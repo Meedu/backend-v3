@@ -140,6 +140,7 @@ export const SelectMiaosha = (props: PropsInterface) => {
             }
             props.onChange(selectedKey);
           }}
+          centered
         >
           <div
             className="float-left mt-20"

@@ -122,6 +122,7 @@ export const UploadImageButton = (props: PropsInterface) => {
             props.onSelected(selected);
             setShowModal(false);
           }}
+          centered
         >
           <Row style={{ width: 830, minHeight: 520, marginTop: 24 }}>
             <div

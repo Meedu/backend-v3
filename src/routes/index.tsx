@@ -170,6 +170,7 @@ import PaperUsersPage from "../pages/exam/paper/users";
 import PaperQuestionPage from "../pages/exam/paper/question";
 import PaperQuestionCreatePage from "../pages/exam/paper/questionadd";
 import PaperReadPage from "../pages/exam/paper/paperShow";
+import PaperMarkingPage from "../pages/exam/paper/marking";
 import QuestionPage from "../pages/exam/question/index";
 import QuestionCategoryPage from "../pages/exam/question/category/index";
 import QuestionImportPage from "../pages/exam/question/import";
@@ -594,6 +595,7 @@ const routes: RouteObject[] = [
             element: <PaperQuestionCreatePage />,
           },
           { path: "/exam/paper/paperShow", element: <PaperReadPage /> },
+          { path: "/exam/paper/marking", element: <PaperMarkingPage /> },
           { path: "/exam/question/index", element: <QuestionPage /> },
           {
             path: "/exam/question/category/index",

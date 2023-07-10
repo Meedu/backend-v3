@@ -196,7 +196,7 @@ const QuestionCategoryPage = () => {
       <div className="float-left  mt-30 mb-30">
         <PerButton
           type="primary"
-          text="添加"
+          text="新建分类"
           class=""
           icon={null}
           p="addons.Paper.paper_category.store"

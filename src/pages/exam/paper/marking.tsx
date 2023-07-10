@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
-import { Modal, Table, Button, message } from "antd";
+import { Modal, Image, Select, Button, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
-import type { ColumnsType } from "antd/es/table";
+import styles from "./marking.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { BackBartment, PerButton, QuestionRender } from "../../../components";
-import { ExclamationCircleFilled } from "@ant-design/icons";
 import { paper } from "../../../api/index";
 const { confirm } = Modal;
-
-interface DataType {
-  id: React.Key;
-  user_id: number;
-}
 
 const PaperMarkingPage = () => {
   const result = new URLSearchParams(useLocation().search);
@@ -30,7 +24,8 @@ const PaperMarkingPage = () => {
   useEffect(() => {
     document.title = "阅卷";
     dispatch(titleAction("阅卷"));
-  }, []);
+    getParams();
+  }, [id, pid]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
@@ -92,6 +87,50 @@ const PaperMarkingPage = () => {
     setList(arr);
   }, [questions]);
 
+  const getParams = () => {
+    paper
+      .marking(id, pid, {
+        id: id,
+        user_paper_id: pid,
+      })
+      .then((res: any) => {
+        setUserPaper(res.data.userPaper);
+        setQuestions(res.data.questions);
+      });
+  };
+
+  const scoreList = (max: number) => {
+    var rows = [];
+    for (let i = 0; i <= max; i++) {
+      rows.push({
+        value: i,
+        label: i + "分",
+      });
+    }
+    return rows;
+  };
+
+  const selectIsActive = (val: string, answer: string) => {
+    var answers = answer.split(",");
+    return answers.indexOf(val) !== -1;
+  };
+
+  const userAnswer = (item: any) => {
+    if (item.question.type === 1) {
+      return item.question[item.answer_content];
+    } else if (item.question.type === 2) {
+      let rows: any = [];
+      item.answer_content.split(",").forEach((i: any) => {
+        rows.push(item.question[i]);
+      });
+      return rows.join(",");
+    } else if (item.question.type === 5) {
+      return parseInt(item.answer_content) === 1 ? "正确" : "错误";
+    } else {
+      return item.answer_content;
+    }
+  };
+
   const formValidate = () => {
     confirm();
   };
@@ -132,6 +171,65 @@ const PaperMarkingPage = () => {
     <div className="meedu-main-body">
       <BackBartment title="阅卷"></BackBartment>
       <div className="float-left mt-30">
+        <div className="float-left">
+          <div className="h-panel-body">
+            <div className="float-box mb-10">
+              <h2>
+                {userPaper?.status_text}
+                {userPaper.status === 2 && <span>- {userPaper?.score}分</span>}
+              </h2>
+            </div>
+            <div className="float-box mb-10">
+              {list.length > 0 &&
+                list.map((item: any) => (
+                  <div className={styles["question-item"]} key={item.id}>
+                    <div className={styles["content"]}>
+                      {item.header && (
+                        <div
+                          className={styles["header"]}
+                          dangerouslySetInnerHTML={{ __html: item.header }}
+                        ></div>
+                      )}
+                      <div
+                        className="mb-10"
+                        dangerouslySetInnerHTML={{ __html: item.content }}
+                      ></div>
+                      <div className={styles["answer"]}>
+                        <p className={styles["p"]}>回答：{item.answer}</p>
+                        {item.thumbs &&
+                          item.thumbs.length > 0 &&
+                          item.thumbs.map((img: any, index: number) => (
+                            <Image
+                              key={index}
+                              width={70}
+                              height={70}
+                              src={img}
+                            ></Image>
+                          ))}
+                      </div>
+                      <div className={styles["score"]}>
+                        <p className={styles["p"]}>请打分：</p>
+                        <div>
+                          <Select
+                            style={{ width: 200 }}
+                            value={score[item.id]}
+                            onChange={(e) => {
+                              let arr = [...score];
+                              arr[item.id] = e;
+                              setScore(arr);
+                            }}
+                            allowClear
+                            placeholder="请打分"
+                            options={scoreList(item.score)}
+                          ></Select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
         <div className="bottom-menus">
           <div className="bottom-menus-box">
             <div>

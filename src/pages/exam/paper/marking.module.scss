@@ -1,0 +1,111 @@
+.question-item {
+  width: 100%;
+  height: auto;
+  float: left;
+  padding: 15px;
+  border: 1px dashed #dddddd;
+
+  .title {
+    width: 100%;
+    height: auto;
+    float: left;
+    line-height: 36px;
+    font-weight: 600;
+  }
+
+  .content {
+    width: 100%;
+    height: auto;
+    float: left;
+    font-size: 12px;
+
+    .option {
+      width: 100%;
+      height: auto;
+      float: left;
+      margin-right: 15px;
+      margin-bottom: 15px;
+
+      .option-item {
+        width: 100%;
+        height: auto;
+        float: left;
+        line-height: 20px;
+        padding-left: 10px;
+        margin-bottom: 2px;
+
+        &.user-active {
+          background-color: red;
+          color: white;
+        }
+
+        &.active {
+          background-color: rgba(0, 128, 0, 0.6);
+          color: white;
+
+          &.user-active {
+            background-color: rgba(0, 128, 0, 1);
+          }
+        }
+
+        img {
+          max-width: 100px;
+        }
+      }
+    }
+  }
+
+  .header {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-bottom: 10px;
+  }
+
+  .answer {
+    width: 100%;
+    height: auto;
+    float: left;
+    color: #333;
+    line-height: 30px;
+    background-color: rgba(0, 0, 0, 0.06);
+    padding-left: 8px;
+  }
+
+  .result {
+    width: 100%;
+    height: auto;
+    float: left;
+    line-height: 30px;
+  }
+
+  .remark {
+    width: 100%;
+    height: auto;
+    float: left;
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .score {
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-top: 10px;
+  }
+}
+
+.operator {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-top: 15px;
+  text-align: right;
+}
+
+.p {
+  margin-top: 0;
+  margin-bottom: 0;
+}

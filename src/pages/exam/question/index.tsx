@@ -114,11 +114,6 @@ const QuestionPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "试题ID",
-      width: 150,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "分类",
       width: 200,
       render: (_, record: any) => <span>{record.category.name}</span>,

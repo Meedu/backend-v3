@@ -256,7 +256,7 @@ const PracticeCreatePage = () => {
               style={{ marginTop: 30, marginBottom: 30 }}
             >
               <span>
-                建练习成功，请在添加章节后再在试题库中选择试题组卷吧！
+                新建练习成功，请在添加章节后再在试题库中选择试题组卷吧！
               </span>
             </div>
           </Modal>

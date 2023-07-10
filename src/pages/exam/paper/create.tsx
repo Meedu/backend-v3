@@ -25,6 +25,7 @@ const PaperCreatePage = () => {
   const [isInvite, setIsInvite] = useState(0);
   const [categories, setCategories] = useState<any>([]);
   const [courses, setCourses] = useState<any>([]);
+  const [visiable, setVisiable] = useState<boolean>(false);
 
   useEffect(() => {
     document.title = "新建试卷";
@@ -101,8 +102,7 @@ const PaperCreatePage = () => {
       })
       .then((res: any) => {
         setLoading(false);
-        message.success("保存成功！");
-        navigate(-1);
+        setVisiable(true);
       })
       .catch((e) => {
         setLoading(false);
@@ -148,6 +148,21 @@ const PaperCreatePage = () => {
     } else {
       form.setFieldsValue({ is_vip_free: 0 });
     }
+  };
+
+  const goVideo = () => {
+    paper
+      .list({
+        page: 1,
+        size: 10,
+        sort: "id",
+        order: "desc",
+      })
+      .then((res: any) => {
+        navigate("/exam/paper/question?id=" + res.data.data.data[0].id, {
+          replace: true,
+        });
+      });
   };
 
   return (
@@ -360,6 +375,31 @@ const PaperCreatePage = () => {
           </div>
         </div>
       </div>
+      {visiable && (
+        <Modal
+          title=""
+          onCancel={() => {
+            setVisiable(false);
+            navigate("/exam/paper/index", { replace: true });
+          }}
+          cancelText="暂不组卷"
+          okText="立即组卷"
+          open={true}
+          width={500}
+          maskClosable={false}
+          onOk={() => {
+            setVisiable(false);
+            goVideo();
+          }}
+        >
+          <div
+            className="text-center"
+            style={{ marginTop: 30, marginBottom: 30 }}
+          >
+            <span>新建考试成功，请在试题库中选择试题组卷吧！</span>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

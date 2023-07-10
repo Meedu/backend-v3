@@ -168,8 +168,8 @@ const PracticeQuestionCreatePage = () => {
           .questionStoreMulti(id, {
             qids: selectedRowKeys,
           })
-          .then(() => {
-            message.success("成功");
+          .then((res: any) => {
+            message.success(res.message);
             resetData();
             setLoading(false);
           })

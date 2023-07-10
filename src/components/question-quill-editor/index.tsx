@@ -22,8 +22,8 @@ export const QuestionQuillEditor: React.FC<PropInterface> = (props) => {
   const modules = {
     toolbar: {
       container: isFormula
-        ? ["video", "image", "formula"]
-        : ["bold", "italic", "underline", "strike", "video", "image"],
+        ? ["image", "formula"]
+        : ["bold", "italic", "underline", "strike", "image"],
       handlers: {},
     },
     formula: isFormula,

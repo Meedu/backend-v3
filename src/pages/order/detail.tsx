@@ -267,7 +267,7 @@ const OrderDetailPage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="订单详情" />
-      {list.status !== 9 && (
+      {user && list.status !== 9 && (
         <div className="float-left mt-30 ">
           <PerButton
             type="danger"

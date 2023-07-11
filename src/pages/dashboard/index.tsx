@@ -383,7 +383,11 @@ const DashboardPage = () => {
         <div className={styles["el_top_row3"]}>
           <div className={styles["tit"]}>统计分析</div>
           <div className={styles["selcharttimebox"]}>
-            <RangePicker format={"YYYY-MM-DD"} onChange={onChange} />
+            <RangePicker
+              format={"YYYY-MM-DD HH:mm:ss"}
+              showTime={{ format: "HH:mm:ss" }}
+              onChange={onChange}
+            />
             <Button
               type="primary"
               className="ml-10"

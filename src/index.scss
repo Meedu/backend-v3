@@ -1820,3 +1820,20 @@ textarea.ant-input {
     }
   }
 }
+
+.ant-input-affix-wrapper {
+  border-radius: 3px;
+}
+
+.ant-select-selector {
+  border-radius: 3px !important;
+}
+
+.ant-picker {
+  border-radius: 3px;
+}
+
+.ql-toolbar {
+  border-top-left-radius: 3px !important;
+  border-top-right-radius: 3px !important;
+}

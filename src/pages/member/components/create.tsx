@@ -46,7 +46,11 @@ export const MemberCreateDialog = (props: PropsInterface) => {
     if (loading) {
       return;
     }
-    if (values.role_id.length !== 0 && !values.role_expired_at) {
+    if (
+      values.role_id &&
+      values.role_id.length !== 0 &&
+      !values.role_expired_at
+    ) {
       message.error("请选择VIP过期时间");
       return;
     }

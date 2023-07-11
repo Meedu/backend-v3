@@ -205,7 +205,8 @@ const OrderRechargePage = () => {
             options={statusRows}
           />
           <RangePicker
-            format={"YYYY-MM-DD"}
+            format={"YYYY-MM-DD HH:mm:ss"}
+            showTime={{ format: "HH:mm:ss" }}
             value={createdAts}
             style={{ marginLeft: 10 }}
             onChange={(date, dateString) => {

@@ -207,7 +207,8 @@ export const UserAddDialog: React.FC<PropInterface> = ({
               options={tags}
             />
             <RangePicker
-              format={"YYYY-MM-DD"}
+              format={"YYYY-MM-DD HH:mm:ss"}
+              showTime={{ format: "HH:mm:ss" }}
               value={createdAts}
               style={{ marginLeft: 10 }}
               onChange={(date, dateString) => {

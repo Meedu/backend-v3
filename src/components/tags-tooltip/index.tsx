@@ -45,8 +45,7 @@ export const TagsTooltip: React.FC<PropInterface> = ({ tags }) => {
         color="#ffffff"
       >
         <>
-          {current &&
-            current > 0 &&
+          {current > 0 &&
             tags.slice(0, current).map((item: any, index: number) => (
               <div key={"ecli" + index}>
                 <Tag color="processing" className="ml-5 mb-5">

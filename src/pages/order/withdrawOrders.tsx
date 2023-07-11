@@ -103,11 +103,6 @@ const WithdrawOrdersPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 100,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "学员ID",
       width: 120,
       dataIndex: "user_id",
@@ -131,7 +126,7 @@ const WithdrawOrdersPage = () => {
       ),
     },
     {
-      title: "金额",
+      title: "提现金额",
       render: (_, record: any) => <span>{record.amount}元</span>,
     },
     {

@@ -108,18 +108,13 @@ const SnapshotPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 60,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "学员ID",
       width: 100,
       dataIndex: "user_id",
       render: (user_id: number) => <span>{user_id}</span>,
     },
     {
-      title: "资源ID",
+      title: "课程ID",
       width: 100,
       dataIndex: "other_id",
       render: (other_id: number) => <span>{other_id}</span>,
@@ -148,7 +143,7 @@ const SnapshotPage = () => {
       render: (type_text: string) => <span>{type_text}</span>,
     },
     {
-      title: "资源",
+      title: "课程名称",
       render: (_, record: any) => <span>{record.type_title}</span>,
     },
     {
@@ -200,23 +195,13 @@ const SnapshotPage = () => {
           ></OptionSingleBar>
         </div>
         <div className="d-flex">
-          <Select
-            style={{ width: 150 }}
-            value={type}
-            onChange={(e) => {
-              setType(e);
-            }}
-            allowClear
-            placeholder="课程类型"
-            options={statusRows}
-          />
           <Input
             value={user_id}
             onChange={(e) => {
               setUserId(e.target.value);
             }}
             allowClear
-            style={{ width: 150, marginLeft: 10 }}
+            style={{ width: 150 }}
             placeholder="学员ID"
           />
           <Input

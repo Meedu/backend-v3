@@ -141,9 +141,9 @@ const StatsTransactionPage = () => {
       return 0;
     }
 
-    let value: any = (
-      list.yesterday_paid_countt / list.yesterday_count
-    ).toFixed(2);
+    let value: any = (list.yesterday_paid_count / list.yesterday_count).toFixed(
+      2
+    );
 
     return Math.floor(value * 100);
   };

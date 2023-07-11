@@ -3,6 +3,7 @@ import { Table, Select, Input, Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch, useSelector } from "react-redux";
+import { OptionSingleBar } from "../../components";
 import { snapshot } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { dateFormat } from "../../utils/index";
@@ -192,6 +193,12 @@ const SnapshotPage = () => {
   return (
     <div className="meedu-main-body">
       <div className="float-left j-b-flex mb-30">
+        <div>
+          <OptionSingleBar
+            text="拍照设置"
+            value="/system/config?key=随机拍照&referer=%2Fsnapshot%2Findex"
+          ></OptionSingleBar>
+        </div>
         <div className="d-flex">
           <Select
             style={{ width: 150 }}

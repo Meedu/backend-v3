@@ -9,6 +9,7 @@ export * from "./permission-button";
 export * from "./helper-text";
 export * from "./day-week-month";
 export * from "./option-bar";
+export * from "./option-single-bar";
 export * from "./upload-image-button";
 export * from "./select-resources/index";
 export * from "./select-resources/multiIndex";

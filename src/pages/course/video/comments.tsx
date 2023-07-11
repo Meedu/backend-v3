@@ -181,7 +181,7 @@ const CourseVideoCommentsPage = () => {
   };
 
   const disabledDate = (current: any) => {
-    return current && current >= moment().add(1, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
+    return current && current >= moment().add(0, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
   };
 
   return (
@@ -202,7 +202,8 @@ const CourseVideoCommentsPage = () => {
         <div className="d-flex">
           <RangePicker
             disabledDate={disabledDate}
-            format={"YYYY-MM-DD"}
+            format={"YYYY-MM-DD HH:mm:ss"}
+            showTime={{ format: "HH:mm:ss" }}
             value={createdAts}
             style={{ marginLeft: 10 }}
             onChange={(date, dateString) => {

@@ -28,6 +28,7 @@ import filterIcon from "../../assets/img/icon-filter.png";
 import filterHIcon from "../../assets/img/icon-filter-h.png";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
+import moment from "moment";
 
 interface DataType {
   id: React.Key;
@@ -447,6 +448,10 @@ const MemberPage = () => {
     return text;
   };
 
+  const disabledDate = (current: any) => {
+    return current && current >= moment().add(0, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
+  };
+
   return (
     <div className="meedu-main-body">
       <SendMessageDialog
@@ -648,7 +653,9 @@ const MemberPage = () => {
             options={tags}
           />
           <RangePicker
-            format={"YYYY-MM-DD"}
+            disabledDate={disabledDate}
+            format={"YYYY-MM-DD HH:mm:ss"}
+            showTime={{ format: "HH:mm:ss" }}
             value={createdAts}
             style={{ marginTop: 20 }}
             onChange={(date, dateString) => {

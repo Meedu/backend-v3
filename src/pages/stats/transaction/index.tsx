@@ -218,7 +218,7 @@ const StatsTransactionPage = () => {
         trigger: "axis",
       },
       legend: {
-        data: ["支付金额", "支付订单数", "支付人数", "客单价"],
+        data: ["支付金额", "支付订单数", "支付人数", "客单均价"],
         x: "right",
       },
       grid: {
@@ -252,7 +252,7 @@ const StatsTransactionPage = () => {
           data: changeObject(params.paid_user_count),
         },
         {
-          name: "客单价",
+          name: "客单均价",
           type: "line",
           data: changeObject(params.paid_avg_charge),
         },
@@ -331,7 +331,7 @@ const StatsTransactionPage = () => {
           <div className={styles["el_row_item2"]}>
             <div className={styles["el_item"]}>
               <div className={styles["item_title"]}>
-                <span>客单价(元)</span>
+                <span>客单均价(元)</span>
                 <span className={styles["el_item_num"]}>
                   {todayPaidSingle()}
                 </span>

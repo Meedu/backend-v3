@@ -545,7 +545,7 @@ const OrderPage = () => {
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
-            placeholder="商品名"
+            placeholder="商品全称"
           />
           <Select
             style={{ width: 150, marginLeft: 10 }}

@@ -95,7 +95,7 @@ export const UserVodWatchRecordsComp = (props: PropsInterface) => {
       render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
     },
     {
-      title: "开始学习时间",
+      title: "最近一次学习",
       width: 200,
       render: (_, record: any) => (
         <>

@@ -160,6 +160,11 @@ const CertificateUsersPage = () => {
       ),
     },
     {
+      title: "手机号",
+      width: 150,
+      render: (_, record: any) => <span>{record.user?.mobile}</span>,
+    },
+    {
       title: "证书编号",
       width: 400,
       render: (_, record: any) => <span>{record.cert_no}</span>,

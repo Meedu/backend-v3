@@ -64,11 +64,6 @@ const CertificatePage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 100,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "证书名",
       width: 600,
       render: (_, record: any) => <span>{record.name}</span>,
@@ -209,7 +204,7 @@ const CertificatePage = () => {
       <div className="float-left mb-30">
         <PerButton
           type="primary"
-          text="新建"
+          text="新建证书"
           class=""
           icon={null}
           p="addons.cert.store"

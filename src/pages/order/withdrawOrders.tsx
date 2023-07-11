@@ -134,7 +134,14 @@ const WithdrawOrdersPage = () => {
       width: 300,
       render: (_, record: any) => (
         <>
-          <div>渠道：{record.channel}</div>
+          <div>
+            渠道：
+            {record.channel === "alipay"
+              ? "支付宝"
+              : record.channel === "wechat"
+              ? "微信"
+              : record.channel}
+          </div>
           <div>姓名：{record.channel_name}</div>
           <div>账号：{record.channel_account}</div>
         </>

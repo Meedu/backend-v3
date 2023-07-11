@@ -81,11 +81,6 @@ const SnapshotImagesPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 100,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "拍照时间",
       dataIndex: "created_at",
       render: (created_at: string) => <span>{dateFormat(created_at)}</span>,

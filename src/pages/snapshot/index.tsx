@@ -137,12 +137,6 @@ const SnapshotPage = () => {
       ),
     },
     {
-      title: "类型",
-      width: 100,
-      dataIndex: "type_text",
-      render: (type_text: string) => <span>{type_text}</span>,
-    },
-    {
       title: "课程名称",
       render: (_, record: any) => <span>{record.type_title}</span>,
     },

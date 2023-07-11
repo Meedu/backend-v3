@@ -197,11 +197,12 @@ const BookCommentsPage = () => {
         <div className="d-flex">
           <RangePicker
             disabledDate={disabledDate}
-            format={"YYYY-MM-DD HH:mm:ss"}
-            showTime={{ format: "HH:mm:ss" }}
+            format={"YYYY-MM-DD"}
             value={createdAts}
             style={{ marginLeft: 10 }}
             onChange={(date, dateString) => {
+              dateString[0] += " 00:00:00";
+              dateString[1] += " 23:59:59";
               setCreatedAt(dateString);
               setCreatedAts(date);
             }}

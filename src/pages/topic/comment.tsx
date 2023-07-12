@@ -146,6 +146,7 @@ const TopicCommentsPage = () => {
     },
     {
       title: "图文",
+      width: 400,
       render: (_, record: any) => (
         <>{record.topic && <span>{record.topic.title}</span>}</>
       ),

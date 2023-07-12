@@ -166,11 +166,7 @@ const SystemAdministratorUpdatePage = () => {
           >
             <Input style={{ width: 300 }} placeholder="请输入邮箱" allowClear />
           </Form.Item>
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[{ required: true, message: "请输入密码!" }]}
-          >
+          <Form.Item label="密码" name="password">
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item name="password">
                 <Input.Password

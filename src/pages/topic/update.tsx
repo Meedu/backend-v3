@@ -212,9 +212,16 @@ const TopicUpdatePage = () => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <Form.Item name="cid" label="所属分类">
+          <Form.Item
+            name="cid"
+            label="所属分类"
+            rules={[{ required: true, message: "请选择分类!" }]}
+          >
             <Space align="baseline" style={{ height: 32 }}>
-              <Form.Item name="cid">
+              <Form.Item
+                name="cid"
+                rules={[{ required: true, message: "请选择分类!" }]}
+              >
                 <Select
                   style={{ width: 300 }}
                   allowClear

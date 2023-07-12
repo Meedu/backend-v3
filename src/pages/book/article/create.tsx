@@ -98,6 +98,7 @@ const BookArticleCreatePage = () => {
 
     if (getEditorKey() === "markdown") {
       values.editor = "MARKDOWN";
+      values.render_content = values.original_content;
     } else {
       values.editor = "FULLEDITOR";
       values.render_content = values.original_content;

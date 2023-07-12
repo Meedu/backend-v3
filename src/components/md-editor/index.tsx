@@ -57,7 +57,7 @@ export const MdEditor: React.FC<PropInterface> = (props) => {
             },
           }}
         />
-        <MDEditor.Markdown source={value} style={{ whiteSpace: "pre-wrap" }} />
+        {/* <MDEditor.Markdown source={value} style={{ whiteSpace: "pre-wrap" }} /> */}
         <SelectImage
           open={showUploadImage}
           from={0}

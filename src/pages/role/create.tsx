@@ -13,8 +13,8 @@ const RoleCreatePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "添加VIP";
-    dispatch(titleAction("添加VIP"));
+    document.title = "新建会员";
+    dispatch(titleAction("新建会员"));
     form.setFieldsValue({ is_show: 1 });
   }, []);
 
@@ -49,7 +49,7 @@ const RoleCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加VIP" />
+      <BackBartment title="新建会员" />
       <div className="float-left mt-30">
         <Form
           form={form}

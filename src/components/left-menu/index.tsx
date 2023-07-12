@@ -489,6 +489,9 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/system/administrator") !== -1) {
       setSelectedKeys(["/system/administrator"]);
       setOpenKeys(openKeyMerge("/system"));
+    } else if (location.pathname.indexOf("/system/adminroles") !== -1) {
+      setSelectedKeys(["/system/administrator"]);
+      setOpenKeys(openKeyMerge("/system"));
     } else if (location.pathname.indexOf("/systemLog/index") !== -1) {
       setSelectedKeys(["/systemLog/index"]);
       setOpenKeys(openKeyMerge("/systemLog"));

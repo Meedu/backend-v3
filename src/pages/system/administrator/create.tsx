@@ -16,8 +16,8 @@ const SystemAdministratorCreatePage = () => {
   const [helpText, setHelpText] = useState<string>("");
 
   useEffect(() => {
-    document.title = "添加管理员";
-    dispatch(titleAction("添加管理员"));
+    document.title = "新建管理员";
+    dispatch(titleAction("新建管理员"));
     params();
   }, []);
 
@@ -74,7 +74,7 @@ const SystemAdministratorCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加管理员" />
+      <BackBartment title="新建管理员" />
       <div className="float-left mt-30">
         <Form
           form={form}

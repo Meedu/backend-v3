@@ -22,8 +22,8 @@ const WendaCategoriesPage = () => {
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    document.title = "问题分类";
-    dispatch(titleAction("问题分类"));
+    document.title = "问答分类";
+    dispatch(titleAction("问答分类"));
   }, []);
 
   useEffect(() => {
@@ -134,7 +134,7 @@ const WendaCategoriesPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="问题分类" />
+      <BackBartment title="问答分类" />
       <div className="float-left mb-30 mt-30">
         <PerButton
           type="primary"

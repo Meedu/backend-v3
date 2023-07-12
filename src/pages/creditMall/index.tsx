@@ -98,7 +98,7 @@ const CreditMallPage = () => {
       render: (_, record: any) => <span>{record.id}</span>,
     },
     {
-      title: "商品",
+      title: "商品名称",
       width: 400,
       render: (_, record: any) => (
         <div className="d-flex">
@@ -129,6 +129,16 @@ const CreditMallPage = () => {
         <>
           <div>兑换：{record.sales_count}</div>
           <div>库存：{record.stock_count}</div>
+        </>
+      ),
+    },
+    {
+      title: "是否显示",
+      width: 120,
+      render: (_, record: any) => (
+        <>
+          {record.is_show === 1 && <span className="c-green">· 显示</span>}
+          {record.is_show !== 1 && <span className="c-red">· 隐藏</span>}
         </>
       ),
     },
@@ -214,7 +224,7 @@ const CreditMallPage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="添加"
+            text="新建商品"
             class=""
             icon={null}
             p="addons.credit1Mall.goods.store"
@@ -223,7 +233,7 @@ const CreditMallPage = () => {
           />
           <PerButton
             type="primary"
-            text="订单"
+            text="积分订单"
             class="ml-10"
             icon={null}
             p="addons.credit1Mall.orders.list"
@@ -243,7 +253,7 @@ const CreditMallPage = () => {
             }}
             allowClear
             style={{ width: 150 }}
-            placeholder="关键字"
+            placeholder="商品名称关键字"
           />
           <Select
             style={{ width: 150, marginLeft: 10 }}

@@ -14,8 +14,8 @@ const PromoCodeCreatePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "添加优惠码";
-    dispatch(titleAction("添加优惠码"));
+    document.title = "新建优惠码";
+    dispatch(titleAction("新建优惠码"));
   }, []);
 
   const onFinish = (values: any) => {
@@ -44,7 +44,7 @@ const PromoCodeCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加优惠码" />
+      <BackBartment title="新建优惠码" />
       <div className="float-left mt-30">
         <Form
           form={form}

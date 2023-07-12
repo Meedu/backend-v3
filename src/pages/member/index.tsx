@@ -499,7 +499,7 @@ const MemberPage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="添加学员"
+            text="新建学员"
             class=""
             icon={null}
             p="member.store"

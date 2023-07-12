@@ -91,12 +91,8 @@ const CreditMallOrdersPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 60,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "类型",
+      width: 60,
       render: (_, record: any) => (
         <>
           {record.goods_is_v === 1 && <div>虚拟</div>}
@@ -105,8 +101,7 @@ const CreditMallOrdersPage = () => {
       ),
     },
     {
-      title: "商品",
-      width: 300,
+      title: "商品名称",
       render: (_, record: any) => <div>{record.goods_title}</div>,
     },
     {
@@ -194,6 +189,7 @@ const CreditMallOrdersPage = () => {
     <div className="meedu-main-body">
       <BackBartment title="积分订单" />
       <div className="float-left j-b-flex mt-30 mb-30">
+        <div></div>
         <div className="d-flex">
           <Input
             value={keywords}
@@ -202,7 +198,7 @@ const CreditMallOrdersPage = () => {
             }}
             allowClear
             style={{ width: 150 }}
-            placeholder="关键字"
+            placeholder="商品名称关键字"
           />
           <Select
             style={{ width: 150, marginLeft: 10 }}

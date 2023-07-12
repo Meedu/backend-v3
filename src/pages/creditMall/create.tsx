@@ -47,8 +47,8 @@ const CreditMallCreatePage = () => {
   ];
 
   useEffect(() => {
-    document.title = "添加商品";
-    dispatch(titleAction("添加商品"));
+    document.title = "新建商品";
+    dispatch(titleAction("新建商品"));
     form.setFieldsValue({ is_show: 1, is_v: 0 });
     getParams();
   }, []);
@@ -123,7 +123,7 @@ const CreditMallCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加商品" />
+      <BackBartment title="新建商品" />
       <SelectResources
         open={showSelectResWin}
         enabledResource={type}

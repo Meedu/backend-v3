@@ -183,7 +183,7 @@ const SystemAdministratorPage = () => {
       <div className="float-left">
         <PerButton
           type="primary"
-          text="添加"
+          text="新建管理员"
           class=""
           icon={null}
           p="administrator.store"

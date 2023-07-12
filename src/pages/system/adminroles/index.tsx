@@ -103,28 +103,32 @@ const SystemAdminrolesPage = () => {
       width: 130,
       render: (_, record: any) => (
         <Space>
-          <PerButton
-            type="link"
-            text="编辑"
-            class="c-primary"
-            icon={null}
-            p="administrator_role.update"
-            onClick={() => {
-              navigate("/system/adminroles/update?id=" + record.id);
-            }}
-            disabled={null}
-          />
-          <PerButton
-            type="link"
-            text="删除"
-            class="c-red"
-            icon={null}
-            p="administrator_role.destroy"
-            onClick={() => {
-              destory(record.id);
-            }}
-            disabled={null}
-          />
+          {record.slug !== "administrator" && (
+            <>
+              <PerButton
+                type="link"
+                text="编辑"
+                class="c-primary"
+                icon={null}
+                p="administrator_role.update"
+                onClick={() => {
+                  navigate("/system/adminroles/update?id=" + record.id);
+                }}
+                disabled={null}
+              />
+              <PerButton
+                type="link"
+                text="删除"
+                class="c-red"
+                icon={null}
+                p="administrator_role.destroy"
+                onClick={() => {
+                  destory(record.id);
+                }}
+                disabled={null}
+              />
+            </>
+          )}
         </Space>
       ),
     },
@@ -169,7 +173,7 @@ const SystemAdminrolesPage = () => {
       <div className="float-left mt-30">
         <PerButton
           type="primary"
-          text="添加"
+          text="新建管理员角色"
           class=""
           icon={null}
           p="administrator_role.store"

@@ -217,21 +217,21 @@ const PromoCodePage = () => {
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
           <PerButton
-            type="danger"
-            text="批量删除"
+            type="primary"
+            text="新建优惠码"
             class=""
             icon={null}
-            p="promoCode.destroy.multi"
-            onClick={() => destorymulti()}
+            p="promoCode.store"
+            onClick={() => navigate("/createcode")}
             disabled={null}
           />
           <PerButton
             type="primary"
-            text="添加"
+            text="批量生成"
             class="ml-10"
             icon={null}
-            p="promoCode.store"
-            onClick={() => navigate("/createcode")}
+            p="promoCode.generator"
+            onClick={() => navigate("/createmulticode")}
             disabled={null}
           />
           <PerButton
@@ -244,12 +244,12 @@ const PromoCodePage = () => {
             disabled={null}
           />
           <PerButton
-            type="primary"
-            text="批量生成"
+            type="danger"
+            text="批量删除"
             class="ml-10"
             icon={null}
-            p="promoCode.generator"
-            onClick={() => navigate("/createmulticode")}
+            p="promoCode.destroy.multi"
+            onClick={() => destorymulti()}
             disabled={null}
           />
         </div>
@@ -261,16 +261,7 @@ const PromoCodePage = () => {
             }}
             allowClear
             style={{ width: 150 }}
-            placeholder="优惠码"
-          />
-          <Input
-            value={user_id}
-            onChange={(e) => {
-              setUserId(e.target.value);
-            }}
-            allowClear
-            style={{ width: 150, marginLeft: 10 }}
-            placeholder="学员ID"
+            placeholder="优惠码关键字"
           />
           <Button className="ml-10" onClick={resetList}>
             清空
@@ -286,7 +277,7 @@ const PromoCodePage = () => {
           >
             筛选
           </Button>
-          <div
+          {/* <div
             className="drawerMore d-flex ml-10"
             onClick={() => setDrawer(true)}
           >
@@ -302,7 +293,7 @@ const PromoCodePage = () => {
                 <span>更多</span>
               </>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="float-left">

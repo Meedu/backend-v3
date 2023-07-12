@@ -14,8 +14,8 @@ const SystemAdminrolesCreatePage = () => {
   const [permissionsTransform, setPermissionsTransform] = useState<any>([]);
 
   useEffect(() => {
-    document.title = "添加管理员角色";
-    dispatch(titleAction("添加管理员角色"));
+    document.title = "新建管理员角色";
+    dispatch(titleAction("新建管理员角色"));
     params();
   }, []);
 
@@ -66,7 +66,7 @@ const SystemAdminrolesCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加管理员角色" />
+      <BackBartment title="新建管理员角色" />
       <div className="float-left mt-30">
         <Form
           form={form}
@@ -103,7 +103,6 @@ const SystemAdminrolesCreatePage = () => {
           >
             <Input style={{ width: 300 }} placeholder="请输入描述" allowClear />
           </Form.Item>
-
           <Form.Item label="权限" name="permission_ids">
             <TreeSelect
               listHeight={400}

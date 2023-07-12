@@ -206,18 +206,6 @@ const WendaPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      fixed: "left",
-      width: 120,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
-      title: "学员ID",
-      width: 120,
-      dataIndex: "user_id",
-      render: (user_id: number) => <span>{user_id}</span>,
-    },
-    {
       title: "分类",
       width: 200,
       render: (_, record: any) => <span>{record.category.name}</span>,
@@ -252,12 +240,6 @@ const WendaPage = () => {
       render: (view_times: number) => <span>{view_times}次</span>,
     },
     {
-      title: "点赞",
-      width: 120,
-      dataIndex: "vote_count",
-      render: (vote_count: number) => <span>{vote_count}次</span>,
-    },
-    {
       title: "答案",
       width: 120,
       dataIndex: "answer_count",
@@ -284,7 +266,7 @@ const WendaPage = () => {
       ),
     },
     {
-      title: "时间",
+      title: "创建时间",
       width: 200,
       dataIndex: "created_at",
       render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
@@ -321,7 +303,7 @@ const WendaPage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="分类管理"
+            text="问答分类"
             class=""
             icon={null}
             p="addons.Wenda.category.list"
@@ -349,7 +331,7 @@ const WendaPage = () => {
             }}
             allowClear
             style={{ width: 150 }}
-            placeholder="关键字"
+            placeholder="标题关键字"
           />
           <Select
             style={{ width: 150, marginLeft: 10 }}

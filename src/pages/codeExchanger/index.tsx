@@ -224,7 +224,7 @@ const CodeExchangerPage = () => {
             }}
             allowClear
             style={{ width: 150 }}
-            placeholder="活动名"
+            placeholder="活动名称关键字"
           />
           <Button className="ml-10" onClick={resetList}>
             清空

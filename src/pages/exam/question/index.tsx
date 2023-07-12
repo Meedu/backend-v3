@@ -227,7 +227,7 @@ const QuestionPage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="添加试题"
+            text="新建试题"
             class=""
             icon={null}
             p="addons.Paper.question.store"

@@ -343,7 +343,7 @@ const CoursePage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="新建课程"
+            text="新建录播课"
             class=""
             icon={null}
             p="course.store"

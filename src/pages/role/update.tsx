@@ -15,8 +15,8 @@ const RoleUpdatePage = () => {
   const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
-    document.title = "编辑VIP";
-    dispatch(titleAction("编辑VIP"));
+    document.title = "编辑会员";
+    dispatch(titleAction("编辑会员"));
   }, []);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const RoleUpdatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="编辑VIP" />
+      <BackBartment title="编辑会员" />
       <div className="float-left mt-30">
         <Form
           form={form}

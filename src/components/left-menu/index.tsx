@@ -486,7 +486,10 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/wechat/messagereply") !== -1) {
       setSelectedKeys(["/wechat/messagereply/index"]);
       setOpenKeys(openKeyMerge("/wechat"));
-    } else if (location.pathname.indexOf("/system/administrator") !== -1) {
+    } else if (location.pathname.indexOf("/wechat/mp-wechat-menu") !== -1) {
+      setSelectedKeys(["/wechat/messagereply/index"]);
+      setOpenKeys(openKeyMerge("/wechat"));
+    }else if (location.pathname.indexOf("/system/administrator") !== -1) {
       setSelectedKeys(["/system/administrator"]);
       setOpenKeys(openKeyMerge("/system"));
     } else if (location.pathname.indexOf("/system/adminroles") !== -1) {

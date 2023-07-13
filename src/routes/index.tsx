@@ -96,6 +96,7 @@ import RoleUpdatePage from "../pages/role/update";
 import WechatPage from "../pages/wechat/index";
 import WechatCreatePage from "../pages/wechat/create";
 import WechatUpdatePage from "../pages/wechat/update";
+import WechatMenuPage from "../pages/wechat/mp-wechat-menu/index";
 import PromoCodePage from "../pages/promocode/index";
 import PromoCodeImportPage from "../pages/promocode/import";
 import PromoCodeCreateMultiPage from "../pages/promocode/create-multi";
@@ -470,6 +471,10 @@ const routes: RouteObject[] = [
           {
             path: "/wechat/messagereply/update",
             element: <WechatUpdatePage />,
+          },
+          {
+            path: "/wechat/mp-wechat-menu",
+            element: <WechatMenuPage />,
           },
           {
             path: "/system/administrator",

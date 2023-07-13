@@ -183,7 +183,7 @@ const WechatPage = () => {
           class="ml-10"
           icon={null}
           p="mpWechat.menu"
-          onClick={() => navigate("/decoration/mp-wechat-menu")}
+          onClick={() => navigate("/wechat/mp-wechat-menu")}
           disabled={null}
         />
         <OptionBar

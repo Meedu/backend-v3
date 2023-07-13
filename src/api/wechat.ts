@@ -23,3 +23,15 @@ export function update(id: number, params: any) {
 export function destroy(id: number) {
   return client.destroy(`/backend/api/v1/mpWechatMessageReply/${id}`);
 }
+
+export function menuList() {
+  return client.get("/backend/api/v1/mpWechat/menu", {});
+}
+
+export function menuUpdate(params: any) {
+  return client.put(`/backend/api/v1/mpWechat/menu`, params);
+}
+
+export function menuDestroy() {
+  return client.destroy(`/backend/api/v1/mpWechat/menu`);
+}

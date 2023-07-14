@@ -79,11 +79,6 @@ const CodeExchangerPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 120,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "活动名",
       width: 240,
       dataIndex: "name",
@@ -208,7 +203,7 @@ const CodeExchangerPage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="新建兑换活动"
+            text="新建兑换"
             class=""
             icon={null}
             p="addons.CodeExchanger.activity.store"

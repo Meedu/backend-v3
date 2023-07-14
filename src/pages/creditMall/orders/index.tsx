@@ -92,7 +92,7 @@ const CreditMallOrdersPage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "ID",
-      width: 120,
+      width: 60,
       render: (_, record: any) => <span>{record.id}</span>,
     },
     {
@@ -150,6 +150,11 @@ const CreditMallOrdersPage = () => {
       title: "时间",
       width: 200,
       render: (_, record: any) => <div>{dateFormat(record.created_at)}</div>,
+    },
+    {
+      title: "备注",
+      width: 150,
+      render: (_, record: any) => <span>{record.remark}</span>,
     },
     {
       title: "操作",

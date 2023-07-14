@@ -29,8 +29,8 @@ const CreditMallPage = () => {
   const [goods_type, setGoodsType] = useState([]);
 
   useEffect(() => {
-    document.title = "商品列表";
-    dispatch(titleAction("商品列表"));
+    document.title = "积分商城";
+    dispatch(titleAction("积分商城"));
   }, []);
 
   useEffect(() => {
@@ -92,11 +92,6 @@ const CreditMallPage = () => {
   };
 
   const columns: ColumnsType<DataType> = [
-    {
-      title: "ID",
-      width: 120,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
     {
       title: "商品名称",
       width: 400,

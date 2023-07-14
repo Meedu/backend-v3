@@ -91,6 +91,11 @@ const CreditMallOrdersPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
+      title: "ID",
+      width: 120,
+      render: (_, record: any) => <span>{record.id}</span>,
+    },
+    {
       title: "类型",
       width: 60,
       render: (_, record: any) => (
@@ -131,7 +136,7 @@ const CreditMallOrdersPage = () => {
       width: 120,
       render: (_, record: any) => (
         <>
-          {record.is_send === 1 && <span>已发放成功</span>}
+          {record.is_send === 1 && <span>已发货成功</span>}
           {record.is_send === 0 && <span>发货中</span>}
         </>
       ),

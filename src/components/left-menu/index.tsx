@@ -436,11 +436,11 @@ export const LeftMenu: React.FC = () => {
       setSelectedKeys(["/certificate/index"]);
       setOpenKeys(openKeyMerge("/certificate"));
     } else if (location.pathname.indexOf("/creditMall") !== -1) {
-      setSelectedKeys(["/tuangou"]);
+      setSelectedKeys(["/creditMall/index"]);
       setOpenKeys(openKeyMerge("/creditMall"));
     } else if (location.pathname.indexOf("/tuangou/goods") !== -1) {
       setSelectedKeys(["/tuangou/goods/index"]);
-      setOpenKeys(openKeyMerge("/creditMall"));
+      setOpenKeys(openKeyMerge("/tuangou"));
     } else if (location.pathname.indexOf("/miaosha/goods") !== -1) {
       setSelectedKeys(["/miaosha/goods/index"]);
       setOpenKeys(openKeyMerge("/miaosha"));
@@ -489,7 +489,7 @@ export const LeftMenu: React.FC = () => {
     } else if (location.pathname.indexOf("/wechat/mp-wechat-menu") !== -1) {
       setSelectedKeys(["/wechat/messagereply/index"]);
       setOpenKeys(openKeyMerge("/wechat"));
-    }else if (location.pathname.indexOf("/system/administrator") !== -1) {
+    } else if (location.pathname.indexOf("/system/administrator") !== -1) {
       setSelectedKeys(["/system/administrator"]);
       setOpenKeys(openKeyMerge("/system"));
     } else if (location.pathname.indexOf("/system/adminroles") !== -1) {

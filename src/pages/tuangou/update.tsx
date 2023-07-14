@@ -180,11 +180,7 @@ const TuangouUpdatePage = () => {
               </div>
             </Space>
           </Form.Item>
-          <Form.Item
-            label="活动时间"
-            name="started_at"
-            rules={[{ required: true, message: "请输入活动时间!" }]}
-          >
+          <Form.Item label="活动时间" required={true}>
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
                 name="started_at"

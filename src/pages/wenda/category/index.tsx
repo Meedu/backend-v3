@@ -53,11 +53,6 @@ const WendaCategoriesPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 120,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "排序",
       width: 120,
       render: (_, record: any) => <span>{record.sort}</span>,
@@ -138,7 +133,7 @@ const WendaCategoriesPage = () => {
       <div className="float-left mb-30 mt-30">
         <PerButton
           type="primary"
-          text="添加"
+          text="新建问答分类"
           class=""
           icon={null}
           p="addons.Wenda.category.store"

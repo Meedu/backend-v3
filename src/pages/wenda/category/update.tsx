@@ -15,8 +15,8 @@ const WendaCategoriesUpdatePage = () => {
   const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
-    document.title = "添加分类";
-    dispatch(titleAction("添加分类"));
+    document.title = "编辑问答分类";
+    dispatch(titleAction("编辑问答分类"));
   }, []);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const WendaCategoriesUpdatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加分类" />
+      <BackBartment title="编辑问答分类" />
       <div className="float-left mt-30">
         <Form
           form={form}

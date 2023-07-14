@@ -13,8 +13,8 @@ const WendaCategoriesCreatePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "添加分类";
-    dispatch(titleAction("添加分类"));
+    document.title = "新建问答分类";
+    dispatch(titleAction("新建问答分类"));
   }, []);
 
   const onFinish = (values: any) => {
@@ -40,7 +40,7 @@ const WendaCategoriesCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加分类" />
+      <BackBartment title="新建问答分类" />
       <div className="float-left mt-30">
         <Form
           form={form}

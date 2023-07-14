@@ -87,6 +87,12 @@ export const LearnPathComp = (props: PropsInterface) => {
         </div>
       ),
     },
+    {
+      title: "价格",
+      width: 120,
+      dataIndex: "charge",
+      render: (charge: number) => <span>￥{charge}</span>,
+    },
   ];
 
   const rowSelection = {

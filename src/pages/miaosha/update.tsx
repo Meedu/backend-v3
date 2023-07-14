@@ -6,7 +6,7 @@ import { miaosha } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { HelperText, BackBartment } from "../../components";
 const { RangePicker } = DatePicker;
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 import moment from "moment";
 
 const MiaoshaUpdatePage = () => {
@@ -20,6 +20,7 @@ const MiaoshaUpdatePage = () => {
   const [goods_type, setGoodsType] = useState<string>("");
   const [original_charge, setOriginalCharge] = useState("");
   const [goods_id, setGoodsId] = useState(0);
+  const [num, setNum] = useState(0);
   const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const MiaoshaUpdatePage = () => {
       setTitle(data.goods_title);
       setGoodsId(data.goods_id);
       setGoodsType(data.goods_type);
+      setNum(data.num);
     });
   };
 
@@ -67,7 +69,9 @@ const MiaoshaUpdatePage = () => {
       return;
     }
     setLoading(true);
+    values.goods_id = goods_id;
     values.goods_type = goods_type;
+    values.num = num;
     values.original_charge = original_charge;
     values.goods_title = title;
     values.goods_thumb = thumb;

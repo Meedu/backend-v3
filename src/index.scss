@@ -672,7 +672,7 @@ textarea.ant-input {
   p {
     img {
       display: inline-block;
-      max-width: 400px !important;
+      // max-width: 400px !important;
     }
   }
 }
@@ -1142,7 +1142,7 @@ textarea.ant-input {
   p {
     img {
       display: inline-block;
-      max-width: 400px !important;
+      // max-width: 400px !important;
     }
   }
 }
@@ -1907,5 +1907,35 @@ textarea.ant-input {
     flex: 1;
     box-sizing: border-box;
     padding-left: 50px;
+  }
+}
+
+.quill-editor-h40-box {
+  width: 100%;
+  float: left;
+  background-color: white;
+  .ql-editor {
+    min-height: 40px;
+    p {
+      img {
+        display: inline-block;
+        max-width: 400px !important;
+      }
+    }
+  }
+}
+
+
+.qs-quill-editor-box {
+  width: 100%;
+  float: left;
+  background-color: white;
+  .ql-editor {
+    p {
+      img {
+        display: inline-block;
+        max-width: 400px !important;
+      }
+    }
   }
 }

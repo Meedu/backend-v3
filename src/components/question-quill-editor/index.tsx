@@ -90,8 +90,8 @@ export const QuestionQuillEditor: React.FC<PropInterface> = (props) => {
         ref={refs}
         className={
           height === 40
-            ? styles["quill-editor-h40-box"]
-            : styles["quill-editor-box"]
+            ? "quill-editor-h40-box"
+            : "quill-editor-box qs-quill-editor-box"
         }
         style={{ minHeight: height }}
         theme="snow"

@@ -108,27 +108,7 @@ const MiaoshaOrdersPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 100,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
-      title: "商品ID",
-      render: (_, record: any) => (
-        <>
-          {!record.goods && <span className="c-red">已删除</span>}
-          {record.goods && <span>{record.goods.goods_id}</span>}
-        </>
-      ),
-    },
-    {
-      title: "学员ID",
-      width: 120,
-      dataIndex: "user_id",
-      render: (user_id: number) => <span>{user_id}</span>,
-    },
-    {
-      title: "商品",
+      title: "商品名称",
       width: 400,
       render: (_, record: any) => (
         <>

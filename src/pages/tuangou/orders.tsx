@@ -106,27 +106,7 @@ const TuangouOrdersPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 100,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
-      title: "商品ID",
-      render: (_, record: any) => (
-        <>
-          {!record.goods && <span className="c-red">已删除</span>}
-          {record.goods && <span>{record.goods.other_id}</span>}
-        </>
-      ),
-    },
-    {
-      title: "学员ID",
-      width: 100,
-      dataIndex: "user_id",
-      render: (user_id: number) => <span>{user_id}</span>,
-    },
-    {
-      title: "商品",
+      title: "商品名称",
       width: 400,
       render: (_, record: any) => (
         <>
@@ -209,7 +189,7 @@ const TuangouOrdersPage = () => {
             }}
             allowClear
             style={{ width: 150 }}
-            placeholder="关键字"
+            placeholder="商品名称关键字"
           />
           <Input
             value={user_id}

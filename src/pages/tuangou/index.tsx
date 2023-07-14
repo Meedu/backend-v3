@@ -88,7 +88,7 @@ const TuangouPage = () => {
       render: (goods_type_text: string) => <span>{goods_type_text}</span>,
     },
     {
-      title: "商品",
+      title: "商品名称",
       width: 400,
       render: (_, record: any) => (
         <>

@@ -148,11 +148,6 @@ const TuangouTuanOrderPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 80,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "团长",
       render: (_, record: any) => <span>{record.create_user_name}</span>,
     },

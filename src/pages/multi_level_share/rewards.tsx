@@ -77,11 +77,6 @@ const MultiShareRewardsPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 120,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "订单ID",
       width: 120,
       dataIndex: "order_id",

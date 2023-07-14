@@ -84,31 +84,25 @@ const MultiSharePage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "商品ID",
-      width: 100,
-      dataIndex: "goods_id",
-      render: (goods_id: number) => <span>{goods_id}</span>,
-    },
-    {
       title: "类型",
       dataIndex: "goods_type_text",
       render: (goods_type_text: string) => <span>{goods_type_text}</span>,
     },
     {
-      title: "商品",
+      title: "商品名称",
       width: 400,
       dataIndex: "goods_title",
       render: (goods_title: string) => <span>{goods_title}</span>,
     },
     {
       title: "价格",
-      width: 150,
+      width: 200,
       dataIndex: "goods_charge",
       render: (goods_charge: number) => <span>{goods_charge}元</span>,
     },
     {
       title: "奖励1/2/3",
-      width: 160,
+      width: 200,
       render: (_, record: any) => (
         <>
           <div>一级：{record.reward}元</div>

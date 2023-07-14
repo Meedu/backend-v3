@@ -23,8 +23,8 @@ const MiaoshaUpdatePage = () => {
   const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
-    document.title = "添编辑秒杀商品";
-    dispatch(titleAction("编辑秒杀商品"));
+    document.title = "编辑秒杀活动";
+    dispatch(titleAction("编辑秒杀活动"));
   }, []);
 
   useEffect(() => {
@@ -95,7 +95,7 @@ const MiaoshaUpdatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="编辑秒杀商品" />
+      <BackBartment title="编辑秒杀活动" />
       <div className="float-left mt-30">
         <Form
           form={form}

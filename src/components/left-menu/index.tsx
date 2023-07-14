@@ -209,7 +209,7 @@ const items = [
         "addons.credit1Mall.goods.list"
       ),
       getItem(
-        "团购课程",
+        "团购活动",
         "/tuangou/goods/index",
         null,
         null,
@@ -217,7 +217,7 @@ const items = [
         "addons.TuanGou.goods.list"
       ),
       getItem(
-        "秒杀课程",
+        "秒杀活动",
         "/miaosha/goods/index",
         null,
         null,
@@ -225,7 +225,7 @@ const items = [
         "addons.MiaoSha.goods.list"
       ),
       getItem(
-        "分销课程",
+        "分销活动",
         "/multi_level_share/goods/index",
         null,
         null,

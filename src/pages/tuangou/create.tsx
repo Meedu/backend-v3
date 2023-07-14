@@ -20,8 +20,8 @@ const TuangouCreatePage = () => {
   const [showSelectResWin, setShowSelectResWin] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "添加团购商品";
-    dispatch(titleAction("添加团购商品"));
+    document.title = "新建团购活动";
+    dispatch(titleAction("新建团购活动"));
   }, []);
 
   const onFinish = (values: any) => {
@@ -70,7 +70,7 @@ const TuangouCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加团购商品" />
+      <BackBartment title="新建团购活动" />
       <SelectResources
         open={showSelectResWin}
         enabledResource={"vod,live,book,learnPath"}

@@ -22,8 +22,8 @@ const MultiShareCreatePage = () => {
   const [showSelectResWin, setShowSelectResWin] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "添加分销课程";
-    dispatch(titleAction("添加分销课程"));
+    document.title = "新建分销活动";
+    dispatch(titleAction("新建分销活动"));
   }, []);
 
   const onFinish = (values: any) => {
@@ -50,7 +50,7 @@ const MultiShareCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加分销课程" />
+      <BackBartment title="新建分销活动" />
       <SelectResources
         open={showSelectResWin}
         enabledResource={"vod,live,book,topic,paper,practice,learnPath,vip"}

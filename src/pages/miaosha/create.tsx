@@ -20,8 +20,8 @@ const MiaoshaCreatePage = () => {
   const [showSelectResWin, setShowSelectResWin] = useState<boolean>(false);
 
   useEffect(() => {
-    document.title = "添加秒杀课程";
-    dispatch(titleAction("添加秒杀课程"));
+    document.title = "新建秒杀活动";
+    dispatch(titleAction("新建秒杀活动"));
   }, []);
 
   const onFinish = (values: any) => {
@@ -65,7 +65,7 @@ const MiaoshaCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加秒杀课程" />
+      <BackBartment title="新建秒杀活动" />
       <SelectResources
         open={showSelectResWin}
         enabledResource={"vod,live,book,learnPath"}

@@ -18,8 +18,8 @@ const MultiShareUpdatePage = () => {
   const [goods_type, setGoodsType] = useState<string>("");
 
   useEffect(() => {
-    document.title = "编辑分销课程";
-    dispatch(titleAction("编辑分销课程"));
+    document.title = "编辑分销活动";
+    dispatch(titleAction("编辑分销活动"));
   }, []);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const MultiShareUpdatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="编辑分销课程" />
+      <BackBartment title="编辑分销活动" />
 
       <div className="float-left mt-30">
         <Form

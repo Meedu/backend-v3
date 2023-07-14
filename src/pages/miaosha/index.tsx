@@ -30,8 +30,8 @@ const MiaoshaPage = () => {
   const [keywords, setKeywords] = useState<string>("");
 
   useEffect(() => {
-    document.title = "秒杀课程";
-    dispatch(titleAction("秒杀课程"));
+    document.title = "秒杀活动";
+    dispatch(titleAction("秒杀活动"));
   }, []);
 
   useEffect(() => {
@@ -82,11 +82,6 @@ const MiaoshaPage = () => {
   };
 
   const columns: ColumnsType<DataType> = [
-    {
-      title: "ID",
-      width: 120,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
     {
       title: "类型",
       dataIndex: "goods_type_text",
@@ -198,7 +193,7 @@ const MiaoshaPage = () => {
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除此课程？",
+      content: "确认删除此活动？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
@@ -236,7 +231,7 @@ const MiaoshaPage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="添加"
+            text="新建秒杀"
             class=""
             icon={null}
             p="addons.MiaoSha.goods.store"
@@ -252,7 +247,7 @@ const MiaoshaPage = () => {
             }}
             allowClear
             style={{ width: 150 }}
-            placeholder="关键字"
+            placeholder="商品名称关键字"
           />
           <Button className="ml-10" onClick={resetList}>
             清空

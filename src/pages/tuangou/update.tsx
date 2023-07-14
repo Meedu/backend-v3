@@ -23,8 +23,8 @@ const TuangouUpdatePage = () => {
   const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
-    document.title = "编辑团购课程";
-    dispatch(titleAction("编辑团购课程"));
+    document.title = "编辑团购活动";
+    dispatch(titleAction("编辑团购活动"));
   }, []);
 
   useEffect(() => {
@@ -102,7 +102,7 @@ const TuangouUpdatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="编辑团购课程" />
+      <BackBartment title="编辑团购活动" />
       <div className="float-left mt-30">
         <Form
           form={form}

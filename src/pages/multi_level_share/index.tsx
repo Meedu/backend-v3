@@ -31,8 +31,8 @@ const MultiSharePage = () => {
   const [keywords, setKeywords] = useState<string>("");
 
   useEffect(() => {
-    document.title = "分销课程";
-    dispatch(titleAction("分销课程"));
+    document.title = "分销活动";
+    dispatch(titleAction("分销活动"));
   }, []);
 
   useEffect(() => {
@@ -83,11 +83,6 @@ const MultiSharePage = () => {
   };
 
   const columns: ColumnsType<DataType> = [
-    {
-      title: "ID",
-      width: 120,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
     {
       title: "商品ID",
       width: 100,
@@ -173,7 +168,7 @@ const MultiSharePage = () => {
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除此课程？",
+      content: "确认删除此活动？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
@@ -205,7 +200,7 @@ const MultiSharePage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="添加"
+            text="新建分销"
             class=""
             icon={null}
             p="addons.MultiLevelShare.goods.store"
@@ -234,7 +229,7 @@ const MultiSharePage = () => {
             }}
             allowClear
             style={{ width: 150 }}
-            placeholder="关键字搜索"
+            placeholder="商品名称关键字"
           />
           <Button className="ml-10" onClick={resetList}>
             清空

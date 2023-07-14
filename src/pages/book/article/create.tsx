@@ -186,11 +186,7 @@ const BookArticleCreatePage = () => {
           >
             <Input style={{ width: 300 }} placeholder="请输入标题" allowClear />
           </Form.Item>
-          <Form.Item
-            label="上架时间"
-            name="published_at"
-            rules={[{ required: true, message: "请选择上架时间!" }]}
-          >
+          <Form.Item label="上架时间" required={true}>
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
                 name="published_at"

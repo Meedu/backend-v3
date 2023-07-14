@@ -78,11 +78,7 @@ const PromoCodeCreatePage = () => {
             </Space>
           </Form.Item>
 
-          <Form.Item
-            label="到期时间"
-            name="expired_at"
-            rules={[{ required: true, message: "请选择到期时间!" }]}
-          >
+          <Form.Item label="到期时间" required={true}>
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
                 name="expired_at"

@@ -45,8 +45,13 @@ const SystemNormalConfigPage = () => {
             setThumb(box);
           }
           if (item.field_type === "switch") {
-            params[item.key] = Number(item.value);
-            form.setFieldsValue(params);
+            if (item.key === "meedu.addons.Wenda.credit1.enabled") {
+              delete configData[index][index2];
+              console.log("去除开启奖励开关");
+            } else {
+              params[item.key] = Number(item.value);
+              form.setFieldsValue(params);
+            }
           } else {
             params[item.key] = item.value;
             form.setFieldsValue(params);

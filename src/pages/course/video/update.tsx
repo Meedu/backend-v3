@@ -81,11 +81,6 @@ const CourseVideoUpdatePage = () => {
         tencent_video_id: data.tencent_video_id,
         published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
       });
-      if (data.charge > 0) {
-        setIsFree(0);
-      } else {
-        setIsFree(1);
-      }
     });
   };
 
@@ -253,7 +248,7 @@ const CourseVideoUpdatePage = () => {
                 </div>
               </Space>
             </Form.Item>
-            {isFree !== 1 && (
+            {isFree === 0 && (
               <Form.Item label="可试看时长" name="free_seconds">
                 <Space align="baseline" style={{ height: 32 }}>
                   <Form.Item name="free_seconds">

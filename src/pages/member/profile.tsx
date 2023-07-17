@@ -7,7 +7,7 @@ import { member } from "../../api/index";
 import { BackBartment } from "../../components";
 import { titleAction } from "../../store/user/loginUserSlice";
 
-const MemberProfilelPage = () => {
+const MemberProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
@@ -77,4 +77,4 @@ const MemberProfilelPage = () => {
   );
 };
 
-export default MemberProfilelPage;
+export default MemberProfilePage;

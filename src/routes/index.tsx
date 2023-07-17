@@ -1,189 +1,337 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 import { login, system } from "../api";
-
+// 页面加载
 import InitPage from "../pages/init";
 import { getToken } from "../utils";
-
 import LoginPage from "../pages/login";
 import HomePage from "../pages/home";
-import DashboardPage from "../pages/dashboard";
-import ChangePasswordPage from "../pages/administrator/change-password";
-import CoursePage from "../pages/course/index";
-import CourseCreatePage from "../pages/course/create";
-import CourseUpdatePage from "../pages/course/update";
-import CourseCategoryPage from "../pages/course/category/index";
-import CourseCommentsPage from "../pages/course/comments";
-import CourseVideoCommentsPage from "../pages/course/video/comments";
-import CourseVideoImportPage from "../pages/course/video/import";
-import CourseUsersPage from "../pages/course/users";
-import CourseAttachPage from "../pages/course/attach/index";
-import CourseAttachCreatePage from "../pages/course/attach/create";
-import CourseVideoPage from "../pages/course/video/index";
-import CourseVideoRecordsPage from "../pages/course/video/watch-records";
-import CourseVideoSubscribePage from "../pages/course/video/subscribe";
-import CourseChapterPage from "../pages/course/chapter/index";
-import CourseAliyunPage from "../pages/course/video/aliyun-hls";
-import CourseTencentPage from "../pages/course/video/tencent-hls";
-import CourseVideoCreatePage from "../pages/course/video/create";
-import CourseVideoUpdatePage from "../pages/course/video/update";
-import LivePage from "../pages/live/index";
-import LiveCreatePage from "../pages/live/create";
-import LiveUpdatePage from "../pages/live/update";
-import LiveCategoryPage from "../pages/live/category/index";
-import LiveTeacherPage from "../pages/live/teacher/index";
-import LiveCommentsPage from "../pages/live/comment";
-import LiveUsersPage from "../pages/live/users";
-import LiveVideoPage from "../pages/live/video/index";
-import LiveVideoCreatePage from "../pages/live/video/create";
-import LiveVideoUpdatePage from "../pages/live/video/update";
-import LiveChapterPage from "../pages/live/chapter/index";
-import BookPage from "../pages/book/index";
-import BookCreatePage from "../pages/book/create";
-import BookUpdatePage from "../pages/book/update";
-import BookCategoryPage from "../pages/book/category/index";
-import BookCommentsPage from "../pages/book/comments";
-import BookArticlePage from "../pages/book/article/index";
-import BookArticleCreatePage from "../pages/book/article/create";
-import BookArticleUpdatePage from "../pages/book/article/update";
-import BookArticleCommentsPage from "../pages/book/article/comments";
-import BookChapterPage from "../pages/book/chapter/index";
-import BookUsersPage from "../pages/book/users";
-import TopicPage from "../pages/topic/index";
-import TopicCreatePage from "../pages/topic/create";
-import TopicUpdatePage from "../pages/topic/update";
-import TopicCategoryPage from "../pages/topic/category/index";
-import TopicCommentsPage from "../pages/topic/comment";
-import TopicUsersPage from "../pages/topic/users";
-import LearnPathPage from "../pages/learningpath/index";
-import LearnPathCreatePage from "../pages/learningpath/create";
-import LearnPathUpdatePage from "../pages/learningpath/update";
-import LearnPathUserPage from "../pages/learningpath/user";
-import LearnPathCategoryPage from "../pages/learningpath/category/index";
-import LearnPathStepPage from "../pages/learningpath/step/index";
-import LearnPathStepCreatePage from "../pages/learningpath/step/create";
-import LearnPathStepUpdatePage from "../pages/learningpath/step/update";
-import MemberPage from "../pages/member/index";
-import MemberImportPage from "../pages/member/import";
-import MemberDetailPage from "../pages/member/detail";
-import MemberProfilelPage from "../pages/member/profile";
-import MemberTagsPage from "../pages/member/tags/index";
-import MemberTagsCreatePage from "../pages/member/tags/create";
-import MemberTagsUpdatePage from "../pages/member/tags/update";
-import SnapshotPage from "../pages/snapshot/index";
-import SnapshotImagesPage from "../pages/snapshot/images";
-import CertificatePage from "../pages/certificate/index";
-import CertificateUsersPage from "../pages/certificate/users";
-import OrderPage from "../pages/order/index";
-import OrderRefundPage from "../pages/order/refund";
-import OrderDetailPage from "../pages/order/detail";
-import OrderRechargePage from "../pages/order/recharge";
-import WithdrawOrdersPage from "../pages/order/withdrawOrders";
-import SystemApplicationPage from "../pages/system/application";
-import SystemLogPage from "../pages/system/systemLog/index";
-import SystemAdministratorPage from "../pages/system/administrator/index";
-import SystemAdministratorCreatePage from "../pages/system/administrator/create";
-import SystemAdministratorUpdatePage from "../pages/system/administrator/update";
-import SystemAdminrolesPage from "../pages/system/adminroles/index";
-import SystemAdminrolesCreatePage from "../pages/system/adminroles/create";
-import SystemAdminrolesUpdatePage from "../pages/system/adminroles/update";
-import StatsTransactionPage from "../pages/stats/transaction";
-import StatsContentPage from "../pages/stats/content";
-import StatsMemberPage from "../pages/stats/member";
-import RolePage from "../pages/role/index";
-import RoleCreatePage from "../pages/role/create";
-import RoleUpdatePage from "../pages/role/update";
-import WechatPage from "../pages/wechat/index";
-import WechatCreatePage from "../pages/wechat/create";
-import WechatUpdatePage from "../pages/wechat/update";
-import WechatMenuPage from "../pages/wechat/mp-wechat-menu/index";
-import PromoCodePage from "../pages/promocode/index";
-import PromoCodeImportPage from "../pages/promocode/import";
-import PromoCodeCreateMultiPage from "../pages/promocode/create-multi";
-import PromoCodeCreatePage from "../pages/promocode/create";
-import WendaPage from "../pages/wenda/index";
-import WendaCategoriesPage from "../pages/wenda/category/index";
-import WendaCategoriesCreatePage from "../pages/wenda/category/create";
-import WendaCategoriesUpdatePage from "../pages/wenda/category/update";
-import WendaAnswerPage from "../pages/wenda/answer";
-import WendaCommentPage from "../pages/wenda/comment";
-import MultiSharePage from "../pages/multi_level_share/index";
-import MultiShareRewardsPage from "../pages/multi_level_share/rewards";
-import MultiShareCreatePage from "../pages/multi_level_share/create";
-import MultiShareUpdatePage from "../pages/multi_level_share/update";
-import CodeExchangerPage from "../pages/codeExchanger/index";
-import CodeExchangerCreatePage from "../pages/codeExchanger/create";
-import CodeExchangerUpdatePage from "../pages/codeExchanger/update";
-import CodeExchangerCodesPage from "../pages/codeExchanger/codes";
-import MiaoshaPage from "../pages/miaosha/index";
-import MiaoshaCreatePage from "../pages/miaosha/create";
-import MiaoshaUpdatePage from "../pages/miaosha/update";
-import MiaoshaOrdersPage from "../pages/miaosha/orders";
-import TuangouPage from "../pages/tuangou/index";
-import TuangouCreatePage from "../pages/tuangou/create";
-import TuangouUpdatePage from "../pages/tuangou/update";
-import TuangouOrdersPage from "../pages/tuangou/orders";
-import TuangouRefundPage from "../pages/tuangou/refund";
-import TuangouTuanOrderPage from "../pages/tuangou/tuanorder";
-import TuangouTuanDetailPage from "../pages/tuangou/detail";
-import CreditMallPage from "../pages/creditMall/index";
-import CreditMallCreatePage from "../pages/creditMall/create";
-import CreditMallUpdatePage from "../pages/creditMall/update";
-import CreditMallOrdersPage from "../pages/creditMall/orders/index";
-import CreditMallOrdersUpdatePage from "../pages/creditMall/orders/update";
-import CreditMallOrdersSendPage from "../pages/creditMall/orders/send";
-import SystemConfigPage from "../pages/system/config/index";
-import SystemPlayerConfigPage from "../pages/system/config/playerConfig";
-import SystemLiveConfigPage from "../pages/system/config/liveConfig";
-import SystemPaymentConfigPage from "../pages/system/config/paymentConfig";
-import SystemMpWechatConfigPage from "../pages/system/config/mp_wechatConfig";
-import SystemMessageConfigPage from "../pages/system/config/messageConfig";
-import SystemVideoSaveConfigPage from "../pages/system/config/videoSaveConfig";
-import SystemImagesSaveConfigPage from "../pages/system/config/saveImagesConfig";
-import SystemvVideoHlsConfigPage from "../pages/system/config/videoHlsConfig";
-import SystemWechatMiniConfigPage from "../pages/system/config/wechat_miniConfig";
-import SystemIOSConfigPage from "../pages/system/config/iosConfig";
-import SystemCreditSignConfigPage from "../pages/system/config/creditSignConfig";
-import SystemNormalConfigPage from "../pages/system/config/config";
-import SystemTopicConfigPage from "../pages/system/config/topicConfig";
-import SystemBookConfigPage from "../pages/system/config/bookConfig";
-import ErrorPage from "../pages/error";
-import PaperCategoryPage from "../pages/exam/category/index";
-import PracticePage from "../pages/exam/practice/index";
-import PracticeCreatePage from "../pages/exam/practice/create";
-import PracticeUpdatePage from "../pages/exam/practice/update";
-import PracticeUsersPage from "../pages/exam/practice/user";
-import PracticeUsersProgressPage from "../pages/exam/practice/progress";
-import PracticeChaptersPage from "../pages/exam/practice/chapter/index";
-import PracticeChapterCreatePage from "../pages/exam/practice/chapter/create";
-import PracticeChapterUpdatePage from "../pages/exam/practice/chapter/update";
-import PracticeQuestionPage from "../pages/exam/practice/chapter/question";
-import PracticeQuestionCreatePage from "../pages/exam/practice/chapter/questionCreate";
-import MockPaperPage from "../pages/exam/mockpaper/index";
-import MockPaperUsersPage from "../pages/exam/mockpaper/users";
-import MockPaperCreatePage from "../pages/exam/mockpaper/create";
-import MockPaperUpdatePage from "../pages/exam/mockpaper/update";
-import MockPaperReadPage from "../pages/exam/mockpaper/paperShow";
-import PaperPage from "../pages/exam/paper/index";
-import PaperCreatePage from "../pages/exam/paper/create";
-import PaperUpdatePage from "../pages/exam/paper/update";
-import PaperUsersPage from "../pages/exam/paper/users";
-import PaperQuestionPage from "../pages/exam/paper/question";
-import PaperQuestionCreatePage from "../pages/exam/paper/questionadd";
-import PaperReadPage from "../pages/exam/paper/paperShow";
-import PaperMarkingPage from "../pages/exam/paper/marking";
-import QuestionPage from "../pages/exam/question/index";
-import QuestionCategoryPage from "../pages/exam/question/category/index";
-import QuestionImportPage from "../pages/exam/question/import";
-import QuestionCreatePage from "../pages/exam/question/create";
-import QuestionUpdatePage from "../pages/exam/question/update";
-import SinglePage from "../pages/singlepage/index";
-import SingleCreatePage from "../pages/singlepage/create";
-import SingleUpdatePage from "../pages/singlepage/update";
-import CertificateCreatePage from "../pages/certificate/create";
-import CertificateUpdatePage from "../pages/certificate/update";
-import DecorationPCPage from "../pages/decoration/pc";
-import DecorationH5Page from "../pages/decoration/h5";
+//主页
+const DashboardPage = lazy(() => import("../pages/dashboard"));
+//修改密码页面
+const ChangePasswordPage = lazy(
+  () => import("../pages/administrator/change-password")
+);
+//录播课相关
+const CoursePage = lazy(() => import("../pages/course/index"));
+const CourseCreatePage = lazy(() => import("../pages/course/create"));
+const CourseUpdatePage = lazy(() => import("../pages/course/update"));
+const CourseCategoryPage = lazy(() => import("../pages/course/category/index"));
+const CourseCommentsPage = lazy(() => import("../pages/course/comments"));
+const CourseVideoCommentsPage = lazy(
+  () => import("../pages/course/video/comments")
+);
+const CourseVideoImportPage = lazy(
+  () => import("../pages/course/video/import")
+);
+const CourseUsersPage = lazy(() => import("../pages/course/users"));
+const CourseAttachPage = lazy(() => import("../pages/course/attach/index"));
+const CourseAttachCreatePage = lazy(
+  () => import("../pages/course/attach/create")
+);
+const CourseVideoPage = lazy(() => import("../pages/course/video/index"));
+const CourseVideoRecordsPage = lazy(
+  () => import("../pages/course/video/watch-records")
+);
+const CourseVideoSubscribePage = lazy(
+  () => import("../pages/course/video/subscribe")
+);
+const CourseChapterPage = lazy(() => import("../pages/course/chapter/index"));
+const CourseAliyunPage = lazy(() => import("../pages/course/video/aliyun-hls"));
+const CourseTencentPage = lazy(
+  () => import("../pages/course/video/tencent-hls")
+);
+const CourseVideoCreatePage = lazy(
+  () => import("../pages/course/video/create")
+);
+const CourseVideoUpdatePage = lazy(
+  () => import("../pages/course/video/update")
+);
+//直播课相关
+const LivePage = lazy(() => import("../pages/live/index"));
+const LiveCreatePage = lazy(() => import("../pages/live/create"));
+const LiveUpdatePage = lazy(() => import("../pages/live/update"));
+const LiveCategoryPage = lazy(() => import("../pages/live/category/index"));
+const LiveTeacherPage = lazy(() => import("../pages/live/teacher/index"));
+const LiveCommentsPage = lazy(() => import("../pages/live/comment"));
+const LiveUsersPage = lazy(() => import("../pages/live/users"));
+const LiveVideoPage = lazy(() => import("../pages/live/video/index"));
+const LiveVideoCreatePage = lazy(() => import("../pages/live/video/create"));
+const LiveVideoUpdatePage = lazy(() => import("../pages/live/video/update"));
+const LiveChapterPage = lazy(() => import("../pages/live/chapter/index"));
+//电子书相关
+const BookPage = lazy(() => import("../pages/book/index"));
+const BookCreatePage = lazy(() => import("../pages/book/create"));
+const BookUpdatePage = lazy(() => import("../pages/book/update"));
+const BookCategoryPage = lazy(() => import("../pages/book/category/index"));
+const BookCommentsPage = lazy(() => import("../pages/book/comments"));
+const BookArticlePage = lazy(() => import("../pages/book/article/index"));
+const BookArticleCreatePage = lazy(
+  () => import("../pages/book/article/create")
+);
+const BookArticleUpdatePage = lazy(
+  () => import("../pages/book/article/update")
+);
+const BookArticleCommentsPage = lazy(
+  () => import("../pages/book/article/comments")
+);
+const BookChapterPage = lazy(() => import("../pages/book/chapter/index"));
+const BookUsersPage = lazy(() => import("../pages/book/users"));
+//图文相关
+const TopicPage = lazy(() => import("../pages/topic/index"));
+const TopicCreatePage = lazy(() => import("../pages/topic/create"));
+const TopicUpdatePage = lazy(() => import("../pages/topic/update"));
+const TopicCategoryPage = lazy(() => import("../pages/topic/category/index"));
+const TopicCommentsPage = lazy(() => import("../pages/topic/comment"));
+const TopicUsersPage = lazy(() => import("../pages/topic/users"));
+//路径相关
+const LearnPathPage = lazy(() => import("../pages/learningpath/index"));
+const LearnPathCreatePage = lazy(() => import("../pages/learningpath/create"));
+const LearnPathUpdatePage = lazy(() => import("../pages/learningpath/update"));
+const LearnPathUserPage = lazy(() => import("../pages/learningpath/user"));
+const LearnPathCategoryPage = lazy(
+  () => import("../pages/learningpath/category/index")
+);
+const LearnPathStepPage = lazy(
+  () => import("../pages/learningpath/step/index")
+);
+const LearnPathStepCreatePage = lazy(
+  () => import("../pages/learningpath/step/create")
+);
+const LearnPathStepUpdatePage = lazy(
+  () => import("../pages/learningpath/step/update")
+);
+//学员相关
+const MemberPage = lazy(() => import("../pages/member/index"));
+const MemberImportPage = lazy(() => import("../pages/member/import"));
+const MemberDetailPage = lazy(() => import("../pages/member/detail"));
+const MemberProfilePage = lazy(() => import("../pages/member/profile"));
+const MemberTagsPage = lazy(() => import("../pages/member/tags/index"));
+const MemberTagsCreatePage = lazy(() => import("../pages/member/tags/create"));
+const MemberTagsUpdatePage = lazy(() => import("../pages/member/tags/update"));
+//学习照片
+const SnapshotPage = lazy(() => import("../pages/snapshot/index"));
+const SnapshotImagesPage = lazy(() => import("../pages/snapshot/images"));
+//订单相关
+const OrderPage = lazy(() => import("../pages/order/index"));
+const OrderRefundPage = lazy(() => import("../pages/order/refund"));
+const OrderDetailPage = lazy(() => import("../pages/order/detail"));
+const OrderRechargePage = lazy(() => import("../pages/order/recharge"));
+const WithdrawOrdersPage = lazy(() => import("../pages/order/withdrawOrders"));
+//系统相关
+const SystemApplicationPage = lazy(() => import("../pages/system/application"));
+const SystemLogPage = lazy(() => import("../pages/system/systemLog/index"));
+const SystemAdministratorPage = lazy(
+  () => import("../pages/system/administrator/index")
+);
+const SystemAdministratorCreatePage = lazy(
+  () => import("../pages/system/administrator/create")
+);
+const SystemAdministratorUpdatePage = lazy(
+  () => import("../pages/system/administrator/update")
+);
+const SystemAdminrolesPage = lazy(
+  () => import("../pages/system/adminroles/index")
+);
+const SystemAdminrolesCreatePage = lazy(
+  () => import("../pages/system/adminroles/create")
+);
+const SystemAdminrolesUpdatePage = lazy(
+  () => import("../pages/system/adminroles/update")
+);
+//数据统计
+const StatsTransactionPage = lazy(() => import("../pages/stats/transaction"));
+const StatsContentPage = lazy(() => import("../pages/stats/content"));
+const StatsMemberPage = lazy(() => import("../pages/stats/member"));
+//会员相关
+const RolePage = lazy(() => import("../pages/role/index"));
+const RoleCreatePage = lazy(() => import("../pages/role/create"));
+const RoleUpdatePage = lazy(() => import("../pages/role/update"));
+//公众号
+const WechatPage = lazy(() => import("../pages/wechat/index"));
+const WechatCreatePage = lazy(() => import("../pages/wechat/create"));
+const WechatUpdatePage = lazy(() => import("../pages/wechat/update"));
+const WechatMenuPage = lazy(
+  () => import("../pages/wechat/mp-wechat-menu/index")
+);
+//优惠码
+const PromoCodePage = lazy(() => import("../pages/promocode/index"));
+const PromoCodeImportPage = lazy(() => import("../pages/promocode/import"));
+const PromoCodeCreateMultiPage = lazy(
+  () => import("../pages/promocode/create-multi")
+);
+const PromoCodeCreatePage = lazy(() => import("../pages/promocode/create"));
+//问答相关
+const WendaPage = lazy(() => import("../pages/wenda/index"));
+const WendaCategoriesPage = lazy(() => import("../pages/wenda/category/index"));
+const WendaCategoriesCreatePage = lazy(
+  () => import("../pages/wenda/category/create")
+);
+const WendaCategoriesUpdatePage = lazy(
+  () => import("../pages/wenda/category/update")
+);
+const WendaAnswerPage = lazy(() => import("../pages/wenda/answer"));
+const WendaCommentPage = lazy(() => import("../pages/wenda/comment"));
+//分销活动
+const MultiSharePage = lazy(() => import("../pages/multi_level_share/index"));
+const MultiShareRewardsPage = lazy(
+  () => import("../pages/multi_level_share/rewards")
+);
+const MultiShareCreatePage = lazy(
+  () => import("../pages/multi_level_share/create")
+);
+const MultiShareUpdatePage = lazy(
+  () => import("../pages/multi_level_share/update")
+);
+//兑换活动
+const CodeExchangerPage = lazy(() => import("../pages/codeExchanger/index"));
+const CodeExchangerCreatePage = lazy(
+  () => import("../pages/codeExchanger/create")
+);
+const CodeExchangerUpdatePage = lazy(
+  () => import("../pages/codeExchanger/update")
+);
+const CodeExchangerCodesPage = lazy(
+  () => import("../pages/codeExchanger/codes")
+);
+//秒杀活动
+const MiaoshaPage = lazy(() => import("../pages/miaosha/index"));
+const MiaoshaCreatePage = lazy(() => import("../pages/miaosha/create"));
+const MiaoshaUpdatePage = lazy(() => import("../pages/miaosha/update"));
+const MiaoshaOrdersPage = lazy(() => import("../pages/miaosha/orders"));
+//团购活动
+const TuangouPage = lazy(() => import("../pages/tuangou/index"));
+const TuangouCreatePage = lazy(() => import("../pages/tuangou/create"));
+const TuangouUpdatePage = lazy(() => import("../pages/tuangou/update"));
+const TuangouOrdersPage = lazy(() => import("../pages/tuangou/orders"));
+const TuangouRefundPage = lazy(() => import("../pages/tuangou/refund"));
+const TuangouTuanOrderPage = lazy(() => import("../pages/tuangou/tuanorder"));
+const TuangouTuanDetailPage = lazy(() => import("../pages/tuangou/detail"));
+// /积分商城
+const CreditMallPage = lazy(() => import("../pages/creditMall/index"));
+const CreditMallCreatePage = lazy(() => import("../pages/creditMall/create"));
+const CreditMallUpdatePage = lazy(() => import("../pages/creditMall/update"));
+const CreditMallOrdersPage = lazy(
+  () => import("../pages/creditMall/orders/index")
+);
+const CreditMallOrdersUpdatePage = lazy(
+  () => import("../pages/creditMall/orders/update")
+);
+const CreditMallOrdersSendPage = lazy(
+  () => import("../pages/creditMall/orders/send")
+);
+//系统配置
+const SystemConfigPage = lazy(() => import("../pages/system/config/index"));
+const SystemPlayerConfigPage = lazy(
+  () => import("../pages/system/config/playerConfig")
+);
+const SystemLiveConfigPage = lazy(
+  () => import("../pages/system/config/liveConfig")
+);
+const SystemPaymentConfigPage = lazy(
+  () => import("../pages/system/config/paymentConfig")
+);
+const SystemMpWechatConfigPage = lazy(
+  () => import("../pages/system/config/mp_wechatConfig")
+);
+const SystemMessageConfigPage = lazy(
+  () => import("../pages/system/config/messageConfig")
+);
+const SystemVideoSaveConfigPage = lazy(
+  () => import("../pages/system/config/videoSaveConfig")
+);
+const SystemImagesSaveConfigPage = lazy(
+  () => import("../pages/system/config/saveImagesConfig")
+);
+const SystemvVideoHlsConfigPage = lazy(
+  () => import("../pages/system/config/videoHlsConfig")
+);
+const SystemWechatMiniConfigPage = lazy(
+  () => import("../pages/system/config/wechat_miniConfig")
+);
+const SystemIOSConfigPage = lazy(
+  () => import("../pages/system/config/iosConfig")
+);
+const SystemCreditSignConfigPage = lazy(
+  () => import("../pages/system/config/creditSignConfig")
+);
+const SystemNormalConfigPage = lazy(
+  () => import("../pages/system/config/config")
+);
+const SystemTopicConfigPage = lazy(
+  () => import("../pages/system/config/topicConfig")
+);
+const SystemBookConfigPage = lazy(
+  () => import("../pages/system/config/bookConfig")
+);
+const ErrorPage = lazy(() => import("../pages/error"));
+//考试练习相关
+const PaperCategoryPage = lazy(() => import("../pages/exam/category/index"));
+const PracticePage = lazy(() => import("../pages/exam/practice/index"));
+const PracticeCreatePage = lazy(() => import("../pages/exam/practice/create"));
+const PracticeUpdatePage = lazy(() => import("../pages/exam/practice/update"));
+const PracticeUsersPage = lazy(() => import("../pages/exam/practice/user"));
+const PracticeUsersProgressPage = lazy(
+  () => import("../pages/exam/practice/progress")
+);
+const PracticeChaptersPage = lazy(
+  () => import("../pages/exam/practice/chapter/index")
+);
+const PracticeChapterCreatePage = lazy(
+  () => import("../pages/exam/practice/chapter/create")
+);
+const PracticeChapterUpdatePage = lazy(
+  () => import("../pages/exam/practice/chapter/update")
+);
+const PracticeQuestionPage = lazy(
+  () => import("../pages/exam/practice/chapter/question")
+);
+const PracticeQuestionCreatePage = lazy(
+  () => import("../pages/exam/practice/chapter/questionCreate")
+);
+//考试模拟相关
+const MockPaperPage = lazy(() => import("../pages/exam/mockpaper/index"));
+const MockPaperUsersPage = lazy(() => import("../pages/exam/mockpaper/users"));
+const MockPaperCreatePage = lazy(
+  () => import("../pages/exam/mockpaper/create")
+);
+const MockPaperUpdatePage = lazy(
+  () => import("../pages/exam/mockpaper/update")
+);
+const MockPaperReadPage = lazy(
+  () => import("../pages/exam/mockpaper/paperShow")
+);
+//考试试卷相关
+const PaperPage = lazy(() => import("../pages/exam/paper/index"));
+const PaperCreatePage = lazy(() => import("../pages/exam/paper/create"));
+const PaperUpdatePage = lazy(() => import("../pages/exam/paper/update"));
+const PaperUsersPage = lazy(() => import("../pages/exam/paper/users"));
+const PaperQuestionPage = lazy(() => import("../pages/exam/paper/question"));
+const PaperQuestionCreatePage = lazy(
+  () => import("../pages/exam/paper/questionadd")
+);
+const PaperReadPage = lazy(() => import("../pages/exam/paper/paperShow"));
+const PaperMarkingPage = lazy(() => import("../pages/exam/paper/marking"));
+//考试题库相关
+const QuestionPage = lazy(() => import("../pages/exam/question/index"));
+const QuestionCategoryPage = lazy(
+  () => import("../pages/exam/question/category/index")
+);
+const QuestionImportPage = lazy(() => import("../pages/exam/question/import"));
+const QuestionCreatePage = lazy(() => import("../pages/exam/question/create"));
+const QuestionUpdatePage = lazy(() => import("../pages/exam/question/update"));
+//单页面
+const SinglePage = lazy(() => import("../pages/singlepage/index"));
+const SingleCreatePage = lazy(() => import("../pages/singlepage/create"));
+const SingleUpdatePage = lazy(() => import("../pages/singlepage/update"));
+//证书相关
+const CertificatePage = lazy(() => import("../pages/certificate/index"));
+const CertificateUsersPage = lazy(() => import("../pages/certificate/users"));
+const CertificateCreatePage = lazy(() => import("../pages/certificate/create"));
+const CertificateUpdatePage = lazy(() => import("../pages/certificate/update"));
+//装修
+const DecorationPCPage = lazy(() => import("../pages/decoration/pc"));
+const DecorationH5Page = lazy(() => import("../pages/decoration/h5"));
 
 let RootPage: any = null;
 if (getToken()) {
@@ -366,7 +514,7 @@ const routes: RouteObject[] = [
           { path: "/member/:memberId", element: <MemberDetailPage /> },
           {
             path: "/member/profile/:memberId",
-            element: <MemberProfilelPage />,
+            element: <MemberProfilePage />,
           },
           { path: "/member/tag/index", element: <MemberTagsPage /> },
           { path: "/member/tag/create", element: <MemberTagsCreatePage /> },

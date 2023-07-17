@@ -200,7 +200,7 @@ export function tencentHlsList(params: any) {
 }
 
 export function tencentHlsSubmit(params: any) {
-  return client.post(
+  return client.get(
     `/backend/addons/TencentCloudHls/videos/submitTransTask`,
     params
   );

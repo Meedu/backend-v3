@@ -49,8 +49,8 @@ const CourseVideoCreatePage = () => {
   ];
 
   useEffect(() => {
-    document.title = "添加课时";
-    dispatch(titleAction("添加课时"));
+    document.title = "新建课时";
+    dispatch(titleAction("新建课时"));
     form.setFieldsValue({
       ban_drag: 0,
       is_show: 0,
@@ -155,7 +155,7 @@ const CourseVideoCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加课时" />
+      <BackBartment title="新建课时" />
       <div className="center-tabs mb-30">
         <Tabs
           defaultActiveKey={resourceActive}

@@ -263,7 +263,7 @@ const CourseVideoPage = () => {
       <div className="float-left mt-30">
         <PerButton
           type="primary"
-          text="添加课时"
+          text="新建课时"
           class=""
           icon={null}
           p="video.store"

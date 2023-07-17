@@ -387,7 +387,7 @@ const CoursePage = () => {
             disabled={null}
           />
           <OptionBar
-            text="录播课设置"
+            text="播放器配置"
             value="/system/playerConfig?referer=%2Fcourse%2Fvod%2Findex"
           ></OptionBar>
         </div>

@@ -203,7 +203,7 @@ const LiveVideoPage = () => {
       <div className="float-left mb-30 mt-30">
         <PerButton
           type="primary"
-          text="添加"
+          text="新建排课"
           class=""
           icon={null}
           p="addons.Zhibo.course_video.store"

@@ -17,8 +17,8 @@ const LiveVideoCreatePage = () => {
   const [id, setId] = useState(Number(result.get("course_id")));
 
   useEffect(() => {
-    document.title = "添加直播排课";
-    dispatch(titleAction("添加直播排课"));
+    document.title = "新建直播排课";
+    dispatch(titleAction("新建直播排课"));
     getParams();
   }, [id]);
 
@@ -71,7 +71,7 @@ const LiveVideoCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加直播排课" />
+      <BackBartment title="新建直播排课" />
       <div className="float-left mt-30">
         <Form
           form={form}

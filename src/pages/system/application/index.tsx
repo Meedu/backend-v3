@@ -111,7 +111,7 @@ const SystemApplicationPage = () => {
                   安装
                 </Button>
               )}
-              {record.is_upgradel && (
+              {record.is_upgrade && (
                 <Button
                   type="link"
                   size="small"

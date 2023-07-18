@@ -49,16 +49,12 @@ const CourseVideoImportPage = () => {
     let data: any[] = [];
     for (let i = 0; i < jsonArr.length; i++) {
       let tmpItem = jsonArr[i];
-      if (typeof tmpItem === undefined) {
-        break;
-      }
-      if (tmpItem.length === 0) {
-        //空行
-        continue;
-      }
+      tmpItem.splice(7, 0, 1000);
+      tmpItem.splice(9, 0, "");
+      tmpItem.splice(10, 0, "");
+
       data.push(tmpItem);
     }
-
     storeBatchTableCertData(data);
   };
 

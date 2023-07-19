@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Modal, Table } from "antd";
+import { Modal, Table, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { member } from "../../../api/index";
-import { DurationText } from "../../../components";
+import { useSelector } from "react-redux";
+import { member, snapshot } from "../../../api/index";
+import { DurationText, SnapshotDialog } from "../../../components";
 import { dateFormat } from "../../../utils";
 
 interface PropsInterface {
@@ -21,6 +22,12 @@ interface DataType {
 export const VideoTableDialog = (props: PropsInterface) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
+  const [images, setImages] = useState<any>({});
+  const [visiable, setVisiable] = useState<boolean>(false);
+  const [vid, setVid] = useState(0);
+  const enabledAddons = useSelector(
+    (state: any) => state.enabledAddonsConfig.value.enabledAddons
+  );
 
   useEffect(() => {
     if (props.id === 0) {
@@ -34,7 +41,7 @@ export const VideoTableDialog = (props: PropsInterface) => {
   const columns: ColumnsType<DataType> = [
     {
       title: "课时名称",
-      width: "32%",
+      width: "20%",
       render: (_, record: any) => <span>{record.title}</span>,
     },
     {
@@ -101,6 +108,30 @@ export const VideoTableDialog = (props: PropsInterface) => {
         </>
       ),
     },
+    enabledAddons["Snapshot"]
+      ? {
+          title: "已拍照片",
+          width: "12%",
+          render: (_, record: any) => (
+            <>
+              {images[record.id] && images[record.id].images.length > 0 ? (
+                <Button
+                  size="small"
+                  className="c-primary"
+                  type="link"
+                  onClick={() => {
+                    showDialog(record.id);
+                  }}
+                >
+                  {images[record.id].images.length}
+                </Button>
+              ) : (
+                <span>-</span>
+              )}
+            </>
+          ),
+        }
+      : {},
   ];
 
   const getData = () => {
@@ -116,15 +147,43 @@ export const VideoTableDialog = (props: PropsInterface) => {
       .then((res: any) => {
         let videos = res.data.videos;
         let list = [];
+        let arr: any = [];
         for (let i in videos) {
           list.push(videos[i]);
+          arr.push(videos[i].id);
         }
         setList(list);
         setLoading(false);
+        if (enabledAddons["Snapshot"]) {
+          getImages(arr);
+        }
       })
       .catch((e) => {
         setLoading(false);
       });
+  };
+
+  const getImages = (ids: any) => {
+    snapshot
+      .list({
+        user_id: props.userId,
+        type: "vod",
+        other_ids: ids,
+      })
+      .then((res: any) => {
+        setImages(res.data);
+      });
+  };
+
+  const showDialog = (id: number) => {
+    setVid(id);
+    setVisiable(true);
+  };
+
+  const hideDialog = () => {
+    setVid(0);
+    setVisiable(false);
+    getData();
   };
 
   return (
@@ -152,6 +211,14 @@ export const VideoTableDialog = (props: PropsInterface) => {
           </div>
         </Modal>
       )}
+      <SnapshotDialog
+        open={visiable}
+        vid={vid}
+        uid={props.userId}
+        onCancel={() => {
+          hideDialog();
+        }}
+      ></SnapshotDialog>
     </>
   );
 };

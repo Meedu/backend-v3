@@ -148,14 +148,14 @@ const items = [
     <i className="iconfont icon-icon-me-n" />,
     [
       getItem("学员列表", "/member/index", null, null, null, "member"),
-      getItem(
-        "学习照片",
-        "/snapshot/index",
-        null,
-        null,
-        null,
-        "addons.Snapshot.images"
-      ),
+      // getItem(
+      //   "学习照片",
+      //   "/snapshot/index",
+      //   null,
+      //   null,
+      //   null,
+      //   "addons.Snapshot.images"
+      // ),
       getItem(
         "学员证书",
         "/certificate/index",

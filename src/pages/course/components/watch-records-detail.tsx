@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Modal, Table } from "antd";
+import { Modal, Table, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { course } from "../../../api/index";
-import { DurationText } from "../../../components";
+import { useSelector } from "react-redux";
+import { course, snapshot } from "../../../api/index";
+import { DurationText, SnapshotDialog } from "../../../components";
 
 interface DataType {
   id: React.Key;
@@ -20,8 +21,15 @@ interface PropsInterface {
 export const WatchRecordsDetailDialog = (props: PropsInterface) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
+  const [images, setImages] = useState<any>({});
+  const [visiable, setVisiable] = useState<boolean>(false);
+  const [vid, setVid] = useState(0);
+  const enabledAddons = useSelector(
+    (state: any) => state.enabledAddonsConfig.value.enabledAddons
+  );
 
   useEffect(() => {
+    setImages({});
     if (props.open && props.cid !== 0 && props.uid !== 0) {
       getData();
     }
@@ -37,6 +45,16 @@ export const WatchRecordsDetailDialog = (props: PropsInterface) => {
       .then((res: any) => {
         setList(res.data.data);
         setLoading(false);
+        let arr: any = [];
+        let data = res.data.data;
+        if (data.length > 0) {
+          data.map((item: any) => {
+            arr.push(item.video_id);
+          });
+        }
+        if (enabledAddons["Snapshot"]) {
+          getImages(arr);
+        }
       })
       .catch((e) => {
         setLoading(false);
@@ -74,7 +92,55 @@ export const WatchRecordsDetailDialog = (props: PropsInterface) => {
         </>
       ),
     },
+    enabledAddons["Snapshot"]
+      ? {
+          title: "已拍照片",
+          width: 120,
+          render: (_, record: any) => (
+            <>
+              {images[record.video_id] &&
+              images[record.video_id].images.length > 0 ? (
+                <Button
+                  size="small"
+                  className="c-primary"
+                  type="link"
+                  onClick={() => {
+                    showDialog(record.video_id);
+                  }}
+                >
+                  {images[record.video_id].images.length}
+                </Button>
+              ) : (
+                <span>-</span>
+              )}
+            </>
+          ),
+        }
+      : {},
   ];
+
+  const getImages = (ids: any) => {
+    snapshot
+      .list({
+        user_id: props.uid,
+        type: "vod",
+        other_ids: ids,
+      })
+      .then((res: any) => {
+        setImages(res.data);
+      });
+  };
+
+  const showDialog = (id: number) => {
+    setVid(id);
+    setVisiable(true);
+  };
+
+  const hideDialog = () => {
+    setVid(0);
+    setVisiable(false);
+    getData();
+  };
 
   return (
     <>
@@ -101,6 +167,14 @@ export const WatchRecordsDetailDialog = (props: PropsInterface) => {
           </div>
         </Modal>
       )}
+      <SnapshotDialog
+        open={visiable}
+        vid={vid}
+        uid={props.uid}
+        onCancel={() => {
+          hideDialog();
+        }}
+      ></SnapshotDialog>
     </>
   );
 };

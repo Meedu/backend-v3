@@ -50,8 +50,8 @@ const LiveUsersPage = () => {
   ];
 
   useEffect(() => {
-    document.title = "直播课学员";
-    dispatch(titleAction("直播课学员"));
+    document.title = "直播课程学员";
+    dispatch(titleAction("直播课程学员"));
   }, []);
 
   useEffect(() => {
@@ -266,7 +266,7 @@ const LiveUsersPage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="直播课学员" />
+      <BackBartment title="直播课程学员" />
       <div className="float-left">
         <Tabs
           defaultActiveKey={resourceActive}

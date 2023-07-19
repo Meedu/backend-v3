@@ -50,8 +50,8 @@ const LiveUsersPage = () => {
   ];
 
   useEffect(() => {
-    document.title = "直播课学";
-    dispatch(titleAction("直播课学"));
+    document.title = "直播课学员";
+    dispatch(titleAction("直播课学员"));
   }, []);
 
   useEffect(() => {

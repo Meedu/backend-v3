@@ -89,12 +89,6 @@ const SystemAdminrolesPage = () => {
       render: (display_name: string) => <span>{display_name}</span>,
     },
     {
-      title: "Slug",
-      width: 250,
-      dataIndex: "slug",
-      render: (slug: string) => <span>{slug}</span>,
-    },
-    {
       title: "描述",
       render: (_, record: any) => <span>{record.description}</span>,
     },

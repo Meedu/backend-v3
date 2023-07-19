@@ -30,7 +30,7 @@ const items = [
     <i className={`iconfont icon-icon-study-n`} />,
     null,
     null,
-    null
+    "dashboard"
   ),
   getItem(
     "装修",
@@ -525,7 +525,11 @@ export const LeftMenu: React.FC = () => {
       let menuItem = items[i];
       if (!menuItem.children) {
         // 一级菜单不做权限控制
-        menus.push(menuItem);
+        if (typeof user.permissions[menuItem.permission] !== "undefined") {
+          // 存在权限
+          menus.push(menuItem);
+        }
+
         continue;
       }
       let children = [];

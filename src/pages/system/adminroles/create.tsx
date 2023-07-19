@@ -90,13 +90,6 @@ const SystemAdminrolesCreatePage = () => {
             />
           </Form.Item>
           <Form.Item
-            label="Slug"
-            name="slug"
-            rules={[{ required: true, message: "请输入Slug!" }]}
-          >
-            <Input style={{ width: 300 }} placeholder="请输入Slug" allowClear />
-          </Form.Item>
-          <Form.Item
             label="描述"
             name="description"
             rules={[{ required: true, message: "请输入描述!" }]}

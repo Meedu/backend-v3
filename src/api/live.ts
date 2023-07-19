@@ -44,6 +44,10 @@ export function userList(id: number, params: any) {
   return client.get(`/backend/addons/zhibo/course/${id}/users`, params);
 }
 
+export function watchUsers(id: number, params: any) {
+  return client.get(`/backend/addons/zhibo/course/${id}/watch-users`, params);
+}
+
 export function userDel(id: number, params: any) {
   return client.post(`/backend/addons/zhibo/course/${id}/user/del`, params);
 }

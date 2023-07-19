@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Button, Input } from "antd";
+import { Table, Modal, message, Button, Input, Tabs } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import {
 } from "../../components";
 import { dateFormat } from "../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import LiveWatchUsersPage from "./components/watch-users";
 const { confirm } = Modal;
 import moment from "moment";
 import * as XLSX from "xlsx";
@@ -35,11 +36,22 @@ const LiveUsersPage = () => {
   const [showUserAddWin, setShowUserAddWin] = useState<boolean>(false);
   const [importDialog, setImportDialog] = useState<boolean>(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [resourceActive, setResourceActive] = useState<string>("watch-user");
   const [id, setId] = useState(Number(result.get("id")));
+  const avaliableResources = [
+    {
+      label: "观看学员",
+      key: "watch-user",
+    },
+    {
+      label: "付费学员",
+      key: "sub-user",
+    },
+  ];
 
   useEffect(() => {
-    document.title = "付费学员";
-    dispatch(titleAction("付费学员"));
+    document.title = "直播课学";
+    dispatch(titleAction("直播课学"));
   }, []);
 
   useEffect(() => {
@@ -248,77 +260,95 @@ const LiveUsersPage = () => {
       });
   };
 
+  const onChange = (key: string) => {
+    setResourceActive(key);
+  };
+
   return (
     <div className="meedu-main-body">
-      <BackBartment title="付费学员" />
-      <div className="float-left j-b-flex mb-30 mt-30">
-        <div className="d-flex">
-          <Button type="primary" onClick={() => setShowUserAddWin(true)}>
-            添加学员
-          </Button>
-          <PerButton
-            type="primary"
-            text="批量导入"
-            class="ml-10"
-            icon={null}
-            p="addons.Zhibo.course.user.import"
-            onClick={() => setImportDialog(true)}
-            disabled={null}
-          />
-          <Button
-            type="primary"
-            className="ml-10"
-            danger
-            onClick={() => delMulti()}
-          >
-            删除学员
-          </Button>
-        </div>
-        <div className="d-flex">
-          <Input
-            value={user_id}
-            onChange={(e) => {
-              setUserId(e.target.value);
-            }}
-            allowClear
-            style={{ width: 150 }}
-            placeholder="学员ID"
-          />
-          <Button className="ml-10" onClick={resetList}>
-            清空
-          </Button>
-          <Button
-            className="ml-10"
-            type="primary"
-            onClick={() => {
-              setPage(1);
-              setRefresh(!refresh);
-            }}
-          >
-            筛选
-          </Button>
-          <Button
-            className="ml-10"
-            type="primary"
-            onClick={() => exportexcel()}
-          >
-            导出表格
-          </Button>
-        </div>
-      </div>
+      <BackBartment title="直播课学员" />
       <div className="float-left">
-        <Table
-          rowSelection={{
-            type: "checkbox",
-            ...rowSelection,
-          }}
-          loading={loading}
-          columns={columns}
-          dataSource={list}
-          rowKey={(record) => record.id}
-          pagination={paginationProps}
+        <Tabs
+          defaultActiveKey={resourceActive}
+          items={avaliableResources}
+          onChange={onChange}
         />
       </div>
+      {resourceActive === "watch-user" && (
+        <LiveWatchUsersPage></LiveWatchUsersPage>
+      )}
+      {resourceActive === "sub-user" && (
+        <>
+          <div className="float-left j-b-flex mb-30">
+            <div className="d-flex">
+              <Button type="primary" onClick={() => setShowUserAddWin(true)}>
+                添加学员
+              </Button>
+              <PerButton
+                type="primary"
+                text="批量导入"
+                class="ml-10"
+                icon={null}
+                p="addons.Zhibo.course.user.import"
+                onClick={() => setImportDialog(true)}
+                disabled={null}
+              />
+              <Button
+                type="primary"
+                className="ml-10"
+                danger
+                onClick={() => delMulti()}
+              >
+                删除学员
+              </Button>
+            </div>
+            <div className="d-flex">
+              <Input
+                value={user_id}
+                onChange={(e) => {
+                  setUserId(e.target.value);
+                }}
+                allowClear
+                style={{ width: 150 }}
+                placeholder="学员ID"
+              />
+              <Button className="ml-10" onClick={resetList}>
+                清空
+              </Button>
+              <Button
+                className="ml-10"
+                type="primary"
+                onClick={() => {
+                  setPage(1);
+                  setRefresh(!refresh);
+                }}
+              >
+                筛选
+              </Button>
+              <Button
+                className="ml-10"
+                type="primary"
+                onClick={() => exportexcel()}
+              >
+                导出表格
+              </Button>
+            </div>
+          </div>
+          <div className="float-left">
+            <Table
+              rowSelection={{
+                type: "checkbox",
+                ...rowSelection,
+              }}
+              loading={loading}
+              columns={columns}
+              dataSource={list}
+              rowKey={(record) => record.id}
+              pagination={paginationProps}
+            />
+          </div>
+        </>
+      )}
       <UserImportDialog
         open={importDialog}
         id={id}

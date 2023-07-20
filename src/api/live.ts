@@ -132,6 +132,14 @@ export function videoStats(id: number) {
   return client.get(`/backend/addons/zhibo/course_video/${id}/stats`, {});
 }
 
+export function videoChats(id: number, ids: number, params: any) {
+  return client.get(`/backend/addons/zhibo/chat/${id}/${ids}`, params);
+}
+
+export function videoChatDestoryMulti(params: any) {
+  return client.post(`/backend/addons/zhibo/chat/delete`, params);
+}
+
 export function chaptersList(params: any) {
   return client.get(`/backend/addons/zhibo/course_chapter/index`, params);
 }

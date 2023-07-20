@@ -68,13 +68,6 @@ const LiveVideoPage = () => {
       });
   };
 
-  const resetList = () => {
-    setPage(1);
-    setSize(1000);
-    setList([]);
-    setRefresh(!refresh);
-  };
-
   const resetData = () => {
     setPage(1);
     setList([]);

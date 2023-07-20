@@ -59,6 +59,7 @@ const LiveVideoPage = lazy(() => import("../pages/live/video/index"));
 const LiveVideoCreatePage = lazy(() => import("../pages/live/video/create"));
 const LiveVideoUpdatePage = lazy(() => import("../pages/live/video/update"));
 const LiveChapterPage = lazy(() => import("../pages/live/chapter/index"));
+const LiveVideoChatsPage = lazy(() => import("../pages/live/video/chats"));
 //电子书相关
 const BookPage = lazy(() => import("../pages/book/index"));
 const BookCreatePage = lazy(() => import("../pages/book/create"));
@@ -457,6 +458,7 @@ const routes: RouteObject[] = [
             element: <LiveVideoUpdatePage />,
           },
           { path: "/live/course/chapter/index", element: <LiveChapterPage /> },
+          { path: "/live/course/video/chats", element: <LiveVideoChatsPage /> },
           { path: "/meedubook/book/index", element: <BookPage /> },
           { path: "/meedubook/book/create", element: <BookCreatePage /> },
           { path: "/meedubook/book/update", element: <BookUpdatePage /> },

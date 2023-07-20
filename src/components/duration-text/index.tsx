@@ -8,17 +8,18 @@ export const DurationText = (props: PropInterface) => {
   const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
   const [second, setSecond] = useState(0);
-  const duration = props.duration;
 
   useEffect(() => {
-    let h = Math.trunc(duration / 3600);
-    let m = Math.trunc((duration % 3600) / 60);
-    let s = Math.trunc((duration % 3600) % 60);
+    if (props.duration > 0) {
+      let h = Math.trunc(props.duration / 3600);
+      let m = Math.trunc((props.duration % 3600) / 60);
+      let s = Math.trunc((props.duration % 3600) % 60);
 
-    setHour(h);
-    setMinute(m);
-    setSecond(s);
-  }, []);
+      setHour(h);
+      setMinute(m);
+      setSecond(s);
+    }
+  }, [props.duration]);
 
   return (
     <>

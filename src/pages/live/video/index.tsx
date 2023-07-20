@@ -131,6 +131,7 @@ const LiveVideoPage = () => {
       title: "操作",
       width: "12%",
       fixed: "right",
+      align: "right",
       render: (_, record: any) => {
         const items: MenuProps["items"] = [
           {
@@ -210,17 +211,19 @@ const LiveVideoPage = () => {
               }}
               disabled={null}
             />
-            <PerButton
-              type="link"
-              text="统计"
-              class="c-primary"
-              icon={null}
-              p="addons.Zhibo.course_video.stats"
-              onClick={() => {
-                showStatsDialog(record.id);
-              }}
-              disabled={null}
-            />
+            {record.status === 2 && (
+              <PerButton
+                type="link"
+                text="统计"
+                class="c-primary"
+                icon={null}
+                p="addons.Zhibo.course_video.stats"
+                onClick={() => {
+                  showStatsDialog(record.id);
+                }}
+                disabled={null}
+              />
+            )}
             <Dropdown menu={{ items }}>
               <Button
                 type="link"

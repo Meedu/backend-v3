@@ -92,8 +92,8 @@ const SystemConfigPage = () => {
       sign: "视频加密",
     },
     {
-      name: "随机拍照",
-      value: "随机拍照",
+      name: "学习拍照",
+      value: "学习拍照",
       images: cameraIcon,
       sign: "Snapshot",
     },

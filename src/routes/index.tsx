@@ -54,6 +54,7 @@ const LiveUpdatePage = lazy(() => import("../pages/live/update"));
 const LiveCategoryPage = lazy(() => import("../pages/live/category/index"));
 const LiveTeacherPage = lazy(() => import("../pages/live/teacher/index"));
 const LiveCommentsPage = lazy(() => import("../pages/live/comment"));
+const LiveStatsPage = lazy(() => import("../pages/live/stats"));
 const LiveUsersPage = lazy(() => import("../pages/live/users"));
 const LiveVideoPage = lazy(() => import("../pages/live/video/index"));
 const LiveVideoCreatePage = lazy(() => import("../pages/live/video/create"));
@@ -448,6 +449,7 @@ const routes: RouteObject[] = [
           },
           { path: "/live/teacher/index", element: <LiveTeacherPage /> },
           { path: "/live/course/comment", element: <LiveCommentsPage /> },
+          { path: "/live/course/stat", element: <LiveStatsPage /> },
           { path: "/live/course/users/index", element: <LiveUsersPage /> },
           { path: "/live/course/video/index", element: <LiveVideoPage /> },
           {

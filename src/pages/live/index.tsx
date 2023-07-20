@@ -253,6 +253,22 @@ const LivePage = () => {
             label: (
               <PerButton
                 type="link"
+                text="统计"
+                class="c-primary"
+                icon={null}
+                p="addons.Zhibo.course.stats"
+                onClick={() => {
+                  navigate("/live/course/stat?id=" + record.id);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "2",
+            label: (
+              <PerButton
+                type="link"
                 text="编辑"
                 class="c-primary"
                 icon={null}
@@ -265,7 +281,7 @@ const LivePage = () => {
             ),
           },
           {
-            key: "2",
+            key: "3",
             label: (
               <PerButton
                 type="link"

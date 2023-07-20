@@ -27,6 +27,9 @@ export function update(id: number, params: any) {
 export function comment(params: any) {
   return client.get(`/backend/addons/zhibo/course_comment`, params);
 }
+export function stats(id: number) {
+  return client.get(`/backend/addons/zhibo/course/${id}/stats`, {});
+}
 
 export function commentDestoryMulti(params: any) {
   return client.post(`/backend/addons/zhibo/course_comment/delete`, params);
@@ -141,7 +144,10 @@ export function videoChatDestoryMulti(params: any) {
 }
 
 export function videoWatchUsers(id: number, params: any) {
-  return client.get(`/backend/addons/zhibo/course_video/${id}/watch-users`, params);
+  return client.get(
+    `/backend/addons/zhibo/course_video/${id}/watch-users`,
+    params
+  );
 }
 
 export function chaptersList(params: any) {

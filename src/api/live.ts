@@ -128,6 +128,10 @@ export function videoUpdate(id: number, params: any) {
   return client.put(`/backend/addons/zhibo/course_video/${id}`, params);
 }
 
+export function videoStats(id: number) {
+  return client.get(`/backend/addons/zhibo/course_video/${id}/stats`, {});
+}
+
 export function chaptersList(params: any) {
   return client.get(`/backend/addons/zhibo/course_chapter/index`, params);
 }

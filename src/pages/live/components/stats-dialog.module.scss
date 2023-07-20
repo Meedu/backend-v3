@@ -1,0 +1,60 @@
+.live-stats-body {
+  width: 100%;
+  height: auto;
+  min-height: 100px;
+  box-sizing: border-box;
+  padding: 0px 15px;
+}
+.charts {
+  width: 100%;
+  height: auto;
+}
+.stats-content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+  .border-item {
+    width: 25%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid #ccc;
+    .item-name {
+      font-size: 18px;
+      font-weight: 400;
+      color: #666;
+      line-height: 20px;
+      margin-bottom: 15px;
+    }
+    .item-value {
+      font-size: 26px;
+      font-weight: 600;
+      color: #333;
+      line-height: 30px;
+    }
+  }
+  .item {
+    width: 25%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .item-name {
+      font-size: 18px;
+      font-weight: 400;
+      color: #666;
+      line-height: 20px;
+      margin-bottom: 15px;
+    }
+    .item-value {
+      font-size: 26px;
+      font-weight: 600;
+      color: #333;
+      line-height: 30px;
+    }
+  }
+}

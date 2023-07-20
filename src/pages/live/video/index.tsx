@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Space } from "antd";
+import type { MenuProps } from "antd";
+import { Table, Modal, message, Space, Dropdown, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { live } from "../../../api/index";
+import { DownOutlined } from "@ant-design/icons";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../../components";
 import { dateFormat } from "../../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { LiveVideoStatsDialog } from "../components/stats-dialog";
 const { confirm } = Modal;
 
 interface DataType {
@@ -27,6 +30,8 @@ const LiveVideoPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(Number(result.get("id")));
   const [title, setTitle] = useState(String(result.get("title")));
+  const [currentId, setCurrentId] = useState(0);
+  const [visiable, setVisiable] = useState<boolean>(false);
 
   useEffect(() => {
     document.title = title;
@@ -133,34 +138,111 @@ const LiveVideoPage = () => {
       title: "操作",
       width: "12%",
       fixed: "right",
-      render: (_, record: any) => (
-        <Space>
-          <PerButton
-            type="link"
-            text="编辑"
-            class="c-primary"
-            icon={null}
-            p="addons.Zhibo.course_video.update"
-            onClick={() => {
-              navigate(
-                "/live/course/video/update?id=" + record.id + "&course_id=" + id
-              );
-            }}
-            disabled={null}
-          />
-          <PerButton
-            type="link"
-            text="删除"
-            class="c-red"
-            icon={null}
-            p="addons.Zhibo.course_video.delete"
-            onClick={() => {
-              destory(record.id);
-            }}
-            disabled={null}
-          />
-        </Space>
-      ),
+      render: (_, record: any) => {
+        const items: MenuProps["items"] = [
+          {
+            key: "1",
+            label: (
+              <PerButton
+                type="link"
+                text="编辑"
+                class="c-primary"
+                icon={null}
+                p="addons.Zhibo.course_video.update"
+                onClick={() => {
+                  navigate(
+                    "/live/course/video/update?id=" +
+                      record.id +
+                      "&course_id=" +
+                      id
+                  );
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "2",
+            label: (
+              <PerButton
+                type="link"
+                text="聊天"
+                class="c-primary"
+                icon={null}
+                p="addons.Zhibo.chat.list"
+                onClick={() => {
+                  navigate(
+                    "/live/course/video/chats?id=" +
+                      record.id +
+                      "&course_id=" +
+                      id
+                  );
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "3",
+            label: (
+              <PerButton
+                type="link"
+                text="删除"
+                class="c-red"
+                icon={null}
+                p="addons.Zhibo.course_video.delete"
+                onClick={() => {
+                  destory(record.id);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+        ];
+        return (
+          <Space>
+            <PerButton
+              type="link"
+              text="学员"
+              class="c-primary"
+              icon={null}
+              p="addons.Zhibo.course_video.stats"
+              onClick={() => {
+                navigate(
+                  "/live/course/video/users?id=" +
+                    record.id +
+                    "&course_id=" +
+                    id
+                );
+              }}
+              disabled={null}
+            />
+            <PerButton
+              type="link"
+              text="统计"
+              class="c-primary"
+              icon={null}
+              p="addons.Zhibo.course_video.stats"
+              onClick={() => {
+                showStatsDialog(record.id);
+              }}
+              disabled={null}
+            />
+            <Dropdown menu={{ items }}>
+              <Button
+                type="link"
+                className="c-primary"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Space size="small" align="center">
+                  更多
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+          </Space>
+        );
+      },
     },
   ];
 
@@ -197,6 +279,11 @@ const LiveVideoPage = () => {
     });
   };
 
+  const showStatsDialog = (id: number) => {
+    setCurrentId(id);
+    setVisiable(true);
+  };
+
   return (
     <div className="meedu-main-body">
       <BackBartment title={title} />
@@ -229,6 +316,14 @@ const LiveVideoPage = () => {
           pagination={paginationProps}
         />
       </div>
+      <LiveVideoStatsDialog
+        id={currentId}
+        open={visiable}
+        onCancel={() => {
+          setCurrentId(0);
+          setVisiable(false);
+        }}
+      ></LiveVideoStatsDialog>
     </div>
   );
 };

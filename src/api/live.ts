@@ -140,6 +140,10 @@ export function videoChatDestoryMulti(params: any) {
   return client.post(`/backend/addons/zhibo/chat/delete`, params);
 }
 
+export function videoWatchUsers(id: number, params: any) {
+  return client.get(`/backend/addons/zhibo/course_video/${id}/watch-users`, params);
+}
+
 export function chaptersList(params: any) {
   return client.get(`/backend/addons/zhibo/course_chapter/index`, params);
 }

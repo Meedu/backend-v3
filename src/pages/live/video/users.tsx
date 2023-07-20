@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Table, Button, DatePicker, Select, message } from "antd";
+import { Table, Button, Input, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useLocation } from "react-router-dom";
 import { live } from "../../../api/index";
+import { useDispatch } from "react-redux";
 import { dateFormat } from "../../../utils/index";
-import { DurationText } from "../../../components";
-const { RangePicker } = DatePicker;
+import { titleAction } from "../../../store/user/loginUserSlice";
+import { DurationText, BackBartment } from "../../../components";
 import moment from "moment";
 import * as XLSX from "xlsx";
 
@@ -14,36 +15,33 @@ interface DataType {
   created_at: string;
 }
 
-const LiveWatchUsersPage = () => {
+const LiveVideoUsersPage = () => {
   const result = new URLSearchParams(useLocation().search);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [is_watched, setIsWatched] = useState<any>([]);
-  const [watched_at, setWatchedAt] = useState<any>([]);
-  const [watchedAts, setWatchedAts] = useState<any>([]);
+  const [mobile, setMobile] = useState("");
+  const [nick_name, setNickName] = useState("");
   const [id, setId] = useState(Number(result.get("id")));
-  const statusMapRows = [
-    {
-      label: "未看完",
-      value: 0,
-    },
-    {
-      label: "已看完",
-      value: 1,
-    },
-  ];
+  const [cid, setCid] = useState(Number(result.get("course_id")));
+
+  useEffect(() => {
+    document.title = "直播课时学员";
+    dispatch(titleAction("直播课时学员"));
+  }, []);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-  }, [result.get("id")]);
+    setCid(Number(result.get("course_id")));
+  }, [result.get("id"), result.get("course_id")]);
 
   useEffect(() => {
     getData();
-  }, [id, page, size, refresh]);
+  }, [id, cid, page, size, refresh]);
 
   const getData = () => {
     if (loading) {
@@ -51,11 +49,14 @@ const LiveWatchUsersPage = () => {
     }
     setLoading(true);
     live
-      .watchUsers(id, {
+      .videoWatchUsers(id, {
+        course_id: cid,
         page: page,
         size: size,
-        is_watched: is_watched.length === 0 ? -1 : is_watched,
-        watched_at: watched_at,
+        sort: "id",
+        order: "desc",
+        mobile: mobile,
+        nick_name: nick_name,
       })
       .then((res: any) => {
         setList(res.data.data);
@@ -71,15 +72,15 @@ const LiveWatchUsersPage = () => {
     setPage(1);
     setSize(10);
     setList([]);
-    setIsWatched([]);
-    setWatchedAts([]);
-    setWatchedAt([]);
+    setMobile("");
+    setNickName("");
     setRefresh(!refresh);
   };
 
   const resetData = () => {
     setPage(1);
     setList([]);
+
     setRefresh(!refresh);
   };
 
@@ -120,12 +121,14 @@ const LiveWatchUsersPage = () => {
       ),
     },
     {
-      title: "观看进度",
+      title: "观看时长",
       width: 150,
-      render: (_, record: any) => <span>{record.progress}%</span>,
+      render: (_, record: any) => (
+        <DurationText duration={record.duration}></DurationText>
+      ),
     },
     {
-      title: "学习总时长",
+      title: "总时长",
       width: 150,
       render: (_, record: any) => (
         <DurationText duration={record.total_duration}></DurationText>
@@ -182,20 +185,23 @@ const LiveWatchUsersPage = () => {
     }
     setLoading(true);
     let params = {
+      course_id: cid,
       page: 1,
       size: total,
-      is_watched: is_watched.length === 0 ? -1 : is_watched,
-      watched_at: watched_at,
+      sort: "id",
+      order: "desc",
+      mobile: mobile,
+      nick_name: nick_name,
     };
 
-    live.watchUsers(id, params).then((res: any) => {
+    live.videoWatchUsers(id, params).then((res: any) => {
       if (res.data.total === 0) {
         message.error("数据为空");
         setLoading(false);
         return;
       }
       let filename =
-        "直播课程观看学员|" + moment().format("YYYY-MM-DD HH:mm:ss") + ".xlsx";
+        "直播课时学员记录|" + moment().format("YYYY-MM-DD HH:mm:ss") + ".xlsx";
       let sheetName = "sheet1";
 
       let data = [
@@ -203,8 +209,8 @@ const LiveWatchUsersPage = () => {
           "学员ID",
           "学员",
           "手机号",
-          "观看进度",
-          "学习总时长",
+          "观看时长",
+          "总时长",
           "开始时间",
           "看完时间",
           "看完",
@@ -215,7 +221,7 @@ const LiveWatchUsersPage = () => {
           item.user_id,
           item.user.nick_name,
           item.user.mobile,
-          item.progress + "%",
+          durationTime(item.duration),
           durationTime(item.total_duration),
           item.created_at
             ? moment(item.created_at).format("YYYY-MM-DD HH:mm")
@@ -240,30 +246,30 @@ const LiveWatchUsersPage = () => {
   };
 
   return (
-    <div className="float-left">
+    <div className="meedu-main-body">
+      <BackBartment title="直播课时学员" />
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex"></div>
         <div className="d-flex">
-          <Select
-            style={{ width: 150 }}
-            value={is_watched}
+          <Input
+            value={mobile}
             onChange={(e) => {
-              setIsWatched(e);
+              setMobile(e.target.value);
             }}
             allowClear
-            placeholder="看完"
-            options={statusMapRows}
+            style={{ width: 150 }}
+            placeholder="学员手机号"
           />
-          <RangePicker
-            format={"YYYY-MM-DD"}
-            value={watchedAts}
-            style={{ marginLeft: 10 }}
-            onChange={(date, dateString) => {
-              setWatchedAt(dateString);
-              setWatchedAts(date);
+          <Input
+            value={nick_name}
+            onChange={(e) => {
+              setNickName(e.target.value);
             }}
-            placeholder={["看完时间-开始", "看完时间-结束"]}
+            allowClear
+            style={{ width: 150, marginLeft: 10 }}
+            placeholder="学员昵称"
           />
+
           <Button className="ml-10" onClick={resetList}>
             清空
           </Button>
@@ -299,4 +305,4 @@ const LiveWatchUsersPage = () => {
   );
 };
 
-export default LiveWatchUsersPage;
+export default LiveVideoUsersPage;

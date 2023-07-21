@@ -96,7 +96,7 @@ const LiveVideoChatsPage = () => {
               {record.msg_body.role && record.msg_body.role === "student" ? (
                 <span className="c-gray">学生</span>
               ) : (
-                <span className="c-red">
+                <span className="c-green">
                   {record.msg_body.role && record.msg_body.role === "assistant"
                     ? "助教"
                     : "讲师"}

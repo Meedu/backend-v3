@@ -52,6 +52,23 @@ const items = [
     null
   ),
   getItem(
+    "资源",
+    "resource",
+    <i className="iconfont icon-icon-file" />,
+    [
+      getItem(
+        "视频库",
+        "/resource/videos/index",
+        null,
+        null,
+        null,
+        "media.video.list"
+      ),
+    ],
+    null,
+    null
+  ),
+  getItem(
     "课程",
     "courses",
     <i className="iconfont icon-icon-lesson" />,
@@ -256,7 +273,7 @@ const items = [
   getItem(
     "数据",
     "stats",
-    <i className="iconfont icon-icon-stat" />,
+    <i className="iconfont icon-icon-data-n" />,
     [
       getItem(
         "交易数据",
@@ -346,6 +363,7 @@ export const LeftMenu: React.FC = () => {
     "^/learningpath": ["courses"],
     "^/system": ["system"],
     "^/systemLog": ["system"],
+    "^/resource": ["resource"],
   };
 
   const hit = (pathname: string): string[] => {

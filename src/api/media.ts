@@ -39,3 +39,24 @@ export function storeVideo(params: any) {
 export function newDestroyVideo(params: any) {
   return client.post(`/backend/api/v1/media/videos/delete/multi`, params);
 }
+
+export function aliyunTranscode(params: any) {
+  return client.post(`/backend/addons/AliyunHls/transcode-submit`, params);
+}
+
+export function aliyunTranscodeRecords(params: any) {
+  return client.get(`/backend/addons/AliyunHls/transcode-records`, params);
+}
+export function tencentTranscode(params: any) {
+  return client.post(
+    `/backend/addons/TencentCloudHls/transcode-submit`,
+    params
+  );
+}
+
+export function tencentTranscodeRecords(params: any) {
+  return client.get(
+    `/backend/addons/TencentCloudHls/transcode-records`,
+    params
+  );
+}

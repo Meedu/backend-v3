@@ -279,28 +279,6 @@ const CourseVideoPage = () => {
           onClick={() => navigate("/course/vod/chapter/index?course_id=" + cid)}
           disabled={null}
         />
-        {enabledAddons["AliyunHls"] && (
-          <PerButton
-            type="primary"
-            text="阿里云加密"
-            class="ml-10"
-            icon={null}
-            p="video.aliyun_hls.list"
-            onClick={() => navigate("/course/vod/video/hls/aliyun")}
-            disabled={null}
-          />
-        )}
-        {enabledAddons["TencentCloudHls"] && (
-          <PerButton
-            type="primary"
-            text="腾讯云加密"
-            class="ml-10"
-            icon={null}
-            p="addons.TencentCloudHls.videos"
-            onClick={() => navigate("/course/vod/video/hls/tencent")}
-            disabled={null}
-          />
-        )}
         <PerButton
           type="danger"
           text="删除"

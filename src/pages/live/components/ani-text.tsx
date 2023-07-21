@@ -8,16 +8,16 @@ interface PropInterface {
 }
 
 export const AniText = (props: PropInterface) => {
-  const [result, setResult] = useState("rgba(255,0,0,0.1");
+  const [result, setResult] = useState("rgba(4,200,119,0.2)");
 
   useEffect(() => {
     if (props.total > 0) {
       let opacity = props.value / props.total;
       if (opacity === 0) {
-        setResult("rgba(255,0,0,0.1)");
+        setResult("rgba(4,200,119,0.2)");
       } else {
         if (opacity > 0.1) {
-          setResult("rgba(255,0,0," + opacity.toFixed(2) + ")");
+          setResult("rgba(4,200,119," + opacity.toFixed(2) + ")");
         }
       }
     }

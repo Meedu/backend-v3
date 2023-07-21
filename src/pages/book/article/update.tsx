@@ -95,6 +95,7 @@ const BookArticleUpdatePage = () => {
     if (loading) {
       return;
     }
+    values.editor = editor;
     values.render_content = values.original_content;
     values.bid = bid;
     values.published_at = moment(new Date(values.published_at)).format(

@@ -4,7 +4,6 @@ import {
   Button,
   Input,
   message,
-  Modal,
   Form,
   DatePicker,
   Switch,
@@ -13,7 +12,7 @@ import {
   Space,
   Select,
 } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { topic } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
@@ -24,9 +23,6 @@ import {
   UploadImageButton,
   MdEditor,
 } from "../../components";
-import { getEditorKey, saveEditorKey } from "../../utils/index";
-import { ExclamationCircleFilled } from "@ant-design/icons";
-const { confirm } = Modal;
 import dayjs from "dayjs";
 import moment from "moment";
 
@@ -41,12 +37,7 @@ const TopicUpdatePage = () => {
   const [original_charge, setOriginalCharge] = useState(0);
   const [isFree, setIsFree] = useState(0);
   const [thumb, setThumb] = useState<string>("");
-  const [current, setCurrent] = useState("");
   const [editor, setEditor] = useState("");
-  const tools = [
-    { label: "Markdown", value: "markdown" },
-    { label: "富文本编辑器", value: "quill" },
-  ];
   const [freeValue, setFreeValue] = useState("");
   const [defautValue, setDefautValue] = useState("");
   const [id, setId] = useState(Number(result.get("id")));
@@ -93,19 +84,9 @@ const TopicUpdatePage = () => {
       setFreeValue(data.free_content);
       setOriginalCharge(data.charge);
       setThumb(data.thumb);
+      setEditor(data.editor);
     });
   };
-
-  useEffect(() => {
-    let localCurrent = getEditorKey();
-    if (localCurrent === "markdown") {
-      setEditor("MARKDOWN");
-    } else {
-      setEditor("FULLEDITOR");
-    }
-    let current = localCurrent ? localCurrent : "quill";
-    setCurrent(current);
-  }, [getEditorKey()]);
 
   const getParams = () => {
     topic.create().then((res: any) => {
@@ -142,11 +123,7 @@ const TopicUpdatePage = () => {
       message.error("图文价格必须输入且大于0");
       return;
     }
-    if (getEditorKey() === "markdown") {
-      values.editor = "MARKDOWN";
-    } else {
-      values.editor = "FULLEDITOR";
-    }
+    values.editor = editor;
     values.render_content = values.original_content;
     values.free_content_render = values.free_content;
     values.sorted_at = moment(new Date(values.sorted_at)).format(
@@ -371,53 +348,26 @@ const TopicUpdatePage = () => {
                 rules={[{ required: true, message: "请输入付费内容!" }]}
                 style={{ height: 840 }}
               >
-                <div className="flex flex-row">
-                  <div className="w-800px">
-                    {editor === "MARKDOWN" ? (
-                      <MdEditor
-                        height={800}
-                        defautValue={defautValue}
-                        setContent={(value: string) => {
-                          form.setFieldsValue({ free_content: value });
-                        }}
-                      ></MdEditor>
-                    ) : (
-                      <QuillEditor
-                        mode=""
-                        height={800}
-                        defautValue={freeValue}
-                        isFormula={false}
-                        setContent={(value: string) => {
-                          form.setFieldsValue({ free_content: value });
-                        }}
-                      ></QuillEditor>
-                    )}
-                  </div>
-                  <div className="ml-30">
-                    <Select
-                      value={current}
-                      style={{ width: 150 }}
-                      onChange={(e) => {
-                        confirm({
-                          title: "警告",
-                          icon: <ExclamationCircleFilled />,
-                          content: "切换编辑器将清空已编辑文章内容，是否切换？",
-                          centered: true,
-                          okText: "确认",
-                          cancelText: "取消",
-                          onOk() {
-                            setCurrent(e);
-                            saveEditorKey(e);
-                          },
-                          onCancel() {
-                            console.log("Cancel");
-                          },
-                        });
+                <div className="w-800px">
+                  {editor === "MARKDOWN" ? (
+                    <MdEditor
+                      height={800}
+                      defautValue={defautValue}
+                      setContent={(value: string) => {
+                        form.setFieldsValue({ free_content: value });
                       }}
-                      placeholder="请选择"
-                      options={tools}
-                    />
-                  </div>
+                    ></MdEditor>
+                  ) : (
+                    <QuillEditor
+                      mode=""
+                      height={800}
+                      defautValue={freeValue}
+                      isFormula={false}
+                      setContent={(value: string) => {
+                        form.setFieldsValue({ free_content: value });
+                      }}
+                    ></QuillEditor>
+                  )}
                 </div>
               </Form.Item>
               <Form.Item
@@ -426,65 +376,6 @@ const TopicUpdatePage = () => {
                 rules={[{ required: true, message: "请输入付费内容!" }]}
                 style={{ height: 840 }}
               >
-                <div className="flex flex-row">
-                  <div className="w-800px">
-                    {editor === "MARKDOWN" ? (
-                      <MdEditor
-                        height={800}
-                        defautValue={defautValue}
-                        setContent={(value: string) => {
-                          form.setFieldsValue({ original_content: value });
-                        }}
-                      ></MdEditor>
-                    ) : (
-                      <QuillEditor
-                        mode=""
-                        height={800}
-                        defautValue={defautValue}
-                        isFormula={false}
-                        setContent={(value: string) => {
-                          form.setFieldsValue({ original_content: value });
-                        }}
-                      ></QuillEditor>
-                    )}
-                  </div>
-                  <div className="ml-30">
-                    <Select
-                      value={current}
-                      style={{ width: 150 }}
-                      onChange={(e) => {
-                        confirm({
-                          title: "警告",
-                          icon: <ExclamationCircleFilled />,
-                          content: "切换编辑器将清空已编辑文章内容，是否切换？",
-                          centered: true,
-                          okText: "确认",
-                          cancelText: "取消",
-                          onOk() {
-                            setCurrent(e);
-                            saveEditorKey(e);
-                          },
-                          onCancel() {
-                            console.log("Cancel");
-                          },
-                        });
-                      }}
-                      placeholder="请选择"
-                      options={tools}
-                    />
-                  </div>
-                </div>
-              </Form.Item>
-            </>
-          )}
-          {charge === 0 && (
-            <Form.Item
-              label="文章内容"
-              name="original_content"
-              rules={[{ required: true, message: "请输入文章内容!" }]}
-              style={{ height: 840 }}
-            >
-              <div className="flex flex-row">
                 <div className="w-800px">
                   {editor === "MARKDOWN" ? (
                     <MdEditor
@@ -506,31 +397,36 @@ const TopicUpdatePage = () => {
                     ></QuillEditor>
                   )}
                 </div>
-                <div className="ml-30">
-                  <Select
-                    value={current}
-                    style={{ width: 150 }}
-                    onChange={(e) => {
-                      confirm({
-                        title: "警告",
-                        icon: <ExclamationCircleFilled />,
-                        content: "切换编辑器将清空已编辑文章内容，是否切换？",
-                        centered: true,
-                        okText: "确认",
-                        cancelText: "取消",
-                        onOk() {
-                          setCurrent(e);
-                          saveEditorKey(e);
-                        },
-                        onCancel() {
-                          console.log("Cancel");
-                        },
-                      });
+              </Form.Item>
+            </>
+          )}
+          {charge === 0 && (
+            <Form.Item
+              label="文章内容"
+              name="original_content"
+              rules={[{ required: true, message: "请输入文章内容!" }]}
+              style={{ height: 840 }}
+            >
+              <div className="w-800px">
+                {editor === "MARKDOWN" ? (
+                  <MdEditor
+                    height={800}
+                    defautValue={defautValue}
+                    setContent={(value: string) => {
+                      form.setFieldsValue({ original_content: value });
                     }}
-                    placeholder="请选择"
-                    options={tools}
-                  />
-                </div>
+                  ></MdEditor>
+                ) : (
+                  <QuillEditor
+                    mode=""
+                    height={800}
+                    defautValue={defautValue}
+                    isFormula={false}
+                    setContent={(value: string) => {
+                      form.setFieldsValue({ original_content: value });
+                    }}
+                  ></QuillEditor>
+                )}
               </div>
             </Form.Item>
           )}

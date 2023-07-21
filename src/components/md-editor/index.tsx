@@ -6,7 +6,7 @@ import { SelectImage } from "../../components";
 interface PropInterface {
   height: number;
   defautValue: string;
-  setContent: (value: string) => void;
+  setContent: (value: string, renderValue: string) => void;
 }
 
 export const MdEditor: React.FC<PropInterface> = (props) => {
@@ -20,6 +20,13 @@ export const MdEditor: React.FC<PropInterface> = (props) => {
     }
   }, [defautValue]);
 
+  useEffect(() => {
+    let div: any = document.getElementById("render-content");
+    let htmlString = div.innerHTML;
+    console.log(htmlString);
+    setContent(value, htmlString);
+  }, [value]);
+
   return (
     <>
       <div style={{ height: height || 300 }}>
@@ -29,7 +36,6 @@ export const MdEditor: React.FC<PropInterface> = (props) => {
           value={value}
           onChange={(newValue = "") => {
             setValue(newValue);
-            setContent(newValue);
           }}
           components={{
             toolbar: (command, disabled, executeCommand) => {

@@ -33,6 +33,7 @@ const BookArticleUpdatePage = () => {
   const [charge, setCharge] = useState(0);
   const [defautValue, setDefautValue] = useState("");
   const [editor, setEditor] = useState("");
+  const [renderValue, setRenderValue] = useState("");
   const [id, setId] = useState(Number(result.get("id")));
   const [bid, setBid] = useState(Number(result.get("bid")));
 
@@ -68,6 +69,7 @@ const BookArticleUpdatePage = () => {
       });
       setEditor(data.editor);
       setDefautValue(data.original_content);
+      setRenderValue(data.render_content);
     });
   };
 
@@ -96,7 +98,11 @@ const BookArticleUpdatePage = () => {
       return;
     }
     values.editor = editor;
-    values.render_content = values.original_content;
+    if (editor === "MARKDOWN") {
+      values.render_content = renderValue;
+    } else {
+      values.render_content = values.original_content;
+    }
     values.bid = bid;
     values.published_at = moment(new Date(values.published_at)).format(
       "YYYY-MM-DD HH:mm"
@@ -231,8 +237,9 @@ const BookArticleUpdatePage = () => {
                 <MdEditor
                   height={800}
                   defautValue={defautValue}
-                  setContent={(value: string) => {
+                  setContent={(value: string, renderValue: string) => {
                     form.setFieldsValue({ original_content: value });
+                    setRenderValue(renderValue);
                   }}
                 ></MdEditor>
               ) : (

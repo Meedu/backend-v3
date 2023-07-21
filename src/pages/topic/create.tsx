@@ -41,6 +41,8 @@ const TopicCreatePage = () => {
   const [thumb, setThumb] = useState<string>("");
   const [current, setCurrent] = useState("");
   const [editor, setEditor] = useState("");
+  const [renderValue, setRenderValue] = useState("");
+  const [freeRenderValue, setFreeRenderValue] = useState("");
   const tools = [
     { label: "Markdown", value: "markdown" },
     { label: "富文本编辑器", value: "quill" },
@@ -106,11 +108,13 @@ const TopicCreatePage = () => {
     }
     if (getEditorKey() === "markdown") {
       values.editor = "MARKDOWN";
+      values.render_content = renderValue;
+      values.free_content_render = freeRenderValue;
     } else {
       values.editor = "FULLEDITOR";
+      values.render_content = values.original_content;
+      values.free_content_render = values.free_content;
     }
-    values.render_content = values.original_content;
-    values.free_content_render = values.free_content;
     values.sorted_at = moment(new Date(values.sorted_at)).format(
       "YYYY-MM-DD HH:mm"
     );
@@ -338,8 +342,9 @@ const TopicCreatePage = () => {
                       <MdEditor
                         height={800}
                         defautValue=""
-                        setContent={(value: string) => {
+                        setContent={(value: string, renderValue: string) => {
                           form.setFieldsValue({ free_content: value });
+                          setFreeRenderValue(renderValue);
                         }}
                       ></MdEditor>
                     ) : (
@@ -393,8 +398,9 @@ const TopicCreatePage = () => {
                       <MdEditor
                         height={800}
                         defautValue=""
-                        setContent={(value: string) => {
+                        setContent={(value: string, renderValue: string) => {
                           form.setFieldsValue({ original_content: value });
+                          setRenderValue(renderValue);
                         }}
                       ></MdEditor>
                     ) : (
@@ -451,8 +457,9 @@ const TopicCreatePage = () => {
                     <MdEditor
                       height={800}
                       defautValue=""
-                      setContent={(value: string) => {
+                      setContent={(value: string, renderValue: string) => {
                         form.setFieldsValue({ original_content: value });
+                        setRenderValue(renderValue);
                       }}
                     ></MdEditor>
                   ) : (

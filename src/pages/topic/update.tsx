@@ -41,6 +41,8 @@ const TopicUpdatePage = () => {
   const [freeValue, setFreeValue] = useState("");
   const [defautValue, setDefautValue] = useState("");
   const [id, setId] = useState(Number(result.get("id")));
+  const [renderValue, setRenderValue] = useState("");
+  const [freeRenderValue, setFreeRenderValue] = useState("");
 
   useEffect(() => {
     document.title = "编辑图文";
@@ -82,6 +84,8 @@ const TopicUpdatePage = () => {
       setCharge(data.charge);
       setDefautValue(data.original_content);
       setFreeValue(data.free_content);
+      setFreeRenderValue(data.free_content_render);
+      setRenderValue(data.render_content);
       setOriginalCharge(data.charge);
       setThumb(data.thumb);
       setEditor(data.editor);
@@ -112,6 +116,7 @@ const TopicUpdatePage = () => {
       values.is_vip_free = false;
       values.free_content = "";
       values.free_content_render = "";
+      setFreeRenderValue("");
     }
 
     if (Number(values.charge) % 1 !== 0) {
@@ -124,8 +129,13 @@ const TopicUpdatePage = () => {
       return;
     }
     values.editor = editor;
-    values.render_content = values.original_content;
-    values.free_content_render = values.free_content;
+    if (editor === "MARKDOWN") {
+      values.render_content = renderValue;
+      values.free_content_render = freeRenderValue;
+    } else {
+      values.render_content = values.original_content;
+      values.free_content_render = values.free_content;
+    }
     values.sorted_at = moment(new Date(values.sorted_at)).format(
       "YYYY-MM-DD HH:mm"
     );
@@ -353,8 +363,9 @@ const TopicUpdatePage = () => {
                     <MdEditor
                       height={800}
                       defautValue={defautValue}
-                      setContent={(value: string) => {
+                      setContent={(value: string, renderValue: string) => {
                         form.setFieldsValue({ free_content: value });
+                        setFreeRenderValue(renderValue);
                       }}
                     ></MdEditor>
                   ) : (
@@ -381,8 +392,9 @@ const TopicUpdatePage = () => {
                     <MdEditor
                       height={800}
                       defautValue={defautValue}
-                      setContent={(value: string) => {
+                      setContent={(value: string, renderValue: string) => {
                         form.setFieldsValue({ original_content: value });
+                        setRenderValue(renderValue);
                       }}
                     ></MdEditor>
                   ) : (
@@ -412,8 +424,9 @@ const TopicUpdatePage = () => {
                   <MdEditor
                     height={800}
                     defautValue={defautValue}
-                    setContent={(value: string) => {
+                    setContent={(value: string, renderValue: string) => {
                       form.setFieldsValue({ original_content: value });
+                      setRenderValue(renderValue);
                     }}
                   ></MdEditor>
                 ) : (

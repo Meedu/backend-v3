@@ -36,6 +36,7 @@ const BookArticleCreatePage = () => {
   const [charge, setCharge] = useState(0);
   const [current, setCurrent] = useState("");
   const [editor, setEditor] = useState("");
+  const [renderValue, setRenderValue] = useState("");
   const [bid, setBid] = useState(Number(result.get("book_id")));
   const tools = [
     { label: "Markdown", value: "markdown" },
@@ -98,7 +99,7 @@ const BookArticleCreatePage = () => {
 
     if (getEditorKey() === "markdown") {
       values.editor = "MARKDOWN";
-      values.render_content = values.original_content;
+      values.render_content = renderValue;
     } else {
       values.editor = "FULLEDITOR";
       values.render_content = values.original_content;
@@ -238,8 +239,9 @@ const BookArticleCreatePage = () => {
                   <MdEditor
                     height={800}
                     defautValue=""
-                    setContent={(value: string) => {
+                    setContent={(value: string, renderValue: string) => {
                       form.setFieldsValue({ original_content: value });
+                      setRenderValue(renderValue);
                     }}
                   ></MdEditor>
                 ) : (

@@ -132,6 +132,16 @@ const LiveWatchUsersPage = () => {
       ),
     },
     {
+      title: "看完",
+      width: 80,
+      render: (_, record: any) => (
+        <>
+          {record.is_watched === 1 && <span className="c-green">是</span>}
+          {record.is_watched !== 1 && <span>否</span>}
+        </>
+      ),
+    },
+    {
       title: "开始时间",
       width: 200,
       dataIndex: "created_at",
@@ -142,16 +152,6 @@ const LiveWatchUsersPage = () => {
       width: 200,
       dataIndex: "watched_at",
       render: (watched_at: string) => <span>{dateFormat(watched_at)}</span>,
-    },
-    {
-      title: "看完",
-      width: 80,
-      render: (_, record: any) => (
-        <>
-          {record.is_watched === 1 && <span className="c-red">是</span>}
-          {record.is_watched !== 1 && <span>否</span>}
-        </>
-      ),
     },
   ];
 
@@ -205,9 +205,9 @@ const LiveWatchUsersPage = () => {
           "手机号",
           "观看进度",
           "学习总时长",
+          "看完",
           "开始时间",
           "看完时间",
-          "看完",
         ],
       ];
       res.data.data.forEach((item: any) => {
@@ -217,13 +217,13 @@ const LiveWatchUsersPage = () => {
           item.user.mobile,
           item.progress + "%",
           durationTime(item.total_duration),
+          item.is_watched === 1 ? "是" : "否",
           item.created_at
             ? moment(item.created_at).format("YYYY-MM-DD HH:mm")
             : "",
           item.watched_at
             ? moment(item.watched_at).format("YYYY-MM-DD HH:mm")
             : "",
-          item.is_watched === 1 ? "是" : "否",
         ]);
       });
 

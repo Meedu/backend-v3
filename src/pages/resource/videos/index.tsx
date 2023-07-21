@@ -158,16 +158,16 @@ const ResourceVideosPage = () => {
       render: (_, record: any) => <div>{record.size_mb}MB</div>,
     },
     {
-      title: "转码",
+      title: "加密",
       width: 120,
       render: (_, record: any) => (
         <>
           {record.storage_driver === "aliyun" &&
           checkTrans(record.storage_file_id) ? (
-            <span>已转码</span>
+            <span>已加密</span>
           ) : record.storage_driver === "tencent" &&
             checkTenTrans(record.storage_file_id) ? (
-            <span>已转码</span>
+            <span>已加密</span>
           ) : (
             <span>-</span>
           )}
@@ -187,7 +187,7 @@ const ResourceVideosPage = () => {
           {record.storage_driver === "aliyun" && (
             <PerButton
               type="link"
-              text="转码"
+              text="加密"
               class="c-primary"
               icon={null}
               p="ali-hls-transcode.submit"
@@ -200,7 +200,7 @@ const ResourceVideosPage = () => {
           {record.storage_driver === "tencent" && (
             <PerButton
               type="link"
-              text="转码"
+              text="加密"
               class="c-primary"
               icon={null}
               p="addons.TencentCloudHls.transcode.submit"
@@ -269,7 +269,7 @@ const ResourceVideosPage = () => {
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认转码选中的视频？",
+      content: "确认加密选中的视频？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
@@ -291,7 +291,7 @@ const ResourceVideosPage = () => {
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认转码选中的视频？",
+      content: "确认加密选中的视频？",
       centered: true,
       okText: "确认",
       cancelText: "取消",

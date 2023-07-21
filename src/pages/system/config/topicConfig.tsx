@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Input, message, Button } from "antd";
+import { Spin, Form, message, Button } from "antd";
 import styles from "./topicConfig.module.scss";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,22 +32,31 @@ const SystemTopicConfigPage = () => {
   }, []);
 
   const getDetail = () => {
-    system.setting().then((res: any) => {
-      let configData = res.data["图文"];
-      let data: any = [];
-      for (let index in configData) {
-        if (
-          configData[index].key ===
-          "meedu.addons.meedu_topics.pc_list_page_rec_ids"
-        ) {
-          if (configData[index].value && configData[index].value.length > 0) {
-            data = configData[index].value.split(",").map(Number);
-            setSelected(data);
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    system
+      .setting()
+      .then((res: any) => {
+        let configData = res.data["图文"];
+        let data: any = [];
+        for (let index in configData) {
+          if (
+            configData[index].key ===
+            "meedu.addons.meedu_topics.pc_list_page_rec_ids"
+          ) {
+            if (configData[index].value && configData[index].value.length > 0) {
+              data = configData[index].value.split(",").map(Number);
+              setSelected(data);
+            }
           }
         }
-      }
-      getCourse(data);
-    });
+        getCourse(data);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   };
   const getCourse = (sel: any) => {
     topic
@@ -58,6 +67,10 @@ const SystemTopicConfigPage = () => {
       .then((res: any) => {
         setCourses(res.data.data.data);
         checkThumbox(res.data.data.data, sel);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -134,7 +147,20 @@ const SystemTopicConfigPage = () => {
           <HelperText text="添加推荐的图文会在PC端图文列表右侧悬浮展示"></HelperText>
         </div>
       </div>
-      {selected && list && list.length > 0 && (
+      {loading && (
+        <div
+          style={{
+            width: "100%",
+            textAlign: "center",
+            paddingTop: 50,
+            paddingBottom: 30,
+            boxSizing: "border-box",
+          }}
+        >
+          <Spin />
+        </div>
+      )}
+      {!loading && selected && list && list.length > 0 && (
         <div className={styles["thumb-box"]}>
           {list.map((item: any, index: number) => (
             <div

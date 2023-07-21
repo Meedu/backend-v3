@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Form, Input, message, Button, Select } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Spin, Form, Input, message, Button } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { system } from "../../../api/index";
 import { BackBartment } from "../../../components";
@@ -10,7 +10,7 @@ const SystemWechatMiniConfigPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     document.title = "微信小程序";
@@ -19,28 +19,34 @@ const SystemWechatMiniConfigPage = () => {
   }, []);
 
   const getDetail = () => {
-    system.setting().then((res: any) => {
-      let configData = res.data["微信小程序"];
-      for (let index in configData) {
-        if (
-          configData[index].key ===
-          "meedu.addons.TemplateOne.wechat_mini.app_id"
-        ) {
-          form.setFieldsValue({
-            "meedu.addons.TemplateOne.wechat_mini.app_id":
-              configData[index].value,
-          });
-        } else if (
-          configData[index].key ===
-          "meedu.addons.TemplateOne.wechat_mini.secret"
-        ) {
-          form.setFieldsValue({
-            "meedu.addons.TemplateOne.wechat_mini.secret":
-              configData[index].value,
-          });
+    system
+      .setting()
+      .then((res: any) => {
+        let configData = res.data["微信小程序"];
+        for (let index in configData) {
+          if (
+            configData[index].key ===
+            "meedu.addons.TemplateOne.wechat_mini.app_id"
+          ) {
+            form.setFieldsValue({
+              "meedu.addons.TemplateOne.wechat_mini.app_id":
+                configData[index].value,
+            });
+          } else if (
+            configData[index].key ===
+            "meedu.addons.TemplateOne.wechat_mini.secret"
+          ) {
+            form.setFieldsValue({
+              "meedu.addons.TemplateOne.wechat_mini.secret":
+                configData[index].value,
+            });
+          }
         }
-      }
-    });
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   };
 
   const onFinish = (values: any) => {
@@ -70,31 +76,46 @@ const SystemWechatMiniConfigPage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="微信小程序"></BackBartment>
-      <div className="float-left mt-30">
-        <Form
-          form={form}
-          name="system-wechatmini-config"
-          labelCol={{ span: 3 }}
-          wrapperCol={{ span: 21 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
+      {loading && (
+        <div
+          style={{
+            width: "100%",
+            textAlign: "center",
+            paddingTop: 50,
+            paddingBottom: 30,
+            boxSizing: "border-box",
+          }}
         >
-          <Form.Item
-            label="AppId"
-            name="meedu.addons.TemplateOne.wechat_mini.app_id"
+          <Spin />
+        </div>
+      )}
+      {!loading && (
+        <div className="float-left mt-30">
+          <Form
+            form={form}
+            name="system-wechatmini-config"
+            labelCol={{ span: 3 }}
+            wrapperCol={{ span: 21 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
           >
-            <Input style={{ width: 300 }} allowClear />
-          </Form.Item>
-          <Form.Item
-            label="Secret"
-            name="meedu.addons.TemplateOne.wechat_mini.secret"
-          >
-            <Input style={{ width: 300 }} allowClear />
-          </Form.Item>
-        </Form>
-      </div>
+            <Form.Item
+              label="AppId"
+              name="meedu.addons.TemplateOne.wechat_mini.app_id"
+            >
+              <Input style={{ width: 300 }} allowClear />
+            </Form.Item>
+            <Form.Item
+              label="Secret"
+              name="meedu.addons.TemplateOne.wechat_mini.secret"
+            >
+              <Input style={{ width: 300 }} allowClear />
+            </Form.Item>
+          </Form>
+        </div>
+      )}
       <div className="bottom-menus">
         <div className="bottom-menus-box">
           <div>

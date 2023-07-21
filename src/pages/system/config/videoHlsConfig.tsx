@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Input, message, Button, Select } from "antd";
+import { Spin, Form, Input, message, Button, Select } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
@@ -11,7 +11,7 @@ const SystemvVideoHlsConfigPage = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const enabledAddons = useSelector(
     (state: any) => state.enabledAddonsConfig.value.enabledAddons
   );
@@ -124,73 +124,80 @@ const SystemvVideoHlsConfigPage = () => {
   }, []);
 
   const getDetail = () => {
-    system.setting().then((res: any) => {
-      if (enabledAddons["AliyunHls"] === 1) {
-        let configData = res.data["阿里云HLS加密"];
-        for (let index in configData) {
-          if (configData[index].key === "meedu.addons.AliyunHls.region") {
-            form.setFieldsValue({
-              "meedu.addons.AliyunHls.region": configData[index].value,
-            });
-          } else if (
-            configData[index].key === "meedu.addons.AliyunHls.template_id"
-          ) {
-            form.setFieldsValue({
-              "meedu.addons.AliyunHls.template_id": configData[index].value,
-            });
-          } else if (
-            configData[index].key === "meedu.addons.AliyunHls.access_key"
-          ) {
-            form.setFieldsValue({
-              "meedu.addons.AliyunHls.access_key": configData[index].value,
-            });
-          } else if (
-            configData[index].key === "meedu.addons.AliyunHls.access_secret"
-          ) {
-            form.setFieldsValue({
-              "meedu.addons.AliyunHls.access_secret": configData[index].value,
-            });
-          } else if (
-            configData[index].key === "meedu.addons.AliyunHls.kms_region"
-          ) {
-            form.setFieldsValue({
-              "meedu.addons.AliyunHls.kms_region": configData[index].value,
-            });
-          } else if (
-            configData[index].key === "meedu.addons.AliyunHls.kms_key_id"
-          ) {
-            form.setFieldsValue({
-              "meedu.addons.AliyunHls.kms_key_id": configData[index].value,
-            });
-          }
-        }
-      }
-      if (enabledAddons["TencentCloudHls"] === 1) {
-        let configTenData = res.data["腾讯云HLS加密"];
-        for (let index in configTenData) {
-          if (
-            configTenData[index].key === "meedu.addons.TencentCloudHls.region"
-          ) {
-            form.setFieldsValue({
-              "meedu.addons.TencentCloudHls.region": configTenData[index].value,
-            });
-          } else if (
-            configTenData[index].key ===
-            "meedu.addons.TencentCloudHls.transcode_definition"
-          ) {
-            if (
-              configTenData[index].value &&
-              configTenData[index].value.length > 0
+    system
+      .setting()
+      .then((res: any) => {
+        if (enabledAddons["AliyunHls"] === 1) {
+          let configData = res.data["阿里云HLS加密"];
+          for (let index in configData) {
+            if (configData[index].key === "meedu.addons.AliyunHls.region") {
+              form.setFieldsValue({
+                "meedu.addons.AliyunHls.region": configData[index].value,
+              });
+            } else if (
+              configData[index].key === "meedu.addons.AliyunHls.template_id"
             ) {
               form.setFieldsValue({
-                "meedu.addons.TencentCloudHls.transcode_definition":
-                  configTenData[index].value.split(","),
+                "meedu.addons.AliyunHls.template_id": configData[index].value,
+              });
+            } else if (
+              configData[index].key === "meedu.addons.AliyunHls.access_key"
+            ) {
+              form.setFieldsValue({
+                "meedu.addons.AliyunHls.access_key": configData[index].value,
+              });
+            } else if (
+              configData[index].key === "meedu.addons.AliyunHls.access_secret"
+            ) {
+              form.setFieldsValue({
+                "meedu.addons.AliyunHls.access_secret": configData[index].value,
+              });
+            } else if (
+              configData[index].key === "meedu.addons.AliyunHls.kms_region"
+            ) {
+              form.setFieldsValue({
+                "meedu.addons.AliyunHls.kms_region": configData[index].value,
+              });
+            } else if (
+              configData[index].key === "meedu.addons.AliyunHls.kms_key_id"
+            ) {
+              form.setFieldsValue({
+                "meedu.addons.AliyunHls.kms_key_id": configData[index].value,
               });
             }
           }
         }
-      }
-    });
+        if (enabledAddons["TencentCloudHls"] === 1) {
+          let configTenData = res.data["腾讯云HLS加密"];
+          for (let index in configTenData) {
+            if (
+              configTenData[index].key === "meedu.addons.TencentCloudHls.region"
+            ) {
+              form.setFieldsValue({
+                "meedu.addons.TencentCloudHls.region":
+                  configTenData[index].value,
+              });
+            } else if (
+              configTenData[index].key ===
+              "meedu.addons.TencentCloudHls.transcode_definition"
+            ) {
+              if (
+                configTenData[index].value &&
+                configTenData[index].value.length > 0
+              ) {
+                form.setFieldsValue({
+                  "meedu.addons.TencentCloudHls.transcode_definition":
+                    configTenData[index].value.split(","),
+                });
+              }
+            }
+          }
+        }
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   };
 
   const onFinish = (values: any) => {
@@ -229,79 +236,98 @@ const SystemvVideoHlsConfigPage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="视频加密"></BackBartment>
-      <div className="float-left">
-        <Form
-          form={form}
-          name="system-videoHls-config"
-          labelCol={{ span: 3 }}
-          wrapperCol={{ span: 21 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
+      {loading && (
+        <div
+          style={{
+            width: "100%",
+            textAlign: "center",
+            paddingTop: 50,
+            paddingBottom: 30,
+            boxSizing: "border-box",
+          }}
         >
-          {enabledAddons["AliyunHls"] === 1 && (
-            <>
-              <div className="from-title mt-30">阿里云HLS加密</div>
-              <Form.Item
-                label="视频转码模板ID"
-                name="meedu.addons.AliyunHls.template_id"
-              >
-                <Form.Item name="meedu.addons.AliyunHls.template_id">
+          <Spin />
+        </div>
+      )}
+      {!loading && (
+        <div className="float-left">
+          <Form
+            form={form}
+            name="system-videoHls-config"
+            labelCol={{ span: 3 }}
+            wrapperCol={{ span: 21 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            {enabledAddons["AliyunHls"] === 1 && (
+              <>
+                <div className="from-title mt-30">阿里云HLS加密</div>
+                <Form.Item
+                  label="视频转码模板ID"
+                  name="meedu.addons.AliyunHls.template_id"
+                >
+                  <Form.Item name="meedu.addons.AliyunHls.template_id">
+                    <Input style={{ width: 300 }} allowClear />
+                  </Form.Item>
+                  <div className="form-helper-text">
+                    <span>
+                      配置教程地址：https://www.yuque.com/meedu/fvvkbf/xdqeeb
+                    </span>
+                  </div>
+                </Form.Item>
+                <Form.Item
+                  label="AccessKeyId"
+                  name="meedu.addons.AliyunHls.access_key"
+                >
                   <Input style={{ width: 300 }} allowClear />
                 </Form.Item>
-                <div className="form-helper-text">
-                  <span>
-                    配置教程地址：https://www.yuque.com/meedu/fvvkbf/xdqeeb
-                  </span>
-                </div>
-              </Form.Item>
-              <Form.Item
-                label="AccessKeyId"
-                name="meedu.addons.AliyunHls.access_key"
-              >
-                <Input style={{ width: 300 }} allowClear />
-              </Form.Item>
-              <Form.Item
-                label="AccessKeySecret"
-                name="meedu.addons.AliyunHls.access_secret"
-              >
-                <Input style={{ width: 300 }} allowClear />
-              </Form.Item>
-            </>
-          )}
-          {enabledAddons["TencentCloudHls"] === 1 && (
-            <>
-              <div className="from-title mt-30">腾讯云HLS加密</div>
-              <Form.Item
-                label="腾讯云视频存储region"
-                name="meedu.addons.TencentCloudHls.region"
-              >
-                <Form.Item name="meedu.addons.TencentCloudHls.region">
-                  <Select style={{ width: 300 }} allowClear options={regions} />
+                <Form.Item
+                  label="AccessKeySecret"
+                  name="meedu.addons.AliyunHls.access_secret"
+                >
+                  <Input style={{ width: 300 }} allowClear />
                 </Form.Item>
-                <div className="form-helper-text">
-                  <span>
-                    配置教程：https://www.yuque.com/meedu/ww4uyo/umxey1
-                  </span>
-                </div>
-              </Form.Item>
-              <Form.Item
-                label="清晰度(多个请用英文逗号连接)"
-                name="meedu.addons.TencentCloudHls.transcode_definition"
-              >
-                <Select
-                  mode="multiple"
-                  style={{ width: 300 }}
-                  allowClear
-                  options={definition}
-                  placeholder="请选择"
-                />
-              </Form.Item>
-            </>
-          )}
-        </Form>
-      </div>
+              </>
+            )}
+            {enabledAddons["TencentCloudHls"] === 1 && (
+              <>
+                <div className="from-title mt-30">腾讯云HLS加密</div>
+                <Form.Item
+                  label="腾讯云视频存储region"
+                  name="meedu.addons.TencentCloudHls.region"
+                >
+                  <Form.Item name="meedu.addons.TencentCloudHls.region">
+                    <Select
+                      style={{ width: 300 }}
+                      allowClear
+                      options={regions}
+                    />
+                  </Form.Item>
+                  <div className="form-helper-text">
+                    <span>
+                      配置教程：https://www.yuque.com/meedu/ww4uyo/umxey1
+                    </span>
+                  </div>
+                </Form.Item>
+                <Form.Item
+                  label="清晰度(多个请用英文逗号连接)"
+                  name="meedu.addons.TencentCloudHls.transcode_definition"
+                >
+                  <Select
+                    mode="multiple"
+                    style={{ width: 300 }}
+                    allowClear
+                    options={definition}
+                    placeholder="请选择"
+                  />
+                </Form.Item>
+              </>
+            )}
+          </Form>
+        </div>
+      )}
       <div className="bottom-menus">
         <div className="bottom-menus-box">
           <div>

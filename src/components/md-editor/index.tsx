@@ -23,7 +23,6 @@ export const MdEditor: React.FC<PropInterface> = (props) => {
   useEffect(() => {
     let div: any = document.getElementById("render-content");
     let htmlString = div.innerHTML;
-    console.log(htmlString);
     setContent(value, htmlString);
   }, [value]);
 

@@ -178,7 +178,6 @@ const DashboardPage = () => {
   };
 
   const onChange = (date: any, dateString: any) => {
-    dateString[0] += " 00:00:00";
     dateString[1] += " 23:59:59";
     setStartAt(dateString[0]);
     setEndAt(dateString[1]);

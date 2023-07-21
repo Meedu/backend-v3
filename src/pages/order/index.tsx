@@ -675,7 +675,6 @@ const OrderPage = () => {
             value={createdAts}
             style={{ marginTop: 20 }}
             onChange={(date, dateString) => {
-              dateString[0] += " 00:00:00";
               dateString[1] += " 23:59:59";
               setCreatedAt(dateString);
               setCreatedAts(date);

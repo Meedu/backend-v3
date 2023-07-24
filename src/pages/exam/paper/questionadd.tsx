@@ -33,8 +33,8 @@ const PaperQuestionCreatePage = () => {
   const [levels, setLevels] = useState<any>([]);
 
   useEffect(() => {
-    document.title = "添加试题";
-    dispatch(titleAction("添加试题"));
+    document.title = "新建试题";
+    dispatch(titleAction("新建试题"));
   }, []);
 
   useEffect(() => {
@@ -206,7 +206,7 @@ const PaperQuestionCreatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="添加试题" />
+      <BackBartment title="新建试题" />
       <div className="float-left j-b-flex mb-30 mt-30">
         <div className="d-flex">
           <Button type="primary" onClick={() => addmulti()}>

@@ -229,7 +229,7 @@ const PaperQuestionPage = () => {
       <div className="float-left mb-30 mt-30">
         <PerButton
           type="primary"
-          text="添加试题"
+          text="新建试题"
           class=""
           icon={null}
           p="addons.Paper.paper.questions.add"

@@ -417,7 +417,7 @@ const MemberPage = () => {
     confirm({
       title: "警告",
       icon: <ExclamationCircleFilled />,
-      content: "即将删除此账号，确认操作？",
+      content: "删除学员账号将删除其所有数据，确认删除？",
       centered: true,
       okText: "确认",
       cancelText: "取消",

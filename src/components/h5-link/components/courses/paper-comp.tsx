@@ -36,7 +36,7 @@ export const PaperComp = (props: PropsInterface) => {
         size: size,
         sort: "created_at",
         order: "desc",
-        key: keywords,
+        keywords: keywords,
       })
       .then((res: any) => {
         setList(res.data.data.data);

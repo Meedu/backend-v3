@@ -21,12 +21,15 @@ export const MdEditor: React.FC<PropInterface> = (props) => {
   }, [defautValue]);
 
   useEffect(() => {
+    // 拿到渲染后的值
     let div: any = document.getElementById("render-content");
-    let htmlString = div.innerHTML;
-    var tempDiv = document.createElement("div");
-    tempDiv.innerHTML = htmlString;
-    var outerDiv = tempDiv.getElementsByTagName("div")[0];
-    let renderValue = outerDiv.innerHTML;
+    let uselessA = div
+      .getElementsByTagName("div")[0]
+      .querySelectorAll(".anchor");
+    for (let i = 0; i < uselessA.length; i++) {
+      uselessA[i].remove();
+    }
+    let renderValue = div.getElementsByTagName("div")[0].innerHTML;
     setContent(value, renderValue);
   }, [value]);
 

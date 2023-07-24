@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import styles from "./index.module.scss";
 import { Outlet } from "react-router-dom";
-import { Header, LeftMenu } from "../../components";
+import { Header, LeftMenu } from "../../../components";
+import { Suspense } from "react";
+import LoadingPage from "../../loading";
 
 const HomePage = () => {
   useEffect(() => {}, []);
@@ -17,8 +19,10 @@ const HomePage = () => {
             <Header></Header>
           </div>
           <div className={styles["right-main"]}>
-            {/* 二级路由出口 */}
-            <Outlet />
+            <Suspense fallback={<LoadingPage height="100vh" />}>
+              {/* 二级路由出口 */}
+              <Outlet />
+            </Suspense>
           </div>
         </div>
       </div>

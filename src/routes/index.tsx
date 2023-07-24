@@ -5,7 +5,9 @@ import { login, system } from "../api";
 import InitPage from "../pages/init";
 import { getToken } from "../utils";
 import LoginPage from "../pages/login";
-import HomePage from "../pages/home";
+import WithHeaderWithoutFooter from "../pages/layouts/with-header-without-footer";
+import WithoutHeaderWithoutFooter from "../pages/layouts/without-header-without-footer";
+
 //主页
 const DashboardPage = lazy(() => import("../pages/dashboard"));
 //修改密码页面
@@ -378,7 +380,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "/",
-        element: <HomePage />,
+        element: <WithHeaderWithoutFooter />,
         children: [
           {
             path: "/",
@@ -772,16 +774,22 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      { path: "/certificate/create", element: <CertificateCreatePage /> },
-      { path: "/certificate/update", element: <CertificateUpdatePage /> },
-      { path: "/decoration/pc", element: <DecorationPCPage /> },
-      { path: "/decoration/h5", element: <DecorationH5Page /> },
-      {
-        path: "*",
-        element: <ErrorPage />,
+        path: "/",
+        element: <WithoutHeaderWithoutFooter />,
+        children: [
+          {
+            path: "/login",
+            element: <LoginPage />,
+          },
+          { path: "/certificate/create", element: <CertificateCreatePage /> },
+          { path: "/certificate/update", element: <CertificateUpdatePage /> },
+          { path: "/decoration/pc", element: <DecorationPCPage /> },
+          { path: "/decoration/h5", element: <DecorationH5Page /> },
+          {
+            path: "*",
+            element: <ErrorPage />,
+          },
+        ],
       },
     ],
   },

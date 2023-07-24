@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { course } from "../../../api/index";
 import * as XLSX from "xlsx";
-import { CloseCircleOutlined } from "@ant-design/icons";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { BackBartment } from "../../../components";
 import { getUrl } from "../../../utils/index";
@@ -46,19 +45,54 @@ const CourseVideoImportPage = () => {
 
   const handleImpotedJson = (jsonArr: any[], file: any) => {
     jsonArr.splice(0, 2); // 去掉表头[第一行规则描述,第二行表头名]
-    let data: any[] = [];
-    for (let i = 0; i < jsonArr.length; i++) {
-      let tmpItem = jsonArr[i];
-      tmpItem.splice(7, 0, 1000);
-      tmpItem.splice(9, 0, "");
-      tmpItem.splice(10, 0, "");
+    let data: any = [];
+    jsonArr.forEach((item) => {
+      let tmpItem = [];
+
+      tmpItem[0] = item[0]; //课程名
+      tmpItem[1] = item[1]; //章节名
+      tmpItem[2] = item[2]; //视频名
+      tmpItem[3] = parseInt(item[3] || 0); //视频时长
+      tmpItem[4] = item[4]; //腾讯云视频id
+      tmpItem[5] = item[5]; //URL直链
+      tmpItem[6] = item[6]; //阿里云视频id
+      tmpItem[7] = 0; //价格[已废弃字段,但是位置保留]
+      tmpItem[8] = item[7] || ""; //上架时间
+      tmpItem[9] = ""; //seo关键字
+      tmpItem[10] = ""; //seo描述
+      tmpItem[11] = parseInt(item[8] || 0); //试看秒数
 
       data.push(tmpItem);
-    }
+    });
     storeBatchTableCertData(data);
   };
 
   const storeBatchTableCertData = (data: any) => {
+    for (let i = 0; i < data.length; i++) {
+      let tempItem: any = data[i];
+      if (!tempItem[0]) {
+        setLoading(false);
+        message.error(`第${i + 2}行课程名为空`);
+        return;
+      }
+      if (!tempItem[2]) {
+        setLoading(false);
+        message.error(`第${i + 2}行课时名称为空`);
+        return;
+      }
+      if (tempItem[3] <= 0) {
+        setLoading(false);
+        message.error(`第${i + 2}行课时时长必须大于0`);
+        return;
+      }
+      if (!tempItem[4] && !tempItem[5] && !tempItem[6]) {
+        setLoading(false);
+        message.error(
+          `第${i + 2}行的腾讯云视频ID、阿里云视频ID、视频URL必须填写一个`
+        );
+        return;
+      }
+    }
     course
       .videoImportAct({ line: 3, data: data })
       .then(() => {

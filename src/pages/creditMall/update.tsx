@@ -47,8 +47,8 @@ const CreditMallUpdatePage = () => {
   ];
 
   useEffect(() => {
-    document.title = "编辑商品";
-    dispatch(titleAction("编辑商品"));
+    document.title = "编辑积分商品";
+    dispatch(titleAction("编辑积分商品"));
   }, []);
 
   useEffect(() => {
@@ -118,7 +118,7 @@ const CreditMallUpdatePage = () => {
 
   return (
     <div className="meedu-main-body">
-      <BackBartment title="编辑商品" />
+      <BackBartment title="编辑积分商品" />
       <div className="center-tabs mb-30">
         <Tabs
           defaultActiveKey={resourceActive}

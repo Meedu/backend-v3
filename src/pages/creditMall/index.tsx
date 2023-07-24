@@ -219,7 +219,7 @@ const CreditMallPage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="新建商品"
+            text="新建积分商品"
             class=""
             icon={null}
             p="addons.credit1Mall.goods.store"

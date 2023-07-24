@@ -203,7 +203,7 @@ const CodeExchangerPage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="新建兑换"
+            text="新建兑换活动"
             class=""
             icon={null}
             p="addons.CodeExchanger.activity.store"

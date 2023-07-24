@@ -282,9 +282,9 @@ const CodeExchangerCodesPage = () => {
           {record.is_used === 1 && (
             <div className="user-item d-flex">
               <div className="avatar">
-                <img src={record.user.avatar} width="40" height="40" />
+                <img src={record.user?.avatar} width="40" height="40" />
               </div>
-              <div className="ml-10">{record.user.nick_name}</div>
+              <div className="ml-10">{record.user?.nick_name}</div>
             </div>
           )}
         </>

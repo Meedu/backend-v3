@@ -409,6 +409,12 @@ export const LeftMenu: React.FC = () => {
     if (location.pathname.indexOf("/course/vod") !== -1) {
       setSelectedKeys(["/course/vod/index"]);
       setOpenKeys(openKeyMerge("/course"));
+    } else if (location.pathname.indexOf("/system/liveConfig") !== -1) {
+      setSelectedKeys(["/system/index"]);
+      setOpenKeys(openKeyMerge("/system"));
+    } else if (location.pathname.indexOf("/system/topicConfig") !== -1) {
+      setSelectedKeys(["/system/index"]);
+      setOpenKeys(openKeyMerge("/system"));
     } else if (location.pathname.indexOf("/live") !== -1) {
       setSelectedKeys(["/live/course/index"]);
       setOpenKeys(openKeyMerge("/live"));

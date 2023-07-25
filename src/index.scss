@@ -964,12 +964,13 @@ textarea.ant-input {
       font-size: 14px;
       color: rgba(0, 0, 0, 0.5);
     }
+
     .value {
       width: 100%;
       height: auto;
       float: left;
       font-size: 24px;
-      font-weight: #333;
+      color: #333;
     }
   }
 }
@@ -1924,7 +1925,6 @@ textarea.ant-input {
     }
   }
 }
-
 
 .qs-quill-editor-box {
   width: 100%;

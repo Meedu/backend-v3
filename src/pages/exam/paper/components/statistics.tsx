@@ -17,6 +17,14 @@ interface PropsInterface {
   id: number;
 }
 
+interface StatInterface {
+  average?: number;
+  max?: number;
+  min?: number;
+  pass_count?: number;
+  pass_rate?: number;
+}
+
 export const Statistics = (props: PropsInterface) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -27,7 +35,7 @@ export const Statistics = (props: PropsInterface) => {
   const [users, setUsers] = useState<any>({});
   const [pass_score, setPassScore] = useState(0);
   const [total_score, setTotalScore] = useState(0);
-  const [stat, setStat] = useState<any>({});
+  const [stat, setStat] = useState<StatInterface>();
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
   const [watched_at, setWatchedAt] = useState<any>([]);
@@ -61,12 +69,6 @@ export const Statistics = (props: PropsInterface) => {
       .catch((e) => {
         setLoading(false);
       });
-  };
-
-  const resetData = () => {
-    setPage(1);
-    setList([]);
-    setRefresh(!refresh);
   };
 
   const resetList = () => {
@@ -148,27 +150,6 @@ export const Statistics = (props: PropsInterface) => {
       render: (submit_at: string) => <span>{dateFormat(submit_at)}</span>,
     },
   ];
-
-  const durationTime = (duration: number) => {
-    let hour: any = Math.floor(duration / 3600);
-    let minute: any = Math.floor((duration - hour * 3600) / 60);
-    let second: any = duration - hour * 3600 - minute * 60;
-    if (hour === 0 && minute === 0 && second === 0) {
-      return null;
-    }
-    if (hour === 0) {
-      hour = "";
-    } else {
-      hour = hour + ":";
-    }
-    if (minute < 10) {
-      minute = "0" + minute;
-    }
-    if (second < 10) {
-      second = "0" + second;
-    }
-    return hour + minute + ":" + second;
-  };
 
   const importexcel = () => {
     if (loading) {
@@ -288,23 +269,23 @@ export const Statistics = (props: PropsInterface) => {
           </div>
           <div className="flex-1 stat-item">
             <div className="name">最低分</div>
-            <div className="value">{stat.min}分</div>
+            <div className="value">{stat?.min}分</div>
           </div>
           <div className="flex-1 stat-item">
             <div className="name">最高分</div>
-            <div className="value">{stat.max}分</div>
+            <div className="value">{stat?.max}分</div>
           </div>
           <div className="flex-1 stat-item">
             <div className="name">平均分</div>
-            <div className="value">{stat.average}分</div>
+            <div className="value">{stat?.average}分</div>
           </div>
           <div className="flex-1 stat-item">
             <div className="name">及格率</div>
-            <div className="value">{stat.pass_rate}%</div>
+            <div className="value">{stat?.pass_rate}%</div>
           </div>
           <div className="flex-1 stat-item">
             <div className="name">及格人数</div>
-            <div className="value">{stat.pass_count}人</div>
+            <div className="value">{stat?.pass_count}人</div>
           </div>
           <div className="flex-1 stat-item">
             <div className="name">总人数</div>

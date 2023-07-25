@@ -347,7 +347,7 @@ const CourseVideoCreatePage = () => {
         onCancel={() => setShowUploadVideoWin(false)}
         onSuccess={(video: any) => {
           form.setFieldsValue({ duration: video.duration });
-          console.log(video)
+          console.log(video);
           if (video.storage_driver === "aliyun") {
             if (!title) {
               form.setFieldsValue({

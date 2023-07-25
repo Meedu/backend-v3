@@ -369,11 +369,6 @@ const CourseVideoUpdatePage = () => {
         onSuccess={(video: any) => {
           form.setFieldsValue({ duration: video.duration });
           if (video.storage_driver === "aliyun") {
-            if (!title) {
-              form.setFieldsValue({
-                title: video.title.replace(".m3u8", "").replace(".mp4", ""),
-              });
-            }
             form.setFieldsValue({
               aliyun_video_id: video.storage_file_id,
               tencent_video_id: null,
@@ -381,11 +376,6 @@ const CourseVideoUpdatePage = () => {
             });
             setTit(video.title);
           } else if (video.storage_driver === "tencent") {
-            if (!title) {
-              form.setFieldsValue({
-                title: video.title.replace(".m3u8", "").replace(".mp4", ""),
-              });
-            }
             form.setFieldsValue({
               aliyun_video_id: null,
               tencent_video_id: video.storage_file_id,
@@ -393,11 +383,6 @@ const CourseVideoUpdatePage = () => {
             });
             setTit(video.title);
           } else if (video.visit_url) {
-            if (!title) {
-              form.setFieldsValue({
-                title: video.name.replace(".m3u8", "").replace(".mp4", ""),
-              });
-            }
             form.setFieldsValue({
               aliyun_video_id: null,
               tencent_video_id: null,

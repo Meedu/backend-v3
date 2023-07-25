@@ -114,7 +114,7 @@ const PracticePage = () => {
     {
       title: "分类",
       width: 200,
-      render: (_, record: any) => <span>{record.category.name}</span>,
+      render: (_, record: any) => <span>{record?.category?.name || "-"}</span>,
     },
     {
       title: "练习名",

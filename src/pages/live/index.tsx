@@ -187,7 +187,7 @@ const LivePage = () => {
       width: "8%",
       render: (_, record: any) => (
         <>
-          {record.category && <span>{record.category.name}</span>}
+          {record.category && <span>{record?.category?.name || '-'}</span>}
           {!record.category && <span className="c-red">数据不完整</span>}
         </>
       ),

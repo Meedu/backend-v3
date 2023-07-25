@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
 import { Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnsType, TableProps } from "antd/es/table";
 import { useLocation } from "react-router-dom";
 import { live } from "../../api/index";
 import { useDispatch } from "react-redux";
 import { titleAction } from "../../store/user/loginUserSlice";
-import { BackBartment } from "../../components";
-import { AniText } from "./components/ani-text";
+import { BackBartment, DurationText } from "../../components";
 
 interface DataType {
   id: React.Key;
   created_at: string;
+  chat_count: number;
+  user_count: number;
+  real_duration: number;
 }
 
 const LiveStatsPage = () => {
@@ -18,6 +20,8 @@ const LiveStatsPage = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
+  const [sort, setSort] = useState("");
+  const [order, setOrder] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [max_chat_count, setMaxChatCount] = useState(0);
   const [max_duration, setMaxDuration] = useState(0);
@@ -35,7 +39,7 @@ const LiveStatsPage = () => {
 
   useEffect(() => {
     getData();
-  }, [id, refresh]);
+  }, [id, sort, order, refresh]);
 
   const getData = () => {
     if (loading) {
@@ -43,7 +47,10 @@ const LiveStatsPage = () => {
     }
     setLoading(true);
     live
-      .stats(id)
+      .stats(id, {
+        sort: sort,
+        order: order,
+      })
       .then((res: any) => {
         setMaxChatCount(res.data.max_chat_count);
         setMaxUserCount(res.data.max_user_count);
@@ -64,16 +71,15 @@ const LiveStatsPage = () => {
     {
       title: "学习人数",
       width: 200,
+      defaultSortOrder: undefined,
+      sorter: (a, b) => a.user_count - b.user_count,
+      dataIndex: "user_count",
       render: (_, record: any) => (
         <>
           {record.status === 0 || record.status === 1 ? (
             <span>-</span>
           ) : (
-            <AniText
-              value={record.user_count}
-              total={max_user_count}
-              type=""
-            ></AniText>
+            <span>{record.user_count}</span>
           )}
         </>
       ),
@@ -81,16 +87,15 @@ const LiveStatsPage = () => {
     {
       title: "聊天消息数",
       width: 200,
+      defaultSortOrder: undefined,
+      sorter: (a, b) => a.chat_count - b.chat_count,
+      dataIndex: "chat_count",
       render: (_, record: any) => (
         <>
           {record.status === 0 || record.status === 1 ? (
             <span>-</span>
           ) : (
-            <AniText
-              value={record.chat_count}
-              total={max_chat_count}
-              type=""
-            ></AniText>
+            <span>{record.chat_count}</span>
           )}
         </>
       ),
@@ -98,21 +103,37 @@ const LiveStatsPage = () => {
     {
       title: "直播时长",
       width: 200,
+      defaultSortOrder: undefined,
+      sorter: (a, b) => a.real_duration - b.real_duration,
+      dataIndex: "real_duration",
       render: (_, record: any) => (
         <>
           {record.status === 0 || record.status === 1 ? (
             <span>-</span>
           ) : (
-            <AniText
-              value={record.real_duration}
-              total={max_duration}
-              type="time"
-            ></AniText>
+            <DurationText duration={record.real_duration}></DurationText>
           )}
         </>
       ),
     },
   ];
+
+  const onChange: TableProps<DataType>["onChange"] = (
+    pagination,
+    filters,
+    sorter: any,
+    extra
+  ) => {
+    // console.log("params", pagination, filters, sorter, extra);
+    if (sorter.order === "ascend") {
+      setOrder("asc");
+    } else if (sorter.order === "descend") {
+      setOrder("desc");
+    } else {
+      setOrder("");
+    }
+    setSort(sorter.field);
+  };
 
   return (
     <div className="meedu-main-body">
@@ -124,6 +145,7 @@ const LiveStatsPage = () => {
           dataSource={list}
           rowKey={(record) => record.id}
           pagination={false}
+          onChange={onChange}
         />
       </div>
     </div>

@@ -27,8 +27,8 @@ export function update(id: number, params: any) {
 export function comment(params: any) {
   return client.get(`/backend/addons/zhibo/course_comment`, params);
 }
-export function stats(id: number) {
-  return client.get(`/backend/addons/zhibo/course/${id}/stats`, {});
+export function stats(id: number, params: any) {
+  return client.get(`/backend/addons/zhibo/course/${id}/stats`, params);
 }
 
 export function commentDestoryMulti(params: any) {

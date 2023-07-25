@@ -102,9 +102,9 @@ const CreditMallPage = () => {
               backgroundImage: "url(" + record.thumb + ")",
               width: 120,
               height: 120,
-              backgroundPosition: "center center",
+              backgroundRepeat: "no-repeat",
               backgroundSize: "contain",
-              backgroundRepeat: "'no-repeat'",
+              backgroundPosition: "center center",
             }}
           ></div>
           <div className="ml-10" style={{ width: 250 }}>

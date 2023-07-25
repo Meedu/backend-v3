@@ -222,6 +222,7 @@ const CreditMallCreatePage = () => {
                       backgroundImage: `url(${thumb})`,
                       width: 400,
                       height: 400,
+                      backgroundColor: "#f4fafe",
                     }}
                   ></div>
                 </Col>

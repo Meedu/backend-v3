@@ -32,7 +32,7 @@ const CourseVideoUpdatePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [resourceActive, setResourceActive] = useState<string>("base");
   const [chapters, setChapters] = useState<any>([]);
-  const [isFree, setIsFree] = useState(0);
+  const [isFree, setIsFree] = useState(1);
   const [charge, setCharge] = useState(0);
   const [tit, setTit] = useState<string>("");
   const [title, setTitle] = useState<string>("");

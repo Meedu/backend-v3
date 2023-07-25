@@ -240,7 +240,7 @@ const CourseVideoCreatePage = () => {
                     ></InputDuration>
                   </Form.Item>
                   <div className="ml-10">
-                    <HelperText text="定义课时免费试看时长吸引更多学员试看"></HelperText>
+                    <HelperText text="设置此课时免费试看时长（此配置对本地存储或URL视频无效）"></HelperText>
                   </div>
                 </Space>
               </Form.Item>

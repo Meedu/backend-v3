@@ -34,6 +34,8 @@ const ResourceVideosPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [keywords, setKeywords] = useState<string>("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [selectedLocalKeys, setSelectedLocalKeys] = useState<any>([]);
+  const [selectedOtherKeys, setSelectedOtherKeys] = useState<any>([]);
   const [openUploadItem, setOpenUploadItem] = useState(false);
   const [isNoService, setIsNoService] = useState(false);
   const [isLocalService, setIsLocalService] = useState(false);
@@ -226,7 +228,18 @@ const ResourceVideosPage = () => {
   const rowSelection = {
     selectedRowKeys: selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      let arrLocal: any = [];
+      let arr: any = [];
+      selectedRows.map((item: any) => {
+        if (item.storage_driver === "local") {
+          arrLocal.push(item.storage_file_id);
+        } else {
+          arr.push(item.id);
+        }
+      });
       setSelectedRowKeys(selectedRowKeys);
+      setSelectedOtherKeys(arr);
+      setSelectedLocalKeys(arrLocal);
     },
   };
 
@@ -243,26 +256,36 @@ const ResourceVideosPage = () => {
       okText: "确认",
       cancelText: "取消",
       onOk() {
-        if (loading) {
-          return;
-        }
-
-        setLoading(true);
-        media
-          .newDestroyVideo({ ids: selectedRowKeys })
-          .then(() => {
-            setLoading(false);
-            message.success("成功");
-            resetData();
-          })
-          .catch((e) => {
-            setLoading(false);
-          });
+        destoryConfirm();
       },
       onCancel() {
         console.log("Cancel");
       },
     });
+  };
+
+  const destoryConfirm = async () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    try {
+      if (selectedLocalKeys.length > 0) {
+        let localRes: any = await media.localDestroyVideo({
+          ids: selectedLocalKeys,
+        });
+      }
+      if (selectedOtherKeys.length > 0) {
+        let otherRes: any = await media.newDestroyVideo({
+          ids: selectedOtherKeys,
+        });
+      }
+      message.success("成功");
+      resetData();
+      setLoading(false);
+    } catch (err: any) {
+      setLoading(false);
+    }
   };
 
   const submit = (fileId: number) => {

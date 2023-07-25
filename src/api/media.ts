@@ -47,6 +47,7 @@ export function aliyunTranscode(params: any) {
 export function aliyunTranscodeRecords(params: any) {
   return client.get(`/backend/addons/AliyunHls/transcode-records`, params);
 }
+
 export function tencentTranscode(params: any) {
   return client.post(
     `/backend/addons/TencentCloudHls/transcode-submit`,
@@ -59,4 +60,12 @@ export function tencentTranscodeRecords(params: any) {
     `/backend/addons/TencentCloudHls/transcode-records`,
     params
   );
+}
+
+export function localDestroyVideo(params: any) {
+  return client.post(`/backend/addons/LocalUpload/video/delete`, params);
+}
+
+export function localVideoList(id: number, params: any) {
+  return client.get(`/backend/addons/LocalUpload/video/${id}/play`, params);
 }

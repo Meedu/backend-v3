@@ -12,7 +12,7 @@ import {
   DatePicker,
 } from "antd";
 import { useDispatch } from "react-redux";
-import { course } from "../../../api/index";
+import { course, media } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import {
   BackBartment,
@@ -382,15 +382,16 @@ const CourseVideoUpdatePage = () => {
               url: null,
             });
             setTit(video.title);
-          } else if (video.visit_url) {
-            form.setFieldsValue({
-              aliyun_video_id: null,
-              tencent_video_id: null,
-              url: video.visit_url,
+          } else if (video.storage_driver === "local") {
+            media.localVideoUrl(video.storage_file_id, {}).then((res: any) => {
+              form.setFieldsValue({
+                aliyun_video_id: null,
+                tencent_video_id: null,
+                url: res.data.url,
+              });
+              setTit(video.title);
             });
-            setTit(video.name);
           }
-
           setShowUploadVideoWin(false);
         }}
       ></UploadVideoDialog>

@@ -66,6 +66,6 @@ export function localDestroyVideo(params: any) {
   return client.post(`/backend/addons/LocalUpload/video/delete`, params);
 }
 
-export function localVideoList(id: number, params: any) {
+export function localVideoUrl(id: number, params: any) {
   return client.get(`/backend/addons/LocalUpload/video/${id}/play`, params);
 }

@@ -86,43 +86,23 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
       return;
     }
     setLoading(true);
-    if (isLocalService) {
-      media
-        .videoList({
-          page: page,
-          size: size,
-          sort: "id",
-          order: "desc",
-          name: name,
-        })
-        .then((res: any) => {
-          setList(res.data.data);
-          setTotal(res.data.total);
+    media
+      .newVideoList({
+        page: page,
+        size: size,
+        sort: "id",
+        order: "desc",
+        keywords: keywords,
+      })
+      .then((res: any) => {
+        setList(res.data.data);
+        setTotal(res.data.total);
 
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    } else if (isTenService || isAliService) {
-      media
-        .newVideoList({
-          page: page,
-          size: size,
-          sort: "id",
-          order: "desc",
-          keywords: keywords,
-        })
-        .then((res: any) => {
-          setList(res.data.data);
-          setTotal(res.data.total);
-
-          setLoading(false);
-        })
-        .catch((e) => {
-          setLoading(false);
-        });
-    }
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   };
 
   const resetList = () => {
@@ -139,51 +119,6 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
   const checkPermission = (val: string) => {
     return typeof user.permissions[val] !== "undefined";
   };
-
-  const columns: ColumnsType<DataType> = [
-    {
-      title: "视频名称",
-      render: (_, record: any) => <span>{record.name}</span>,
-    },
-    {
-      title: "时长",
-      width: 90,
-      render: (_, record: any) => (
-        <DurationText duration={record.duration}></DurationText>
-      ),
-    },
-    {
-      title: "大小",
-      width: 100,
-      render: (_, record: any) => (
-        <span>{fileSizeConversion(record.size)}MB</span>
-      ),
-    },
-    {
-      title: "上传时间",
-      width: 120,
-      dataIndex: "created_at",
-      render: (created_at: string) => <span>{yearFormat(created_at)}</span>,
-    },
-    {
-      title: "操作",
-      width: 100,
-      fixed: "right",
-      render: (_, record: any) => (
-        <PerButton
-          type="link"
-          text="删除"
-          class="c-red"
-          icon={null}
-          p="addons.LocalUpload.video.destroy"
-          onClick={() => {
-            destoryLocal(record.id);
-          }}
-          disabled={null}
-        />
-      ),
-    },
-  ];
 
   const columns2: ColumnsType<DataType> = [
     {
@@ -214,19 +149,32 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
       title: "操作",
       width: 100,
       fixed: "right",
-      render: (_, record: any) => (
-        <PerButton
-          type="link"
-          text="删除"
-          class="c-red"
-          icon={null}
-          p="media.video.delete.multi"
-          onClick={() => {
-            destory(record.id);
-          }}
-          disabled={null}
-        />
-      ),
+      render: (_, record: any) =>
+        record.storage_driver === "local" ? (
+          <PerButton
+            type="link"
+            text="删除"
+            class="c-red"
+            icon={null}
+            p="addons.LocalUpload.video.destroy"
+            onClick={() => {
+              destoryLocal(record.storage_file_id);
+            }}
+            disabled={null}
+          />
+        ) : (
+          <PerButton
+            type="link"
+            text="删除"
+            class="c-red"
+            icon={null}
+            p="media.video.delete.multi"
+            onClick={() => {
+              destory(record.id);
+            }}
+            disabled={null}
+          />
+        ),
     },
   ];
 
@@ -284,7 +232,7 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
         ids.push(item);
         setLoading(true);
         media
-          .destroyVideo(item)
+          .localDestroyVideo({ ids: ids })
           .then(() => {
             setLoading(false);
             message.success("成功");
@@ -423,21 +371,6 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
                       </Button>
                     </div>
                   </div>
-                  <div className="float-lef">
-                    <ConfigProvider renderEmpty={tableEmptyRender}>
-                      <Table
-                        rowSelection={{
-                          type: "radio",
-                          ...rowSelection,
-                        }}
-                        loading={loading}
-                        columns={columns}
-                        dataSource={list}
-                        rowKey={(record) => record.id}
-                        pagination={paginationProps}
-                      />
-                    </ConfigProvider>
-                  </div>
                 </>
               )}
             {(isAliService || isTenService) && (
@@ -484,7 +417,11 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
                     </Button>
                   </div>
                 </div>
-                <div className="float-lef">
+              </>
+            )}
+            {!isNoService && (
+              <div className="float-left">
+                <ConfigProvider renderEmpty={tableEmptyRender}>
                   <Table
                     rowSelection={{
                       type: "radio",
@@ -496,8 +433,8 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
                     rowKey={(record) => record.id}
                     pagination={paginationProps}
                   />
-                </div>
-              </>
+                </ConfigProvider>
+              </div>
             )}
           </div>
         </div>

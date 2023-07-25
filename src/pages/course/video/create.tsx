@@ -12,7 +12,7 @@ import {
   DatePicker,
 } from "antd";
 import { useDispatch } from "react-redux";
-import { course } from "../../../api/index";
+import { course, media } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import {
   BackBartment,
@@ -347,7 +347,6 @@ const CourseVideoCreatePage = () => {
         onCancel={() => setShowUploadVideoWin(false)}
         onSuccess={(video: any) => {
           form.setFieldsValue({ duration: video.duration });
-          console.log(video);
           if (video.storage_driver === "aliyun") {
             if (!title) {
               form.setFieldsValue({
@@ -372,20 +371,21 @@ const CourseVideoCreatePage = () => {
               url: null,
             });
             setTit(video.title);
-          } else if (video.visit_url) {
+          } else if (video.storage_driver === "local") {
             if (!title) {
               form.setFieldsValue({
-                title: video.name.replace(".m3u8", "").replace(".mp4", ""),
+                title: video.title.replace(".m3u8", "").replace(".mp4", ""),
               });
             }
-            form.setFieldsValue({
-              aliyun_video_id: null,
-              tencent_video_id: null,
-              url: video.visit_url,
+            media.localVideoUrl(video.storage_file_id, {}).then((res: any) => {
+              form.setFieldsValue({
+                aliyun_video_id: null,
+                tencent_video_id: null,
+                url: res.data.url,
+              });
+              setTit(video.title);
             });
-            setTit(video.name);
           }
-
           setShowUploadVideoWin(false);
         }}
       ></UploadVideoDialog>

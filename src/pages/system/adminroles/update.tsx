@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, TreeSelect } from "antd";
+import { Button, Input, message, Form, TreeSelect, Spin } from "antd";
 import { adminRole } from "../../../api/index";
 import { useDispatch } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
@@ -11,6 +11,7 @@ const SystemAdminrolesUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [permissionsTransform, setPermissionsTransform] = useState<any>([]);
   const [id, setId] = useState(Number(result.get("id")));
@@ -18,51 +19,53 @@ const SystemAdminrolesUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑管理员角色";
     dispatch(titleAction("编辑管理员角色"));
-    params();
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await params();
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    adminRole.adminRole(id).then((res: any) => {
-      var data = res.data;
-
-      form.setFieldsValue({
-        description: data.description,
-        display_name: data.display_name,
-        permission_ids: data.permission_ids,
-      });
+    const res: any = await adminRole.adminRole(id);
+    var data = res.data;
+    form.setFieldsValue({
+      description: data.description,
+      display_name: data.display_name,
+      permission_ids: data.permission_ids,
     });
   };
 
-  const params = () => {
-    adminRole.createAdminRole().then((res: any) => {
-      const arr = [];
-      let roles = res.data.permissions;
-      for (let i in roles) {
-        let children = [];
+  const params = async () => {
+    const res: any = await adminRole.createAdminRole();
+    const arr = [];
+    let roles = res.data.permissions;
+    for (let i in roles) {
+      let children = [];
 
-        for (let j = 0; j < roles[i].length; j++) {
-          children.push({
-            value: roles[i][j].id,
-            title: roles[i][j].display_name,
-          });
-        }
-
-        arr.push({
-          value: i,
-          title: i,
-          children: children,
+      for (let j = 0; j < roles[i].length; j++) {
+        children.push({
+          value: roles[i][j].id,
+          title: roles[i][j].display_name,
         });
       }
-      setPermissionsTransform(arr);
-    });
+
+      arr.push({
+        value: i,
+        title: i,
+        children: children,
+      });
+    }
+    setPermissionsTransform(arr);
   };
 
   const onFinish = (values: any) => {
@@ -89,7 +92,15 @@ const SystemAdminrolesUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑管理员角色" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="administrator-create"

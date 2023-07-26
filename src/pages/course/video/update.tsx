@@ -10,6 +10,7 @@ import {
   Space,
   Select,
   DatePicker,
+  Spin,
 } from "antd";
 import { useDispatch } from "react-redux";
 import { course, media } from "../../../api/index";
@@ -29,7 +30,7 @@ const CourseVideoUpdatePage = () => {
   const dispatch = useDispatch();
   const result = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [resourceActive, setResourceActive] = useState<string>("base");
   const [chapters, setChapters] = useState<any>([]);
   const [isFree, setIsFree] = useState(1);
@@ -53,67 +54,68 @@ const CourseVideoUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑课时";
     dispatch(titleAction("编辑课时"));
-    getParams();
-    getCourse();
+    initData();
   }, [cid]);
 
   useEffect(() => {
     setCid(Number(result.get("course_id")));
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("course_id"), result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getParams();
+    await getCourse();
+    await getDetail();
+    setLoading(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    course.videoDetail(id).then((res: any) => {
-      var data = res.data.video;
-      form.setFieldsValue({
-        title: data.title,
-        chapter_id: data.chapter_id === 0 ? null : data.chapter_id,
-        is_show: data.is_show === 1 ? 0 : 1,
-        duration: data.duration,
-        free_seconds: data.free_seconds,
-        ban_drag: data.ban_drag,
-        aliyun_video_id: data.aliyun_video_id,
-        url: data.url,
-        tencent_video_id: data.tencent_video_id,
-        published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
-      });
+    const res: any = await course.videoDetail(id);
+    var data = res.data.video;
+    form.setFieldsValue({
+      title: data.title,
+      chapter_id: data.chapter_id === 0 ? null : data.chapter_id,
+      is_show: data.is_show === 1 ? 0 : 1,
+      duration: data.duration,
+      free_seconds: data.free_seconds,
+      ban_drag: data.ban_drag,
+      aliyun_video_id: data.aliyun_video_id,
+      url: data.url,
+      tencent_video_id: data.tencent_video_id,
+      published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
     });
   };
 
-  const getParams = () => {
-    course.videoCreate(cid).then((res: any) => {
-      let chapters = res.data.chapters;
-
-      if (chapters.length > 0) {
-        const box: any = [];
-        for (let i = 0; i < chapters.length; i++) {
-          box.push({
-            label: chapters[i].title,
-            value: chapters[i].id,
-          });
-        }
-        setChapters(box);
-      }
-    });
-  };
-
-  const getCourse = () => {
-    course.detail(cid).then((res: any) => {
-      let course = res.data;
-      setIsFree(course.is_free);
-      if (course.is_free === 1) {
-        setCharge(0);
-        form.setFieldsValue({
-          free_seconds: 0,
+  const getParams = async () => {
+    const res: any = await course.videoCreate(cid);
+    let chapters = res.data.chapters;
+    if (chapters.length > 0) {
+      const box: any = [];
+      for (let i = 0; i < chapters.length; i++) {
+        box.push({
+          label: chapters[i].title,
+          value: chapters[i].id,
         });
-      } else {
-        setCharge(course.charge);
       }
-    });
+      setChapters(box);
+    }
+  };
+
+  const getCourse = async () => {
+    const res: any = await course.detail(cid);
+    let data = res.data;
+    setIsFree(data.is_free);
+    if (data.is_free === 1) {
+      setCharge(0);
+      form.setFieldsValue({
+        free_seconds: 0,
+      });
+    } else {
+      setCharge(data.charge);
+    }
   };
 
   const onFinish = (values: any) => {
@@ -184,167 +186,180 @@ const CourseVideoUpdatePage = () => {
           onChange={onChange}
         />
       </div>
-      <div className="float-left">
-        <Form
-          form={form}
-          name="course-video-update"
-          labelCol={{ span: 3 }}
-          wrapperCol={{ span: 21 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <div
-            style={{ display: resourceActive === "base" ? "block" : "none" }}
+      {loading ? (
+        <div className="float-left text-center">
+          <Spin></Spin>
+        </div>
+      ) : (
+        <div className="float-left">
+          <Form
+            form={form}
+            name="course-video-update"
+            labelCol={{ span: 3 }}
+            wrapperCol={{ span: 21 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
           >
-            <Form.Item label="上传课时">
-              <Button
-                type="primary"
-                onClick={() => setShowUploadVideoWin(true)}
-              >
-                <span>重新选择视频</span>
-                {tit && (
-                  <span className="ml-10">
-                    {tit.replace(".m3u8", "").replace(".mp4", "")}
-                  </span>
-                )}
-              </Button>
-            </Form.Item>
-            <Form.Item
-              label="课时名称"
-              name="title"
-              rules={[{ required: true, message: "请输入课时名称!" }]}
+            <div
+              style={{ display: resourceActive === "base" ? "block" : "none" }}
             >
-              <Input
-                style={{ width: 300 }}
-                placeholder="请输入课时名称"
-                allowClear
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
-              />
-            </Form.Item>
-            <Form.Item
-              label="课时时长"
-              name="duration"
-              rules={[{ required: true, message: "请输入课时时长!" }]}
-            >
-              <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item
-                  name="duration"
-                  rules={[{ required: true, message: "请输入课时时长!" }]}
+              <Form.Item label="上传课时">
+                <Button
+                  type="primary"
+                  onClick={() => setShowUploadVideoWin(true)}
                 >
-                  <InputDuration
-                    value={null}
-                    disabled={false}
-                    onChange={(val: number) => {
-                      form.setFieldsValue({ duration: val });
-                    }}
-                  ></InputDuration>
-                </Form.Item>
-                <div className="ml-10">
-                  <HelperText text="后台会根据课时时长统计学员学习进度"></HelperText>
-                </div>
-              </Space>
-            </Form.Item>
-            {isFree === 0 && (
-              <Form.Item label="可试看时长" name="free_seconds">
+                  <span>重新选择视频</span>
+                  {tit && (
+                    <span className="ml-10">
+                      {tit.replace(".m3u8", "").replace(".mp4", "")}
+                    </span>
+                  )}
+                </Button>
+              </Form.Item>
+              <Form.Item
+                label="课时名称"
+                name="title"
+                rules={[{ required: true, message: "请输入课时名称!" }]}
+              >
+                <Input
+                  style={{ width: 300 }}
+                  placeholder="请输入课时名称"
+                  allowClear
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                label="课时时长"
+                name="duration"
+                rules={[{ required: true, message: "请输入课时时长!" }]}
+              >
                 <Space align="baseline" style={{ height: 32 }}>
-                  <Form.Item name="free_seconds">
+                  <Form.Item
+                    name="duration"
+                    rules={[{ required: true, message: "请输入课时时长!" }]}
+                  >
                     <InputDuration
                       value={null}
                       disabled={false}
                       onChange={(val: number) => {
-                        form.setFieldsValue({ free_seconds: val });
+                        form.setFieldsValue({ duration: val });
                       }}
                     ></InputDuration>
                   </Form.Item>
                   <div className="ml-10">
-                    <HelperText text="设置此课时免费试看时长（此配置对本地存储或URL视频无效）"></HelperText>
+                    <HelperText text="后台会根据课时时长统计学员学习进度"></HelperText>
                   </div>
                 </Space>
               </Form.Item>
-            )}
-            <Form.Item label="所属章节" name="chapter_id">
-              <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item name="chapter_id">
-                  <Select
-                    style={{ width: 300 }}
-                    allowClear
-                    placeholder="请选择所属章节"
-                    options={chapters}
-                  />
+              {isFree === 0 && (
+                <Form.Item label="可试看时长" name="free_seconds">
+                  <Space align="baseline" style={{ height: 32 }}>
+                    <Form.Item name="free_seconds">
+                      <InputDuration
+                        value={null}
+                        disabled={false}
+                        onChange={(val: number) => {
+                          form.setFieldsValue({ free_seconds: val });
+                        }}
+                      ></InputDuration>
+                    </Form.Item>
+                    <div className="ml-10">
+                      <HelperText text="设置此课时免费试看时长（此配置对本地存储或URL视频无效）"></HelperText>
+                    </div>
+                  </Space>
                 </Form.Item>
-                <div>
-                  <PerButton
-                    type="link"
-                    text="章节管理"
-                    class="c-primary"
-                    icon={null}
-                    p="course_chapter"
-                    onClick={() => {
-                      navigate("/course/vod/chapter/index?course_id=" + cid);
-                    }}
-                    disabled={null}
-                  />
-                </div>
-              </Space>
-            </Form.Item>
-            <Form.Item
-              label="上架时间"
-              name="published_at"
-              rules={[{ required: true, message: "请选择上架时间!" }]}
+              )}
+              <Form.Item label="所属章节" name="chapter_id">
+                <Space align="baseline" style={{ height: 32 }}>
+                  <Form.Item name="chapter_id">
+                    <Select
+                      style={{ width: 300 }}
+                      allowClear
+                      placeholder="请选择所属章节"
+                      options={chapters}
+                    />
+                  </Form.Item>
+                  <div>
+                    <PerButton
+                      type="link"
+                      text="章节管理"
+                      class="c-primary"
+                      icon={null}
+                      p="course_chapter"
+                      onClick={() => {
+                        navigate("/course/vod/chapter/index?course_id=" + cid);
+                      }}
+                      disabled={null}
+                    />
+                  </div>
+                </Space>
+              </Form.Item>
+              <Form.Item
+                label="上架时间"
+                name="published_at"
+                rules={[{ required: true, message: "请选择上架时间!" }]}
+              >
+                <DatePicker
+                  format="YYYY-MM-DD HH:mm"
+                  style={{ width: 300 }}
+                  showTime
+                  placeholder="请选择上架时间"
+                />
+              </Form.Item>
+            </div>
+            <div
+              style={{ display: resourceActive === "dev" ? "block" : "none" }}
             >
-              <DatePicker
-                format="YYYY-MM-DD HH:mm"
-                style={{ width: 300 }}
-                showTime
-                placeholder="请选择上架时间"
-              />
-            </Form.Item>
-          </div>
-          <div style={{ display: resourceActive === "dev" ? "block" : "none" }}>
-            <Form.Item label="禁止快进播放" name="ban_drag">
-              <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item name="ban_drag" valuePropName="checked">
-                  <Switch onChange={onBanChange} />
-                </Form.Item>
-                <div className="ml-10">
-                  <HelperText text="打开后学员学习此课时无法快进"></HelperText>
-                </div>
-              </Space>
-            </Form.Item>
-            <Form.Item label="隐藏课时" name="is_show">
-              <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item name="is_show" valuePropName="checked">
-                  <Switch onChange={onShowChange} />
-                </Form.Item>
-                <div className="ml-10">
-                  <HelperText text="打开后课时在前台将隐藏显示"></HelperText>
-                </div>
-              </Space>
-            </Form.Item>
-            <Form.Item label="阿里云视频文件ID" name="aliyun_video_id">
-              <Input
-                style={{ width: 300 }}
-                placeholder="阿里云视频文件ID"
-                allowClear
-              />
-            </Form.Item>
-            <Form.Item label="腾讯云视频文件ID" name="tencent_video_id">
-              <Input
-                style={{ width: 300 }}
-                placeholder="腾讯云视频文件ID"
-                allowClear
-              />
-            </Form.Item>
-            <Form.Item label="视频URL" name="url">
-              <Input style={{ width: 300 }} placeholder="视频URL" allowClear />
-            </Form.Item>
-          </div>
-        </Form>
-      </div>
+              <Form.Item label="禁止快进播放" name="ban_drag">
+                <Space align="baseline" style={{ height: 32 }}>
+                  <Form.Item name="ban_drag" valuePropName="checked">
+                    <Switch onChange={onBanChange} />
+                  </Form.Item>
+                  <div className="ml-10">
+                    <HelperText text="打开后学员学习此课时无法快进"></HelperText>
+                  </div>
+                </Space>
+              </Form.Item>
+              <Form.Item label="隐藏课时" name="is_show">
+                <Space align="baseline" style={{ height: 32 }}>
+                  <Form.Item name="is_show" valuePropName="checked">
+                    <Switch onChange={onShowChange} />
+                  </Form.Item>
+                  <div className="ml-10">
+                    <HelperText text="打开后课时在前台将隐藏显示"></HelperText>
+                  </div>
+                </Space>
+              </Form.Item>
+              <Form.Item label="阿里云视频文件ID" name="aliyun_video_id">
+                <Input
+                  style={{ width: 300 }}
+                  placeholder="阿里云视频文件ID"
+                  allowClear
+                />
+              </Form.Item>
+              <Form.Item label="腾讯云视频文件ID" name="tencent_video_id">
+                <Input
+                  style={{ width: 300 }}
+                  placeholder="腾讯云视频文件ID"
+                  allowClear
+                />
+              </Form.Item>
+              <Form.Item label="视频URL" name="url">
+                <Input
+                  style={{ width: 300 }}
+                  placeholder="视频URL"
+                  allowClear
+                />
+              </Form.Item>
+            </div>
+          </Form>
+        </div>
+      )}
+
       <div className="bottom-menus">
         <div className="bottom-menus-box">
           <div>

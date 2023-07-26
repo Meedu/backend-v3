@@ -13,7 +13,7 @@ import {
   Col,
   Spin,
 } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { course } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {

@@ -89,7 +89,11 @@ export const RenderQrcode: React.FC<PropInterface> = ({
           backgroundColor: status === current ? "#ffffff" : "",
         }}
       >
-        <QRCode size={width} bordered={false} value={config.text} />
+        <QRCode
+          size={width <= height ? width : height}
+          bordered={false}
+          value={config.text}
+        />
       </div>
       {status === current && (
         <div className={styles["item-options"]} style={{ top: 0, left: width }}>

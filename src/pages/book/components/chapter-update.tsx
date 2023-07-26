@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Input, message, Space } from "antd";
+import { Modal, Form, Input, message, Space, Spin } from "antd";
 import { book } from "../../../api/index";
 import { HelperText } from "../../../components";
 
@@ -13,26 +13,32 @@ interface PropsInterface {
 
 export const CourseChapterUpdateDialog = (props: PropsInterface) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (props.open) {
+      setInit(true);
       form.setFieldsValue({
         name: "",
         sort: "",
       });
     }
     if (props.id > 0 && props.cid) {
-      getDetail();
+      initData();
     }
   }, [props.open, props.cid, props.id]);
 
-  const getDetail = () => {
-    book.chaptersDetail(props.id).then((res: any) => {
-      form.setFieldsValue({
-        name: res.data.name,
-        sort: res.data.sort,
-      });
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
+    const res: any = await book.chaptersDetail(props.id);
+    form.setFieldsValue({
+      name: res.data.name,
+      sort: res.data.sort,
     });
   };
 
@@ -74,7 +80,15 @@ export const CourseChapterUpdateDialog = (props: PropsInterface) => {
           }}
           centered
         >
-          <div className="float-left mt-30">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            style={{ display: init ? "none" : "block" }}
+            className="float-left mt-30"
+          >
             <Form
               form={form}
               name="live-chapter-update-dailog"

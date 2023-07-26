@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, Space, Select } from "antd";
+import { Button, Input, message, Form, Space, Select, Spin } from "antd";
 import { wechat } from "../../api/index";
 import { useDispatch } from "react-redux";
 import { titleAction } from "../../store/user/loginUserSlice";
@@ -11,6 +11,7 @@ const WechatUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [types, setTypes] = useState<any>([]);
   const [type, setType] = useState<string>("");
@@ -29,43 +30,46 @@ const WechatUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑自动回复";
     dispatch(titleAction("编辑自动回复"));
-    getParams();
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getParams();
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    wechat.detail(id).then((res: any) => {
-      var data = res.data.data;
-      setType(data.type);
-      form.setFieldsValue({
-        reply_content: data.reply_content,
-        event_key: data.event_key,
-        rule: data.rule,
-        event_type: data.event_type,
-        type: data.type,
-      });
+    const res: any = await wechat.detail(id);
+    var data = res.data.data;
+    setType(data.type);
+    form.setFieldsValue({
+      reply_content: data.reply_content,
+      event_key: data.event_key,
+      rule: data.rule,
+      event_type: data.event_type,
+      type: data.type,
     });
   };
 
-  const getParams = () => {
-    wechat.create().then((res: any) => {
-      const arr = [];
-      let types = res.data.types;
-      for (let i = 0; i < types.length; i++) {
-        arr.push({
-          label: types[i].name,
-          value: types[i].id,
-        });
-      }
-      setTypes(arr);
-    });
+  const getParams = async () => {
+    const res: any = await wechat.create();
+    const arr = [];
+    let types = res.data.types;
+    for (let i = 0; i < types.length; i++) {
+      arr.push({
+        label: types[i].name,
+        value: types[i].id,
+      });
+    }
+    setTypes(arr);
   };
 
   const onFinish = (values: any) => {
@@ -92,7 +96,15 @@ const WechatUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑自动回复" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="wechat-update"

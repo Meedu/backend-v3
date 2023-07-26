@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, Space, Switch } from "antd";
+import { Button, Input, message, Form, Space, Switch, Spin } from "antd";
 import { role } from "../../api/index";
 import { useDispatch } from "react-redux";
 import { titleAction } from "../../store/user/loginUserSlice";
@@ -11,32 +11,37 @@ const RoleUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [id, setId] = useState(Number(result.get("id")));
 
   useEffect(() => {
     document.title = "编辑会员";
     dispatch(titleAction("编辑会员"));
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    role.detail(id).then((res: any) => {
-      var data = res.data;
-      form.setFieldsValue({
-        description: data.description,
-        name: data.name,
-        is_show: data.is_show,
-        charge: data.charge,
-        expire_days: data.expire_days,
-      });
+    const res: any = await role.detail(id);
+    var data = res.data;
+    form.setFieldsValue({
+      description: data.description,
+      name: data.name,
+      is_show: data.is_show,
+      charge: data.charge,
+      expire_days: data.expire_days,
     });
   };
 
@@ -72,7 +77,15 @@ const RoleUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑会员" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="role-update"

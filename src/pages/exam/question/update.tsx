@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, message, Button, Select, Space, Steps } from "antd";
+import { Form, message, Button, Select, Space, Steps, Spin } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
@@ -17,6 +17,7 @@ const QuestionUpdatePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [current, setCurrent] = useState(0);
   const [categories, setCategories] = useState<any>([]);
@@ -29,70 +30,72 @@ const QuestionUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑试题";
     dispatch(titleAction("编辑试题"));
-    getParams();
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getParams();
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    question.detail(id).then((res: any) => {
-      var data = res.data.data;
-      form.setFieldsValue({
-        category_id: data.category_id,
-        level: data.level,
-      });
-      setType(data.type);
-      setCurrent(1);
-      setFormParams({
-        category_id: data.category_id,
-        level: data.level,
-        type: data.type,
-        content: data.content,
-        score: data.score,
-        answer: data.answer,
-        option1: data.option1,
-        option2: data.option2,
-        option3: data.option3,
-        option4: data.option4,
-        option5: data.option5,
-        option6: data.option6,
-        option7: data.option7,
-        option8: data.option8,
-        option9: data.option9,
-        option10: data.option10,
-        remark: data.remark,
-      });
+    const res: any = await question.detail(id);
+    var data = res.data.data;
+    form.setFieldsValue({
+      category_id: data.category_id,
+      level: data.level,
+    });
+    setType(data.type);
+    setCurrent(1);
+    setFormParams({
+      category_id: data.category_id,
+      level: data.level,
+      type: data.type,
+      content: data.content,
+      score: data.score,
+      answer: data.answer,
+      option1: data.option1,
+      option2: data.option2,
+      option3: data.option3,
+      option4: data.option4,
+      option5: data.option5,
+      option6: data.option6,
+      option7: data.option7,
+      option8: data.option8,
+      option9: data.option9,
+      option10: data.option10,
+      remark: data.remark,
     });
   };
 
-  const getParams = () => {
-    question.create().then((res: any) => {
-      let box1: any = [];
-      res.data.categories.length > 0 &&
-        res.data.categories.map((item: any) => {
-          box1.push({
-            label: item.name,
-            value: item.id,
-          });
+  const getParams = async () => {
+    const res: any = await question.create();
+    let box1: any = [];
+    res.data.categories.length > 0 &&
+      res.data.categories.map((item: any) => {
+        box1.push({
+          label: item.name,
+          value: item.id,
         });
-      setCategories(box1);
-      let box3: any = [];
-      res.data.levels.length > 0 &&
-        res.data.levels.map((item: any) => {
-          box3.push({
-            label: item.name,
-            value: item.id,
-          });
+      });
+    setCategories(box1);
+    let box3: any = [];
+    res.data.levels.length > 0 &&
+      res.data.levels.map((item: any) => {
+        box3.push({
+          label: item.name,
+          value: item.id,
         });
-      setLevels(box3);
-    });
+      });
+    setLevels(box3);
   };
 
   const onFinish = (values: any) => {
@@ -207,9 +210,14 @@ const QuestionUpdatePage = () => {
           ]}
         />
       </div>
+      {init && (
+        <div className="float-left text-center">
+          <Spin></Spin>
+        </div>
+      )}
       <div
         className="float-left"
-        style={{ display: current === 0 ? "block" : "none" }}
+        style={{ display: !init && current === 0 ? "block" : "none" }}
       >
         <Form
           form={form}
@@ -266,7 +274,7 @@ const QuestionUpdatePage = () => {
           </Form.Item>
         </Form>
       </div>
-      {current === 1 && (
+      {!init && current === 1 && (
         <div className="float-left pl-200">
           {type === 1 && (
             <QChoice

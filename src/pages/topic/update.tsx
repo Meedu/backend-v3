@@ -11,6 +11,7 @@ import {
   Col,
   Space,
   Select,
+  Spin,
 } from "antd";
 import { useDispatch } from "react-redux";
 import { topic } from "../../api/index";
@@ -31,6 +32,7 @@ const TopicUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [charge, setCharge] = useState(0);
@@ -47,63 +49,65 @@ const TopicUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑图文";
     dispatch(titleAction("编辑图文"));
-
-    getParams();
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getParams();
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    topic.detail(id).then((res: any) => {
-      var data = res.data;
-      form.setFieldsValue({
-        cid: data.cid,
-        title: data.title,
-        thumb: data.thumb,
-        is_show: data.is_show,
-        is_vip_free: data.is_vip_free,
-        short_desc: data.short_desc,
-        original_content: data.original_content,
-        free_content: data.free_content,
-        charge: data.charge,
-        sorted_at: dayjs(data.sorted_at, "YYYY-MM-DD HH:mm"),
-      });
-      if (data.charge > 0) {
-        form.setFieldsValue({ is_free: 0 });
-        setIsFree(0);
-      } else {
-        form.setFieldsValue({ is_free: 1 });
-        setIsFree(1);
-      }
-      setCharge(data.charge);
-      setDefautValue(data.original_content);
-      setFreeValue(data.free_content);
-      setFreeRenderValue(data.free_content_render);
-      setRenderValue(data.render_content);
-      setOriginalCharge(data.charge);
-      setThumb(data.thumb);
-      setEditor(data.editor);
+    const res: any = await topic.detail(id);
+    var data = res.data;
+    form.setFieldsValue({
+      cid: data.cid,
+      title: data.title,
+      thumb: data.thumb,
+      is_show: data.is_show,
+      is_vip_free: data.is_vip_free,
+      short_desc: data.short_desc,
+      original_content: data.original_content,
+      free_content: data.free_content,
+      charge: data.charge,
+      sorted_at: dayjs(data.sorted_at, "YYYY-MM-DD HH:mm"),
     });
+    if (data.charge > 0) {
+      form.setFieldsValue({ is_free: 0 });
+      setIsFree(0);
+    } else {
+      form.setFieldsValue({ is_free: 1 });
+      setIsFree(1);
+    }
+    setCharge(data.charge);
+    setDefautValue(data.original_content);
+    setFreeValue(data.free_content);
+    setFreeRenderValue(data.free_content_render);
+    setRenderValue(data.render_content);
+    setOriginalCharge(data.charge);
+    setThumb(data.thumb);
+    setEditor(data.editor);
   };
 
-  const getParams = () => {
-    topic.create().then((res: any) => {
-      let categories = res.data;
-      const box: any = [];
-      for (let i = 0; i < categories.length; i++) {
-        box.push({
-          label: categories[i].name,
-          value: categories[i].id,
-        });
-      }
-      setCategories(box);
-    });
+  const getParams = async () => {
+    const res: any = await topic.create();
+    let categories = res.data;
+    const box: any = [];
+    for (let i = 0; i < categories.length; i++) {
+      box.push({
+        label: categories[i].name,
+        value: categories[i].id,
+      });
+    }
+    setCategories(box);
   };
 
   const onFinish = (values: any) => {
@@ -188,7 +192,15 @@ const TopicUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑图文" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="topic-update"

@@ -29,7 +29,8 @@ const BookArticleUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [init, setInit] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [charge, setCharge] = useState(0);
   const [defautValue, setDefautValue] = useState("");
@@ -54,7 +55,7 @@ const BookArticleUpdatePage = () => {
     await getBook();
     await getParams();
     await getDetail();
-    setLoading(false);
+    setInit(false);
   };
 
   const getDetail = async () => {
@@ -147,130 +148,128 @@ const BookArticleUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑电子书文章" />
-      {loading ? (
+      {init && (
         <div className="float-left text-center mt-30">
           <Spin></Spin>
         </div>
-      ) : (
-        <div className="float-left mt-30">
-          <Form
-            form={form}
-            name="book-article-update"
-            labelCol={{ span: 3 }}
-            wrapperCol={{ span: 21 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item name="book_cid" label="章节">
-              <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item name="book_cid">
-                  <Select
-                    style={{ width: 300 }}
-                    allowClear
-                    placeholder="请选择章节"
-                    options={categories}
-                  />
-                </Form.Item>
-                <div>
-                  <PerButton
-                    type="link"
-                    text="章节管理"
-                    class="c-primary"
-                    icon={null}
-                    p="addons.meedu_books.book_chapter.list"
-                    onClick={() => {
-                      navigate("/meedubook/chapter/index?bid=" + bid);
-                    }}
-                    disabled={null}
-                  />
-                </div>
-              </Space>
-            </Form.Item>
-            <Form.Item
-              label="标题"
-              name="title"
-              rules={[{ required: true, message: "请输入标题!" }]}
-            >
-              <Input
-                style={{ width: 300 }}
-                placeholder="请输入标题"
-                allowClear
-              />
-            </Form.Item>
-            <Form.Item label="上架时间" required={true}>
-              <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item
-                  name="published_at"
-                  rules={[{ required: true, message: "请选择上架时间!" }]}
-                >
-                  <DatePicker
-                    format="YYYY-MM-DD HH:mm"
-                    style={{ width: 300 }}
-                    showTime
-                    placeholder="请选择上架时间"
-                  />
-                </Form.Item>
-                <div className="ml-10">
-                  <HelperText text="上架时间越晚，排序越靠前"></HelperText>
-                </div>
-              </Space>
-            </Form.Item>
-            {charge > 0 && (
-              <Form.Item label="试看" name="trySee">
-                <Space align="baseline" style={{ height: 32 }}>
-                  <Form.Item name="trySee" valuePropName="checked">
-                    <Switch onChange={isVipChange} />
-                  </Form.Item>
-                  <div className="ml-10">
-                    <HelperText text="开启试看的话未购买电子书学员可直接浏览该篇文章。"></HelperText>
-                  </div>
-                </Space>
-              </Form.Item>
-            )}
-            <Form.Item label="显示文章" name="is_show">
-              <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item name="is_show" valuePropName="checked">
-                  <Switch onChange={onSwitch} />
-                </Form.Item>
-                <div className="ml-10">
-                  <HelperText text="关闭后电子书文章在前台隐藏显示"></HelperText>
-                </div>
-              </Space>
-            </Form.Item>
-            <Form.Item
-              label="文章内容"
-              name="original_content"
-              rules={[{ required: true, message: "请输入文章内容!" }]}
-              style={{ height: 840 }}
-            >
-              <div className="w-800px">
-                {editor === "MARKDOWN" ? (
-                  <MdEditor
-                    height={800}
-                    defautValue={defautValue}
-                    setContent={(value: string, renderValue: string) => {
-                      form.setFieldsValue({ original_content: value });
-                      setRenderValue(renderValue);
-                    }}
-                  ></MdEditor>
-                ) : (
-                  <QuillEditor
-                    mode=""
-                    height={800}
-                    defautValue={defautValue}
-                    isFormula={false}
-                    setContent={(value: string) => {
-                      form.setFieldsValue({ original_content: value });
-                    }}
-                  ></QuillEditor>
-                )}
-              </div>
-            </Form.Item>
-          </Form>
-        </div>
       )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
+        <Form
+          form={form}
+          name="book-article-update"
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 21 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item name="book_cid" label="章节">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="book_cid">
+                <Select
+                  style={{ width: 300 }}
+                  allowClear
+                  placeholder="请选择章节"
+                  options={categories}
+                />
+              </Form.Item>
+              <div>
+                <PerButton
+                  type="link"
+                  text="章节管理"
+                  class="c-primary"
+                  icon={null}
+                  p="addons.meedu_books.book_chapter.list"
+                  onClick={() => {
+                    navigate("/meedubook/chapter/index?bid=" + bid);
+                  }}
+                  disabled={null}
+                />
+              </div>
+            </Space>
+          </Form.Item>
+          <Form.Item
+            label="标题"
+            name="title"
+            rules={[{ required: true, message: "请输入标题!" }]}
+          >
+            <Input style={{ width: 300 }} placeholder="请输入标题" allowClear />
+          </Form.Item>
+          <Form.Item label="上架时间" required={true}>
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item
+                name="published_at"
+                rules={[{ required: true, message: "请选择上架时间!" }]}
+              >
+                <DatePicker
+                  format="YYYY-MM-DD HH:mm"
+                  style={{ width: 300 }}
+                  showTime
+                  placeholder="请选择上架时间"
+                />
+              </Form.Item>
+              <div className="ml-10">
+                <HelperText text="上架时间越晚，排序越靠前"></HelperText>
+              </div>
+            </Space>
+          </Form.Item>
+          {charge > 0 && (
+            <Form.Item label="试看" name="trySee">
+              <Space align="baseline" style={{ height: 32 }}>
+                <Form.Item name="trySee" valuePropName="checked">
+                  <Switch onChange={isVipChange} />
+                </Form.Item>
+                <div className="ml-10">
+                  <HelperText text="开启试看的话未购买电子书学员可直接浏览该篇文章。"></HelperText>
+                </div>
+              </Space>
+            </Form.Item>
+          )}
+          <Form.Item label="显示文章" name="is_show">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="is_show" valuePropName="checked">
+                <Switch onChange={onSwitch} />
+              </Form.Item>
+              <div className="ml-10">
+                <HelperText text="关闭后电子书文章在前台隐藏显示"></HelperText>
+              </div>
+            </Space>
+          </Form.Item>
+          <Form.Item
+            label="文章内容"
+            name="original_content"
+            rules={[{ required: true, message: "请输入文章内容!" }]}
+            style={{ height: 840 }}
+          >
+            <div className="w-800px">
+              {editor === "MARKDOWN" ? (
+                <MdEditor
+                  height={800}
+                  defautValue={defautValue}
+                  setContent={(value: string, renderValue: string) => {
+                    form.setFieldsValue({ original_content: value });
+                    setRenderValue(renderValue);
+                  }}
+                ></MdEditor>
+              ) : (
+                <QuillEditor
+                  mode=""
+                  height={800}
+                  defautValue={defautValue}
+                  isFormula={false}
+                  setContent={(value: string) => {
+                    form.setFieldsValue({ original_content: value });
+                  }}
+                ></QuillEditor>
+              )}
+            </div>
+          </Form.Item>
+        </Form>
+      </div>
       <div className="bottom-menus">
         <div className="bottom-menus-box">
           <div>

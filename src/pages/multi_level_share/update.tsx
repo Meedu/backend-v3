@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, Space, Row, Col } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Input, message, Form, Space, Row, Col, Spin } from "antd";
+import { useDispatch } from "react-redux";
 import { multiShare } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { UploadImageButton, HelperText, BackBartment } from "../../components";
@@ -11,6 +11,7 @@ const MultiShareUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [id, setId] = useState(Number(result.get("id")));
   const [thumb, setThumb] = useState<string>("");
@@ -20,31 +21,35 @@ const MultiShareUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑分销活动";
     dispatch(titleAction("编辑分销活动"));
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    multiShare.detail(id).then((res: any) => {
-      var data = res.data;
-      setThumb(data.goods_thumb);
-      form.setFieldsValue({
-        goods_title: data.goods_title,
-        goods_charge: data.goods_charge,
-        goods_thumb: data.goods_thumb,
-        reward: data.reward,
-        reward2: data.reward2,
-        reward3: data.reward3,
-      });
-      setGoodsId(data.goods_id);
-      setGoodsType(data.goods_type);
+    const res: any = await multiShare.detail(id);
+    var data = res.data;
+    setThumb(data.goods_thumb);
+    form.setFieldsValue({
+      goods_title: data.goods_title,
+      goods_charge: data.goods_charge,
+      goods_thumb: data.goods_thumb,
+      reward: data.reward,
+      reward2: data.reward2,
+      reward3: data.reward3,
     });
+    setGoodsId(data.goods_id);
+    setGoodsType(data.goods_type);
   };
 
   const onFinish = (values: any) => {
@@ -73,8 +78,15 @@ const MultiShareUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑分销活动" />
-
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="multiShare-update"

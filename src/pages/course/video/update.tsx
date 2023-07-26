@@ -55,7 +55,7 @@ const CourseVideoUpdatePage = () => {
     document.title = "编辑课时";
     dispatch(titleAction("编辑课时"));
     initData();
-  }, [cid]);
+  }, [cid, id]);
 
   useEffect(() => {
     setCid(Number(result.get("course_id")));

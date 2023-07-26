@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, Space, DatePicker } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Input, message, Form, Space, DatePicker, Spin } from "antd";
+import { useDispatch } from "react-redux";
 import { miaosha } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { HelperText, BackBartment } from "../../components";
@@ -14,6 +14,7 @@ const MiaoshaUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [thumb, setThumb] = useState<string>("");
@@ -26,34 +27,38 @@ const MiaoshaUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑秒杀活动";
     dispatch(titleAction("编辑秒杀活动"));
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    miaosha.detail(id).then((res: any) => {
-      var data = res.data;
-      let arr: any = [
-        dayjs(data.started_at, "YYYY-MM-DD HH:mm"),
-        dayjs(data.end_at, "YYYY-MM-DD HH:mm"),
-      ];
-      form.setFieldsValue({
-        charge: data.charge,
-        started_at: arr,
-      });
-      setThumb(data.goods_thumb);
-      setOriginalCharge(data.original_charge);
-      setTitle(data.goods_title);
-      setGoodsId(data.goods_id);
-      setGoodsType(data.goods_type);
-      setNum(data.num);
+    const res: any = await miaosha.detail(id);
+    var data = res.data;
+    let arr: any = [
+      dayjs(data.started_at, "YYYY-MM-DD HH:mm"),
+      dayjs(data.end_at, "YYYY-MM-DD HH:mm"),
+    ];
+    form.setFieldsValue({
+      charge: data.charge,
+      started_at: arr,
     });
+    setThumb(data.goods_thumb);
+    setOriginalCharge(data.original_charge);
+    setTitle(data.goods_title);
+    setGoodsId(data.goods_id);
+    setGoodsType(data.goods_type);
+    setNum(data.num);
   };
 
   const onFinish = (values: any) => {
@@ -100,7 +105,15 @@ const MiaoshaUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑秒杀活动" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="miaosha-update"

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, Space, DatePicker } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Input, message, Form, Space, DatePicker, Spin } from "antd";
+import { useDispatch } from "react-redux";
 import { tuangou } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { HelperText, BackBartment } from "../../components";
@@ -14,6 +14,7 @@ const TuangouUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [thumb, setThumb] = useState<string>("");
@@ -25,35 +26,39 @@ const TuangouUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑团购活动";
     dispatch(titleAction("编辑团购活动"));
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    tuangou.detail(id).then((res: any) => {
-      var data = res.data.data;
-      let arr: any = [
-        dayjs(data.started_at, "YYYY-MM-DD HH:mm"),
-        dayjs(data.ended_at, "YYYY-MM-DD HH:mm"),
-      ];
-      form.setFieldsValue({
-        charge: data.charge,
-        started_at: arr,
-        people_num: data.people_num,
-        time_limit: data.time_limit,
-      });
-      setThumb(data.goods_thumb);
-      setOriginalCharge(data.original_charge);
-      setTitle(data.goods_title);
-      setGoodsId(data.other_id);
-      setGoodsType(data.goods_type);
+    const res: any = await tuangou.detail(id);
+    var data = res.data.data;
+    let arr: any = [
+      dayjs(data.started_at, "YYYY-MM-DD HH:mm"),
+      dayjs(data.ended_at, "YYYY-MM-DD HH:mm"),
+    ];
+    form.setFieldsValue({
+      charge: data.charge,
+      started_at: arr,
+      people_num: data.people_num,
+      time_limit: data.time_limit,
     });
+    setThumb(data.goods_thumb);
+    setOriginalCharge(data.original_charge);
+    setTitle(data.goods_title);
+    setGoodsId(data.other_id);
+    setGoodsType(data.goods_type);
   };
 
   const onFinish = (values: any) => {
@@ -103,7 +108,15 @@ const TuangouUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑团购活动" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="tuangou-update"

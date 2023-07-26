@@ -10,8 +10,9 @@ import {
   Space,
   Row,
   Col,
+  Spin,
 } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { creditMall } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
@@ -26,6 +27,7 @@ const CreditMallUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [resourceActive, setResourceActive] = useState<string>("base");
   const [defautValue, setDefautValue] = useState("");
@@ -49,35 +51,39 @@ const CreditMallUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑积分商品";
     dispatch(titleAction("编辑积分商品"));
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    creditMall.detail(id).then((res: any) => {
-      var data = res.data;
-      form.setFieldsValue({
-        v_id: data.v_id,
-        title: data.title,
-        thumb: data.thumb,
-        is_show: data.is_show,
-        desc: data.desc,
-        stock_count: data.stock_count,
-        charge: data.charge,
-      });
-      setThumb(data.thumb);
-      setTitle(data.title);
-      setIsV(data.is_v);
-      setVId(data.v_id);
-      setType(data.v_type);
-      setDefautValue(data.desc);
+    const res: any = await creditMall.detail(id);
+    var data = res.data;
+    form.setFieldsValue({
+      v_id: data.v_id,
+      title: data.title,
+      thumb: data.thumb,
+      is_show: data.is_show,
+      desc: data.desc,
+      stock_count: data.stock_count,
+      charge: data.charge,
     });
+    setThumb(data.thumb);
+    setTitle(data.title);
+    setIsV(data.is_v);
+    setVId(data.v_id);
+    setType(data.v_type);
+    setDefautValue(data.desc);
   };
 
   const onChange = (key: string) => {
@@ -126,7 +132,12 @@ const CreditMallUpdatePage = () => {
           onChange={onChange}
         />
       </div>
-      <div className="float-left">
+      {init && (
+        <div className="float-left text-center">
+          <Spin></Spin>
+        </div>
+      )}
+      <div style={{ display: init ? "none" : "block" }} className="float-left">
         <Form
           form={form}
           name="creditMall-update"

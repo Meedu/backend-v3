@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, Form, Select, Switch, Space } from "antd";
+import {
+  Button,
+  Input,
+  message,
+  Form,
+  Select,
+  Switch,
+  Space,
+  Spin,
+} from "antd";
 import { system } from "../../../api/index";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { BackBartment, PerButton, HelperText } from "../../../components";
 import { passwordRules } from "../../../utils/index";
@@ -12,6 +21,7 @@ const SystemAdministratorUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [roles, setRoles] = useState<any>([]);
   const [helpText, setHelpText] = useState<string>("");
@@ -20,45 +30,48 @@ const SystemAdministratorUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑管理员";
     dispatch(titleAction("编辑管理员"));
-    params();
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const params = () => {
-    system.administratorCreate().then((res: any) => {
-      const arr = [];
-      let roles = res.data.roles;
-      for (let i = 0; i < roles.length; i++) {
-        arr.push({
-          label: roles[i].display_name,
-          value: roles[i].id,
-        });
-      }
-      setRoles(arr);
-    });
+  const initData = async () => {
+    await params();
+    await getDetail();
+    setInit(false);
   };
 
-  const getDetail = () => {
+  const params = async () => {
+    const res: any = await system.administratorCreate();
+    const arr = [];
+    let roles = res.data.roles;
+    for (let i = 0; i < roles.length; i++) {
+      arr.push({
+        label: roles[i].display_name,
+        value: roles[i].id,
+      });
+    }
+    setRoles(arr);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    system.administratorDetail(id).then((res: any) => {
-      var data = res.data;
-      var roles = data.role_id;
-      let newbox = [];
-      for (var i = 0; i < roles.length; i++) {
-        newbox.push(roles[i]);
-      }
-      form.setFieldsValue({
-        is_ban_login: data.is_ban_login,
-        email: data.email,
-        name: data.name,
-        role_id: newbox,
-      });
+    const res: any = await system.administratorDetail(id);
+    var data = res.data;
+    var roles = data.role_id;
+    let newbox = [];
+    for (var i = 0; i < roles.length; i++) {
+      newbox.push(roles[i]);
+    }
+    form.setFieldsValue({
+      is_ban_login: data.is_ban_login,
+      email: data.email,
+      name: data.name,
+      role_id: newbox,
     });
   };
 
@@ -115,7 +128,15 @@ const SystemAdministratorUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑管理员" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="administrator-create"

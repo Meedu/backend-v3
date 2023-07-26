@@ -273,7 +273,7 @@ const MockPaperUpdatePage = () => {
     <div className="meedu-main-body">
       <BackBartment title="编辑模拟试卷" />
       {init && (
-        <div className="float-left text-center">
+        <div className="float-left text-center mt-30">
           <Spin></Spin>
         </div>
       )}

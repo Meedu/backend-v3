@@ -9,6 +9,7 @@ import {
   Select,
   DatePicker,
   Space,
+  Spin,
 } from "antd";
 import { member } from "../../../api/index";
 import dayjs from "dayjs";
@@ -25,12 +26,14 @@ interface PropsInterface {
 
 export const MemberUpdateDialog = (props: PropsInterface) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [avatar, setAvatar] = useState<string>("");
   const [role_id, setRoleId] = useState<any>(null);
 
   useEffect(() => {
     if (props.open) {
+      setInit(true);
       form.setFieldsValue({
         password: "",
       });
@@ -38,25 +41,29 @@ export const MemberUpdateDialog = (props: PropsInterface) => {
       setAvatar("");
     }
     if (props.id > 0) {
-      getDetail();
+      initData();
     }
   }, [props.open, props.id]);
 
-  const getDetail = () => {
-    member.edit(props.id).then((res: any) => {
-      form.setFieldsValue({
-        nick_name: res.data.nick_name,
-        avatar: res.data.avatar,
-        mobile: res.data.mobile,
-        role_expired_at:
-          res.data.role_id == 0
-            ? ""
-            : dayjs(res.data.role_expired_at, "YYYY-MM-DD HH:mm:ss"),
-        role_id: res.data.role_id == 0 ? [] : res.data.role_id,
-      });
-      setRoleId(res.data.role_id == 0 ? null : res.data.role_id);
-      setAvatar(res.data.avatar);
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
+    const res: any = await member.edit(props.id);
+    form.setFieldsValue({
+      nick_name: res.data.nick_name,
+      avatar: res.data.avatar,
+      mobile: res.data.mobile,
+      role_expired_at:
+        res.data.role_id == 0
+          ? ""
+          : dayjs(res.data.role_expired_at, "YYYY-MM-DD HH:mm:ss"),
+      role_id: res.data.role_id == 0 ? [] : res.data.role_id,
     });
+    setRoleId(res.data.role_id == 0 ? null : res.data.role_id);
+    setAvatar(res.data.avatar);
   };
 
   const onFinish = (values: any) => {
@@ -107,7 +114,15 @@ export const MemberUpdateDialog = (props: PropsInterface) => {
           }}
           centered
         >
-          <div className="float-left mt-30">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            style={{ display: init ? "none" : "block" }}
+            className="float-left mt-30"
+          >
             <Form
               form={form}
               name="member-update-dailog"

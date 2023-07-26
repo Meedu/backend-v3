@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, Input, message, Select, Space } from "antd";
+import { Modal, Form, Input, message, Select, Space, Spin } from "antd";
 import { course } from "../../../api/index";
 import { HelperText } from "../../../components";
 
@@ -13,11 +13,13 @@ interface PropsInterface {
 
 export const CourseCategoryUpdateDialog = (props: PropsInterface) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [localCategories, setLocalCategories] = useState<any>([]);
 
   useEffect(() => {
     if (props.open) {
+      setInit(true);
       form.setFieldsValue({
         name: "",
         sort: "",
@@ -25,7 +27,7 @@ export const CourseCategoryUpdateDialog = (props: PropsInterface) => {
       });
     }
     if (props.id > 0) {
-      getDetail();
+      initData();
     }
   }, [props.open, props.id]);
 
@@ -46,13 +48,17 @@ export const CourseCategoryUpdateDialog = (props: PropsInterface) => {
     setLocalCategories(box);
   }, [props.categories, props.id]);
 
-  const getDetail = () => {
-    course.categoryDetail(props.id).then((res: any) => {
-      form.setFieldsValue({
-        name: res.data.name,
-        sort: res.data.sort,
-        parent_id: res.data.parent_id,
-      });
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
+    const res: any = await course.categoryDetail(props.id);
+    form.setFieldsValue({
+      name: res.data.name,
+      sort: res.data.sort,
+      parent_id: res.data.parent_id,
     });
   };
 
@@ -93,7 +99,15 @@ export const CourseCategoryUpdateDialog = (props: PropsInterface) => {
           }}
           centered
         >
-          <div className="float-left mt-30">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            style={{ display: init ? "none" : "block" }}
+            className="float-left mt-30"
+          >
             <Form
               form={form}
               name="learnPath-update-dailog"

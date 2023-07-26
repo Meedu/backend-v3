@@ -10,9 +10,10 @@ import {
   DatePicker,
   Row,
   Col,
+  Spin,
 } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { path } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
@@ -29,6 +30,7 @@ const LearnPathUpdatePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [thumb, setThumb] = useState<string>("");
@@ -37,61 +39,65 @@ const LearnPathUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑学习路径";
     dispatch(titleAction("编辑学习路径"));
-    getParams();
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
     getDetail();
   }, [result.get("id")]);
 
-  const getParams = () => {
-    path.create().then((res: any) => {
-      let categories = res.data.categories;
-      const box: any = [];
-      for (let i = 0; i < categories.length; i++) {
-        if (categories[i].children.length > 0) {
-          box.push({
-            label: categories[i].name,
-            value: categories[i].id,
-          });
-          let children = categories[i].children;
-          for (let j = 0; j < children.length; j++) {
-            children[j].name = "|----" + children[j].name;
-            box.push({
-              label: children[j].name,
-              value: children[j].id,
-            });
-          }
-        } else {
-          box.push({
-            label: categories[i].name,
-            value: categories[i].id,
-          });
-        }
-      }
-      setCategories(box);
-    });
+  const initData = async () => {
+    await getParams();
+    await getDetail();
+    setInit(false);
   };
 
-  const getDetail = () => {
+  const getParams = async () => {
+    const res: any = await path.create();
+    let categories = res.data.categories;
+    const box: any = [];
+    for (let i = 0; i < categories.length; i++) {
+      if (categories[i].children.length > 0) {
+        box.push({
+          label: categories[i].name,
+          value: categories[i].id,
+        });
+        let children = categories[i].children;
+        for (let j = 0; j < children.length; j++) {
+          children[j].name = "|----" + children[j].name;
+          box.push({
+            label: children[j].name,
+            value: children[j].id,
+          });
+        }
+      } else {
+        box.push({
+          label: categories[i].name,
+          value: categories[i].id,
+        });
+      }
+    }
+    setCategories(box);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    path.detail(id).then((res: any) => {
-      var data = res.data;
-      form.setFieldsValue({
-        category_id: data.category_id,
-        name: data.name,
-        thumb: data.thumb,
-        is_show: data.is_show,
-        desc: data.desc,
-        original_charge: data.original_charge,
-        charge: data.charge,
-        published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
-      });
-      setThumb(data.thumb);
+    const res: any = await path.detail(id);
+    var data = res.data;
+    form.setFieldsValue({
+      category_id: data.category_id,
+      name: data.name,
+      thumb: data.thumb,
+      is_show: data.is_show,
+      desc: data.desc,
+      original_charge: data.original_charge,
+      charge: data.charge,
+      published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
     });
+    setThumb(data.thumb);
   };
 
   const onFinish = (values: any) => {
@@ -129,7 +135,15 @@ const LearnPathUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑学习路径" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="learnPath-update"

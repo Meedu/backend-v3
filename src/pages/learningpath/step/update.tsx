@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Form, Input, message, Button, Table, Space } from "antd";
+import { Form, Input, message, Button, Table, Space, Spin } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { path } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import {
@@ -23,6 +23,7 @@ const LearnPathStepUpdatePage = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const result = new URLSearchParams(useLocation().search);
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [coursesData, setCoursesData] = useState<any>([]);
   const [showSelectResourceCoursesWin, setShowSelectResourceCoursesWin] =
@@ -38,7 +39,8 @@ const LearnPathStepUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑学习步骤";
     dispatch(titleAction("编辑学习步骤"));
-  }, []);
+    initData();
+  }, [id, path_id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
@@ -74,43 +76,47 @@ const LearnPathStepUpdatePage = () => {
     setPracticeId(practiceParams);
   }, [coursesData]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    path.stepDetail(id).then((res: any) => {
-      var data = res.data;
-      form.setFieldsValue({
-        name: data.step.name,
-        sort: data.step.sort,
-        desc: data.step.desc,
-      });
-      let courses = data.courses;
-      let params = [];
-      if (courses.length > 0) {
-        for (let i = 0; i < courses.length; i++) {
-          let type = courses[i].type;
-          if (type === "course") {
-            type = "vod";
-          }
-          if (type === "paper_practice") {
-            type = "practice";
-          }
-          if (type === "paper_paper") {
-            type = "paper";
-          }
-          let item = {
-            type: type,
-            id: courses[i].other_id,
-            title: courses[i].name,
-            thumb: courses[i].thumb,
-            charge: courses[i].charge,
-          };
-          params.push(item);
-        }
-      }
-      setCoursesData(params);
+    const res: any = await path.stepDetail(id);
+    var data = res.data;
+    form.setFieldsValue({
+      name: data.step.name,
+      sort: data.step.sort,
+      desc: data.step.desc,
     });
+    let courses = data.courses;
+    let params = [];
+    if (courses.length > 0) {
+      for (let i = 0; i < courses.length; i++) {
+        let type = courses[i].type;
+        if (type === "course") {
+          type = "vod";
+        }
+        if (type === "paper_practice") {
+          type = "practice";
+        }
+        if (type === "paper_paper") {
+          type = "paper";
+        }
+        let item = {
+          type: type,
+          id: courses[i].other_id,
+          title: courses[i].name,
+          thumb: courses[i].thumb,
+          charge: courses[i].charge,
+        };
+        params.push(item);
+      }
+    }
+    setCoursesData(params);
   };
 
   const onFinish = (values: any) => {
@@ -252,7 +258,6 @@ const LearnPathStepUpdatePage = () => {
     let box = [...coursesData];
     box = box.concat(data);
     setCoursesData(box);
-
     setShowSelectResourceCoursesWin(false);
   };
 
@@ -275,7 +280,12 @@ const LearnPathStepUpdatePage = () => {
           changeCourses(result);
         }}
       ></SelectResourcesMulti>
-      <div className="float-left">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div style={{ display: init ? "none" : "block" }} className="float-left">
         <div className="from-title mt-30">学习步骤基本信息</div>
         <Form
           form={form}

@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
-import { Form, Input, message, Button, Select, Space, Switch } from "antd";
+import {
+  Form,
+  Input,
+  message,
+  Button,
+  Select,
+  Space,
+  Switch,
+  Spin,
+} from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { practice } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
-import { HelperText, BackBartment, PerButton } from "../../../components";
+import { HelperText, BackBartment } from "../../../components";
 
 const PracticeUpdatePage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [charge, setCharge] = useState(0);
@@ -20,44 +30,47 @@ const PracticeUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑练习";
     dispatch(titleAction("编辑练习"));
-    getParams();
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getParams();
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    practice.detail(id).then((res: any) => {
-      var data = res.data.data;
-      form.setFieldsValue({
-        category_id: data.category_id,
-        name: data.name,
-        is_free: data.is_free,
-        is_vip_free: data.is_vip_free,
-        charge: data.charge,
-      });
-      setCharge(data.charge);
-      setIsFree(data.is_free);
+    const res: any = await practice.detail(id);
+    var data = res.data.data;
+    form.setFieldsValue({
+      category_id: data.category_id,
+      name: data.name,
+      is_free: data.is_free,
+      is_vip_free: data.is_vip_free,
+      charge: data.charge,
     });
+    setCharge(data.charge);
+    setIsFree(data.is_free);
   };
 
-  const getParams = () => {
-    practice.create().then((res: any) => {
-      let categories = res.data.categories;
-      const box: any = [];
-      for (let i = 0; i < categories.length; i++) {
-        box.push({
-          label: categories[i].name,
-          value: categories[i].id,
-        });
-      }
-      setCategories(box);
-    });
+  const getParams = async () => {
+    const res: any = await practice.create();
+    let categories = res.data.categories;
+    const box: any = [];
+    for (let i = 0; i < categories.length; i++) {
+      box.push({
+        label: categories[i].name,
+        value: categories[i].id,
+      });
+    }
+    setCategories(box);
   };
 
   const onFinish = (values: any) => {
@@ -114,7 +127,15 @@ const PracticeUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑练习" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="practice-update"

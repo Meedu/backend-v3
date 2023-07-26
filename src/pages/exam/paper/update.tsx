@@ -7,7 +7,7 @@ import {
   Select,
   Space,
   Switch,
-  Modal,
+  Spin,
 } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -20,6 +20,7 @@ const PaperUpdatePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [isFree, setIsFree] = useState(0);
   const [charge, setCharge] = useState(0);
@@ -31,76 +32,79 @@ const PaperUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑试卷";
     dispatch(titleAction("编辑试卷"));
-    getParams();
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getParams();
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    paper.detail(id).then((res: any) => {
-      var data = res.data.data;
-      form.setFieldsValue({
-        category_id: data.category_id,
-        title: data.title,
-        enabled_invite: data.enabled_invite,
-        is_vip_free: data.is_vip_free,
-        charge: data.charge,
-        expired_minutes: data.expired_minutes,
-        pass_score: data.pass_score,
-        is_skip_mark: data.is_skip_mark,
-        is_random: data.is_random,
-        try_times: data.try_times,
-      });
-      setCharge(data.charge);
-      setIsInvite(data.enabled_invite);
-      if (data.charge === 0) {
-        setIsFree(1);
-        form.setFieldsValue({ is_free: 1 });
-      } else {
-        setIsFree(0);
-        form.setFieldsValue({ is_free: 0 });
-      }
-      if (data.required_courses !== null) {
-        let ids =
-          data.required_courses.length === 0
-            ? []
-            : data.required_courses.split(",");
-        const arr: any = [];
-        ids.forEach((item: any) => {
-          arr.push(parseInt(item));
-        });
-        form.setFieldsValue({ required_courses: arr });
-      }
+    const res: any = await paper.detail(id);
+    var data = res.data.data;
+    form.setFieldsValue({
+      category_id: data.category_id,
+      title: data.title,
+      enabled_invite: data.enabled_invite,
+      is_vip_free: data.is_vip_free,
+      charge: data.charge,
+      expired_minutes: data.expired_minutes,
+      pass_score: data.pass_score,
+      is_skip_mark: data.is_skip_mark,
+      is_random: data.is_random,
+      try_times: data.try_times,
     });
+    setCharge(data.charge);
+    setIsInvite(data.enabled_invite);
+    if (data.charge === 0) {
+      setIsFree(1);
+      form.setFieldsValue({ is_free: 1 });
+    } else {
+      setIsFree(0);
+      form.setFieldsValue({ is_free: 0 });
+    }
+    if (data.required_courses !== null) {
+      let ids =
+        data.required_courses.length === 0
+          ? []
+          : data.required_courses.split(",");
+      const arr: any = [];
+      ids.forEach((item: any) => {
+        arr.push(parseInt(item));
+      });
+      form.setFieldsValue({ required_courses: arr });
+    }
   };
 
-  const getParams = () => {
-    paper.create().then((res: any) => {
-      let categories = res.data.categories;
-      const box: any = [];
-      for (let i = 0; i < categories.length; i++) {
-        box.push({
-          label: categories[i].name,
-          value: categories[i].id,
-        });
-      }
-      setCategories(box);
-      let courses = res.data.courses;
-      const box2: any = [];
-      for (let i = 0; i < courses.length; i++) {
-        box2.push({
-          label: courses[i].title,
-          value: courses[i].id,
-        });
-      }
-      setCourses(box2);
-    });
+  const getParams = async () => {
+    const res: any = await paper.create();
+    let categories = res.data.categories;
+    const box: any = [];
+    for (let i = 0; i < categories.length; i++) {
+      box.push({
+        label: categories[i].name,
+        value: categories[i].id,
+      });
+    }
+    setCategories(box);
+    let courses = res.data.courses;
+    const box2: any = [];
+    for (let i = 0; i < courses.length; i++) {
+      box2.push({
+        label: courses[i].title,
+        value: courses[i].id,
+      });
+    }
+    setCourses(box2);
   };
 
   const onFinish = (values: any) => {
@@ -193,7 +197,15 @@ const PaperUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑试卷" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="paper-create"

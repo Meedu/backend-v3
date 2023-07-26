@@ -7,7 +7,7 @@ import {
   Select,
   Space,
   Switch,
-  Modal,
+  Spin,
 } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -20,6 +20,7 @@ const MockPaperUpdatePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [isFree, setIsFree] = useState(0);
   const [isInvite, setIsInvite] = useState(0);
@@ -33,7 +34,8 @@ const MockPaperUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑模拟试卷";
     dispatch(titleAction("编辑模拟试卷"));
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     getParams();
@@ -41,44 +43,47 @@ const MockPaperUpdatePage = () => {
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    mock.detail(id).then((res: any) => {
-      var data = res.data;
-      form.setFieldsValue({
-        category_id: data.category_id,
-        title: data.title,
-        is_invite: data.is_invite,
-        is_vip_free: data.is_vip_free,
-        charge: data.charge,
-        expired_minutes: data.expired_minutes,
-        pass_score: data.pass_score,
-      });
-      setCharge(data.charge);
-      setIsInvite(data.is_invite);
-      if (data.charge === 0) {
-        setIsFree(1);
-        form.setFieldsValue({ is_free: 1 });
-      } else {
-        setIsFree(0);
-        form.setFieldsValue({ is_free: 0 });
-      }
-      let rule = JSON.parse(data.rule);
-      setCategoryIds(rule.category_ids);
-      form.setFieldsValue({
-        category_ids: rule.category_ids,
-        choice: Number(rule.num.choice),
-        select: Number(rule.num.select),
-        judge: Number(rule.num.judge),
-        input: Number(rule.num.input),
-        qa: Number(rule.num.qa),
-        cap: Number(rule.num.cap),
-      });
+    const res: any = await mock.detail(id);
+    var data = res.data;
+    form.setFieldsValue({
+      category_id: data.category_id,
+      title: data.title,
+      is_invite: data.is_invite,
+      is_vip_free: data.is_vip_free,
+      charge: data.charge,
+      expired_minutes: data.expired_minutes,
+      pass_score: data.pass_score,
+    });
+    setCharge(data.charge);
+    setIsInvite(data.is_invite);
+    if (data.charge === 0) {
+      setIsFree(1);
+      form.setFieldsValue({ is_free: 1 });
+    } else {
+      setIsFree(0);
+      form.setFieldsValue({ is_free: 0 });
+    }
+    let rule = JSON.parse(data.rule);
+    setCategoryIds(rule.category_ids);
+    form.setFieldsValue({
+      category_ids: rule.category_ids,
+      choice: Number(rule.num.choice),
+      select: Number(rule.num.select),
+      judge: Number(rule.num.judge),
+      input: Number(rule.num.input),
+      qa: Number(rule.num.qa),
+      cap: Number(rule.num.cap),
     });
   };
 
@@ -267,7 +272,15 @@ const MockPaperUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑模拟试卷" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="mockPaper-update"

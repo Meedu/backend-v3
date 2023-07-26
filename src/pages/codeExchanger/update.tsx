@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Input, message, DatePicker, Form } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Input, message, DatePicker, Form, Spin } from "antd";
+import { useDispatch } from "react-redux";
 import { codeExchanger } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { BackBartment } from "../../components";
@@ -13,6 +13,7 @@ const CodeExchangerUpdatePage = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [init, setInit] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [id, setId] = useState(Number(result.get("id")));
   const [relate_data, setRelateData] = useState("");
@@ -20,25 +21,29 @@ const CodeExchangerUpdatePage = () => {
   useEffect(() => {
     document.title = "编辑兑换活动";
     dispatch(titleAction("编辑兑换活动"));
-  }, []);
+    initData();
+  }, [id]);
 
   useEffect(() => {
     setId(Number(result.get("id")));
-    getDetail();
   }, [result.get("id")]);
 
-  const getDetail = () => {
+  const initData = async () => {
+    await getDetail();
+    setInit(false);
+  };
+
+  const getDetail = async () => {
     if (id === 0) {
       return;
     }
-    codeExchanger.detail(id).then((res: any) => {
-      var data = res.data;
-      setRelateData(data.relate_data);
-      form.setFieldsValue({
-        name: data.name,
-        start_at: dayjs(data.start_at, "YYYY-MM-DD HH:mm"),
-        end_at: dayjs(data.end_at, "YYYY-MM-DD HH:mm"),
-      });
+    const res: any = await codeExchanger.detail(id);
+    var data = res.data;
+    setRelateData(data.relate_data);
+    form.setFieldsValue({
+      name: data.name,
+      start_at: dayjs(data.start_at, "YYYY-MM-DD HH:mm"),
+      end_at: dayjs(data.end_at, "YYYY-MM-DD HH:mm"),
     });
   };
 
@@ -71,7 +76,15 @@ const CodeExchangerUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑兑换活动" />
-      <div className="float-left mt-30">
+      {init && (
+        <div className="float-left text-center mt-30">
+          <Spin></Spin>
+        </div>
+      )}
+      <div
+        style={{ display: init ? "none" : "block" }}
+        className="float-left mt-30"
+      >
         <Form
           form={form}
           name="codeExchanger-update"

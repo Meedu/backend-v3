@@ -113,7 +113,7 @@ const LiveVideoUpdatePage = () => {
     <div className="meedu-main-body">
       <BackBartment title="编辑直播排课" />
       {loading ? (
-        <div className="float-left text-center">
+        <div className="float-left text-center mt-30">
           <Spin></Spin>
         </div>
       ) : (

@@ -162,7 +162,7 @@ const CourseUpdatePage = () => {
     <div className="meedu-main-body">
       <BackBartment title="编辑录播课程" />
       {loading ? (
-        <div className="float-left text-center">
+        <div className="float-left text-center mt-30">
           <Spin></Spin>
         </div>
       ) : (

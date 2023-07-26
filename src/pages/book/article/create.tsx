@@ -75,14 +75,16 @@ const BookArticleCreatePage = () => {
   const getParams = () => {
     book.articleCreate({}).then((res: any) => {
       let categories = res.data.chapters[bid];
-      const box: any = [];
-      for (let i = 0; i < categories.length; i++) {
-        box.push({
-          label: categories[i].name,
-          value: categories[i].id,
-        });
+      if (categories) {
+        const box: any = [];
+        for (let i = 0; i < categories.length; i++) {
+          box.push({
+            label: categories[i].name,
+            value: categories[i].id,
+          });
+        }
+        setCategories(box);
       }
-      setCategories(box);
     });
   };
 

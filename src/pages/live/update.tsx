@@ -213,7 +213,6 @@ const LiveUpdatePage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="编辑直播课程" />
-
       <div className="center-tabs mb-30">
         <Tabs
           defaultActiveKey={resourceActive}

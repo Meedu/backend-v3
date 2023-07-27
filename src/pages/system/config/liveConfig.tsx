@@ -177,6 +177,14 @@ const SystemLiveConfigPage = () => {
               ),
             });
           } else if (
+            configData[index].key === "meedu.addons.zhibo.aliyun.rts_play"
+          ) {
+            form.setFieldsValue({
+              "meedu.addons.zhibo.aliyun.rts_play": Number(
+                configData[index].value
+              ),
+            });
+          } else if (
             configData[index].key === "meedu.addons.zhibo.go-meedu.internal_url"
           ) {
             form.setFieldsValue({
@@ -246,6 +254,14 @@ const SystemLiveConfigPage = () => {
       form.setFieldsValue({ "meedu.addons.zhibo.tencent.webrtc_play": 1 });
     } else {
       form.setFieldsValue({ "meedu.addons.zhibo.tencent.webrtc_play": 0 });
+    }
+  };
+
+  const isRtsChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ "meedu.addons.zhibo.aliyun.rts_play": 1 });
+    } else {
+      form.setFieldsValue({ "meedu.addons.zhibo.aliyun.rts_play": 0 });
     }
   };
 
@@ -339,6 +355,20 @@ const SystemLiveConfigPage = () => {
               </div>
             </Form.Item>
             <div className="from-title mt-30">腾讯云直播服务商配置</div>
+            <Form.Item
+              label="启用RTS播放"
+              name="meedu.addons.zhibo.aliyun.rts_play"
+            >
+              <Form.Item
+                name="meedu.addons.zhibo.aliyun.rts_play"
+                valuePropName="checked"
+              >
+                <Switch onChange={isRtsChange} />
+              </Form.Item>
+              <div className="form-helper-text">
+                <span>该播放方式毫秒级延迟。</span>
+              </div>
+            </Form.Item>
             <Form.Item
               label="腾讯云AppId"
               name="meedu.addons.zhibo.tencent.app_id"

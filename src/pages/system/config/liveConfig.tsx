@@ -354,7 +354,6 @@ const SystemLiveConfigPage = () => {
                 <span>{aliWebUrl}</span>
               </div>
             </Form.Item>
-            <div className="from-title mt-30">腾讯云直播服务商配置</div>
             <Form.Item
               label="启用RTS播放"
               name="meedu.addons.zhibo.aliyun.rts_play"
@@ -369,6 +368,7 @@ const SystemLiveConfigPage = () => {
                 <span>该播放方式毫秒级延迟。</span>
               </div>
             </Form.Item>
+            <div className="from-title mt-30">腾讯云直播服务商配置</div>
             <Form.Item
               label="腾讯云AppId"
               name="meedu.addons.zhibo.tencent.app_id"

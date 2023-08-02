@@ -1,0 +1,289 @@
+import { useState, useEffect } from "react";
+import { Table, Modal, message, Button, Space, Select } from "antd";
+import { useNavigate, useLocation } from "react-router-dom";
+import type { ColumnsType } from "antd/es/table";
+import { useDispatch } from "react-redux";
+import { practice } from "../../../../api/index";
+import { titleAction } from "../../../../store/user/loginUserSlice";
+import {
+  PerButton,
+  BackBartment,
+  QuestionRender,
+} from "../../../../components";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+const { confirm } = Modal;
+
+interface DataType {
+  id: React.Key;
+  created_at: string;
+}
+
+const PracticeQuestionPage = () => {
+  const result = new URLSearchParams(useLocation().search);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [list, setList] = useState<any>([]);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(20);
+  const [total, setTotal] = useState(0);
+  const [refresh, setRefresh] = useState(false);
+  const [id, setId] = useState(Number(result.get("id")));
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [category_id, setCategoryId] = useState([]);
+  const [categories, setCategories] = useState<any>([]);
+  const [type, setType] = useState([]);
+  const [types, setTypes] = useState<any>([]);
+  const [level, setLevel] = useState([]);
+  const [levels, setLevels] = useState<any>([]);
+
+  useEffect(() => {
+    document.title = "章节组卷";
+    dispatch(titleAction("章节组卷"));
+  }, []);
+
+  useEffect(() => {
+    setId(Number(result.get("id")));
+  }, [result.get("id")]);
+
+  useEffect(() => {
+    getData();
+  }, [id, page, size, refresh]);
+
+  const getData = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    practice
+      .questionList(id, {
+        page: page,
+        size: size,
+        category_id: category_id,
+        type: type,
+        level: level,
+      })
+      .then((res: any) => {
+        setList(res.data.data.data);
+        setTotal(res.data.data.total);
+        let box1: any = [];
+        res.data.categories.length > 0 &&
+          res.data.categories.map((item: any) => {
+            box1.push({
+              label: item.name,
+              value: item.id,
+            });
+          });
+        setCategories(box1);
+        let box2: any = [];
+        res.data.types.length > 0 &&
+          res.data.types.map((item: any) => {
+            box2.push({
+              label: item.name,
+              value: item.id,
+            });
+          });
+        setTypes(box2);
+        let box3: any = [];
+        res.data.levels.length > 0 &&
+          res.data.levels.map((item: any) => {
+            box3.push({
+              label: item.name,
+              value: item.id,
+            });
+          });
+        setLevels(box3);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
+  const resetList = () => {
+    setPage(1);
+    setSize(20);
+    setList([]);
+    setType([]);
+    setCategoryId([]);
+    setLevel([]);
+    setRefresh(!refresh);
+  };
+
+  const resetData = () => {
+    setList([]);
+    setSelectedRowKeys([]);
+    setRefresh(!refresh);
+  };
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "分类",
+      width: 200,
+      render: (_, record: any) => <span>{record.category_name}</span>,
+    },
+    {
+      title: "类型",
+      width: 120,
+      render: (_, record: any) => <span>{record.type_text}</span>,
+    },
+    {
+      title: "难度",
+      width: 120,
+      render: (_, record: any) => <span>{record.level_text}</span>,
+    },
+    {
+      title: "内容",
+      render: (_, record: any) => (
+        <QuestionRender question={record}></QuestionRender>
+      ),
+    },
+  ];
+
+  const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      setSelectedRowKeys(selectedRowKeys);
+    },
+  };
+
+  const destorymulti = () => {
+    if (selectedRowKeys.length === 0) {
+      message.error("请选择需要操作的数据");
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除选中的试题？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        if (loading) {
+          return;
+        }
+        setLoading(true);
+        practice
+          .questionDestoryMulti(id, {
+            qids: selectedRowKeys,
+          })
+          .then(() => {
+            message.success("成功");
+            resetData();
+            setLoading(false);
+          })
+          .catch((e) => {
+            setLoading(false);
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const paginationProps = {
+    current: page, //当前页码
+    pageSize: size,
+    total: total, // 总条数
+    onChange: (page: number, pageSize: number) =>
+      handlePageChange(page, pageSize), //改变页码的函数
+    showSizeChanger: true,
+  };
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    setPage(page);
+    setSize(pageSize);
+  };
+
+  return (
+    <div className="meedu-main-body">
+      <BackBartment title="章节组卷" />
+      <div className="float-left j-b-flex mb-30 mt-30">
+        <div className="d-flex">
+          <PerButton
+            type="primary"
+            text="添加试题"
+            class=""
+            icon={null}
+            p="addons.Paper.practice_chapter.questions.store"
+            onClick={() =>
+              navigate("/exam/practice/chapter/question/create?id=" + id)
+            }
+            disabled={null}
+          />
+          <PerButton
+            type="danger"
+            text="批量删除"
+            class="ml-10"
+            icon={null}
+            p="addons.Paper.practice_chapter.questions.delete"
+            onClick={() => destorymulti()}
+            disabled={null}
+          />
+        </div>
+        <div className="d-flex">
+          <Select
+            style={{ width: 150 }}
+            value={category_id}
+            onChange={(e) => {
+              setCategoryId(e);
+            }}
+            allowClear
+            placeholder="分类"
+            options={categories}
+          />
+          <Select
+            style={{ width: 150, marginLeft: 10 }}
+            value={type}
+            onChange={(e) => {
+              setType(e);
+            }}
+            allowClear
+            placeholder="类型"
+            options={types}
+          />
+          <Select
+            style={{ width: 150, marginLeft: 10 }}
+            value={level}
+            onChange={(e) => {
+              setLevel(e);
+            }}
+            allowClear
+            placeholder="难度"
+            options={levels}
+          />
+          <Button className="ml-10" onClick={resetList}>
+            清空
+          </Button>
+          <Button
+            className="ml-10"
+            type="primary"
+            onClick={() => {
+              setPage(1);
+              setRefresh(!refresh);
+            }}
+          >
+            筛选
+          </Button>
+        </div>
+      </div>
+      <div className="float-left">
+        <Table
+          rowSelection={{
+            type: "checkbox",
+            ...rowSelection,
+          }}
+          loading={loading}
+          columns={columns}
+          dataSource={list}
+          rowKey={(record) => record.id}
+          pagination={paginationProps}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default PracticeQuestionPage;

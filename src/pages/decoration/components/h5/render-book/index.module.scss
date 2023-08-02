@@ -1,0 +1,126 @@
+.book-block-box {
+  width: 100%;
+  height: auto;
+  float: left;
+  box-sizing: border-box;
+  padding: 25px 15px;
+  background-color: white;
+  text-align: left;
+
+  .title {
+    width: 100%;
+    height: auto;
+    float: left;
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+
+    .text {
+      flex: 1;
+      font-size: 19px;
+      font-weight: 600;
+      color: #333333;
+      line-height: 19px;
+    }
+
+    .more {
+      font-size: 13px;
+      font-weight: 400;
+      color: #999999;
+      line-height: 13px;
+    }
+  }
+
+  .body {
+    width: 100%;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+
+    .book-item {
+      width: 100%;
+      height: auto;
+      float: left;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .book-thumb {
+        margin-right: 15px;
+
+        img {
+          border-radius: 4px;
+        }
+      }
+
+      .book-body {
+        flex: 1;
+        width: calc(100% - 105px);
+        .book-name {
+          width: 100%;
+          float: left;
+          height: 20px;
+          font-size: 15px;
+          font-weight: 500;
+          color: #171923;
+          line-height: 20px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin-bottom: 10px;
+        }
+
+        .book-desc {
+          width: 100%;
+          height: 51px;
+          float: left;
+          margin-bottom: 19px;
+          word-break: break-all;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 12px;
+          font-weight: 400;
+          color: #666666;
+          line-height: 17px;
+        }
+
+        .book-info {
+          width: 100%;
+          height: 20px;
+          float: left;
+          display: flex;
+          align-items: center;
+
+          .sub {
+            flex: 1;
+            font-size: 12px;
+            font-weight: 400;
+            color: #999999;
+            line-height: 12px;
+          }
+
+          .price {
+            flex: 1;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ff5858;
+            line-height: 20px;
+
+            .unit {
+              font-size: 14px;
+            }
+            .free {
+              color: #04c877;
+            }
+          }
+        }
+      }
+    }
+  }
+}

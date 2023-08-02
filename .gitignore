@@ -29,3 +29,8 @@ yarn.lock
 .env.production
 .env.development
 .env
+
+template.php
+
+deploy-test.sh
+deploy-demo.sh

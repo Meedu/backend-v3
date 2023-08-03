@@ -123,7 +123,7 @@ export const SelectMiaosha = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="选择秒杀课程"
           closable={false}
@@ -190,7 +190,7 @@ export const SelectMiaosha = (props: PropsInterface) => {
             </div>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

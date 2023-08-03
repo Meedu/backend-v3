@@ -234,7 +234,7 @@ const PracticeCreatePage = () => {
             </div>
           </div>
         </div>
-        {visiable && (
+        {visiable ? (
           <Modal
             title=""
             onCancel={() => {
@@ -261,7 +261,7 @@ const PracticeCreatePage = () => {
               </span>
             </div>
           </Modal>
-        )}
+        ) : null}
       </div>
     </div>
   );

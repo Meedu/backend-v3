@@ -122,7 +122,7 @@ export const SnapshotDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="学习照片"
           onCancel={() => {
@@ -169,7 +169,7 @@ export const SnapshotDialog = (props: PropsInterface) => {
             </div>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

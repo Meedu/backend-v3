@@ -594,78 +594,80 @@ const MemberPage = () => {
           pagination={paginationProps}
         />
       </div>
-      <Drawer
-        title="更多筛选"
-        onClose={() => setDrawer(false)}
-        maskClosable={false}
-        open={drawer}
-        footer={
-          <Space className="j-b-flex">
-            <Button
-              onClick={() => {
-                resetList();
-                setDrawer(false);
+      {drawer ? (
+        <Drawer
+          title="更多筛选"
+          onClose={() => setDrawer(false)}
+          maskClosable={false}
+          open={true}
+          footer={
+            <Space className="j-b-flex">
+              <Button
+                onClick={() => {
+                  resetList();
+                  setDrawer(false);
+                }}
+              >
+                清空
+              </Button>
+              <Button
+                onClick={() => {
+                  setPage(1);
+                  setRefresh(!refresh);
+                  setDrawer(false);
+                }}
+                type="primary"
+              >
+                筛选
+              </Button>
+            </Space>
+          }
+          width={360}
+        >
+          <div className="float-left">
+            <Input
+              value={keywords}
+              onChange={(e) => {
+                setKeywords(e.target.value);
               }}
-            >
-              清空
-            </Button>
-            <Button
-              onClick={() => {
-                setPage(1);
-                setRefresh(!refresh);
-                setDrawer(false);
+              allowClear
+              placeholder="昵称或手机号"
+            />
+            <Select
+              style={{ width: "100%", marginTop: 20 }}
+              value={role_id}
+              onChange={(e) => {
+                setRoleId(e);
               }}
-              type="primary"
-            >
-              筛选
-            </Button>
-          </Space>
-        }
-        width={360}
-      >
-        <div className="float-left">
-          <Input
-            value={keywords}
-            onChange={(e) => {
-              setKeywords(e.target.value);
-            }}
-            allowClear
-            placeholder="昵称或手机号"
-          />
-          <Select
-            style={{ width: "100%", marginTop: 20 }}
-            value={role_id}
-            onChange={(e) => {
-              setRoleId(e);
-            }}
-            allowClear
-            placeholder="VIP会员"
-            options={roles}
-          />
-          <Select
-            style={{ width: "100%", marginTop: 20 }}
-            value={tag_id}
-            onChange={(e) => {
-              setTagId(e);
-            }}
-            allowClear
-            placeholder="学员标签"
-            options={tags}
-          />
-          <RangePicker
-            disabledDate={disabledDate}
-            format={"YYYY-MM-DD"}
-            value={createdAts}
-            style={{ marginTop: 20 }}
-            onChange={(date, dateString) => {
-              dateString[1] += " 23:59:59";
-              setCreatedAt(dateString);
-              setCreatedAts(date);
-            }}
-            placeholder={["注册-开始日期", "注册-结束日期"]}
-          />
-        </div>
-      </Drawer>
+              allowClear
+              placeholder="VIP会员"
+              options={roles}
+            />
+            <Select
+              style={{ width: "100%", marginTop: 20 }}
+              value={tag_id}
+              onChange={(e) => {
+                setTagId(e);
+              }}
+              allowClear
+              placeholder="学员标签"
+              options={tags}
+            />
+            <RangePicker
+              disabledDate={disabledDate}
+              format={"YYYY-MM-DD"}
+              value={createdAts}
+              style={{ marginTop: 20 }}
+              onChange={(date, dateString) => {
+                dateString[1] += " 23:59:59";
+                setCreatedAt(dateString);
+                setCreatedAts(date);
+              }}
+              placeholder={["注册-开始日期", "注册-结束日期"]}
+            />
+          </div>
+        </Drawer>
+      ) : null}
     </div>
   );
 };

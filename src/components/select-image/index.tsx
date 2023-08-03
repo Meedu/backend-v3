@@ -89,7 +89,7 @@ export const SelectImage = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="选择图片"
           closable={false}
@@ -195,7 +195,7 @@ export const SelectImage = (props: PropsInterface) => {
             </Col>
           </Row>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

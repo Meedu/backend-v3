@@ -47,7 +47,7 @@ export const UploadImageSub = (props: PropsInterface) => {
         上传图片
       </Button>
 
-      {showModal && (
+      {showModal ? (
         <Modal
           open={true}
           closable={false}
@@ -71,7 +71,7 @@ export const UploadImageSub = (props: PropsInterface) => {
             </p>
           </Dragger>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

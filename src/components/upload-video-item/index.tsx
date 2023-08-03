@@ -456,115 +456,119 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={800}
-        onCancel={() => {
-          onCancel();
-        }}
-        footer={[
-          <Button
-            loading={upload.loading || upRef.current > 0}
-            key="submit"
-            type="primary"
-            onClick={closeWin}
-          >
-            完成
-          </Button>,
-        ]}
-        maskClosable={false}
-        closable={false}
-      >
-        <div className={styles["header"]}>上传列表</div>
-        <div style={{ display: "none" }}>
-          <video id="video-play" onLoadedMetadata={videoPlayEvt}></video>
-        </div>
-        <div className={styles["body"]}>
-          <Row gutter={[0, 10]}>
-            <Col span={24}>
-              <Dragger id="selectfiles" {...uploadProps}>
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">拖入视频文件至此区域</p>
-                <p className="ant-upload-hint">
-                  支持多个视频同时上传 / 仅支持mp4格式
-                </p>
-              </Dragger>
-            </Col>
-            <Col span={24}>
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={800}
+          onCancel={() => {
+            onCancel();
+          }}
+          footer={[
+            <Button
+              loading={upload.loading || upRef.current > 0}
+              key="submit"
+              type="primary"
+              onClick={closeWin}
+            >
+              完成
+            </Button>,
+          ]}
+          maskClosable={false}
+          closable={false}
+        >
+          <div className={styles["header"]}>上传列表</div>
+          <div style={{ display: "none" }}>
+            <video id="video-play" onLoadedMetadata={videoPlayEvt}></video>
+          </div>
+          <div className={styles["body"]}>
+            <Row gutter={[0, 10]}>
               <Col span={24}>
-                <Table
-                  pagination={false}
-                  rowKey="id"
-                  columns={[
-                    {
-                      title: "视频",
-                      dataIndex: "file.name",
-                      key: "file.name",
-                      render: (_, record) => <span>{record.file.name}</span>,
-                    },
-                    {
-                      title: "大小",
-                      dataIndex: "file.size",
-                      key: "file.size",
-                      render: (_, record) => (
-                        <span>
-                          {(record.file.size / 1024 / 1024).toFixed(2)} M
-                        </span>
-                      ),
-                    },
-                    {
-                      title: "进度",
-                      dataIndex: "progress",
-                      key: "progress",
-                      render: (_, record: any) => (
-                        <>
-                          {record.progress === 0 && "等待上传"}
-                          {record.progress > 0 && (
-                            <Progress
-                              size="small"
-                              steps={20}
-                              percent={record.progress}
-                            />
-                          )}
-                        </>
-                      ),
-                    },
-                    {
-                      title: "操作",
-                      key: "action",
-                      render: (_, record) => (
-                        <>
-                          {record.progress > 0 && record.status === 1 && (
-                            <Button
-                              type="link"
-                              onClick={() => {
-                                cancelTask(record.result);
-                              }}
-                            >
-                              取消
-                            </Button>
-                          )}
-
-                          {record.status === 5 && <Tag color="error">失败</Tag>}
-                          {record.status === 7 && (
-                            <Tag color="success">成功</Tag>
-                          )}
-                        </>
-                      ),
-                    },
-                  ]}
-                  dataSource={fileList}
-                />
+                <Dragger id="selectfiles" {...uploadProps}>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">拖入视频文件至此区域</p>
+                  <p className="ant-upload-hint">
+                    支持多个视频同时上传 / 仅支持mp4格式
+                  </p>
+                </Dragger>
               </Col>
-            </Col>
-          </Row>
-        </div>
-      </Modal>
+              <Col span={24}>
+                <Col span={24}>
+                  <Table
+                    pagination={false}
+                    rowKey="id"
+                    columns={[
+                      {
+                        title: "视频",
+                        dataIndex: "file.name",
+                        key: "file.name",
+                        render: (_, record) => <span>{record.file.name}</span>,
+                      },
+                      {
+                        title: "大小",
+                        dataIndex: "file.size",
+                        key: "file.size",
+                        render: (_, record) => (
+                          <span>
+                            {(record.file.size / 1024 / 1024).toFixed(2)} M
+                          </span>
+                        ),
+                      },
+                      {
+                        title: "进度",
+                        dataIndex: "progress",
+                        key: "progress",
+                        render: (_, record: any) => (
+                          <>
+                            {record.progress === 0 && "等待上传"}
+                            {record.progress > 0 && (
+                              <Progress
+                                size="small"
+                                steps={20}
+                                percent={record.progress}
+                              />
+                            )}
+                          </>
+                        ),
+                      },
+                      {
+                        title: "操作",
+                        key: "action",
+                        render: (_, record) => (
+                          <>
+                            {record.progress > 0 && record.status === 1 && (
+                              <Button
+                                type="link"
+                                onClick={() => {
+                                  cancelTask(record.result);
+                                }}
+                              >
+                                取消
+                              </Button>
+                            )}
+
+                            {record.status === 5 && (
+                              <Tag color="error">失败</Tag>
+                            )}
+                            {record.status === 7 && (
+                              <Tag color="success">成功</Tag>
+                            )}
+                          </>
+                        ),
+                      },
+                    ]}
+                    dataSource={fileList}
+                  />
+                </Col>
+              </Col>
+            </Row>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

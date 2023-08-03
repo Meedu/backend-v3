@@ -193,43 +193,49 @@ export const UserImportDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={900}
-        onCancel={() => {
-          onCancel();
-        }}
-        maskClosable={false}
-        closable={false}
-        footer={null}
-      >
-        <div className={styles["header"]}>学员批量导入</div>
-        <div className={styles["body"]}>
-          <div className="d-flex float-left">
-            <div>
-              <Upload {...uploadProps} showUploadList={false}>
-                <Button loading={loading} type="primary">
-                  选择Excel表格文件
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={900}
+          onCancel={() => {
+            onCancel();
+          }}
+          maskClosable={false}
+          closable={false}
+          footer={null}
+        >
+          <div className={styles["header"]}>学员批量导入</div>
+          <div className={styles["body"]}>
+            <div className="d-flex float-left">
+              <div>
+                <Upload {...uploadProps} showUploadList={false}>
+                  <Button loading={loading} type="primary">
+                    选择Excel表格文件
+                  </Button>
+                </Upload>
+              </div>
+              <div className="ml-30">
+                <Button
+                  type="link"
+                  className="c-primary"
+                  onClick={() => mode()}
+                >
+                  点击链接下载「{name || "学员批量导入模板"}」
                 </Button>
-              </Upload>
-            </div>
-            <div className="ml-30">
-              <Button type="link" className="c-primary" onClick={() => mode()}>
-                点击链接下载「{name || "学员批量导入模板"}」
-              </Button>
+              </div>
             </div>
           </div>
-        </div>
-        <div
-          slot="footer"
-          style={{ display: "flex", flexDirection: "row-reverse" }}
-        >
-          <Button onClick={() => onCancel()}>取消</Button>
-        </div>
-      </Modal>
+          <div
+            slot="footer"
+            style={{ display: "flex", flexDirection: "row-reverse" }}
+          >
+            <Button onClick={() => onCancel()}>取消</Button>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

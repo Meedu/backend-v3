@@ -60,7 +60,7 @@ export const RemarkDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="修改备注"
           onCancel={() => {
@@ -99,7 +99,7 @@ export const RemarkDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

@@ -305,29 +305,76 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={800}
-        onCancel={() => {
-          onCancel();
-        }}
-        maskClosable={false}
-        closable={false}
-        onOk={() => confirmAdd()}
-      >
-        <div className={styles["header"]}>视频列表</div>
-        <div className={styles["body"]}>
-          {isNoService && (
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={800}
+          onCancel={() => {
+            onCancel();
+          }}
+          maskClosable={false}
+          closable={false}
+          onOk={() => confirmAdd()}
+        >
+          <div className={styles["header"]}>视频列表</div>
+          <div className={styles["body"]}>
+            {isNoService && (
+              <div className="float-left">
+                未配置视频存储服务，请前往『系统』-『系统配置』-『视频存储』配置。
+              </div>
+            )}
             <div className="float-left">
-              未配置视频存储服务，请前往『系统』-『系统配置』-『视频存储』配置。
-            </div>
-          )}
-          <div className="float-left">
-            {isLocalService &&
-              checkPermission("addons.LocalUpload.video.index") && (
+              {isLocalService &&
+                checkPermission("addons.LocalUpload.video.index") && (
+                  <>
+                    <div className="float-left j-b-flex mb-15">
+                      <div className="d-flex">
+                        <Button
+                          type="primary"
+                          onClick={() => {
+                            if (isNoService) {
+                              message.warning(
+                                "请先在系统配置的视频存储中完成参数配置"
+                              );
+                              return;
+                            }
+                            setOpenUploadItem(true);
+                          }}
+                        >
+                          上传视频
+                        </Button>
+                      </div>
+                      <div className="d-flex">
+                        <Input
+                          value={name}
+                          style={{ width: 150 }}
+                          onChange={(e) => {
+                            setName(e.target.value);
+                          }}
+                          allowClear
+                          placeholder="视频名称关键词"
+                        />
+                        <Button className="ml-10" onClick={resetList}>
+                          清空
+                        </Button>
+                        <Button
+                          className="ml-10"
+                          type="primary"
+                          onClick={() => {
+                            setPage(1);
+                            setRefresh(!refresh);
+                          }}
+                        >
+                          筛选
+                        </Button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              {(isAliService || isTenService) && (
                 <>
                   <div className="float-left j-b-flex mb-15">
                     <div className="d-flex">
@@ -348,10 +395,10 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
                     </div>
                     <div className="d-flex">
                       <Input
-                        value={name}
+                        value={keywords}
                         style={{ width: 150 }}
                         onChange={(e) => {
-                          setName(e.target.value);
+                          setKeywords(e.target.value);
                         }}
                         allowClear
                         placeholder="视频名称关键词"
@@ -373,72 +420,27 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
                   </div>
                 </>
               )}
-            {(isAliService || isTenService) && (
-              <>
-                <div className="float-left j-b-flex mb-15">
-                  <div className="d-flex">
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        if (isNoService) {
-                          message.warning(
-                            "请先在系统配置的视频存储中完成参数配置"
-                          );
-                          return;
-                        }
-                        setOpenUploadItem(true);
+              {!isNoService && (
+                <div className="float-left">
+                  <ConfigProvider renderEmpty={tableEmptyRender}>
+                    <Table
+                      rowSelection={{
+                        type: "radio",
+                        ...rowSelection,
                       }}
-                    >
-                      上传视频
-                    </Button>
-                  </div>
-                  <div className="d-flex">
-                    <Input
-                      value={keywords}
-                      style={{ width: 150 }}
-                      onChange={(e) => {
-                        setKeywords(e.target.value);
-                      }}
-                      allowClear
-                      placeholder="视频名称关键词"
+                      loading={loading}
+                      columns={columns2}
+                      dataSource={list}
+                      rowKey={(record) => record.id}
+                      pagination={paginationProps}
                     />
-                    <Button className="ml-10" onClick={resetList}>
-                      清空
-                    </Button>
-                    <Button
-                      className="ml-10"
-                      type="primary"
-                      onClick={() => {
-                        setPage(1);
-                        setRefresh(!refresh);
-                      }}
-                    >
-                      筛选
-                    </Button>
-                  </div>
+                  </ConfigProvider>
                 </div>
-              </>
-            )}
-            {!isNoService && (
-              <div className="float-left">
-                <ConfigProvider renderEmpty={tableEmptyRender}>
-                  <Table
-                    rowSelection={{
-                      type: "radio",
-                      ...rowSelection,
-                    }}
-                    loading={loading}
-                    columns={columns2}
-                    dataSource={list}
-                    rowKey={(record) => record.id}
-                    pagination={paginationProps}
-                  />
-                </ConfigProvider>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      </Modal>
+        </Modal>
+      ) : null}
       <UploadVideoItem
         open={openUploadItem}
         onCancel={() => setOpenUploadItem(false)}

@@ -59,7 +59,7 @@ export const SendMessageDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="发消息"
           onCancel={() => {
@@ -101,7 +101,7 @@ export const SendMessageDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

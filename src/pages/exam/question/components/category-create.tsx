@@ -64,7 +64,7 @@ export const CategoryCreateDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="新建分类"
           onCancel={() => {
@@ -137,7 +137,7 @@ export const CategoryCreateDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

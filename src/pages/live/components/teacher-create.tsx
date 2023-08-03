@@ -68,7 +68,7 @@ export const CourseTeacherCreateDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="添加讲师/助教"
           onCancel={() => {
@@ -247,7 +247,7 @@ export const CourseTeacherCreateDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

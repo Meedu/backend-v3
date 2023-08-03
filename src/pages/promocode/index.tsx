@@ -309,75 +309,77 @@ const PromoCodePage = () => {
           pagination={paginationProps}
         />
       </div>
-      <Drawer
-        title="更多筛选"
-        onClose={() => setDrawer(false)}
-        maskClosable={false}
-        open={drawer}
-        footer={
-          <Space className="j-b-flex">
-            <Button
-              onClick={() => {
-                resetList();
-                setDrawer(false);
+      {drawer ? (
+        <Drawer
+          title="更多筛选"
+          onClose={() => setDrawer(false)}
+          maskClosable={false}
+          open={true}
+          footer={
+            <Space className="j-b-flex">
+              <Button
+                onClick={() => {
+                  resetList();
+                  setDrawer(false);
+                }}
+              >
+                清空
+              </Button>
+              <Button
+                onClick={() => {
+                  setPage(1);
+                  setRefresh(!refresh);
+                  setDrawer(false);
+                }}
+                type="primary"
+              >
+                筛选
+              </Button>
+            </Space>
+          }
+          width={360}
+        >
+          <div className="float-left">
+            <Input
+              value={key}
+              onChange={(e) => {
+                setKey(e.target.value);
               }}
-            >
-              清空
-            </Button>
-            <Button
-              onClick={() => {
-                setPage(1);
-                setRefresh(!refresh);
-                setDrawer(false);
+              allowClear
+              placeholder="优惠码"
+            />
+            <Input
+              value={user_id}
+              onChange={(e) => {
+                setUserId(e.target.value);
               }}
-              type="primary"
-            >
-              筛选
-            </Button>
-          </Space>
-        }
-        width={360}
-      >
-        <div className="float-left">
-          <Input
-            value={key}
-            onChange={(e) => {
-              setKey(e.target.value);
-            }}
-            allowClear
-            placeholder="优惠码"
-          />
-          <Input
-            value={user_id}
-            onChange={(e) => {
-              setUserId(e.target.value);
-            }}
-            allowClear
-            style={{ marginTop: 20 }}
-            placeholder="学员ID"
-          />
-          <RangePicker
-            format={"YYYY-MM-DD"}
-            value={expiredAts}
-            style={{ marginTop: 20 }}
-            onChange={(date, dateString) => {
-              setExpiredAt(dateString);
-              setExpiredAts(date);
-            }}
-            placeholder={["过期时间-开始", "过期时间-结束"]}
-          />
-          <RangePicker
-            format={"YYYY-MM-DD"}
-            value={createdAts}
-            style={{ marginTop: 20 }}
-            onChange={(date, dateString) => {
-              setCreatedAt(dateString);
-              setCreatedAts(date);
-            }}
-            placeholder={["添加时间-开始", "添加时间-结束"]}
-          />
-        </div>
-      </Drawer>
+              allowClear
+              style={{ marginTop: 20 }}
+              placeholder="学员ID"
+            />
+            <RangePicker
+              format={"YYYY-MM-DD"}
+              value={expiredAts}
+              style={{ marginTop: 20 }}
+              onChange={(date, dateString) => {
+                setExpiredAt(dateString);
+                setExpiredAts(date);
+              }}
+              placeholder={["过期时间-开始", "过期时间-结束"]}
+            />
+            <RangePicker
+              format={"YYYY-MM-DD"}
+              value={createdAts}
+              style={{ marginTop: 20 }}
+              onChange={(date, dateString) => {
+                setCreatedAt(dateString);
+                setCreatedAts(date);
+              }}
+              placeholder={["添加时间-开始", "添加时间-结束"]}
+            />
+          </div>
+        </Drawer>
+      ) : null}
     </div>
   );
 };

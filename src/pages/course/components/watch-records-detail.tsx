@@ -144,7 +144,7 @@ export const WatchRecordsDetailDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="学习进度"
           onCancel={() => {
@@ -166,7 +166,7 @@ export const WatchRecordsDetailDialog = (props: PropsInterface) => {
             />
           </div>
         </Modal>
-      )}
+      ) : null}
       <SnapshotDialog
         open={visiable}
         vid={vid}

@@ -114,7 +114,7 @@ export const SelectResourcesMulti = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="选择"
           closable={false}
@@ -190,7 +190,7 @@ export const SelectResourcesMulti = (props: PropsInterface) => {
             )}
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

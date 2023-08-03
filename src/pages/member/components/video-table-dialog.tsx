@@ -188,7 +188,7 @@ export const VideoTableDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title={props.text}
           onCancel={() => {
@@ -210,7 +210,7 @@ export const VideoTableDialog = (props: PropsInterface) => {
             />
           </div>
         </Modal>
-      )}
+      ) : null}
       <SnapshotDialog
         open={visiable}
         vid={vid}

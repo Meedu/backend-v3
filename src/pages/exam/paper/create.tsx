@@ -375,7 +375,7 @@ const PaperCreatePage = () => {
           </div>
         </div>
       </div>
-      {visiable && (
+      {visiable ? (
         <Modal
           title=""
           onCancel={() => {
@@ -400,7 +400,7 @@ const PaperCreatePage = () => {
             <span>新建考试成功，请在试题库中选择试题组卷吧！</span>
           </div>
         </Modal>
-      )}
+      ) : null}
     </div>
   );
 };

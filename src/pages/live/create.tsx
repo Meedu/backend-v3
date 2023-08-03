@@ -490,7 +490,7 @@ const LiveCreatePage = () => {
           </div>
         </div>
       </div>
-      {visiable && (
+      {visiable ? (
         <Modal
           title=""
           centered
@@ -515,7 +515,7 @@ const LiveCreatePage = () => {
             <span>新建直播课成功，请在课程中添加直播排课吧！</span>
           </div>
         </Modal>
-      )}
+      ) : null}
     </div>
   );
 };

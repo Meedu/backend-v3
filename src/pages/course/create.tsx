@@ -347,7 +347,7 @@ const CourseCreatePage = () => {
           </div>
         </div>
       </div>
-      {visiable && (
+      {visiable ? (
         <Modal
           title=""
           centered
@@ -372,7 +372,7 @@ const CourseCreatePage = () => {
             <span>新建录播课成功，请在课程中添加课时排课吧！</span>
           </div>
         </Modal>
-      )}
+      ) : null}
     </div>
   );
 };

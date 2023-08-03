@@ -324,7 +324,7 @@ const QuestionPage = () => {
           pagination={paginationProps}
         />
       </div>
-      {visiable && (
+      {visiable ? (
         <Modal
           title=""
           onCancel={() => {
@@ -349,7 +349,7 @@ const QuestionPage = () => {
             <span>已成卷试题请先在关联试卷/模拟试卷/练习中删除该试题！</span>
           </div>
         </Modal>
-      )}
+      ) : null}
       <PaperDetailDialog
         open={showDialog}
         onCancel={() => setShowDialog(false)}

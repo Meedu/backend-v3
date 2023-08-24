@@ -59,28 +59,30 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
   );
 
   useEffect(() => {
-    if (service === "") {
-      serviceRef.current = null;
-      setIsNoService(true);
-    } else if (service === "local") {
-      serviceRef.current = "local";
-      setIsLocalService(true);
-      pluploadInit();
-    } else if (service === "tencent") {
-      serviceRef.current = "tencent";
-      setIsTenService(true);
-    } else if (service === "aliyun") {
-      serviceRef.current = "aliyun";
-      setIsAliService(true);
-      aliyunInit();
-    } else {
-      serviceRef.current = null;
-      setIsNoService(false);
-      setIsLocalService(false);
-      setIsTenService(false);
-      setIsAliService(false);
+    if (open) {
+      if (service === "") {
+        serviceRef.current = null;
+        setIsNoService(true);
+      } else if (service === "local") {
+        serviceRef.current = "local";
+        setIsLocalService(true);
+        pluploadInit();
+      } else if (service === "tencent") {
+        serviceRef.current = "tencent";
+        setIsTenService(true);
+      } else if (service === "aliyun") {
+        serviceRef.current = "aliyun";
+        setIsAliService(true);
+        aliyunInit();
+      } else {
+        serviceRef.current = null;
+        setIsNoService(false);
+        setIsLocalService(false);
+        setIsTenService(false);
+        setIsAliService(false);
+      }
     }
-  }, [service]);
+  }, [open, service]);
 
   const pluploadInit = () => {
     let url = checkUrl(config.url);

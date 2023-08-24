@@ -76,7 +76,7 @@ export const MemberCreateDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="添加学员资料"
           onCancel={() => {
@@ -197,7 +197,7 @@ export const MemberCreateDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

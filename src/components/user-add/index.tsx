@@ -171,81 +171,83 @@ export const UserAddDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={1200}
-        onCancel={() => {
-          onCancel();
-        }}
-        maskClosable={false}
-        closable={false}
-        onOk={() => confirmAdd()}
-      >
-        <div className={styles["header"]}>添加学员</div>
-        <div className={styles["body"]}>
-          <div className="d-flex float-left">
-            <Input
-              value={keywords}
-              style={{ width: 150 }}
-              onChange={(e) => {
-                setKeywords(e.target.value);
-              }}
-              allowClear
-              placeholder="关键字"
-            />
-            <Select
-              style={{ width: 150, marginLeft: 10 }}
-              value={tag_id}
-              onChange={(e) => {
-                setTagId(e);
-              }}
-              allowClear
-              placeholder="学员标签"
-              options={tags}
-            />
-            <RangePicker
-              format={"YYYY-MM-DD"}
-              value={createdAts}
-              style={{ marginLeft: 10 }}
-              onChange={(date, dateString) => {
-                dateString[1] += " 23:59:59";
-                setCreatedAt(dateString);
-                setCreatedAts(date);
-              }}
-              placeholder={["注册-开始日期", "注册-结束日期"]}
-            />
-            <Button className="ml-10" onClick={resetList}>
-              清空
-            </Button>
-            <Button
-              className="ml-10"
-              type="primary"
-              onClick={() => {
-                setPage(1);
-                setRefresh(!refresh);
-              }}
-            >
-              筛选
-            </Button>
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={1200}
+          onCancel={() => {
+            onCancel();
+          }}
+          maskClosable={false}
+          closable={false}
+          onOk={() => confirmAdd()}
+        >
+          <div className={styles["header"]}>添加学员</div>
+          <div className={styles["body"]}>
+            <div className="d-flex float-left">
+              <Input
+                value={keywords}
+                style={{ width: 150 }}
+                onChange={(e) => {
+                  setKeywords(e.target.value);
+                }}
+                allowClear
+                placeholder="关键字"
+              />
+              <Select
+                style={{ width: 150, marginLeft: 10 }}
+                value={tag_id}
+                onChange={(e) => {
+                  setTagId(e);
+                }}
+                allowClear
+                placeholder="学员标签"
+                options={tags}
+              />
+              <RangePicker
+                format={"YYYY-MM-DD"}
+                value={createdAts}
+                style={{ marginLeft: 10 }}
+                onChange={(date, dateString) => {
+                  dateString[1] += " 23:59:59";
+                  setCreatedAt(dateString);
+                  setCreatedAts(date);
+                }}
+                placeholder={["注册-开始日期", "注册-结束日期"]}
+              />
+              <Button className="ml-10" onClick={resetList}>
+                清空
+              </Button>
+              <Button
+                className="ml-10"
+                type="primary"
+                onClick={() => {
+                  setPage(1);
+                  setRefresh(!refresh);
+                }}
+              >
+                筛选
+              </Button>
+            </div>
+            <div className="float-left mt-30">
+              <Table
+                rowSelection={{
+                  type: "checkbox",
+                  ...rowSelection,
+                }}
+                loading={loading}
+                columns={columns}
+                dataSource={list}
+                rowKey={(record) => record.id}
+                pagination={paginationProps}
+              />
+            </div>
           </div>
-          <div className="float-left mt-30">
-            <Table
-              rowSelection={{
-                type: "checkbox",
-                ...rowSelection,
-              }}
-              loading={loading}
-              columns={columns}
-              dataSource={list}
-              rowKey={(record) => record.id}
-              pagination={paginationProps}
-            />
-          </div>
-        </div>
-      </Modal>
+        </Modal>
+      ) : null}
     </>
   );
 };

@@ -48,7 +48,7 @@ export const CreditDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="积分变动"
           onCancel={() => {
@@ -110,7 +110,7 @@ export const CreditDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

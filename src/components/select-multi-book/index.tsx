@@ -118,7 +118,7 @@ export const SelectBookMulti = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="选择电子书"
           closable={false}
@@ -185,7 +185,7 @@ export const SelectBookMulti = (props: PropsInterface) => {
             </div>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

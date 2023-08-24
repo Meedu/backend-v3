@@ -33,6 +33,7 @@ const CourseVideoCreatePage = () => {
   const [chapters, setChapters] = useState<any>([]);
   const [isFree, setIsFree] = useState(1);
   const [charge, setCharge] = useState(0);
+  const [freeSeconds, setFreeSeconds] = useState(0);
   const [tit, setTit] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [showUploadVideoWin, setShowUploadVideoWin] = useState<boolean>(false);
@@ -86,9 +87,7 @@ const CourseVideoCreatePage = () => {
       setIsFree(course.is_free);
       if (course.is_free === 1) {
         setCharge(0);
-        form.setFieldsValue({
-          free_seconds: 0,
-        });
+        setFreeSeconds(0);
       } else {
         setCharge(course.charge);
       }
@@ -117,6 +116,7 @@ const CourseVideoCreatePage = () => {
     );
     values.charge = charge;
     values.course_id = cid;
+    values.free_seconds = Number(freeSeconds);
     setLoading(true);
     course
       .videoStore(values)
@@ -230,15 +230,13 @@ const CourseVideoCreatePage = () => {
             {isFree !== 1 && (
               <Form.Item label="可试看时长" name="free_seconds">
                 <Space align="baseline" style={{ height: 32 }}>
-                  <Form.Item name="free_seconds">
-                    <InputDuration
-                      value={null}
-                      disabled={false}
-                      onChange={(val: number) => {
-                        form.setFieldsValue({ free_seconds: val });
-                      }}
-                    ></InputDuration>
-                  </Form.Item>
+                  <InputDuration
+                    value={null}
+                    disabled={false}
+                    onChange={(val: number) => {
+                      setFreeSeconds(val);
+                    }}
+                  ></InputDuration>
                   <div className="ml-10">
                     <HelperText text="设置此课时免费试看时长（此配置对本地存储或URL视频无效）"></HelperText>
                   </div>

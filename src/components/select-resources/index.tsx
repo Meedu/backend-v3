@@ -129,7 +129,7 @@ export const SelectResources = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="选择"
           closable={false}
@@ -194,7 +194,7 @@ export const SelectResources = (props: PropsInterface) => {
             )}
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

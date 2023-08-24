@@ -67,7 +67,7 @@ export const TagsDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="修改标签"
           onCancel={() => {
@@ -117,7 +117,7 @@ export const TagsDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

@@ -65,7 +65,7 @@ export const CourseChapterUpdateDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="编辑章节"
           onCancel={() => {
@@ -134,7 +134,7 @@ export const CourseChapterUpdateDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

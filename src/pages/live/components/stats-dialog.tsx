@@ -93,7 +93,7 @@ export const LiveVideoStatsDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="直播统计"
           onCancel={() => {
@@ -147,7 +147,7 @@ export const LiveVideoStatsDialog = (props: PropsInterface) => {
             </div>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

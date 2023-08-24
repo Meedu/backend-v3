@@ -602,87 +602,89 @@ const OrderPage = () => {
           pagination={paginationProps}
         />
       </div>
-      <Drawer
-        title="更多筛选"
-        onClose={() => setDrawer(false)}
-        maskClosable={false}
-        open={drawer}
-        footer={
-          <Space className="j-b-flex">
-            <Button
-              onClick={() => {
-                resetList();
-                setDrawer(false);
+      {drawer ? (
+        <Drawer
+          title="更多筛选"
+          onClose={() => setDrawer(false)}
+          maskClosable={false}
+          open={true}
+          footer={
+            <Space className="j-b-flex">
+              <Button
+                onClick={() => {
+                  resetList();
+                  setDrawer(false);
+                }}
+              >
+                清空
+              </Button>
+              <Button
+                onClick={() => {
+                  setPage(1);
+                  setRefresh(!refresh);
+                  setDrawer(false);
+                }}
+                type="primary"
+              >
+                筛选
+              </Button>
+            </Space>
+          }
+          width={360}
+        >
+          <div className="float-left">
+            <Input
+              value={order_id}
+              onChange={(e) => {
+                setOrderId(e.target.value);
               }}
-            >
-              清空
-            </Button>
-            <Button
-              onClick={() => {
-                setPage(1);
-                setRefresh(!refresh);
-                setDrawer(false);
+              allowClear
+              placeholder="订单编号"
+            />
+            <Input
+              value={goods_name}
+              onChange={(e) => {
+                setGoodsName(e.target.value);
               }}
-              type="primary"
-            >
-              筛选
-            </Button>
-          </Space>
-        }
-        width={360}
-      >
-        <div className="float-left">
-          <Input
-            value={order_id}
-            onChange={(e) => {
-              setOrderId(e.target.value);
-            }}
-            allowClear
-            placeholder="订单编号"
-          />
-          <Input
-            value={goods_name}
-            onChange={(e) => {
-              setGoodsName(e.target.value);
-            }}
-            allowClear
-            style={{ marginTop: 20 }}
-            placeholder="商品全称"
-          />
-          <Select
-            style={{ width: "100%", marginTop: 20 }}
-            value={payment}
-            onChange={(e) => {
-              setPayment(e);
-            }}
-            allowClear
-            placeholder="支付渠道"
-            options={payments}
-          />
-          <Select
-            style={{ width: "100%", marginTop: 20 }}
-            value={is_refund}
-            onChange={(e) => {
-              setIsRefund(e);
-            }}
-            allowClear
-            placeholder="退款方式"
-            options={refunds}
-          />
-          <RangePicker
-            disabledDate={disabledDate}
-            format={"YYYY-MM-DD"}
-            value={createdAts}
-            style={{ marginTop: 20 }}
-            onChange={(date, dateString) => {
-              dateString[1] += " 23:59:59";
-              setCreatedAt(dateString);
-              setCreatedAts(date);
-            }}
-            placeholder={["订单添加-开始时间", "订单添加-结束时间"]}
-          />
-        </div>
-      </Drawer>
+              allowClear
+              style={{ marginTop: 20 }}
+              placeholder="商品全称"
+            />
+            <Select
+              style={{ width: "100%", marginTop: 20 }}
+              value={payment}
+              onChange={(e) => {
+                setPayment(e);
+              }}
+              allowClear
+              placeholder="支付渠道"
+              options={payments}
+            />
+            <Select
+              style={{ width: "100%", marginTop: 20 }}
+              value={is_refund}
+              onChange={(e) => {
+                setIsRefund(e);
+              }}
+              allowClear
+              placeholder="退款方式"
+              options={refunds}
+            />
+            <RangePicker
+              disabledDate={disabledDate}
+              format={"YYYY-MM-DD"}
+              value={createdAts}
+              style={{ marginTop: 20 }}
+              onChange={(date, dateString) => {
+                dateString[1] += " 23:59:59";
+                setCreatedAt(dateString);
+                setCreatedAts(date);
+              }}
+              placeholder={["订单添加-开始时间", "订单添加-结束时间"]}
+            />
+          </div>
+        </Drawer>
+      ) : null}
     </div>
   );
 };

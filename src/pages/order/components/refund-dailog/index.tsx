@@ -57,7 +57,7 @@ export const RefundDialog = (props: PropsInterface) => {
   };
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="退款"
           onCancel={() => {
@@ -128,7 +128,7 @@ export const RefundDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

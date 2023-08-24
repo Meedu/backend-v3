@@ -104,7 +104,7 @@ export const UploadImageButton = (props: PropsInterface) => {
         {props.text ? props.text : "上传图片"}
       </Button>
 
-      {showModal && (
+      {showModal ? (
         <Modal
           title="选择图片"
           closable={false}
@@ -211,7 +211,7 @@ export const UploadImageButton = (props: PropsInterface) => {
             </Col>
           </Row>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

@@ -187,7 +187,7 @@ const LivePage = () => {
       width: "8%",
       render: (_, record: any) => (
         <>
-          {record.category && <span>{record?.category?.name || '-'}</span>}
+          {record.category && <span>{record?.category?.name || "-"}</span>}
           {!record.category && <span className="c-red">数据不完整</span>}
         </>
       ),
@@ -480,76 +480,78 @@ const LivePage = () => {
           pagination={paginationProps}
         />
       </div>
-      <Drawer
-        title="更多筛选"
-        onClose={() => setDrawer(false)}
-        maskClosable={false}
-        open={drawer}
-        footer={
-          <Space className="j-b-flex">
-            <Button
-              onClick={() => {
-                resetList();
-                setDrawer(false);
+      {drawer ? (
+        <Drawer
+          title="更多筛选"
+          onClose={() => setDrawer(false)}
+          maskClosable={false}
+          open={true}
+          footer={
+            <Space className="j-b-flex">
+              <Button
+                onClick={() => {
+                  resetList();
+                  setDrawer(false);
+                }}
+              >
+                清空
+              </Button>
+              <Button
+                onClick={() => {
+                  setPage(1);
+                  setRefresh(!refresh);
+                  setDrawer(false);
+                }}
+                type="primary"
+              >
+                筛选
+              </Button>
+            </Space>
+          }
+          width={360}
+        >
+          <div className="float-left">
+            <Input
+              value={keywords}
+              onChange={(e) => {
+                setKeywords(e.target.value);
               }}
-            >
-              清空
-            </Button>
-            <Button
-              onClick={() => {
-                setPage(1);
-                setRefresh(!refresh);
-                setDrawer(false);
+              allowClear
+              placeholder="课程名称关键字"
+            />
+            <Select
+              style={{ width: "100%", marginTop: 20 }}
+              value={category_id}
+              onChange={(e) => {
+                setCategoryId(e);
               }}
-              type="primary"
-            >
-              筛选
-            </Button>
-          </Space>
-        }
-        width={360}
-      >
-        <div className="float-left">
-          <Input
-            value={keywords}
-            onChange={(e) => {
-              setKeywords(e.target.value);
-            }}
-            allowClear
-            placeholder="课程名称关键字"
-          />
-          <Select
-            style={{ width: "100%", marginTop: 20 }}
-            value={category_id}
-            onChange={(e) => {
-              setCategoryId(e);
-            }}
-            allowClear
-            placeholder="分类"
-            options={categories}
-          />
-          <Select
-            style={{ width: "100%", marginTop: 20 }}
-            value={teacher_id}
-            onChange={(e) => {
-              setTeacherId(e);
-            }}
-            allowClear
-            placeholder="讲师"
-            options={teachers}
-          />
-          <Select
-            style={{ width: "100%", marginTop: 20 }}
-            value={status}
-            onChange={(e) => {
-              setStatus(e);
-            }}
-            allowClear
-            placeholder="状态"
-            options={statusList}
-          />
-        </div>
-      </Drawer>
+              allowClear
+              placeholder="分类"
+              options={categories}
+            />
+            <Select
+              style={{ width: "100%", marginTop: 20 }}
+              value={teacher_id}
+              onChange={(e) => {
+                setTeacherId(e);
+              }}
+              allowClear
+              placeholder="讲师"
+              options={teachers}
+            />
+            <Select
+              style={{ width: "100%", marginTop: 20 }}
+              value={status}
+              onChange={(e) => {
+                setStatus(e);
+              }}
+              allowClear
+              placeholder="状态"
+              options={statusList}
+            />
+          </div>
+        </Drawer>
+      ) : null}
     </div>
   );
 };

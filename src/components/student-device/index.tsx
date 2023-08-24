@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { QRCode, message, Button } from "antd";
+import { QRCode, Modal, Button } from "antd";
 import { system } from "../../api/index";
 import styles from "./index.module.scss";
 import closeIcon from "../../assets/img/close.png";
@@ -51,17 +51,19 @@ export const StudentDeviceDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      {open && (
-        <div className={styles["mask"]}>
+      {open ? (
+        <Modal
+          footer={null}
+          title="访问学员端"
+          onCancel={() => {
+            onCancel();
+          }}
+          open={true}
+          width={500}
+          maskClosable={false}
+          centered
+        >
           <div className={styles["dialog-box"]}>
-            <div className={styles["dialog-header"]}>
-              <span>访问学员端</span>
-              <img
-                className={styles["icon-close"]}
-                onClick={() => onCancel()}
-                src={closeIcon}
-              />
-            </div>
             <div className={styles["dialog-body"]}>
               {qrode === "" && <div className={styles["qrcode"]}></div>}
               {qrode !== "" && <QRCode size={150} value={qrode} />}
@@ -71,8 +73,8 @@ export const StudentDeviceDialog: React.FC<PropInterface> = ({
               </Button>
             </div>
           </div>
-        </div>
-      )}
+        </Modal>
+      ) : null}
     </>
   );
 };

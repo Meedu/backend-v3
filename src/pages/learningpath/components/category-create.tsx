@@ -64,7 +64,7 @@ export const LearnPathCategoryCreateDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="添加分类"
           onCancel={() => {
@@ -137,7 +137,7 @@ export const LearnPathCategoryCreateDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

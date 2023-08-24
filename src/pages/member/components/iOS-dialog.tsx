@@ -48,7 +48,7 @@ export const IOSDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="变动iOS余额"
           onCancel={() => {
@@ -110,7 +110,7 @@ export const IOSDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

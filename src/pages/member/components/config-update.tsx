@@ -96,7 +96,7 @@ export const ConfigUpdateDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="批量修改"
           onCancel={() => {
@@ -192,7 +192,7 @@ export const ConfigUpdateDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

@@ -111,7 +111,7 @@ export const SelectTopicMulti = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="选择图文"
           closable={false}
@@ -178,7 +178,7 @@ export const SelectTopicMulti = (props: PropsInterface) => {
             </div>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

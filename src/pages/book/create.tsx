@@ -359,7 +359,7 @@ const BookCreatePage = () => {
           </div>
         </div>
       </div>
-      {visiable && (
+      {visiable ? (
         <Modal
           title=""
           centered
@@ -384,7 +384,7 @@ const BookCreatePage = () => {
             <span>新建电子书成功，请在电子书中添加文章吧！</span>
           </div>
         </Modal>
-      )}
+      ) : null}
     </div>
   );
 };

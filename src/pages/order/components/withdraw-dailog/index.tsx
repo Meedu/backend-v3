@@ -77,7 +77,7 @@ export const WithdrawDialog = (props: PropsInterface) => {
 
   return (
     <>
-      {props.open && (
+      {props.open ? (
         <Modal
           title="提现处理"
           onCancel={() => {
@@ -144,7 +144,7 @@ export const WithdrawDialog = (props: PropsInterface) => {
             </Form>
           </div>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };

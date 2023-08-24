@@ -89,7 +89,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     var uploader = new plupload.Uploader({
       runtimes: "html5",
       browse_button: "selectfiles",
-      chunk_size: "1MB",
+      chunk_size: "5MB",
       multi_selection: true,
       multipart: true,
       headers: {
@@ -98,8 +98,8 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
       },
       url: url + "backend/addons/LocalUpload/upload",
       filters: {
-        max_file_size: "1024mb",
-        prevent_duplicates: false, //不允许选取重复文件
+        max_file_size: "5120mb",
+        prevent_duplicates: true, //不允许选取重复文件
       },
       init: {
         PostInit: () => {},

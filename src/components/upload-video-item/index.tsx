@@ -98,7 +98,6 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
       },
       url: url + "backend/addons/LocalUpload/upload",
       filters: {
-        // mime_types: "video/mp4",
         max_file_size: "1024mb",
         prevent_duplicates: false, //不允许选取重复文件
       },

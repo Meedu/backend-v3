@@ -36,6 +36,7 @@ const CourseVideoUpdatePage = () => {
   const [chapters, setChapters] = useState<any>([]);
   const [isFree, setIsFree] = useState(1);
   const [charge, setCharge] = useState(0);
+  const [freeSeconds, setFreeSeconds] = useState(0);
   const [tit, setTit] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [showUploadVideoWin, setShowUploadVideoWin] = useState<boolean>(false);
@@ -81,13 +82,13 @@ const CourseVideoUpdatePage = () => {
       chapter_id: data.chapter_id === 0 ? null : data.chapter_id,
       is_show: data.is_show === 1 ? 0 : 1,
       duration: data.duration,
-      free_seconds: data.free_seconds,
       ban_drag: data.ban_drag,
       aliyun_video_id: data.aliyun_video_id,
       url: data.url,
       tencent_video_id: data.tencent_video_id,
       published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
     });
+    setFreeSeconds(data.free_seconds);
   };
 
   const getParams = async () => {
@@ -111,9 +112,7 @@ const CourseVideoUpdatePage = () => {
     setIsFree(data.is_free);
     if (data.is_free === 1) {
       setCharge(0);
-      form.setFieldsValue({
-        free_seconds: 0,
-      });
+      setFreeSeconds(0);
     } else {
       setCharge(data.charge);
     }
@@ -141,6 +140,7 @@ const CourseVideoUpdatePage = () => {
     );
     values.charge = charge;
     values.course_id = cid;
+    values.free_seconds = Number(freeSeconds);
     setLoading(true);
     course
       .videoUpdate(id, values)
@@ -259,15 +259,13 @@ const CourseVideoUpdatePage = () => {
             {isFree === 0 && (
               <Form.Item label="可试看时长" name="free_seconds">
                 <Space align="baseline" style={{ height: 32 }}>
-                  <Form.Item name="free_seconds">
-                    <InputDuration
-                      value={null}
-                      disabled={false}
-                      onChange={(val: number) => {
-                        form.setFieldsValue({ free_seconds: val });
-                      }}
-                    ></InputDuration>
-                  </Form.Item>
+                  <InputDuration
+                    value={freeSeconds}
+                    disabled={false}
+                    onChange={(val: number) => {
+                      form.setFieldsValue({ free_seconds: val });
+                    }}
+                  ></InputDuration>
                   <div className="ml-10">
                     <HelperText text="设置此课时免费试看时长（此配置对本地存储或URL视频无效）"></HelperText>
                   </div>

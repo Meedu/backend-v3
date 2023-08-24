@@ -189,7 +189,9 @@ const SystemVideoSaveConfigPage = () => {
     let it: any = aliRegions.find(
       (o: any) => o.value === values["meedu.upload.video.aliyun.region"]
     );
-    values["meedu.upload.video.aliyun.host"] = it.host;
+    if (it) {
+      values["meedu.upload.video.aliyun.host"] = it.host;
+    }
     setLoading(true);
     system
       .saveSetting({

@@ -26,7 +26,7 @@ export const InputDuration = (props: PropInterface) => {
 
   useEffect(() => {
     let result = null;
-
+    console.log(hour, minute, second);
     if (!(hour === 0 && minute === 0 && second === 0)) {
       result = hour * 3600 + minute * 60 + second;
       props.onChange(result);
@@ -34,19 +34,19 @@ export const InputDuration = (props: PropInterface) => {
   }, [hour, minute, second]);
 
   const onHourChange = (value: number | null) => {
-    if (value) {
+    if (value !== null) {
       setHour(value);
     }
   };
 
   const onMinuteChange = (value: number | null) => {
-    if (value) {
+    if (value !== null) {
       setMinute(value);
     }
   };
 
   const onSecondChange = (value: number | null) => {
-    if (value) {
+    if (value !== null) {
       setSecond(value);
     }
   };

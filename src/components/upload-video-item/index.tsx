@@ -59,35 +59,37 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
   );
 
   useEffect(() => {
-    if (service === "") {
-      serviceRef.current = null;
-      setIsNoService(true);
-    } else if (service === "local") {
-      serviceRef.current = "local";
-      setIsLocalService(true);
-      pluploadInit();
-    } else if (service === "tencent") {
-      serviceRef.current = "tencent";
-      setIsTenService(true);
-    } else if (service === "aliyun") {
-      serviceRef.current = "aliyun";
-      setIsAliService(true);
-      aliyunInit();
-    } else {
-      serviceRef.current = null;
-      setIsNoService(false);
-      setIsLocalService(false);
-      setIsTenService(false);
-      setIsAliService(false);
+    if (open) {
+      if (service === "") {
+        serviceRef.current = null;
+        setIsNoService(true);
+      } else if (service === "local") {
+        serviceRef.current = "local";
+        setIsLocalService(true);
+        pluploadInit();
+      } else if (service === "tencent") {
+        serviceRef.current = "tencent";
+        setIsTenService(true);
+      } else if (service === "aliyun") {
+        serviceRef.current = "aliyun";
+        setIsAliService(true);
+        aliyunInit();
+      } else {
+        serviceRef.current = null;
+        setIsNoService(false);
+        setIsLocalService(false);
+        setIsTenService(false);
+        setIsAliService(false);
+      }
     }
-  }, [service]);
+  }, [open, service]);
 
   const pluploadInit = () => {
     let url = checkUrl(config.url);
     var uploader = new plupload.Uploader({
       runtimes: "html5",
       browse_button: "selectfiles",
-      chunk_size: "1MB",
+      chunk_size: "2MB",
       multi_selection: true,
       multipart: true,
       headers: {
@@ -96,9 +98,8 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
       },
       url: url + "backend/addons/LocalUpload/upload",
       filters: {
-        // mime_types: "video/mp4",
-        max_file_size: "1024mb",
-        prevent_duplicates: false, //不允许选取重复文件
+        max_file_size: "5120mb",
+        prevent_duplicates: true, //不允许选取重复文件
       },
       init: {
         PostInit: () => {},

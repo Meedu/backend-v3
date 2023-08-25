@@ -84,8 +84,10 @@ export const SelectImage = (props: PropsInterface) => {
 
   // 加载图片列表
   useEffect(() => {
-    getImageList();
-  }, [from, refresh, page, size]);
+    if (props.open) {
+      getImageList();
+    }
+  }, [props.open, from, refresh, page, size]);
 
   return (
     <>

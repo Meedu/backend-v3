@@ -37,6 +37,7 @@ const CourseVideoUpdatePage = () => {
   const [isFree, setIsFree] = useState(1);
   const [charge, setCharge] = useState(0);
   const [freeSeconds, setFreeSeconds] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [tit, setTit] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [showUploadVideoWin, setShowUploadVideoWin] = useState<boolean>(false);
@@ -81,13 +82,13 @@ const CourseVideoUpdatePage = () => {
       title: data.title,
       chapter_id: data.chapter_id === 0 ? null : data.chapter_id,
       is_show: data.is_show === 1 ? 0 : 1,
-      duration: data.duration,
       ban_drag: data.ban_drag,
       aliyun_video_id: data.aliyun_video_id,
       url: data.url,
       tencent_video_id: data.tencent_video_id,
       published_at: dayjs(data.published_at, "YYYY-MM-DD HH:mm"),
     });
+    setDuration(data.duration);
     setFreeSeconds(data.free_seconds);
   };
 
@@ -113,6 +114,7 @@ const CourseVideoUpdatePage = () => {
     if (data.is_free === 1) {
       setCharge(0);
       setFreeSeconds(0);
+      form.setFieldsValue({ free_seconds: 0 });
     } else {
       setCharge(data.charge);
     }
@@ -141,6 +143,7 @@ const CourseVideoUpdatePage = () => {
     values.charge = charge;
     values.course_id = cid;
     values.free_seconds = Number(freeSeconds);
+    values.duration = Number(duration);
     setLoading(true);
     course
       .videoUpdate(id, values)
@@ -239,18 +242,14 @@ const CourseVideoUpdatePage = () => {
               rules={[{ required: true, message: "请输入课时时长!" }]}
             >
               <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item
-                  name="duration"
-                  rules={[{ required: true, message: "请输入课时时长!" }]}
-                >
-                  <InputDuration
-                    value={null}
-                    disabled={false}
-                    onChange={(val: number) => {
-                      form.setFieldsValue({ duration: val });
-                    }}
-                  ></InputDuration>
-                </Form.Item>
+                <InputDuration
+                  value={duration}
+                  disabled={false}
+                  onChange={(val: number) => {
+                    setDuration(val);
+                    form.setFieldsValue({ duration: val });
+                  }}
+                ></InputDuration>
                 <div className="ml-10">
                   <HelperText text="后台会根据课时时长统计学员学习进度"></HelperText>
                 </div>
@@ -374,6 +373,7 @@ const CourseVideoUpdatePage = () => {
         onCancel={() => setShowUploadVideoWin(false)}
         onSuccess={(video: any) => {
           form.setFieldsValue({ duration: video.duration });
+          setDuration(video.duration);
           if (video.storage_driver === "aliyun") {
             form.setFieldsValue({
               aliyun_video_id: video.storage_file_id,

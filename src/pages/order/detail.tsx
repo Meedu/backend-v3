@@ -283,8 +283,8 @@ const OrderDetailPage = () => {
           <div className="panel-body">
             <div className="float-left">
               <div className="float-left d-flex mb-30">
-                <div className="flex-1">UID：{user?.id}</div>
-                <div className="flex-1">学员：{user?.nick_name}</div>
+                <div className="flex-1">UID：{user.id}</div>
+                <div className="flex-1">学员：{user.nick_name}</div>
                 <div className="flex-1">订单ID：{list.id}</div>
                 <div className="flex-1">订单编号：{list.order_id}</div>
                 <div className="flex-1">总额：￥{list.charge}</div>

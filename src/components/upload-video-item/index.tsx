@@ -89,7 +89,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
     var uploader = new plupload.Uploader({
       runtimes: "html5",
       browse_button: "selectfiles",
-      chunk_size: "5MB",
+      chunk_size: "2MB",
       multi_selection: true,
       multipart: true,
       headers: {

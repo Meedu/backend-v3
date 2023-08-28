@@ -262,6 +262,7 @@ const CourseVideoUpdatePage = () => {
                     value={freeSeconds}
                     disabled={false}
                     onChange={(val: number) => {
+                      setFreeSeconds(val);
                       form.setFieldsValue({ free_seconds: val });
                     }}
                   ></InputDuration>

@@ -26,7 +26,6 @@ export const InputDuration = (props: PropInterface) => {
 
   useEffect(() => {
     let result = null;
-    console.log(hour, minute, second);
     if (!(hour === 0 && minute === 0 && second === 0)) {
       result = hour * 3600 + minute * 60 + second;
       props.onChange(result);

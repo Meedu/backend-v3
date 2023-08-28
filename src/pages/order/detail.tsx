@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Input, Button, Space } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Table, Modal, message } from "antd";
+import { useLocation } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { order } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../components";
@@ -20,12 +20,9 @@ interface DataType {
 const OrderDetailPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
   const [user, setUser] = useState<any>({});
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(Number(result.get("id")));
 
@@ -40,7 +37,7 @@ const OrderDetailPage = () => {
 
   useEffect(() => {
     getData();
-  }, [id, page, size, refresh]);
+  }, [id, refresh]);
 
   const getData = () => {
     if (loading) {
@@ -286,8 +283,8 @@ const OrderDetailPage = () => {
           <div className="panel-body">
             <div className="float-left">
               <div className="float-left d-flex mb-30">
-                <div className="flex-1">UID：{user?.id}</div>
-                <div className="flex-1">学员：{user?.nick_name}</div>
+                <div className="flex-1">UID：{user.id}</div>
+                <div className="flex-1">学员：{user.nick_name}</div>
                 <div className="flex-1">订单ID：{list.id}</div>
                 <div className="flex-1">订单编号：{list.order_id}</div>
                 <div className="flex-1">总额：￥{list.charge}</div>

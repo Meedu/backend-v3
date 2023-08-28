@@ -27,8 +27,10 @@ export const SelectBookMulti = (props: PropsInterface) => {
   const [selectedKey, setSelectedKey] = useState<any>([]);
 
   useEffect(() => {
-    getData();
-  }, [page, size, refresh]);
+    if (props.open) {
+      getData();
+    }
+  }, [props.open, page, size, refresh]);
 
   const getData = () => {
     if (loading) {

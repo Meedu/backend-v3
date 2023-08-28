@@ -26,8 +26,10 @@ export const SelectTuangou = (props: PropsInterface) => {
   const [selectedKey, setSelectedKey] = useState<any>(null);
 
   useEffect(() => {
-    getData();
-  }, [page, size, refresh]);
+    if (props.open) {
+      getData();
+    }
+  }, [props.open, page, size, refresh]);
 
   const getData = () => {
     if (loading) {

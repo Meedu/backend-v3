@@ -148,6 +148,7 @@ const CourseVideoUpdatePage = () => {
     course
       .videoUpdate(id, values)
       .then((res: any) => {
+        message.success('成功');
         setLoading(false);
         navigate(-1);
       })

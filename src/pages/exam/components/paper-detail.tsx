@@ -22,10 +22,11 @@ export const PaperDetailDialog = (props: PropsInterface) => {
       let params = [];
       for (let index in props.results) {
         let list = props.results[index];
-        params.push({
+        let obj = {
           id: index,
-          box: list,
-        });
+        };
+        Object.assign(obj, list);
+        params.push(obj);
       }
       setList(params);
       setLoading(false);
@@ -42,8 +43,8 @@ export const PaperDetailDialog = (props: PropsInterface) => {
       title: "关联试卷/模拟试卷/练习",
       render: (_, record: any) => (
         <>
-          {record.box.papers.length > 0 &&
-            record.box.papers.map((item: any) => {
+          {record.papers.length > 0 &&
+            record.papers.map((item: any) => (
               <p
                 key={item.id}
                 style={{
@@ -53,10 +54,10 @@ export const PaperDetailDialog = (props: PropsInterface) => {
                 }}
               >
                 试卷-{item.title}
-              </p>;
-            })}
-          {record.box.mock_papers.length > 0 &&
-            record.box.mock_papers.map((item: any) => {
+              </p>
+            ))}
+          {record.mock_papers.length > 0 &&
+            record.mock_papers.map((item: any) => (
               <p
                 key={item.id}
                 style={{
@@ -66,10 +67,10 @@ export const PaperDetailDialog = (props: PropsInterface) => {
                 }}
               >
                 模拟-{item.title}
-              </p>;
-            })}
-          {record.box.practices.length > 0 &&
-            record.box.practices.map((item: any) => {
+              </p>
+            ))}
+          {record.practices.length > 0 &&
+            record.practices.map((item: any) => (
               <p
                 key={item.id}
                 style={{
@@ -79,8 +80,8 @@ export const PaperDetailDialog = (props: PropsInterface) => {
                 }}
               >
                 练习-{item.name}
-              </p>;
-            })}
+              </p>
+            ))}
         </>
       ),
     },

@@ -340,7 +340,21 @@ const SystemPaymentConfigPage = () => {
                 <div className="d-flex ml-10">
                   <Upload {...uploadAliPublicProps} showUploadList={false}>
                     <Button loading={loading} type="primary">
-                      选择证书
+                      选择TXT
+                    </Button>
+                  </Upload>
+                </div>
+              </Space>
+            </Form.Item>
+            <Form.Item label="应用私钥" name="pay.alipay.private_key">
+              <Space align="baseline" style={{ height: 100 }}>
+                <Form.Item name="pay.alipay.private_key">
+                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                </Form.Item>
+                <div className="d-flex ml-10">
+                  <Upload {...uploadAliCertPrivateProps} showUploadList={false}>
+                    <Button loading={loading} type="primary">
+                      选择TXT
                     </Button>
                   </Upload>
                 </div>
@@ -361,7 +375,7 @@ const SystemPaymentConfigPage = () => {
               </Space>
             </Form.Item>
             <Form.Item
-              label="支付宝应用公钥证书"
+              label="应用公钥证书"
               name="pay.alipay.app_cert_public_key"
             >
               <Space align="baseline" style={{ height: 100 }}>
@@ -377,20 +391,7 @@ const SystemPaymentConfigPage = () => {
                 </div>
               </Space>
             </Form.Item>
-            <Form.Item label="支付宝应用私钥证书" name="pay.alipay.private_key">
-              <Space align="baseline" style={{ height: 100 }}>
-                <Form.Item name="pay.alipay.private_key">
-                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
-                </Form.Item>
-                <div className="d-flex ml-10">
-                  <Upload {...uploadAliCertPrivateProps} showUploadList={false}>
-                    <Button loading={loading} type="primary">
-                      选择证书
-                    </Button>
-                  </Upload>
-                </div>
-              </Space>
-            </Form.Item>
+
             <div className="from-title mt-30">微信支付</div>
             <Form.Item
               label="微信扫码支付"

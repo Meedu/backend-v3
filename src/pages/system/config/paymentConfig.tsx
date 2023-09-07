@@ -20,11 +20,12 @@ const SystemPaymentConfigPage = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const enabledAddons = useSelector(
     (state: any) => state.enabledAddonsConfig.value.enabledAddons
   );
   const [defautValue, setDefautValue] = useState<string>("");
+  const [upLoading, setUpLoading] = useState(false);
 
   useEffect(() => {
     document.title = "支付配置";
@@ -49,6 +50,16 @@ const SystemPaymentConfigPage = () => {
           } else if (configData[index].key === "pay.alipay.ali_public_key") {
             form.setFieldsValue({
               "pay.alipay.ali_public_key": configData[index].value,
+            });
+          } else if (configData[index].key === "pay.alipay.alipay_root_cert") {
+            form.setFieldsValue({
+              "pay.alipay.alipay_root_cert": configData[index].value,
+            });
+          } else if (
+            configData[index].key === "pay.alipay.app_cert_public_key"
+          ) {
+            form.setFieldsValue({
+              "pay.alipay.app_cert_public_key": configData[index].value,
             });
           } else if (configData[index].key === "pay.alipay.private_key") {
             form.setFieldsValue({
@@ -171,16 +182,16 @@ const SystemPaymentConfigPage = () => {
   const uploadCertClientProps = {
     accept: ".pem",
     beforeUpload: (file: any) => {
-      if (loading) {
+      if (upLoading) {
         return;
       }
-      setLoading(true);
+      setUpLoading(true);
       const f = file;
       const reader = new FileReader();
       reader.onload = (e: any) => {
         let data = e.target.result;
         form.setFieldsValue({ "pay.wechat.cert_client": data });
-        setLoading(false);
+        setUpLoading(false);
       };
       reader.readAsBinaryString(f);
       return false;
@@ -190,16 +201,73 @@ const SystemPaymentConfigPage = () => {
   const uploadKeyClientProps = {
     accept: ".pem",
     beforeUpload: (file: any) => {
-      if (loading) {
+      if (upLoading) {
         return;
       }
-      setLoading(true);
+      setUpLoading(true);
       const f = file;
       const reader = new FileReader();
       reader.onload = (e: any) => {
         let data = e.target.result;
         form.setFieldsValue({ "pay.wechat.cert_key": data });
-        setLoading(false);
+        setUpLoading(false);
+      };
+      reader.readAsBinaryString(f);
+      return false;
+    },
+  };
+
+  const uploadAliPublicProps = {
+    accept: ".csr",
+    beforeUpload: (file: any) => {
+      if (upLoading) {
+        return;
+      }
+      setUpLoading(true);
+      const f = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        let data = e.target.result;
+        form.setFieldsValue({ "pay.alipay.ali_public_key": data });
+        setUpLoading(false);
+      };
+      reader.readAsBinaryString(f);
+      return false;
+    },
+  };
+
+  const uploadAliCertPublicProps = {
+    accept: ".csr",
+    beforeUpload: (file: any) => {
+      if (upLoading) {
+        return;
+      }
+      setUpLoading(true);
+      const f = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        let data = e.target.result;
+        form.setFieldsValue({ "pay.alipay.app_cert_public_key": data });
+        setUpLoading(false);
+      };
+      reader.readAsBinaryString(f);
+      return false;
+    },
+  };
+
+  const uploadAliRootCertProps = {
+    accept: ".csr",
+    beforeUpload: (file: any) => {
+      if (upLoading) {
+        return;
+      }
+      setUpLoading(true);
+      const f = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        let data = e.target.result;
+        form.setFieldsValue({ "pay.alipay.alipay_root_cert": data });
+        setUpLoading(false);
       };
       reader.readAsBinaryString(f);
       return false;
@@ -246,20 +314,49 @@ const SystemPaymentConfigPage = () => {
               <Input style={{ width: 300 }} allowClear />
             </Form.Item>
             <Form.Item label="支付宝公钥" name="pay.alipay.ali_public_key">
-              <Form.Item name="pay.alipay.ali_public_key">
-                <Input style={{ width: 300 }} allowClear />
-              </Form.Item>
-              <div className="form-helper-text">
-                <span>RSA2加密方式</span>
-              </div>
+              <Space align="baseline" style={{ height: 100 }}>
+                <Form.Item name="pay.alipay.ali_public_key">
+                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                </Form.Item>
+                <div className="d-flex ml-10">
+                  <Upload {...uploadAliPublicProps} showUploadList={false}>
+                    <Button loading={loading} type="primary">
+                      选择证书
+                    </Button>
+                  </Upload>
+                </div>
+              </Space>
             </Form.Item>
-            <Form.Item label="支付宝私钥" name="pay.alipay.private_key">
-              <Form.Item name="pay.alipay.private_key">
-                <Input style={{ width: 300 }} allowClear />
-              </Form.Item>
-              <div className="form-helper-text">
-                <span>RSA2加密方式</span>
-              </div>
+            <Form.Item label="支付宝根证书" name="pay.alipay.alipay_root_cert">
+              <Space align="baseline" style={{ height: 100 }}>
+                <Form.Item name="pay.alipay.alipay_root_cert">
+                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                </Form.Item>
+                <div className="d-flex ml-10">
+                  <Upload {...uploadAliRootCertProps} showUploadList={false}>
+                    <Button loading={loading} type="primary">
+                      选择证书
+                    </Button>
+                  </Upload>
+                </div>
+              </Space>
+            </Form.Item>
+            <Form.Item
+              label="支付宝应用公钥证书"
+              name="pay.alipay.app_cert_public_key"
+            >
+              <Space align="baseline" style={{ height: 100 }}>
+                <Form.Item name="pay.alipay.app_cert_public_key">
+                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                </Form.Item>
+                <div className="d-flex ml-10">
+                  <Upload {...uploadAliCertPublicProps} showUploadList={false}>
+                    <Button loading={loading} type="primary">
+                      选择证书
+                    </Button>
+                  </Upload>
+                </div>
+              </Space>
             </Form.Item>
             <div className="from-title mt-30">微信支付</div>
             <Form.Item

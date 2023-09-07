@@ -218,7 +218,7 @@ const SystemPaymentConfigPage = () => {
   };
 
   const uploadAliPublicProps = {
-    accept: ".csr",
+    accept: ".txt",
     beforeUpload: (file: any) => {
       if (upLoading) {
         return;
@@ -237,7 +237,7 @@ const SystemPaymentConfigPage = () => {
   };
 
   const uploadAliCertPublicProps = {
-    accept: ".csr",
+    accept: ".crt",
     beforeUpload: (file: any) => {
       if (upLoading) {
         return;
@@ -256,7 +256,7 @@ const SystemPaymentConfigPage = () => {
   };
 
   const uploadAliRootCertProps = {
-    accept: ".csr",
+    accept: ".crt",
     beforeUpload: (file: any) => {
       if (upLoading) {
         return;

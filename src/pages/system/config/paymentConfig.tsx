@@ -274,6 +274,25 @@ const SystemPaymentConfigPage = () => {
     },
   };
 
+  const uploadAliCertPrivateProps = {
+    accept: ".txt",
+    beforeUpload: (file: any) => {
+      if (upLoading) {
+        return;
+      }
+      setUpLoading(true);
+      const f = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        let data = e.target.result;
+        form.setFieldsValue({ "pay.alipay.private_key": data });
+        setUpLoading(false);
+      };
+      reader.readAsBinaryString(f);
+      return false;
+    },
+  };
+
   return (
     <div className="meedu-main-body">
       <BackBartment title="支付配置"></BackBartment>
@@ -351,6 +370,20 @@ const SystemPaymentConfigPage = () => {
                 </Form.Item>
                 <div className="d-flex ml-10">
                   <Upload {...uploadAliCertPublicProps} showUploadList={false}>
+                    <Button loading={loading} type="primary">
+                      选择证书
+                    </Button>
+                  </Upload>
+                </div>
+              </Space>
+            </Form.Item>
+            <Form.Item label="支付宝应用私钥证书" name="pay.alipay.private_key">
+              <Space align="baseline" style={{ height: 100 }}>
+                <Form.Item name="pay.alipay.private_key">
+                  <Input.TextArea rows={3} style={{ width: 300 }} allowClear />
+                </Form.Item>
+                <div className="d-flex ml-10">
+                  <Upload {...uploadAliCertPrivateProps} showUploadList={false}>
                     <Button loading={loading} type="primary">
                       选择证书
                     </Button>

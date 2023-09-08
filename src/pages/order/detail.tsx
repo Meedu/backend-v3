@@ -264,6 +264,7 @@ const OrderDetailPage = () => {
   return (
     <div className="meedu-main-body">
       <BackBartment title="订单详情" />
+      
       {user && list.status !== 9 && (
         <div className="float-left mt-30 ">
           <PerButton
@@ -277,6 +278,7 @@ const OrderDetailPage = () => {
           />
         </div>
       )}
+
       <div className="float-left mt-30">
         <div className="panel-box p-0 mb-30">
           <div className="panel-header">订单基础信息</div>

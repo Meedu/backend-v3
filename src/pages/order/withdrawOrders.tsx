@@ -287,11 +287,7 @@ const WithdrawOrdersPage = () => {
       ></WithdrawDialog>
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
-          <Button
-            className="ml-10"
-            type="primary"
-            onClick={() => importexcel()}
-          >
+          <Button type="primary" onClick={() => importexcel()}>
             导出表格
           </Button>
         </div>

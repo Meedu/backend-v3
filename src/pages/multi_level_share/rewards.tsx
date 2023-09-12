@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { multiShare } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { BackBartment } from "../../components";
-import { record } from "../../api/course";
-import { color } from "echarts";
 
 interface DataType {
   id: React.Key;
@@ -16,14 +14,13 @@ interface DataType {
 
 const MultiShareRewardsPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  const [list, setList] = useState<any>([]);
+  const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(50);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [order_id, setOrderId] = useState<string>("");
+  const [order_id, setOrderId] = useState("");
 
   useEffect(() => {
     document.title = "奖励记录";

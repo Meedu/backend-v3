@@ -1,15 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Row,
-  Col,
-  Switch,
-  Modal,
-  Form,
-  Select,
-  Input,
-  message,
-} from "antd";
+import { Switch, Modal, Form, Select, Input, message } from "antd";
 import { order } from "../../../../api/index";
 
 interface PropsInterface {
@@ -49,11 +39,11 @@ export const WithdrawDialog = (props: PropsInterface) => {
     if (loading) {
       return;
     }
-    values.ids = props.ids;
     setLoading(true);
+    values.id = props.ids[0];
     order
       .withdrawOrdersSubmit(values)
-      .then((res: any) => {
+      .then(() => {
         setLoading(false);
         message.success("成功！");
         props.onSuccess();

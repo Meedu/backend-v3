@@ -101,13 +101,12 @@ const MultiSharePage = () => {
       render: (goods_charge: number) => <span>{goods_charge}元</span>,
     },
     {
-      title: "奖励1/2/3",
+      title: "奖励",
       width: 200,
       render: (_, record: any) => (
         <>
           <div>一级：{record.reward}元</div>
           <div>二级：{record.reward2}元</div>
-          <div>三级：{record.reward3}元</div>
         </>
       ),
     },

@@ -188,28 +188,6 @@ const MultiShareCreatePage = () => {
               </div>
             </Space>
           </Form.Item>
-          <Form.Item
-            label="三级奖励"
-            name="reward3"
-            rules={[{ required: true, message: "请输入三级分销奖励!" }]}
-          >
-            <Space align="baseline" style={{ height: 32 }}>
-              <Form.Item
-                name="reward3"
-                rules={[{ required: true, message: "请输入三级分销奖励!" }]}
-              >
-                <Input
-                  style={{ width: 300 }}
-                  placeholder="请输入三级分销奖励"
-                  allowClear
-                  type="number"
-                />
-              </Form.Item>
-              <div className="ml-10">
-                <HelperText text="最小单位：元。不支持小数。"></HelperText>
-              </div>
-            </Space>
-          </Form.Item>
         </Form>
       </div>
       <div className="bottom-menus">

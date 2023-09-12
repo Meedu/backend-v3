@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { multiShare } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { BackBartment } from "../../components";
+import { record } from "../../api/course";
+import { color } from "echarts";
 
 interface DataType {
   id: React.Key;
@@ -77,14 +79,18 @@ const MultiShareRewardsPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "订单ID",
-      width: 120,
-      dataIndex: "order_id",
-      render: (order_id: number) => <span>{order_id}</span>,
+      title: "支付订单",
+      width: 200,
+      render: (_, reocrd: any) => (
+        <>
+          <span>{reocrd.order.order_id}</span>
+          <br></br>
+          <span style={{ color: "rgba(0,0,0,.2)" }}>ID: {reocrd.order_id}</span>
+        </>
+      ),
     },
     {
       title: "订单商品",
-      width: 300,
       render: (_, record: any) => (
         <div className="d-flex">
           {record.order.goods &&
@@ -98,61 +104,58 @@ const MultiShareRewardsPage = () => {
       ),
     },
     {
-      title: "订单用户",
+      title: "支付用户",
       width: 300,
       render: (_, record: any) => (
         <>
           {record.order_user && (
             <div className="user-item d-flex">
-              <div>{record.order_user.nick_name}</div>
+              <div>
+                <span>{record.order_user.nick_name}</span>
+                <br></br>
+                <span style={{ color: "rgba(0,0,0,.2)" }}>
+                  ID: {record.order_user.id}
+                </span>
+              </div>
             </div>
           )}
-          {!record.order_user && <span className="c-red">用户不存在</span>}
+          {!record.order_user && <span className="c-red">-</span>}
         </>
       ),
     },
     {
-      title: "一级用户及奖励",
+      title: "一级学员奖励",
       width: 260,
       render: (_, record: any) => (
         <>
-          {record.user1 && (
-            <div className="flex flex-column">
-              <div>用户：{record.user1.nick_name}</div>
-              <div>获得：{record.reward1}元</div>
+          {record.user1 ? (
+            <div
+              style={{ color: "rgba(255,0,0,1)" }}
+              className="flex flex-column"
+            >
+              <div>{record.user1.nick_name}</div>
+              <div>{record.reward1}元</div>
             </div>
-          )}
+          ) : null}
           {!record.user1 && <span>-</span>}
         </>
       ),
     },
     {
-      title: "二级用户及奖励",
+      title: "二级学员奖励",
       width: 260,
       render: (_, record: any) => (
         <>
-          {record.user2 && (
-            <div className="flex flex-column">
-              <div>用户：{record.user2.nick_name}</div>
-              <div>获得：{record.reward2}元</div>
+          {record.user2 ? (
+            <div
+              style={{ color: "rgba(255,0,0,.6)" }}
+              className="flex flex-column"
+            >
+              <div>{record.user2.nick_name}</div>
+              <div>{record.reward2}元</div>
             </div>
-          )}
+          ) : null}
           {!record.user2 && <span>-</span>}
-        </>
-      ),
-    },
-    {
-      title: "三级用户及奖励",
-      width: 260,
-      render: (_, record: any) => (
-        <>
-          {record.user3 && (
-            <div className="flex flex-column">
-              <div>用户：{record.user3.nick_name}</div>
-              <div>获得：{record.reward3}元</div>
-            </div>
-          )}
-          {!record.user3 && <span>-</span>}
         </>
       ),
     },

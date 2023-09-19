@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Table, Select, message, Input, Button } from "antd";
+import { Table, message, Input, Button, Tabs } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { order } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton } from "../../components";
@@ -9,6 +9,8 @@ import { dateFormat } from "../../utils/index";
 import { WithdrawDialog } from "./components/withdraw-dailog";
 import moment from "moment";
 import * as XLSX from "xlsx";
+import aliIcon from "../../assets/img/ali-pay.png";
+import wepayIcon from "../../assets/img/wepay.png";
 
 interface DataType {
   id: React.Key;
@@ -26,36 +28,40 @@ const WithdrawOrdersPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [user_id, setUserId] = useState("");
-  const [status, setStatus] = useState(-1);
+  const [status, setStatus] = useState("0");
   const [showHandleWin, setShowHandleWin] = useState<boolean>(false);
-  const statusRows = [
-    {
-      label: "全部",
-      value: -1,
-    },
+  const [tabs] = useState<any>([
     {
       label: "待处理",
-      value: 0,
+      key: "0",
     },
     {
       label: "已处理",
-      value: 5,
+      key: "5",
     },
     {
       label: "已驳回",
-      value: 3,
+      key: "3",
     },
-  ];
+  ]);
+  const statusOnChange = (status: string) => {
+    setPage(1);
+    setStatus(status);
+    setRefresh(!refresh);
+  };
 
+  // 设置网页标题
   useEffect(() => {
     document.title = "余额提现";
     dispatch(titleAction("余额提现"));
   }, []);
 
+  // 初次进入加载
   useEffect(() => {
     getData();
   }, [page, size, refresh]);
 
+  // 获取列表数据
   const getData = () => {
     if (loading) {
       return;
@@ -78,15 +84,16 @@ const WithdrawOrdersPage = () => {
       });
   };
 
+  // 重置
   const resetList = () => {
     setPage(1);
     setSize(10);
     setList([]);
     setSelectedRowKeys([]);
     setUserId("");
-    setStatus(-1);
     setRefresh(!refresh);
   };
+
   const paginationProps = {
     current: page, //当前页码
     pageSize: size,
@@ -104,46 +111,51 @@ const WithdrawOrdersPage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "学员ID",
-      width: 120,
+      width: 150,
       dataIndex: "user_id",
       render: (user_id: number) => <span>{user_id}</span>,
     },
     {
       title: "学员",
-      width: 300,
+      width: 200,
       render: (_, record: any) => (
         <>
           {record.user && (
             <div className="user-item d-flex">
-              <div className="avatar">
-                <img src={record.user.avatar} width="40" height="40" />
-              </div>
-              <div className="ml-10">{record.user.nick_name}</div>
+              <div>{record.user.nick_name}</div>
             </div>
           )}
-          {!record.user && <span className="c-red">学员不存在</span>}
+          {!record.user && <span className="c-red">-</span>}
         </>
       ),
     },
     {
       title: "提现金额",
-      render: (_, record: any) => <span>{record.amount}元</span>,
+      width: 200,
+      render: (_, record: any) => (
+        <>
+          <span>￥{record.amount}</span>
+          <br></br>
+          <span style={{ color: "rgba(0,0,0,.3)", fontSize: "10px" }}>
+            提现前余额: ￥{record.before_balance}
+          </span>
+        </>
+      ),
     },
     {
-      title: "收款人",
-      width: 300,
+      title: "收款渠道",
+      width: 100,
       render: (_, record: any) => (
         <>
           <div>
-            渠道：
-            {record.channel === "alipay"
-              ? "支付宝"
-              : record.channel === "wechat"
-              ? "微信"
-              : record.channel}
+            {record.channel === "alipay" ? (
+              <img src={aliIcon} width="30" height="30" />
+            ) : null}
+
+            {record.channel === "wechat" ? (
+              <img src={wepayIcon} width="30" height="30" />
+            ) : null}
           </div>
-          <div>姓名：{record.channel_name}</div>
-          <div>账号：{record.channel_account}</div>
         </>
       ),
     },
@@ -160,7 +172,6 @@ const WithdrawOrdersPage = () => {
     },
     {
       title: "备注",
-      width: 300,
       render: (_, record: any) => <span>{record.remark}</span>,
     },
     {
@@ -169,25 +180,29 @@ const WithdrawOrdersPage = () => {
       dataIndex: "created_at",
       render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
     },
-  ];
-
-  const rowSelection = {
-    selectedRowKeys: selectedRowKeys,
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      setSelectedRowKeys(selectedRowKeys);
+    {
+      title: "操作",
+      width: 150,
+      render: (_, record: any) => (
+        <>
+          {record.status === 0 ? (
+            <PerButton
+              type="link"
+              text="确认打款"
+              class="c-primary"
+              icon={null}
+              p="addons.MultiLevelShare.withdraw.handle"
+              onClick={() => {
+                setSelectedRowKeys([record.id]);
+                setShowHandleWin(true);
+              }}
+              disabled={null}
+            />
+          ) : null}
+        </>
+      ),
     },
-    getCheckboxProps: (record: any) => ({
-      disabled: record.status !== 0, //禁用的条件
-    }),
-  };
-
-  const handleMulti = () => {
-    if (selectedRowKeys.length === 0) {
-      message.error("请选择需要操作的数据");
-      return;
-    }
-    setShowHandleWin(true);
-  };
+  ];
 
   const importexcel = () => {
     if (loading) {
@@ -272,20 +287,7 @@ const WithdrawOrdersPage = () => {
       ></WithdrawDialog>
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
-          <PerButton
-            type="primary"
-            text="批量操作"
-            class=""
-            icon={null}
-            p="addons.MultiLevelShare.withdraw.handle"
-            onClick={() => handleMulti()}
-            disabled={null}
-          />
-          <Button
-            className="ml-10"
-            type="primary"
-            onClick={() => importexcel()}
-          >
+          <Button type="primary" onClick={() => importexcel()}>
             导出表格
           </Button>
         </div>
@@ -298,16 +300,6 @@ const WithdrawOrdersPage = () => {
             allowClear
             style={{ width: 150 }}
             placeholder="学员ID"
-          />
-          <Select
-            style={{ width: 150, marginLeft: 10 }}
-            value={status}
-            onChange={(e) => {
-              setStatus(e);
-            }}
-            allowClear
-            placeholder="状态"
-            options={statusRows}
           />
           <Button className="ml-10" onClick={resetList}>
             清空
@@ -325,11 +317,14 @@ const WithdrawOrdersPage = () => {
         </div>
       </div>
       <div className="float-left">
+        <Tabs
+          defaultActiveKey={status}
+          items={tabs}
+          onChange={statusOnChange}
+        />
+      </div>
+      <div className="float-left">
         <Table
-          rowSelection={{
-            type: "checkbox",
-            ...rowSelection,
-          }}
           loading={loading}
           columns={columns}
           dataSource={list}

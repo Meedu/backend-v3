@@ -134,7 +134,7 @@ const CourseCommentsPage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "学员",
-      width: 300,
+      width: 240,
       render: (_, record: any) => (
         <>
           {users[record.user_id] && (
@@ -155,6 +155,7 @@ const CourseCommentsPage = () => {
     },
     {
       title: "课程",
+      width: 300,
       render: (_, record: any) => (
         <>{record.course && <span>{record.course.title}</span>}</>
       ),
@@ -164,6 +165,18 @@ const CourseCommentsPage = () => {
       render: (_, record: any) => (
         <div dangerouslySetInnerHTML={{ __html: record.render_content }}></div>
       ),
+    },
+    {
+      title: "IP",
+      width: 150,
+      dataIndex: "ip",
+      render: (ip: string) => <span>{ip || "-"}</span>,
+    },
+    {
+      title: "省份",
+      width: 150,
+      dataIndex: "ip_province",
+      render: (ipProvince: string) => <span>{ipProvince || "-"}</span>,
     },
     {
       title: "时间",

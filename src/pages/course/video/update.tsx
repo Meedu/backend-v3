@@ -148,7 +148,7 @@ const CourseVideoUpdatePage = () => {
     course
       .videoUpdate(id, values)
       .then((res: any) => {
-        message.success('成功');
+        message.success("成功");
         setLoading(false);
         navigate(-1);
       })
@@ -256,6 +256,7 @@ const CourseVideoUpdatePage = () => {
                 </div>
               </Space>
             </Form.Item>
+
             {isFree === 0 && (
               <Form.Item label="可试看时长" name="free_seconds">
                 <Space align="baseline" style={{ height: 32 }}>
@@ -263,6 +264,7 @@ const CourseVideoUpdatePage = () => {
                     value={freeSeconds}
                     disabled={false}
                     onChange={(val: number) => {
+                      console.log(val);
                       setFreeSeconds(val);
                       form.setFieldsValue({ free_seconds: val });
                     }}
@@ -273,6 +275,7 @@ const CourseVideoUpdatePage = () => {
                 </Space>
               </Form.Item>
             )}
+
             <Form.Item label="所属章节" name="chapter_id">
               <Space align="baseline" style={{ height: 32 }}>
                 <Form.Item name="chapter_id">
@@ -298,6 +301,7 @@ const CourseVideoUpdatePage = () => {
                 </div>
               </Space>
             </Form.Item>
+
             <Form.Item
               label="上架时间"
               name="published_at"
@@ -311,6 +315,7 @@ const CourseVideoUpdatePage = () => {
               />
             </Form.Item>
           </div>
+
           <div style={{ display: resourceActive === "dev" ? "block" : "none" }}>
             <Form.Item label="禁止快进播放" name="ban_drag">
               <Space align="baseline" style={{ height: 32 }}>
@@ -322,6 +327,7 @@ const CourseVideoUpdatePage = () => {
                 </div>
               </Space>
             </Form.Item>
+
             <Form.Item label="隐藏课时" name="is_show">
               <Space align="baseline" style={{ height: 32 }}>
                 <Form.Item name="is_show" valuePropName="checked">
@@ -332,6 +338,7 @@ const CourseVideoUpdatePage = () => {
                 </div>
               </Space>
             </Form.Item>
+
             <Form.Item label="阿里云视频文件ID" name="aliyun_video_id">
               <Input
                 style={{ width: 300 }}
@@ -339,6 +346,7 @@ const CourseVideoUpdatePage = () => {
                 allowClear
               />
             </Form.Item>
+
             <Form.Item label="腾讯云视频文件ID" name="tencent_video_id">
               <Input
                 style={{ width: 300 }}
@@ -346,6 +354,7 @@ const CourseVideoUpdatePage = () => {
                 allowClear
               />
             </Form.Item>
+
             <Form.Item label="视频URL" name="url">
               <Input style={{ width: 300 }} placeholder="视频URL" allowClear />
             </Form.Item>

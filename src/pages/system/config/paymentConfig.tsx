@@ -218,7 +218,7 @@ const SystemPaymentConfigPage = () => {
   };
 
   const uploadAliPublicProps = {
-    accept: ".txt",
+    accept: ".crt",
     beforeUpload: (file: any) => {
       if (upLoading) {
         return;
@@ -332,6 +332,7 @@ const SystemPaymentConfigPage = () => {
             <Form.Item label="支付宝AppId" name="pay.alipay.app_id">
               <Input style={{ width: 300 }} allowClear />
             </Form.Item>
+
             <Form.Item label="支付宝公钥" name="pay.alipay.ali_public_key">
               <Space align="baseline" style={{ height: 100 }}>
                 <Form.Item name="pay.alipay.ali_public_key">
@@ -340,12 +341,13 @@ const SystemPaymentConfigPage = () => {
                 <div className="d-flex ml-10">
                   <Upload {...uploadAliPublicProps} showUploadList={false}>
                     <Button loading={loading} type="primary">
-                      选择TXT
+                      选择crt文件
                     </Button>
                   </Upload>
                 </div>
               </Space>
             </Form.Item>
+
             <Form.Item label="应用私钥" name="pay.alipay.private_key">
               <Space align="baseline" style={{ height: 100 }}>
                 <Form.Item name="pay.alipay.private_key">
@@ -368,7 +370,7 @@ const SystemPaymentConfigPage = () => {
                 <div className="d-flex ml-10">
                   <Upload {...uploadAliRootCertProps} showUploadList={false}>
                     <Button loading={loading} type="primary">
-                      选择证书
+                      选择crt文件
                     </Button>
                   </Upload>
                 </div>
@@ -385,7 +387,7 @@ const SystemPaymentConfigPage = () => {
                 <div className="d-flex ml-10">
                   <Upload {...uploadAliCertPublicProps} showUploadList={false}>
                     <Button loading={loading} type="primary">
-                      选择证书
+                      选择crt文件
                     </Button>
                   </Upload>
                 </div>

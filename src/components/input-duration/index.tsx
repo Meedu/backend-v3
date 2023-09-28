@@ -8,9 +8,9 @@ interface PropInterface {
 }
 
 export const InputDuration = (props: PropInterface) => {
-  const [hour, setHour] = useState<number>(0);
-  const [minute, setMinute] = useState<number>(0);
-  const [second, setSecond] = useState<number>(0);
+  const [hour, setHour] = useState(0);
+  const [minute, setMinute] = useState(0);
+  const [second, setSecond] = useState(0);
 
   useEffect(() => {
     if (props.value) {
@@ -18,6 +18,7 @@ export const InputDuration = (props: PropInterface) => {
       let hour: number = Math.floor(value / 3600);
       let minute: number = Math.floor((value - hour * 3600) / 60);
       let second: number = value - hour * 3600 - minute * 60;
+
       setHour(hour);
       setMinute(minute);
       setSecond(second);
@@ -25,11 +26,7 @@ export const InputDuration = (props: PropInterface) => {
   }, [props.value]);
 
   useEffect(() => {
-    let result = null;
-    if (!(hour === 0 && minute === 0 && second === 0)) {
-      result = hour * 3600 + minute * 60 + second;
-      props.onChange(result);
-    }
+    props.onChange(hour * 3600 + minute * 60 + second);
   }, [hour, minute, second]);
 
   const onHourChange = (value: number | null) => {

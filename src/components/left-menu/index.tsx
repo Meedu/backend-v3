@@ -57,20 +57,20 @@ const items = [
     <i className="iconfont icon-icon-file" />,
     [
       getItem(
-        "视频库",
-        "/resource/videos/index",
-        null,
-        null,
-        null,
-        "media.video.list"
-      ),
-      getItem(
         "图片库",
         "/resource/images/index",
         null,
         null,
         null,
         "dashboard"
+      ),
+      getItem(
+        "视频库",
+        "/resource/videos/index",
+        null,
+        null,
+        null,
+        "media.video.list"
       ),
     ],
     null,

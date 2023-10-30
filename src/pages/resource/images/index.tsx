@@ -11,8 +11,9 @@ import {
   Pagination,
 } from "antd";
 import { media } from "../../../api/index";
-import { useLocation } from "react-router-dom";
 import styles from "./index.module.scss";
+import { useDispatch } from "react-redux";
+import { titleAction } from "../../../store/user/loginUserSlice";
 import { UploadImageSub } from "../../../components/upload-image-button/upload-image-sub";
 import { ExclamationCircleFilled, CheckOutlined } from "@ant-design/icons";
 import { PerButton } from "../../../components";
@@ -33,7 +34,7 @@ interface ImageItem {
 }
 
 const ResourceImagesPage = () => {
-  const result = new URLSearchParams(useLocation().search);
+  const dispatch = useDispatch();
   const [imageList, setImageList] = useState<ImageItem[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
@@ -44,6 +45,11 @@ const ResourceImagesPage = () => {
   const [hoverArr, setHoverArr] = useState<boolean[]>([]);
   const [loading, setLoading] = useState(false);
   const [delLoading, setDelLoading] = useState(false);
+
+  useEffect(() => {
+    document.title = "图片库";
+    dispatch(titleAction("图片库"));
+  }, []);
 
   // 加载图片列表
   useEffect(() => {

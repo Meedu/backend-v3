@@ -8,7 +8,7 @@
   align-items: center;
 
   &.active {
-    background-color: red;
+    background-color: #3ca7fa;
     color: white;
   }
 }
@@ -42,9 +42,9 @@
 .checked {
   width: 20px;
   height: 20px;
-  background: #ff4d4f;
+  background: #3ca7fa;
   border-radius: 3px;
-  border: 2px solid #ff4d4f;
+  border: 2px solid #3ca7fa;
   position: absolute;
   left: 10px;
   top: 10px;

@@ -64,6 +64,14 @@ const items = [
         null,
         "media.video.list"
       ),
+      getItem(
+        "图片库",
+        "/resource/images/index",
+        null,
+        null,
+        null,
+        "dashboard"
+      ),
     ],
     null,
     null

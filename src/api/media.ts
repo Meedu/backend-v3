@@ -69,3 +69,12 @@ export function localDestroyVideo(params: any) {
 export function localVideoUrl(id: number, params: any) {
   return client.get(`/backend/addons/LocalUpload/video/${id}/play`, params);
 }
+
+
+export function imagesList(params: any) {
+  return client.get("/backend/api/v1/media/images", params);
+}
+
+export function destroyImages(params: any) {
+  return client.post(`/backend/api/v1/media/image/delete/multi`, params);
+}

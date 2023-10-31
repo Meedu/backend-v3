@@ -16,6 +16,7 @@ const ChangePasswordPage = lazy(
 );
 //资源相关
 const ResourceVideosPage = lazy(() => import("../pages/resource/videos/index"));
+const ResourceImagesPage = lazy(() => import("../pages/resource/images/index"));
 //录播课相关
 const CoursePage = lazy(() => import("../pages/course/index"));
 const CourseCreatePage = lazy(() => import("../pages/course/create"));
@@ -391,6 +392,7 @@ const routes: RouteObject[] = [
             element: <ChangePasswordPage />,
           },
           { path: "/resource/videos/index", element: <ResourceVideosPage /> },
+          { path: "/resource/images/index", element: <ResourceImagesPage /> },
           { path: "/course/vod/index", element: <CoursePage /> },
           { path: "/course/vod/create", element: <CourseCreatePage /> },
           { path: "/course/vod/update", element: <CourseUpdatePage /> },

@@ -412,7 +412,7 @@ const DashboardPage = () => {
           <p className={styles["info"]}>
             <span>PHP{systemInfo.php_version} </span>
             <span className="mx-10">API程序{systemInfo.meedu_version}</span>
-            <span>后台前端程序v4.9.8</span>
+            <span>后台前端程序v4.9.9</span>
           </p>
         </div>
       </div>

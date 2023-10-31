@@ -110,10 +110,10 @@ const WithdrawOrdersPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "学员ID",
-      width: 150,
-      dataIndex: "user_id",
-      render: (user_id: number) => <span>{user_id}</span>,
+      title: "记录ID",
+      width: 120,
+      dataIndex: "id",
+      render: (id: number) => <span>{id}</span>,
     },
     {
       title: "学员",
@@ -121,11 +121,31 @@ const WithdrawOrdersPage = () => {
       render: (_, record: any) => (
         <>
           {record.user && (
-            <div className="user-item d-flex">
+            <div style={{ display: "flex", flexDirection: "column" }}>
               <div>{record.user.nick_name}</div>
+              <div style={{ color: "rgba(0,0,0,.3)", fontSize: "10px" }}>
+                ID#{record.user_id}
+              </div>
             </div>
           )}
           {!record.user && <span className="c-red">-</span>}
+        </>
+      ),
+    },
+    {
+      title: "渠道",
+      width: 100,
+      render: (_, record: any) => (
+        <>
+          <div>
+            {record.channel === "alipay" ? (
+              <img src={aliIcon} width="30" height="30" />
+            ) : null}
+
+            {record.channel === "wechat" ? (
+              <img src={wepayIcon} width="30" height="30" />
+            ) : null}
+          </div>
         </>
       ),
     },
@@ -139,23 +159,6 @@ const WithdrawOrdersPage = () => {
           <span style={{ color: "rgba(0,0,0,.3)", fontSize: "10px" }}>
             提现前余额: ￥{record.before_balance}
           </span>
-        </>
-      ),
-    },
-    {
-      title: "收款渠道",
-      width: 100,
-      render: (_, record: any) => (
-        <>
-          <div>
-            {record.channel === "alipay" ? (
-              <img src={aliIcon} width="30" height="30" />
-            ) : null}
-
-            {record.channel === "wechat" ? (
-              <img src={wepayIcon} width="30" height="30" />
-            ) : null}
-          </div>
         </>
       ),
     },
@@ -188,7 +191,7 @@ const WithdrawOrdersPage = () => {
           {record.status === 0 ? (
             <PerButton
               type="link"
-              text="确认打款"
+              text="处理"
               class="c-primary"
               icon={null}
               p="addons.MultiLevelShare.withdraw.handle"

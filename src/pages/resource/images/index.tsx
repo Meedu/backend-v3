@@ -178,27 +178,16 @@ const ResourceImagesPage = () => {
                     resetImageList();
                   }}
                 ></UploadImageSub>
-                {selectKey.length > 0 && (
-                  <Button className="ml-10" onClick={() => cancelAll()}>
-                    取消操作
-                  </Button>
-                )}
-                {selectKey.length === 0 && (
-                  <Button className="ml-10" onClick={() => selectAll()}>
-                    批量操作
-                  </Button>
-                )}
-                {imageList.length !== 0 && (
-                  <PerButton
-                    type="danger"
-                    text="删除"
-                    class="ml-10"
-                    icon={null}
-                    p="media.image.delete.multi"
-                    onClick={() => removeResource()}
-                    disabled={selectKey.length === 0}
-                  />
-                )}
+                <PerButton
+                  type="danger"
+                  text="删除"
+                  class="ml-10"
+                  icon={null}
+                  p="media.image.delete.multi"
+                  onClick={() => removeResource()}
+                  disabled={selectKey.length === 0}
+                  loading={delLoading}
+                />
               </div>
               <div className="d-flex"></div>
             </div>

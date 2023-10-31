@@ -9,6 +9,7 @@ interface PropInterface {
   icon: any;
   onClick: () => void;
   disabled: any;
+  loading?: boolean;
 }
 
 export const PerButton = (props: PropInterface) => {
@@ -70,6 +71,7 @@ export const PerButton = (props: PropInterface) => {
             props.onClick();
           }}
           disabled={props.disabled}
+          loading={props.loading}
         >
           {props.text}
         </Button>

@@ -23,6 +23,16 @@ export const WithdrawDialog = (props: PropsInterface) => {
       value: 3,
     },
   ];
+  const actionList = [
+    {
+      label: "走提现渠道",
+      value: "follow",
+    },
+    {
+      label: "线下手动打款",
+      value: "hand",
+    },
+  ];
 
   useEffect(() => {
     if (props.open) {
@@ -92,6 +102,18 @@ export const WithdrawDialog = (props: PropsInterface) => {
               onFinishFailed={onFinishFailed}
               autoComplete="off"
             >
+              <Form.Item
+                label="打款方式"
+                name="action"
+                rules={[{ required: true, message: "请选择打款方式!" }]}
+              >
+                <Select
+                  style={{ width: 300 }}
+                  allowClear
+                  placeholder="请选择打款方式"
+                  options={actionList}
+                />
+              </Form.Item>
               <Form.Item
                 label="状态"
                 name="status"

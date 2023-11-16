@@ -456,7 +456,7 @@ const DecorationPCPage = () => {
         platform: item.platform,
         page: item.page,
         sign: item.sign,
-        sort: item.sort,
+        sort: blocks[blocks.length - 1].sort + 1,
         config: item.config_render,
       })
       .then(() => {

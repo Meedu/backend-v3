@@ -462,7 +462,7 @@ const DecorationPCPage = () => {
       .then(() => {
         setLoading(false);
         message.success("成功");
-        getData();
+        getData(true);
       })
       .catch((e) => {
         setLoading(false);

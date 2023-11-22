@@ -322,6 +322,7 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
       } else {
         message.error(`${file.name} 并不是 mp4 视频文件`);
       }
+      return false;
     },
     showUploadList: false,
   };

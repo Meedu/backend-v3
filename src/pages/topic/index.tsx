@@ -147,7 +147,7 @@ const TopicPage = () => {
     {
       title: "阅读",
       width: "8%",
-      render: (_, record: any) => <span>{record.vote_count}次</span>,
+      render: (_, record: any) => <span>{record.view_times}次</span>,
     },
     {
       title: "点赞",

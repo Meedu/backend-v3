@@ -13,7 +13,6 @@ import videoIocn from "../../../assets/images/config/video.png";
 import picIcon from "../../../assets/images/config/pic.png";
 import aliIcon from "../../../assets/images/config/ali.png";
 import cameraIcon from "../../../assets/images/config/camera.png";
-import gaodeIcon from "../../../assets/images/config/gaode.png";
 import k12Icon from "../../../assets/images/config/k12.png";
 import searchIcon from "../../../assets/images/config/search.png";
 import importIcon from "../../../assets/images/config/import.png";
@@ -32,7 +31,6 @@ import credictIcon from "../../../assets/images/config/credict.png";
 const SystemConfigPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
   const enabledAddons = useSelector(
     (state: any) => state.enabledAddonsConfig.value.enabledAddons
   );
@@ -96,12 +94,6 @@ const SystemConfigPage = () => {
       value: "学习拍照",
       images: cameraIcon,
       sign: "Snapshot",
-    },
-    {
-      name: "高德地图",
-      value: "高德地图",
-      images: gaodeIcon,
-      sign: "",
     },
     {
       name: "K12配置",

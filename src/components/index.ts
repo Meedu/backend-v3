@@ -40,3 +40,4 @@ export * from "./select-tg";
 export * from "./h5-link";
 export * from "./upload-video-item";
 export * from "./snapshot-dialog";
+export * from "./user-single-add";

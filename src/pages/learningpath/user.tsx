@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { Table, Modal, message, Space, Button } from "antd";
 import { useLocation } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { path } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
-import { BackBartment } from "../../components";
+import { BackBartment, PerButton, UserSingleAddDialog } from "../../components";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import { dateFormat } from "../../utils/index";
+const { confirm } = Modal;
 import moment from "moment";
 import * as XLSX from "xlsx";
 
@@ -27,6 +29,8 @@ const LearnPathUserPage = () => {
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(Number(result.get("id")));
+  const [user_id, setUserId] = useState(0);
+  const [showUserAddWin, setShowUserAddWin] = useState(false);
 
   useEffect(() => {
     document.title = "付费学员";
@@ -99,6 +103,25 @@ const LearnPathUserPage = () => {
       dataIndex: "updated_at",
       render: (updated_at: string) => <span>{dateFormat(updated_at)}</span>,
     },
+    {
+      title: "操作",
+      width: 80,
+      render: (_, record: any) => (
+        <Space>
+          <PerButton
+            type="link"
+            text="删除"
+            class="c-red"
+            icon={null}
+            p="addons.learnPaths.path.user.destroy"
+            onClick={() => {
+              destory(record.user_id);
+            }}
+            disabled={null}
+          />
+        </Space>
+      ),
+    },
   ];
 
   const resetData = () => {
@@ -168,10 +191,72 @@ const LearnPathUserPage = () => {
     setSize(pageSize);
   };
 
+  const destory = (uid: number) => {
+    if (uid === 0) {
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此学员？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        if (loading) {
+          return;
+        }
+        setLoading(true);
+        path
+          .destroyUser(id, uid)
+          .then(() => {
+            setLoading(false);
+            message.success("删除成功");
+            resetData();
+          })
+          .catch((e) => {
+            setLoading(false);
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const userAddChange = (rows: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    path
+      .userAdd(id, {
+        user_id: Number(rows.join(",")),
+      })
+      .then(() => {
+        setLoading(false);
+        message.success("成功");
+        setShowUserAddWin(false);
+        resetData();
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
+  };
+
   return (
     <div className="meedu-main-body">
       <BackBartment title="付费学员" />
       <div className="float-left mt-30 mb-30">
+        <PerButton
+          type="primary"
+          text="添加学员"
+          class="mr-10"
+          icon={null}
+          p="addons.learnPaths.path.user.store"
+          onClick={() => setShowUserAddWin(true)}
+          disabled={null}
+        />
         <Button type="primary" onClick={() => exportexcel()}>
           导出表格
         </Button>
@@ -185,6 +270,14 @@ const LearnPathUserPage = () => {
           pagination={paginationProps}
         />
       </div>
+      <UserSingleAddDialog
+        type=""
+        open={showUserAddWin}
+        onCancel={() => setShowUserAddWin(false)}
+        onSuccess={(rows: any) => {
+          userAddChange(rows);
+        }}
+      ></UserSingleAddDialog>
     </div>
   );
 };

@@ -75,3 +75,16 @@ export function stepDetail(id: number) {
 export function stepUpdate(id: number, params: any) {
   return client.put(`/backend/addons/LearningPaths/v2/step/${id}`, params);
 }
+
+export function userAdd(id: number, params: any) {
+  return client.post(
+    `/backend/addons/LearningPaths/path/${id}/user/create`,
+    params
+  );
+}
+
+export function destroyUser(id: number, userId: number) {
+  return client.destroy(
+    `/backend/addons/LearningPaths/path/${id}/user/${userId}`
+  );
+}

@@ -356,15 +356,12 @@ const LearnPathStepUpdatePage = () => {
         </Form>
         <div className="from-title mt-30">学习步骤关联课程</div>
         <div className="float-left mb-30">
-          <PerButton
+          <Button
             type="primary"
-            text="添加课程"
-            class=""
-            icon={null}
-            p="addons.learnPaths.relation.store"
             onClick={() => setShowSelectResourceCoursesWin(true)}
-            disabled={null}
-          />
+          >
+            添加课程
+          </Button>
         </div>
         <div className="float-left">
           <Table

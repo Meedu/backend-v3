@@ -32,6 +32,7 @@ const LearnPathStepCreatePage = () => {
   const [bookId, setBookId] = useState<any>([]);
   const [paperId, setPaperId] = useState<any>([]);
   const [practiceId, setPracticeId] = useState<any>([]);
+  const [mockPaperId, setMockPaperId] = useState<any>([]);
   const [path_id, setPathId] = useState(Number(result.get("path_id")));
 
   useEffect(() => {
@@ -45,6 +46,7 @@ const LearnPathStepCreatePage = () => {
     let paperParams: any = [];
     let bookParams: any = [];
     let practiceParams: any = [];
+    let mockPaperParams: any = [];
     if (coursesData.length > 0) {
       for (let i = 0; i < coursesData.length; i++) {
         if (coursesData[i].type === "vod") {
@@ -55,6 +57,8 @@ const LearnPathStepCreatePage = () => {
           paperParams.push(coursesData[i].id);
         } else if (coursesData[i].type === "book") {
           bookParams.push(coursesData[i].id);
+        } else if (coursesData[i].type === "mock_paper") {
+          mockPaperParams.push(coursesData[i].id);
         } else if (coursesData[i].type === "practice") {
           practiceParams.push(coursesData[i].id);
         }
@@ -65,6 +69,7 @@ const LearnPathStepCreatePage = () => {
     setPaperId(paperParams);
     setBookId(bookParams);
     setPracticeId(practiceParams);
+    setMockPaperId(mockPaperParams);
   }, [coursesData]);
 
   const onFinish = (values: any) => {
@@ -83,6 +88,9 @@ const LearnPathStepCreatePage = () => {
         }
         if (type === "paper") {
           type = "paper_paper";
+        }
+        if (type === "mock_paper") {
+          type = "paper_mock";
         }
         let item = {
           type: type,
@@ -127,7 +135,9 @@ const LearnPathStepCreatePage = () => {
               title={record.title}
               border={4}
             ></ThumbBar>
-          ) : record.type === "paper" || record.type === "practice" ? (
+          ) : record.type === "paper" ||
+            record.type === "mock_paper" ||
+            record.type === "practice" ? (
             <ThumbBar
               value={paperIcon}
               width={120}
@@ -156,6 +166,7 @@ const LearnPathStepCreatePage = () => {
           {record.type === "live" && <span>直播课程</span>}
           {record.type === "book" && <span>电子书</span>}
           {record.type === "paper" && <span>考试</span>}
+          {record.type === "mock_paper" && <span>模拟考试</span>}
           {record.type === "practice" && <span>练习</span>}
         </>
       ),
@@ -217,11 +228,11 @@ const LearnPathStepCreatePage = () => {
         selectedLive={coursesLiveId}
         selectedBook={bookId}
         selectedPaper={paperId}
-        selectedMockPaper={[]}
+        selectedMockPaper={mockPaperId}
         selectedPractice={practiceId}
         selectedVip={[]}
         open={showSelectResourceCoursesWin}
-        enabledResource={"vod,live,book,paper,practice"}
+        enabledResource={"vod,live,book,paper,mock_paper,practice"}
         onCancel={() => setShowSelectResourceCoursesWin(false)}
         onSelected={(result: any) => {
           changeCourses(result);

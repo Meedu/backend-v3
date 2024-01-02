@@ -182,7 +182,7 @@ export const SelectResourcesMulti = (props: PropsInterface) => {
                 onChange={change}
               ></PracticeComp>
             )}
-            {resourceActive === "mock-paper" && (
+            {resourceActive === "mock_paper" && (
               <MockPaperComp
                 selected={props.selectedMockPaper}
                 onChange={change}

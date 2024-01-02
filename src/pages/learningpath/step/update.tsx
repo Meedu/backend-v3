@@ -226,17 +226,15 @@ const LearnPathStepUpdatePage = () => {
       title: "操作",
       width: "6%",
       render: (_, record: any) => (
-        <PerButton
+        <Button
           type="link"
-          text="删除"
-          class="c-red"
-          icon={null}
-          p="addons.learnPaths.relation.update"
+          className="c-red"
           onClick={() => {
             delCourses(record.id);
           }}
-          disabled={null}
-        />
+        >
+          删除
+        </Button>
       ),
     },
   ];

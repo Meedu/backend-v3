@@ -264,7 +264,7 @@ const MemberPage = () => {
       render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
     },
     {
-      title: "标签",
+      title: "状态",
       width: "6%",
       render: (_, record: any) => (
         <>

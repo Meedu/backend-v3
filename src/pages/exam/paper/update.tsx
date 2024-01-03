@@ -167,10 +167,10 @@ const PaperUpdatePage = () => {
 
   const onInviteSwitch = (checked: boolean) => {
     if (checked) {
-      form.setFieldsValue({ is_invite: 1 });
+      form.setFieldsValue({ enabled_invite: 1 });
       setIsInvite(1);
     } else {
-      form.setFieldsValue({ is_invite: 0 });
+      form.setFieldsValue({ enabled_invite: 0 });
       setIsInvite(0);
     }
   };

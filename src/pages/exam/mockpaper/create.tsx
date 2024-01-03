@@ -310,55 +310,57 @@ const MockPaperCreatePage = () => {
             </Space>
           </Form.Item>
           {isInvite === 0 && (
-            <Form.Item label="免费参与" name="is_free">
-              <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item name="is_free" valuePropName="checked">
-                  <Switch onChange={onFreeSwitch} />
-                </Form.Item>
-                <div className="ml-10">
-                  <HelperText text="开启所有用户均可直接考试。"></HelperText>
-                </div>
-              </Space>
-            </Form.Item>
-          )}
-          {isFree === 0 && (
-            <Form.Item
-              label="价格"
-              name="charge"
-              rules={[{ required: true, message: "请输入价格!" }]}
-            >
-              <Space align="baseline" style={{ height: 32 }}>
+            <>
+              <Form.Item label="免费参与" name="is_free">
+                <Space align="baseline" style={{ height: 32 }}>
+                  <Form.Item name="is_free" valuePropName="checked">
+                    <Switch onChange={onFreeSwitch} />
+                  </Form.Item>
+                  <div className="ml-10">
+                    <HelperText text="开启所有用户均可直接考试。"></HelperText>
+                  </div>
+                </Space>
+              </Form.Item>
+              {isFree === 0 && (
                 <Form.Item
+                  label="价格"
                   name="charge"
                   rules={[{ required: true, message: "请输入价格!" }]}
                 >
-                  <Input
-                    onChange={(e) => {
-                      setCharge(Number(e.target.value));
-                    }}
-                    type="number"
-                    style={{ width: 300 }}
-                    placeholder="单位：元"
-                    allowClear
-                  />
+                  <Space align="baseline" style={{ height: 32 }}>
+                    <Form.Item
+                      name="charge"
+                      rules={[{ required: true, message: "请输入价格!" }]}
+                    >
+                      <Input
+                        onChange={(e) => {
+                          setCharge(Number(e.target.value));
+                        }}
+                        type="number"
+                        style={{ width: 300 }}
+                        placeholder="单位：元"
+                        allowClear
+                      />
+                    </Form.Item>
+                    <div className="ml-10">
+                      <HelperText text="请输入整数"></HelperText>
+                    </div>
+                  </Space>
                 </Form.Item>
-                <div className="ml-10">
-                  <HelperText text="请输入整数"></HelperText>
-                </div>
-              </Space>
-            </Form.Item>
-          )}
-          {charge > 0 && (
-            <Form.Item label="VIP免费" name="is_vip_free">
-              <Space align="baseline" style={{ height: 32 }}>
-                <Form.Item name="is_vip_free" valuePropName="checked">
-                  <Switch onChange={onVipSwitch} />
+              )}
+              {charge > 0 && (
+                <Form.Item label="VIP免费" name="is_vip_free">
+                  <Space align="baseline" style={{ height: 32 }}>
+                    <Form.Item name="is_vip_free" valuePropName="checked">
+                      <Switch onChange={onVipSwitch} />
+                    </Form.Item>
+                    <div className="ml-10">
+                      <HelperText text="设置VIP免费的话，则VIP会员用户可以无需购买直接参与考试。"></HelperText>
+                    </div>
+                  </Space>
                 </Form.Item>
-                <div className="ml-10">
-                  <HelperText text="设置VIP免费的话，则VIP会员用户可以无需购买直接参与考试。"></HelperText>
-                </div>
-              </Space>
-            </Form.Item>
+              )}
+            </>
           )}
           <Form.Item
             label="试题随机范围"

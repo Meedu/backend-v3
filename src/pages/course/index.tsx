@@ -11,9 +11,9 @@ import {
   Drawer,
 } from "antd";
 import type { MenuProps } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { course } from "../../api/index";
 import { DownOutlined } from "@ant-design/icons";
 import { titleAction } from "../../store/user/loginUserSlice";
@@ -29,18 +29,35 @@ interface DataType {
   published_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  keywords?: string;
+  category_id?: any;
+  id?: string;
+}
+
 const CoursePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const result = new URLSearchParams(useLocation().search);
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    keywords: "",
+    category_id: [],
+    id: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const keywords = searchParams.get("keywords");
+  const category_id = searchParams.get("category_id");
+  const id = searchParams.get("id");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [keywords, setKeywords] = useState<string>("");
-  const [category_id, setCategoryId] = useState([]);
-  const [id, setId] = useState<string>("");
   const [categories, setCategories] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
   const [showStatus, setShowStatus] = useState<boolean>(false);
@@ -62,6 +79,30 @@ const CoursePage = () => {
       setShowStatus(false);
     }
   }, [category_id, id, keywords]);
+
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.keywords !== "undefined") {
+          prev.set("keywords", params.keywords);
+        }
+        if (typeof params.category_id !== "undefined") {
+          prev.set("category_id", params.category_id);
+        }
+        if (typeof params.id !== "undefined") {
+          prev.set("id", params.id);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
 
   const getData = () => {
     if (loading) {
@@ -118,12 +159,14 @@ const CoursePage = () => {
   };
 
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      keywords: "",
+      id: "",
+      category_id: [],
+    });
     setList([]);
-    setKeywords("");
-    setCategoryId([]);
-    setId("");
     setRefresh(!refresh);
   };
 
@@ -137,8 +180,10 @@ const CoursePage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -299,7 +344,9 @@ const CoursePage = () => {
   ];
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -393,9 +440,11 @@ const CoursePage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords}
+            value={keywords || ""}
             onChange={(e) => {
-              setKeywords(e.target.value);
+              resetLocalSearchParams({
+                keywords: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -408,7 +457,9 @@ const CoursePage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
               setDrawer(false);
             }}
@@ -461,7 +512,9 @@ const CoursePage = () => {
               </Button>
               <Button
                 onClick={() => {
-                  setPage(1);
+                  resetLocalSearchParams({
+                    page: 1,
+                  });
                   setRefresh(!refresh);
                   setDrawer(false);
                 }}
@@ -475,18 +528,22 @@ const CoursePage = () => {
         >
           <div className="float-left">
             <Input
-              value={keywords}
+              value={keywords || ""}
               onChange={(e) => {
-                setKeywords(e.target.value);
+                resetLocalSearchParams({
+                  keywords: e.target.value,
+                });
               }}
               allowClear
               placeholder="课程名称关键字"
             />
             <Select
               style={{ width: "100%", marginTop: 20 }}
-              value={category_id}
+              value={category_id || []}
               onChange={(e) => {
-                setCategoryId(e);
+                resetLocalSearchParams({
+                  category_id: e,
+                });
               }}
               allowClear
               placeholder="分类"
@@ -494,9 +551,11 @@ const CoursePage = () => {
             />
             <Input
               style={{ marginTop: 20 }}
-              value={id}
+              value={id || ""}
               onChange={(e) => {
-                setId(e.target.value);
+                resetLocalSearchParams({
+                  id: e.target.value,
+                });
               }}
               allowClear
               placeholder="课程ID"

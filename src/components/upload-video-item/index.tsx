@@ -162,7 +162,6 @@ export const UploadVideoItem: React.FC<PropInterface> = ({
             message.error(data.message);
             it.status = 5;
             it.result = data.message;
-            console.log(data);
           }
           setFileList([...localFileList.current]);
         },

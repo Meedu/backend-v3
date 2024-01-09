@@ -11,7 +11,7 @@ import {
   Drawer,
 } from "antd";
 import type { MenuProps } from "antd";
-import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch } from "react-redux";
 import { course } from "../../api/index";
@@ -40,7 +40,6 @@ interface LocalSearchParamsInterface {
 const CoursePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
   const [searchParams, setSearchParams] = useSearchParams({
     page: "1",
     size: "10",

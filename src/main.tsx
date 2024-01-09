@@ -1,10 +1,9 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import store from "./store";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, App as AntdApp } from "antd";
 import zhCN from "antd/locale/zh_CN";
 import "dayjs/locale/zh-cn";
 import App from "./App";
@@ -17,11 +16,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       locale={zhCN}
       theme={{ token: { colorPrimary: "#3ca7fa" } }}
     >
-      <BrowserRouter>
-        <AutoScorllTop>
-          <App />
-        </AutoScorllTop>
-      </BrowserRouter>
+      <AntdApp>
+        <BrowserRouter>
+          <AutoScorllTop>
+            <App />
+          </AutoScorllTop>
+        </BrowserRouter>
+      </AntdApp>
     </ConfigProvider>
   </Provider>
 );

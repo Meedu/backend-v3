@@ -28,6 +28,10 @@ export function userList(id: number, params: any) {
   return client.get(`/backend/addons/Paper/practice/${id}/users`, params);
 }
 
+export function userPaper(id: number, params: any) {
+  return client.get(`/backend/addons/Paper/practice/${id}/all-users`, params);
+}
+
 export function userDel(id: number, params: any) {
   return client.post(
     `/backend/addons/Paper/practice/${id}/user/delete`,

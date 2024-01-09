@@ -19,6 +19,12 @@ import { UserInviteComp } from "./detail/invite";
 import { UserCredit1Comp } from "./detail/credit1";
 import { UserBalanceRecordsComp } from "./detail/balance-records";
 import { UserIOSRecordsComp } from "./detail/iOS-records";
+import { UserPapersComp } from "./detail/papers";
+import { UserMockPapersComp } from "./detail/mockPapers";
+import { UserPracticesComp } from "./detail/practices";
+import { UserPaperRecordsComp } from "./detail/paperRecords";
+import { UserMockPaperRecordsComp } from "./detail/mockRecords";
+import { UserPracticeRecordsComp } from "./detail/practiceRecords";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 const { confirm } = Modal;
 
@@ -37,6 +43,8 @@ const MemberDetailPage = () => {
   const [tags, setTags] = useState<any>([]);
   const [courseTabActive, setCourseTabActive] = useState<string>("order");
   const [courseTypes, setCourseTypes] = useState<any>([]);
+  const [examTabActive, setExamTabActive] = useState<string>("papers");
+  const [examTypes, setExamTypes] = useState<any>([]);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const enabledAddons = useSelector(
     (state: any) => state.enabledAddonsConfig.value.enabledAddons
@@ -102,6 +110,47 @@ const MemberDetailPage = () => {
       });
     }
     setCourseTypes(types);
+  }, [enabledAddons, user]);
+
+  useEffect(() => {
+    let types = [];
+    if (checkPermission("addons.Paper.user.paperOrders")) {
+      types.push({
+        name: "已购试卷",
+        key: "papers",
+      });
+    }
+    if (checkPermission("addons.Paper.user.mockPaperOrders")) {
+      types.push({
+        name: "已购模拟卷",
+        key: "mockPapers",
+      });
+    }
+    if (checkPermission("addons.Paper.user.practiceOrders")) {
+      types.push({
+        name: "已购练习",
+        key: "practices",
+      });
+    }
+    if (checkPermission("addons.Paper.user.paperRecords")) {
+      types.push({
+        name: "考试记录",
+        key: "paperRecords",
+      });
+    }
+    if (checkPermission("addons.Paper.user.mockPaperRecords")) {
+      types.push({
+        name: "模拟记录",
+        key: "mockRecords",
+      });
+    }
+    if (checkPermission("addons.Paper.user.practiceRecords")) {
+      types.push({
+        name: "练习记录",
+        key: "practiceRecords",
+      });
+    }
+    setExamTypes(types);
   }, [enabledAddons, user]);
 
   const checkPermission = (val: string) => {
@@ -445,6 +494,54 @@ const MemberDetailPage = () => {
             <UserIOSRecordsComp
               id={Number(params.memberId)}
             ></UserIOSRecordsComp>
+          )}
+        </div>
+      </div>
+      <div
+        className="float-left bg-white br-15 p-30 mt-30"
+        style={{ textAlign: "left" }}
+      >
+        <Radio.Group
+          size="large"
+          defaultValue={examTabActive}
+          buttonStyle="solid"
+          onChange={(e) => {
+            setExamTabActive(e.target.value);
+          }}
+        >
+          {examTypes.length > 0 &&
+            examTypes.map((item: any) => (
+              <Radio.Button key={item.key} value={item.key}>
+                {item.name}
+              </Radio.Button>
+            ))}
+        </Radio.Group>
+        <div className="float-left mt-30">
+          {examTabActive === "papers" && (
+            <UserPapersComp id={Number(params.memberId)}></UserPapersComp>
+          )}
+          {examTabActive === "mockPapers" && (
+            <UserMockPapersComp
+              id={Number(params.memberId)}
+            ></UserMockPapersComp>
+          )}
+          {examTabActive === "practices" && (
+            <UserPracticesComp id={Number(params.memberId)}></UserPracticesComp>
+          )}
+          {examTabActive === "paperRecords" && (
+            <UserPaperRecordsComp
+              id={Number(params.memberId)}
+            ></UserPaperRecordsComp>
+          )}
+          {examTabActive === "mockRecords" && (
+            <UserMockPaperRecordsComp
+              id={Number(params.memberId)}
+            ></UserMockPaperRecordsComp>
+          )}
+          {examTabActive === "practiceRecords" && (
+            <UserPracticeRecordsComp
+              id={Number(params.memberId)}
+            ></UserPracticeRecordsComp>
           )}
         </div>
       </div>

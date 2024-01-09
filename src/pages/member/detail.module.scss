@@ -93,6 +93,7 @@
         box-sizing: border-box;
         padding: 0px 5px;
         margin-top: 30px;
+        flex-wrap: wrap;
         &.large {
           width: 650px;
         }

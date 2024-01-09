@@ -85,6 +85,39 @@ export function userIOSRecords(params: any) {
   );
 }
 
+export function userPapers(id: number, params: any) {
+  return client.get(`/backend/addons/Paper/user/${id}/paper-orders`, params);
+}
+
+export function userMockPapers(id: number, params: any) {
+  return client.get(
+    `/backend/addons/Paper/user/${id}/mock-paper-orders`,
+    params
+  );
+}
+
+export function userPractices(id: number, params: any) {
+  return client.get(`/backend/addons/Paper/user/${id}/practice-orders`, params);
+}
+
+export function userPapersRecords(id: number, params: any) {
+  return client.get(`/backend/addons/Paper/user/${id}/paper-records`, params);
+}
+
+export function userMockPapersRecords(id: number, params: any) {
+  return client.get(
+    `/backend/addons/Paper/user/${id}/mock-paper-records`,
+    params
+  );
+}
+
+export function userPracticesRecords(id: number, params: any) {
+  return client.get(
+    `/backend/addons/Paper/user/${id}/practice-records`,
+    params
+  );
+}
+
 export function credit1Change(params: any) {
   return client.post(`/backend/api/v1/member/credit1/change`, params);
 }

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, message, Button, Input, Tabs } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { live } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
@@ -23,16 +23,28 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  user_id?: string;
+}
+
 const LiveUsersPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    user_id: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const user_id = searchParams.get("user_id");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [user_id, setUserId] = useState("");
   const [showUserAddWin, setShowUserAddWin] = useState<boolean>(false);
   const [importDialog, setImportDialog] = useState<boolean>(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
@@ -83,17 +95,39 @@ const LiveUsersPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.user_id !== "undefined") {
+          prev.set("user_id", params.user_id);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      user_id: "",
+    });
     setList([]);
-    setUserId("");
     setSelectedRowKeys([]);
     setRefresh(!refresh);
   };
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setSelectedRowKeys([]);
     setRefresh(!refresh);
@@ -109,8 +143,10 @@ const LiveUsersPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -304,9 +340,11 @@ const LiveUsersPage = () => {
             </div>
             <div className="d-flex">
               <Input
-                value={user_id}
+                value={user_id || ""}
                 onChange={(e) => {
-                  setUserId(e.target.value);
+                  resetLocalSearchParams({
+                    user_id: e.target.value,
+                  });
                 }}
                 allowClear
                 style={{ width: 150 }}
@@ -319,7 +357,9 @@ const LiveUsersPage = () => {
                 className="ml-10"
                 type="primary"
                 onClick={() => {
-                  setPage(1);
+                  resetLocalSearchParams({
+                    page: 1,
+                  });
                   setRefresh(!refresh);
                 }}
               >

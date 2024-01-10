@@ -165,7 +165,7 @@ const LivePage = () => {
         if (typeof params.category_id !== "undefined") {
           prev.set("category_id", JSON.stringify(params.category_id));
         }
-        if (typeof params.category_id !== "undefined") {
+        if (typeof params.teacher_id !== "undefined") {
           prev.set("teacher_id", JSON.stringify(params.teacher_id));
         }
         if (typeof params.status !== "undefined") {

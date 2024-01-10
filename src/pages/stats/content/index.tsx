@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Radio, Table, Tooltip } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { stats } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
@@ -16,15 +17,26 @@ interface DataType {
   orders_paid_sum: number;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  goodsType?: string;
+}
+
 const StatsContentPage = () => {
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const goodsType = searchParams.get("goodsType") || "COURSE";
+
   const [loading, setLoading] = useState<boolean>(false);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
-  const [goodsType, setGoodsType] = useState<string>("COURSE");
   const [start_at, setStartAt] = useState(
     moment().subtract(6, "days").format("YYYY-MM-DD")
   );
@@ -88,8 +100,28 @@ const StatsContentPage = () => {
     setTypeList(typeList);
   }, [enabledAddons]);
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.goodsType !== "undefined") {
+          prev.set("goodsType", params.goodsType);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const paginationPageChange = (page: number) => {
-    setPage(page);
+    resetLocalSearchParams({
+      page: page,
+    });
     setRefresh(!refresh);
   };
 
@@ -138,8 +170,10 @@ const StatsContentPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -147,7 +181,10 @@ const StatsContentPage = () => {
       title: (
         <div className="d-flex">
           <span className="mr-5">Top10销售额</span>
-          <Tooltip placement="rightTop" title="团购秒杀活动销量不计入此列表统计">
+          <Tooltip
+            placement="rightTop"
+            title="团购秒杀活动销量不计入此列表统计"
+          >
             <InfoCircleOutlined />
           </Tooltip>
         </div>
@@ -177,7 +214,11 @@ const StatsContentPage = () => {
                 defaultValue={goodsType}
                 buttonStyle="solid"
                 onChange={(e) => {
-                  setGoodsType(e.target.value);
+                  resetLocalSearchParams({
+                    page: 1,
+                    size: 10,
+                    goodsType: e.target.value,
+                  });
                   paginationPageChange(1);
                 }}
               >

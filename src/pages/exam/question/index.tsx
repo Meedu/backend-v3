@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, message, Button, Select } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch } from "react-redux";
 import { question } from "../../../api/index";
@@ -15,20 +15,36 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  type?: any;
+  category_id?: any;
+  level?: any;
+}
+
 const QuestionPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "20",
+    type: "[]",
+    category_id: "[]",
+    level: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "20");
+  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
+  const type = JSON.parse(searchParams.get("type") || "[]");
+  const level = JSON.parse(searchParams.get("level") || "[]");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(20);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [category_id, setCategoryId] = useState([]);
   const [categories, setCategories] = useState<any>([]);
-  const [type, setType] = useState([]);
   const [types, setTypes] = useState<any>([]);
-  const [level, setLevel] = useState([]);
   const [levels, setLevels] = useState<any>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [successTotal, setSuccessTotal] = useState(0);
@@ -96,17 +112,46 @@ const QuestionPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.category_id !== "undefined") {
+          prev.set("category_id", JSON.stringify(params.category_id));
+        }
+        if (typeof params.type !== "undefined") {
+          prev.set("type", JSON.stringify(params.type));
+        }
+        if (typeof params.level !== "undefined") {
+          prev.set("level", JSON.stringify(params.level));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(20);
+    resetLocalSearchParams({
+      page: 1,
+      size: 20,
+      category_id: [],
+      type: [],
+      level: [],
+    });
     setList([]);
-    setType([]);
-    setCategoryId([]);
-    setLevel([]);
     setRefresh(!refresh);
   };
 
   const resetData = () => {
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setSelectedRowKeys([]);
     setRefresh(!refresh);
@@ -164,8 +209,10 @@ const QuestionPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const rowSelection = {
@@ -267,7 +314,9 @@ const QuestionPage = () => {
             style={{ width: 150 }}
             value={category_id}
             onChange={(e) => {
-              setCategoryId(e);
+              resetLocalSearchParams({
+                category_id: e,
+              });
             }}
             allowClear
             placeholder="分类"
@@ -277,7 +326,9 @@ const QuestionPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={type}
             onChange={(e) => {
-              setType(e);
+              resetLocalSearchParams({
+                type: e,
+              });
             }}
             allowClear
             placeholder="类型"
@@ -287,7 +338,9 @@ const QuestionPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={level}
             onChange={(e) => {
-              setLevel(e);
+              resetLocalSearchParams({
+                level: e,
+              });
             }}
             allowClear
             placeholder="难度"
@@ -300,7 +353,9 @@ const QuestionPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

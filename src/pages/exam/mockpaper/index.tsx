@@ -10,7 +10,7 @@ import {
   Select,
 } from "antd";
 import type { MenuProps } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch } from "react-redux";
 import { mock } from "../../../api/index";
@@ -25,17 +25,31 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  keywords?: string;
+  category_id?: any;
+}
+
 const MockPaperPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "20",
+    keywords: "",
+    category_id: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "20");
+  const keywords = searchParams.get("keywords");
+  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(20);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [keywords, setKeywords] = useState<string>("");
-  const [category_id, setCategoryId] = useState([]);
   const [categories, setCategories] = useState<any>([]);
 
   useEffect(() => {
@@ -72,6 +86,27 @@ const MockPaperPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.keywords !== "undefined") {
+          prev.set("keywords", params.keywords);
+        }
+        if (typeof params.category_id !== "undefined") {
+          prev.set("category_id", JSON.stringify(params.category_id));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const getParams = () => {
     mock.create({}).then((res: any) => {
       let categories = res.data.categories;
@@ -87,11 +122,13 @@ const MockPaperPage = () => {
   };
 
   const resetList = () => {
-    setPage(1);
-    setSize(20);
+    resetLocalSearchParams({
+      page: 1,
+      size: 20,
+      keywords: "",
+      category_id: [],
+    });
     setList([]);
-    setKeywords("");
-    setCategoryId([]);
     setRefresh(!refresh);
   };
 
@@ -105,8 +142,10 @@ const MockPaperPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -206,7 +245,9 @@ const MockPaperPage = () => {
   ];
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -267,9 +308,11 @@ const MockPaperPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords}
+            value={keywords || ""}
             onChange={(e) => {
-              setKeywords(e.target.value);
+              resetLocalSearchParams({
+                keywords: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -279,7 +322,9 @@ const MockPaperPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={category_id}
             onChange={(e) => {
-              setCategoryId(e);
+              resetLocalSearchParams({
+                category_id: e,
+              });
             }}
             allowClear
             placeholder="分类"
@@ -292,7 +337,9 @@ const MockPaperPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

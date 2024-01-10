@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { live } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
@@ -15,13 +15,23 @@ interface DataType {
   published_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+}
+
 const LiveVideoChatsPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
@@ -62,8 +72,25 @@ const LiveVideoChatsPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -133,8 +160,10 @@ const LiveVideoChatsPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const rowSelection = {

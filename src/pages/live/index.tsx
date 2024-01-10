@@ -11,9 +11,9 @@ import {
   Drawer,
 } from "antd";
 import type { MenuProps } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { live } from "../../api/index";
 import { DownOutlined } from "@ant-design/icons";
 import { titleAction } from "../../store/user/loginUserSlice";
@@ -29,19 +29,37 @@ interface DataType {
   published_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  keywords?: string;
+  category_id?: any;
+  teacher_id?: any;
+  status?: number;
+}
+
 const LivePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    keywords: "",
+    category_id: "[]",
+    teacher_id: "[]",
+    status: "-1",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const keywords = searchParams.get("keywords");
+  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
+  const teacher_id = JSON.parse(searchParams.get("teacher_id") || "[]");
+  const status = Number(searchParams.get("status") || "-1");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [keywords, setKeywords] = useState<string>("");
-  const [category_id, setCategoryId] = useState([]);
-  const [teacher_id, setTeacherId] = useState([]);
-  const [status, setStatus] = useState(-1);
   const [teachers, setTeachers] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
   const [statusList, setStatusList] = useState<any>([]);
@@ -138,14 +156,43 @@ const LivePage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.keywords !== "undefined") {
+          prev.set("keywords", params.keywords);
+        }
+        if (typeof params.category_id !== "undefined") {
+          prev.set("category_id", JSON.stringify(params.category_id));
+        }
+        if (typeof params.category_id !== "undefined") {
+          prev.set("teacher_id", JSON.stringify(params.teacher_id));
+        }
+        if (typeof params.status !== "undefined") {
+          prev.set("status", params.status + "");
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      keywords: "",
+      teacher_id: [],
+      category_id: [],
+      status: -1,
+    });
     setList([]);
-    setKeywords("");
-    setStatus(-1);
-    setCategoryId([]);
-    setTeacherId([]);
     setRefresh(!refresh);
   };
 
@@ -159,8 +206,10 @@ const LivePage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -345,7 +394,9 @@ const LivePage = () => {
   ];
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -430,9 +481,11 @@ const LivePage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords}
+            value={keywords || ""}
             onChange={(e) => {
-              setKeywords(e.target.value);
+              resetLocalSearchParams({
+                keywords: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -445,7 +498,9 @@ const LivePage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
               setDrawer(false);
             }}
@@ -498,7 +553,9 @@ const LivePage = () => {
               </Button>
               <Button
                 onClick={() => {
-                  setPage(1);
+                  resetLocalSearchParams({
+                    page: 1,
+                  });
                   setRefresh(!refresh);
                   setDrawer(false);
                 }}
@@ -512,9 +569,11 @@ const LivePage = () => {
         >
           <div className="float-left">
             <Input
-              value={keywords}
+              value={keywords || ""}
               onChange={(e) => {
-                setKeywords(e.target.value);
+                resetLocalSearchParams({
+                  keywords: e.target.value,
+                });
               }}
               allowClear
               placeholder="课程名称关键字"
@@ -523,7 +582,9 @@ const LivePage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={category_id}
               onChange={(e) => {
-                setCategoryId(e);
+                resetLocalSearchParams({
+                  category_id: e,
+                });
               }}
               allowClear
               placeholder="分类"
@@ -533,7 +594,9 @@ const LivePage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={teacher_id}
               onChange={(e) => {
-                setTeacherId(e);
+                resetLocalSearchParams({
+                  teacher_id: e,
+                });
               }}
               allowClear
               placeholder="讲师"
@@ -543,7 +606,9 @@ const LivePage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={status}
               onChange={(e) => {
-                setStatus(e);
+                resetLocalSearchParams({
+                  status: e,
+                });
               }}
               allowClear
               placeholder="状态"

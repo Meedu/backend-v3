@@ -44,13 +44,13 @@ const CoursePage = () => {
     page: "1",
     size: "10",
     keywords: "",
-    category_id: [],
+    category_id: "[]",
     id: "",
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
   const keywords = searchParams.get("keywords");
-  const category_id = searchParams.get("category_id");
+  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
   const id = searchParams.get("id");
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -86,7 +86,7 @@ const CoursePage = () => {
           prev.set("keywords", params.keywords);
         }
         if (typeof params.category_id !== "undefined") {
-          prev.set("category_id", params.category_id);
+          prev.set("category_id", JSON.stringify(params.category_id));
         }
         if (typeof params.id !== "undefined") {
           prev.set("id", params.id);

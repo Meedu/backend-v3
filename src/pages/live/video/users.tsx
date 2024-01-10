@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Table, Button, Input, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { live } from "../../../api/index";
 import { useDispatch } from "react-redux";
 import { dateFormat } from "../../../utils/index";
@@ -15,17 +15,31 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  mobile?: string;
+  nick_name?: string;
+}
+
 const LiveVideoUsersPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    mobile: "",
+    nick_name: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const mobile = searchParams.get("mobile");
+  const nick_name = searchParams.get("nick_name");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [mobile, setMobile] = useState("");
-  const [nick_name, setNickName] = useState("");
   const [id, setId] = useState(Number(result.get("id")));
   const [cid, setCid] = useState(Number(result.get("course_id")));
 
@@ -68,19 +82,43 @@ const LiveVideoUsersPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.mobile !== "undefined") {
+          prev.set("mobile", params.mobile);
+        }
+        if (typeof params.nick_name !== "undefined") {
+          prev.set("nick_name", params.nick_name);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      mobile: "",
+      nick_name: "",
+    });
     setList([]);
-    setMobile("");
-    setNickName("");
     setRefresh(!refresh);
   };
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
-
     setRefresh(!refresh);
   };
 
@@ -94,8 +132,10 @@ const LiveVideoUsersPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -252,18 +292,22 @@ const LiveVideoUsersPage = () => {
         <div className="d-flex"></div>
         <div className="d-flex">
           <Input
-            value={mobile}
+            value={mobile || ""}
             onChange={(e) => {
-              setMobile(e.target.value);
+              resetLocalSearchParams({
+                mobile: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
             placeholder="学员手机号"
           />
           <Input
-            value={nick_name}
+            value={nick_name || ""}
             onChange={(e) => {
-              setNickName(e.target.value);
+              resetLocalSearchParams({
+                nick_name: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
@@ -277,7 +321,9 @@ const LiveVideoUsersPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

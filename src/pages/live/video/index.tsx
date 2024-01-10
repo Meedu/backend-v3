@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import type { MenuProps } from "antd";
 import { Table, Modal, message, Space, Dropdown, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { live } from "../../../api/index";
 import { DownOutlined } from "@ant-design/icons";
 import { titleAction } from "../../../store/user/loginUserSlice";
@@ -18,14 +18,24 @@ interface DataType {
   published_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+}
+
 const LiveVideoPage = () => {
   const result = new URLSearchParams(useLocation().search);
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "1000",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "1000");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(1000);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(Number(result.get("id")));
@@ -68,8 +78,25 @@ const LiveVideoPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -84,8 +111,10 @@ const LiveVideoPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Table, DatePicker, Button, Input, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { course } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
@@ -9,6 +9,7 @@ import { BackBartment, DurationText } from "../../../components";
 import { dateFormat } from "../../../utils/index";
 const { RangePicker } = DatePicker;
 import moment from "moment";
+import dayjs from "dayjs";
 import * as XLSX from "xlsx";
 
 interface DataType {
@@ -17,22 +18,39 @@ interface DataType {
   watched_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  user_id?: string;
+  watched_at?: any;
+}
+
 const CourseVideoRecordsPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    watched_at: "[]",
+    user_id: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const user_id = searchParams.get("user_id");
+  const watched_at = JSON.parse(searchParams.get("watched_at") || "[]");
+  const [watchedAts, setWatchedAts] = useState<any>(
+    watched_at.length > 0
+      ? [dayjs(watched_at[0], "YYYY-MM-DD"), dayjs(watched_at[1], "YYYY-MM-DD")]
+      : []
+  );
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [users, setUsers] = useState<any>({});
   const [courses, setCourses] = useState<any>({});
   const [videos, setVideos] = useState<any>({});
-  const [user_id, setUserId] = useState<string>("");
-  const [watched_at, setWatchedAt] = useState<any>([]);
-  const [watchedAts, setWatchedAts] = useState<any>([]);
   const [cid, setCid] = useState(Number(result.get("course_id")));
   const [id, setId] = useState(Number(result.get("id")));
 
@@ -54,6 +72,10 @@ const CourseVideoRecordsPage = () => {
     if (loading) {
       return;
     }
+    let time = watched_at;
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
     setLoading(true);
     course
       .videoWatchRecords(id, {
@@ -61,8 +83,8 @@ const CourseVideoRecordsPage = () => {
         size: size,
         course_id: cid,
         user_id: user_id,
-        watched_start_at: watched_at[0],
-        watched_end_at: watched_at[1],
+        watched_start_at: time[0],
+        watched_end_at: time[1],
       })
       .then((res: any) => {
         setList(res.data.data.data);
@@ -76,18 +98,41 @@ const CourseVideoRecordsPage = () => {
         setLoading(false);
       });
   };
+
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.watched_at !== "undefined") {
+          prev.set("watched_at", JSON.stringify(params.watched_at));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      watched_at: [],
+      user_id: "",
+    });
     setList([]);
-    setUserId("");
     setWatchedAts([]);
-    setWatchedAt([]);
     setRefresh(!refresh);
   };
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -102,8 +147,10 @@ const CourseVideoRecordsPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -255,9 +302,11 @@ const CourseVideoRecordsPage = () => {
       <div className="float-left mt-30">
         <Input
           style={{ width: 150 }}
-          value={user_id}
+          value={user_id || ""}
           onChange={(e) => {
-            setUserId(e.target.value);
+            resetLocalSearchParams({
+              user_id: e.target.value,
+            });
           }}
           allowClear
           placeholder="学员ID"
@@ -267,8 +316,10 @@ const CourseVideoRecordsPage = () => {
           value={watchedAts}
           style={{ marginLeft: 10 }}
           onChange={(date, dateString) => {
-            setWatchedAt(dateString);
             setWatchedAts(date);
+            resetLocalSearchParams({
+              watched_at: dateString,
+            });
           }}
           placeholder={["看完时间-开始", "看完时间-结束"]}
         />
@@ -279,7 +330,9 @@ const CourseVideoRecordsPage = () => {
           className="ml-10"
           type="primary"
           onClick={() => {
-            setPage(1);
+            resetLocalSearchParams({
+              page: 1,
+            });
             setRefresh(!refresh);
           }}
         >

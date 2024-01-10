@@ -10,16 +10,14 @@ import {
   DatePicker,
   Space,
 } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { promocode } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
-import { PerButton, OptionBar } from "../../components";
+import { PerButton } from "../../components";
 import { dateFormat } from "../../utils/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import filterIcon from "../../assets/img/icon-filter.png";
-import filterHIcon from "../../assets/img/icon-filter-h.png";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 
@@ -30,16 +28,28 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  keywords?: string;
+}
+
 const PromoCodePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    keywords: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const keywords = searchParams.get("keywords");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [key, setKey] = useState<string>("");
   const [user_id, setUserId] = useState("");
   const [created_at, setCreatedAt] = useState<any>([]);
   const [expired_at, setExpiredAt] = useState<any>([]);
@@ -63,13 +73,13 @@ const PromoCodePage = () => {
       (created_at && created_at.length > 0) ||
       (expired_at && expired_at.length > 0) ||
       user_id ||
-      key
+      keywords
     ) {
       setShowStatus(true);
     } else {
       setShowStatus(false);
     }
-  }, [created_at, expired_at, user_id, key]);
+  }, [created_at, expired_at, user_id, keywords]);
 
   const getData = () => {
     if (loading) {
@@ -81,7 +91,7 @@ const PromoCodePage = () => {
         page: page,
         size: size,
         user_id: user_id,
-        key: key,
+        key: keywords,
         created_at: created_at,
         expired_at: expired_at,
       })
@@ -93,6 +103,24 @@ const PromoCodePage = () => {
       .catch((e) => {
         setLoading(false);
       });
+  };
+
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.keywords !== "undefined") {
+          prev.set("keywords", params.keywords);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
   };
 
   const destorymulti = () => {
@@ -132,11 +160,13 @@ const PromoCodePage = () => {
   };
 
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      keywords: "",
+    });
     setList([]);
     setSelectedRowKeys([]);
-    setKey("");
     setUserId("");
     setCreatedAts([]);
     setExpiredAt([]);
@@ -155,8 +185,10 @@ const PromoCodePage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -255,9 +287,11 @@ const PromoCodePage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={key}
+            value={keywords || ""}
             onChange={(e) => {
-              setKey(e.target.value);
+              resetLocalSearchParams({
+                keywords: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -270,7 +304,9 @@ const PromoCodePage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
               setDrawer(false);
             }}
@@ -327,7 +363,9 @@ const PromoCodePage = () => {
               </Button>
               <Button
                 onClick={() => {
-                  setPage(1);
+                  resetLocalSearchParams({
+                    page: 1,
+                  });
                   setRefresh(!refresh);
                   setDrawer(false);
                 }}
@@ -341,9 +379,11 @@ const PromoCodePage = () => {
         >
           <div className="float-left">
             <Input
-              value={key}
+              value={keywords || ""}
               onChange={(e) => {
-                setKey(e.target.value);
+                resetLocalSearchParams({
+                  keywords: e.target.value,
+                });
               }}
               allowClear
               placeholder="优惠码"

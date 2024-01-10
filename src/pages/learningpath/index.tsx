@@ -10,9 +10,9 @@ import {
   Select,
 } from "antd";
 import type { MenuProps } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { path } from "../../api/index";
 import { DownOutlined } from "@ant-design/icons";
 import { titleAction } from "../../store/user/loginUserSlice";
@@ -26,17 +26,31 @@ interface DataType {
   published_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  keywords?: string;
+  category_id?: any;
+}
+
 const LearnPathPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    keywords: "",
+    category_id: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const keywords = searchParams.get("keywords");
+  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [keywords, setKeywords] = useState<string>("");
-  const [category_id, setCategoryId] = useState([]);
   const [categories, setCategories] = useState<any>([]);
 
   useEffect(() => {
@@ -71,6 +85,27 @@ const LearnPathPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.keywords !== "undefined") {
+          prev.set("keywords", params.keywords);
+        }
+        if (typeof params.category_id !== "undefined") {
+          prev.set("category_id", JSON.stringify(params.category_id));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const getParams = () => {
     path.create().then((res: any) => {
       let categories = res.data.categories;
@@ -101,11 +136,13 @@ const LearnPathPage = () => {
   };
 
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      keywords: "",
+      category_id: [],
+    });
     setList([]);
-    setKeywords("");
-    setCategoryId([]);
     setRefresh(!refresh);
   };
 
@@ -119,8 +156,10 @@ const LearnPathPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -145,7 +184,7 @@ const LearnPathPage = () => {
     {
       title: "分类",
       width: "8%",
-      render: (_, record: any) => <span>{record?.category?.name || '-'}</span>,
+      render: (_, record: any) => <span>{record?.category?.name || "-"}</span>,
     },
     {
       title: "价格",
@@ -272,7 +311,9 @@ const LearnPathPage = () => {
   ];
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -335,9 +376,11 @@ const LearnPathPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords}
+            value={keywords || ""}
             onChange={(e) => {
-              setKeywords(e.target.value);
+              resetLocalSearchParams({
+                keywords: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -347,7 +390,9 @@ const LearnPathPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={category_id}
             onChange={(e) => {
-              setCategoryId(e);
+              resetLocalSearchParams({
+                category_id: e,
+              });
             }}
             allowClear
             placeholder="分类"
@@ -360,7 +405,9 @@ const LearnPathPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

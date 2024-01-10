@@ -28,6 +28,7 @@ const StatsContentPage = () => {
   const [searchParams, setSearchParams] = useSearchParams({
     page: "1",
     size: "10",
+    goodsType: "COURSE",
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");

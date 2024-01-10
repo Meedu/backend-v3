@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Input, Button, Space } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Table, Modal, message, Input, Button } from "antd";
+import { useLocation, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { codeExchanger } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../components";
@@ -17,17 +17,31 @@ interface DataType {
   used_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  code?: string;
+  user_id?: string;
+}
+
 const CodeExchangerCodesPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "50",
+    code: "",
+    user_id: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "50");
+  const code = searchParams.get("code");
+  const user_id = searchParams.get("user_id");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(50);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [code, setCode] = useState<string>("");
-  const [user_id, setUserId] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [id, setId] = useState(Number(result.get("id")));
 
@@ -67,13 +81,36 @@ const CodeExchangerCodesPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.code !== "undefined") {
+          prev.set("code", params.code);
+        }
+        if (typeof params.user_id !== "undefined") {
+          prev.set("user_id", params.user_id);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(50);
+    resetLocalSearchParams({
+      page: 1,
+      size: 50,
+      code: "",
+      user_id: "",
+    });
     setList([]);
     setSelectedRowKeys([]);
-    setCode("");
-    setUserId("");
     setRefresh(!refresh);
   };
 
@@ -108,7 +145,9 @@ const CodeExchangerCodesPage = () => {
   };
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setSelectedRowKeys([]);
     setRefresh(!refresh);
@@ -242,8 +281,10 @@ const CodeExchangerCodesPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -343,18 +384,22 @@ const CodeExchangerCodesPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={code}
+            value={code || ""}
             onChange={(e) => {
-              setCode(e.target.value);
+              resetLocalSearchParams({
+                code: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
             placeholder="兑换码"
           />
           <Input
-            value={user_id}
+            value={user_id || ""}
             onChange={(e) => {
-              setUserId(e.target.value);
+              resetLocalSearchParams({
+                user_id: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
@@ -367,7 +412,9 @@ const CodeExchangerCodesPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

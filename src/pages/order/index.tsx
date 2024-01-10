@@ -11,10 +11,10 @@ import {
   Tabs,
   Dropdown,
 } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import type { MenuProps } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { order } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton } from "../../components";
@@ -28,6 +28,7 @@ import cardIcon from "../../assets/img/card.png";
 import { RefundDialog } from "./components/refund-dailog";
 import moment from "moment";
 import * as XLSX from "xlsx";
+import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
 
@@ -37,22 +38,48 @@ interface DataType {
   updated_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  goods_name?: string;
+  order_id?: string;
+  is_refund?: number;
+  status?: string;
+  payment?: any;
+  created_at?: any;
+}
+
 const OrderPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    goods_name: "",
+    order_id: "",
+    is_refund: "-1",
+    status: "",
+    payment: "[]",
+    created_at: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const goods_name = searchParams.get("goods_name");
+  const order_id = searchParams.get("order_id");
+  const is_refund = Number(searchParams.get("is_refund") || "-1");
+  const status = searchParams.get("status");
+  const payment = JSON.parse(searchParams.get("payment") || "[]");
+  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [createdAts, setCreatedAts] = useState<any>(
+    created_at.length > 0
+      ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
+      : []
+  );
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [goods_name, setGoodsName] = useState<string>("");
-  const [order_id, setOrderId] = useState("");
-  const [is_refund, setIsRefund] = useState(-1);
-  const [status, setStatus] = useState("");
-  const [payment, setPayment] = useState([]);
-  const [created_at, setCreatedAt] = useState<any>([]);
-  const [createdAts, setCreatedAts] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
   const [countMap, setCountMap] = useState<any>({ 1: 0, 5: 0, 7: 0, 9: 0 });
@@ -163,6 +190,10 @@ const OrderPage = () => {
     if (loading) {
       return;
     }
+    let time = created_at;
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
     setLoading(true);
     order
       .list({
@@ -174,7 +205,7 @@ const OrderPage = () => {
         goods_name: goods_name,
         is_refund: is_refund,
         status: status,
-        created_at: created_at,
+        created_at: time,
         payment: payment,
       })
       .then((res: any) => {
@@ -204,17 +235,51 @@ const OrderPage = () => {
     }
   }, [created_at, is_refund, order_id, goods_name, status, payment]);
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.order_id !== "undefined") {
+          prev.set("order_id", params.order_id);
+        }
+        if (typeof params.goods_name !== "undefined") {
+          prev.set("goods_name", params.goods_name);
+        }
+        if (typeof params.is_refund !== "undefined") {
+          prev.set("is_refund", params.is_refund + "");
+        }
+        if (typeof params.status !== "undefined") {
+          prev.set("status", params.status);
+        }
+        if (typeof params.payment !== "undefined") {
+          prev.set("payment", JSON.stringify(params.payment));
+        }
+        if (typeof params.created_at !== "undefined") {
+          prev.set("created_at", JSON.stringify(params.created_at));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      order_id: "",
+      goods_name: "",
+      is_refund: -1,
+      payment: [],
+      created_at: [],
+    });
     setList([]);
-    setGoodsName("");
-    setOrderId("");
-    setIsRefund(-1);
     setCreatedAts([]);
-    setStatus("");
-    setPayment([]);
-    setCreatedAt([]);
     setRefresh(!refresh);
   };
 
@@ -228,8 +293,10 @@ const OrderPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -415,6 +482,10 @@ const OrderPage = () => {
     if (loading) {
       return;
     }
+    let time = created_at;
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
     setLoading(true);
     let params = {
       page: 1,
@@ -423,7 +494,7 @@ const OrderPage = () => {
       goods_name: goods_name,
       is_refund: is_refund,
       status: status,
-      created_at: created_at,
+      created_at: time,
       payment: payment,
     };
     order.list(params).then((res: any) => {
@@ -489,8 +560,10 @@ const OrderPage = () => {
   };
 
   const onChange = (key: string) => {
-    setPage(1);
-    setStatus(key);
+    resetLocalSearchParams({
+      page: 1,
+      status: key,
+    });
     setRefresh(!refresh);
   };
 
@@ -530,18 +603,22 @@ const OrderPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={order_id}
+            value={order_id || ""}
             onChange={(e) => {
-              setOrderId(e.target.value);
+              resetLocalSearchParams({
+                order_id: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
             placeholder="订单编号"
           />
           <Input
-            value={goods_name}
+            value={goods_name || ""}
             onChange={(e) => {
-              setGoodsName(e.target.value);
+              resetLocalSearchParams({
+                goods_name: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
@@ -551,7 +628,9 @@ const OrderPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={payment}
             onChange={(e) => {
-              setPayment(e);
+              resetLocalSearchParams({
+                payment: e,
+              });
             }}
             allowClear
             placeholder="支付渠道"
@@ -564,7 +643,9 @@ const OrderPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
               setDrawer(false);
             }}
@@ -591,7 +672,11 @@ const OrderPage = () => {
         </div>
       </div>
       <div className="float-left">
-        <Tabs defaultActiveKey={status} items={types} onChange={onChange} />
+        <Tabs
+          defaultActiveKey={status || ""}
+          items={types}
+          onChange={onChange}
+        />
       </div>
       <div className="float-left">
         <Table
@@ -620,7 +705,9 @@ const OrderPage = () => {
               </Button>
               <Button
                 onClick={() => {
-                  setPage(1);
+                  resetLocalSearchParams({
+                    page: 1,
+                  });
                   setRefresh(!refresh);
                   setDrawer(false);
                 }}
@@ -634,17 +721,21 @@ const OrderPage = () => {
         >
           <div className="float-left">
             <Input
-              value={order_id}
+              value={order_id || ""}
               onChange={(e) => {
-                setOrderId(e.target.value);
+                resetLocalSearchParams({
+                  order_id: e.target.value,
+                });
               }}
               allowClear
               placeholder="订单编号"
             />
             <Input
-              value={goods_name}
+              value={goods_name || ""}
               onChange={(e) => {
-                setGoodsName(e.target.value);
+                resetLocalSearchParams({
+                  goods_name: e.target.value,
+                });
               }}
               allowClear
               style={{ marginTop: 20 }}
@@ -654,7 +745,9 @@ const OrderPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={payment}
               onChange={(e) => {
-                setPayment(e);
+                resetLocalSearchParams({
+                  payment: e,
+                });
               }}
               allowClear
               placeholder="支付渠道"
@@ -664,7 +757,9 @@ const OrderPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={is_refund}
               onChange={(e) => {
-                setIsRefund(e);
+                resetLocalSearchParams({
+                  is_refund: e,
+                });
               }}
               allowClear
               placeholder="退款方式"
@@ -676,9 +771,10 @@ const OrderPage = () => {
               value={createdAts}
               style={{ marginTop: 20 }}
               onChange={(date, dateString) => {
-                dateString[1] += " 23:59:59";
-                setCreatedAt(dateString);
                 setCreatedAts(date);
+                resetLocalSearchParams({
+                  created_at: dateString,
+                });
               }}
               placeholder={["订单添加-开始时间", "订单添加-结束时间"]}
             />

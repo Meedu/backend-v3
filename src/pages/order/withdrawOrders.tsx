@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Table, message, Input, Button, Tabs } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import { order } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton } from "../../components";
@@ -18,17 +19,31 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  user_id?: string;
+  status?: string;
+}
+
 const WithdrawOrdersPage = () => {
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    user_id: "",
+    status: "0",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const user_id = searchParams.get("user_id");
+  const status = searchParams.get("status") || "0";
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [user_id, setUserId] = useState("");
-  const [status, setStatus] = useState("0");
   const [showHandleWin, setShowHandleWin] = useState<boolean>(false);
   const [tabs] = useState<any>([
     {
@@ -44,11 +59,6 @@ const WithdrawOrdersPage = () => {
       key: "3",
     },
   ]);
-  const statusOnChange = (status: string) => {
-    setPage(1);
-    setStatus(status);
-    setRefresh(!refresh);
-  };
 
   // 设置网页标题
   useEffect(() => {
@@ -72,7 +82,7 @@ const WithdrawOrdersPage = () => {
         page: page,
         size: size,
         user_id: user_id,
-        status: status,
+        status: Number(status),
       })
       .then((res: any) => {
         setList(res.data.data);
@@ -84,13 +94,44 @@ const WithdrawOrdersPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.user_id !== "undefined") {
+          prev.set("user_id", params.user_id);
+        }
+        if (typeof params.status !== "undefined") {
+          prev.set("status", params.status);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
+  const statusOnChange = (status: string) => {
+    resetLocalSearchParams({
+      page: 1,
+      status: status,
+    });
+    setRefresh(!refresh);
+  };
+
   // 重置
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      user_id: "",
+    });
     setList([]);
     setSelectedRowKeys([]);
-    setUserId("");
     setRefresh(!refresh);
   };
 
@@ -104,8 +145,10 @@ const WithdrawOrdersPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -216,7 +259,7 @@ const WithdrawOrdersPage = () => {
       page: 1,
       size: total,
       user_id: user_id,
-      status: status,
+      status: Number(status),
     };
     order.withdrawOrders(params).then((res: any) => {
       if (res.data.total === 0) {
@@ -296,9 +339,11 @@ const WithdrawOrdersPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={user_id}
+            value={user_id || ""}
             onChange={(e) => {
-              setUserId(e.target.value);
+              resetLocalSearchParams({
+                user_id: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -311,7 +356,9 @@ const WithdrawOrdersPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

@@ -27,6 +27,7 @@ interface LocalSearchParamsInterface {
   page?: number;
   size?: number;
   user_id?: string;
+  resourceActive?: string;
 }
 
 const LiveUsersPage = () => {
@@ -36,10 +37,12 @@ const LiveUsersPage = () => {
     page: "1",
     size: "10",
     user_id: "",
+    resourceActive: "watch-user",
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
   const user_id = searchParams.get("user_id");
+  const resourceActive = searchParams.get("resourceActive") || "watch-user";
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -48,7 +51,6 @@ const LiveUsersPage = () => {
   const [showUserAddWin, setShowUserAddWin] = useState<boolean>(false);
   const [importDialog, setImportDialog] = useState<boolean>(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [resourceActive, setResourceActive] = useState<string>("watch-user");
   const [id, setId] = useState(Number(result.get("id")));
   const avaliableResources = [
     {
@@ -100,6 +102,9 @@ const LiveUsersPage = () => {
       (prev) => {
         if (typeof params.user_id !== "undefined") {
           prev.set("user_id", params.user_id);
+        }
+        if (typeof params.resourceActive !== "undefined") {
+          prev.set("resourceActive", params.resourceActive);
         }
         if (typeof params.page !== "undefined") {
           prev.set("page", params.page + "");
@@ -297,7 +302,11 @@ const LiveUsersPage = () => {
   };
 
   const onChange = (key: string) => {
-    setResourceActive(key);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      resourceActive: key,
+    });
   };
 
   return (

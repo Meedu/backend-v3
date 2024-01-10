@@ -1,30 +1,50 @@
 import { useState, useEffect } from "react";
 import { Table, Button, DatePicker, Select, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { live } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
 import { DurationText } from "../../../components";
 const { RangePicker } = DatePicker;
 import moment from "moment";
 import * as XLSX from "xlsx";
+import dayjs from "dayjs";
 
 interface DataType {
   id: React.Key;
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  is_watched?: any;
+  watched_at?: any;
+}
+
 const LiveWatchUsersPage = () => {
   const result = new URLSearchParams(useLocation().search);
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    user_id: "",
+    is_watched: "[]",
+    watched_at: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const is_watched = JSON.parse(searchParams.get("is_watched") || "[]");
+  const watched_at = JSON.parse(searchParams.get("watched_at") || "[]");
+  const [watchedAts, setWatchedAts] = useState<any>(
+    watched_at.length > 0
+      ? [dayjs(watched_at[0], "YYYY-MM-DD"), dayjs(watched_at[1], "YYYY-MM-DD")]
+      : []
+  );
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [is_watched, setIsWatched] = useState<any>([]);
-  const [watched_at, setWatchedAt] = useState<any>([]);
-  const [watchedAts, setWatchedAts] = useState<any>([]);
   const [id, setId] = useState(Number(result.get("id")));
   const statusMapRows = [
     {
@@ -49,13 +69,17 @@ const LiveWatchUsersPage = () => {
     if (loading) {
       return;
     }
+    let time = watched_at;
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
     setLoading(true);
     live
       .watchUsers(id, {
         page: page,
         size: size,
         is_watched: is_watched.length === 0 ? -1 : is_watched,
-        watched_at: watched_at,
+        watched_at: time,
       })
       .then((res: any) => {
         setList(res.data.data);
@@ -67,18 +91,43 @@ const LiveWatchUsersPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.is_watched !== "undefined") {
+          prev.set("is_watched", JSON.stringify(params.is_watched));
+        }
+        if (typeof params.watched_at !== "undefined") {
+          prev.set("watched_at", JSON.stringify(params.watched_at));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      is_watched: [],
+      watched_at: [],
+    });
     setList([]);
-    setIsWatched([]);
     setWatchedAts([]);
-    setWatchedAt([]);
     setRefresh(!refresh);
   };
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -93,8 +142,10 @@ const LiveWatchUsersPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -180,12 +231,16 @@ const LiveWatchUsersPage = () => {
     if (loading) {
       return;
     }
+    let time = watched_at;
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
     setLoading(true);
     let params = {
       page: 1,
       size: total,
       is_watched: is_watched.length === 0 ? -1 : is_watched,
-      watched_at: watched_at,
+      watched_at: time,
     };
 
     live.watchUsers(id, params).then((res: any) => {
@@ -248,7 +303,9 @@ const LiveWatchUsersPage = () => {
             style={{ width: 150 }}
             value={is_watched}
             onChange={(e) => {
-              setIsWatched(e);
+              resetLocalSearchParams({
+                is_watched: e,
+              });
             }}
             allowClear
             placeholder="看完"
@@ -259,9 +316,10 @@ const LiveWatchUsersPage = () => {
             value={watchedAts}
             style={{ marginLeft: 10 }}
             onChange={(date, dateString) => {
-              dateString[1] += " 23:59:59";
-              setWatchedAt(dateString);
               setWatchedAts(date);
+              resetLocalSearchParams({
+                watched_at: dateString,
+              });
             }}
             placeholder={["看完时间-开始", "看完时间-结束"]}
           />
@@ -272,7 +330,9 @@ const LiveWatchUsersPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

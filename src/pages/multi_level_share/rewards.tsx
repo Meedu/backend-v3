@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Table, Input, Button } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { multiShare } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { BackBartment } from "../../components";
@@ -12,15 +12,27 @@ interface DataType {
   order_id: number;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  order_id?: string;
+}
+
 const MultiShareRewardsPage = () => {
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "50",
+    order_id: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "50");
+  const order_id = searchParams.get("order_id");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(50);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [order_id, setOrderId] = useState("");
 
   useEffect(() => {
     document.title = "奖励记录";
@@ -52,11 +64,31 @@ const MultiShareRewardsPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.order_id !== "undefined") {
+          prev.set("order_id", params.order_id);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(50);
+    resetLocalSearchParams({
+      page: 1,
+      size: 50,
+      order_id: "",
+    });
     setList([]);
-    setOrderId("");
     setRefresh(!refresh);
   };
 
@@ -70,8 +102,10 @@ const MultiShareRewardsPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -164,9 +198,11 @@ const MultiShareRewardsPage = () => {
       <div className="float-left j-b-flex mb-30 mt-30">
         <div className="d-flex">
           <Input
-            value={order_id}
+            value={order_id || ""}
             onChange={(e) => {
-              setOrderId(e.target.value);
+              resetLocalSearchParams({
+                order_id: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -179,7 +215,9 @@ const MultiShareRewardsPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

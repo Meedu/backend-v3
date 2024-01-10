@@ -12,9 +12,9 @@ import {
   Modal,
 } from "antd";
 import type { MenuProps } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { member } from "../../api/index";
 import { PerButton, TagsTooltip, VhtmlTooltip } from "../../components";
 import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
@@ -29,6 +29,7 @@ import filterHIcon from "../../assets/img/icon-filter-h.png";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 import moment from "moment";
+import dayjs from "dayjs";
 
 interface DataType {
   id: React.Key;
@@ -36,22 +37,43 @@ interface DataType {
   credit1: number;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  keywords?: string;
+  role_id?: any;
+  tag_id?: any;
+  created_at?: any;
+}
+
 const MemberPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    role_id: "[]",
+    tag_id: "[]",
+    created_at: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const keywords = searchParams.get("keywords");
+  const role_id = JSON.parse(searchParams.get("role_id") || "[]");
+  const tag_id = JSON.parse(searchParams.get("tag_id") || "[]");
+  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [createdAts, setCreatedAts] = useState<any>(
+    created_at.length > 0
+      ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
+      : []
+  );
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [keywords, setKeywords] = useState<string>("");
-  const [role_id, setRoleId] = useState<any>([]);
   const [roles, setRoles] = useState<any>([]);
-  const [tag_id, setTagId] = useState<any>([]);
   const [tags, setTags] = useState<any>([]);
-  const [created_at, setCreatedAt] = useState<any>([]);
-  const [createdAts, setCreatedAts] = useState<any>([]);
   const [drawer, setDrawer] = useState(false);
   const [showStatus, setShowStatus] = useState<boolean>(false);
   const [userRemark, setUserRemark] = useState<any>({});
@@ -75,6 +97,10 @@ const MemberPage = () => {
     if (loading) {
       return;
     }
+    let time = created_at;
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
     setLoading(true);
     member
       .list({
@@ -85,7 +111,7 @@ const MemberPage = () => {
         keywords: keywords,
         role_id: role_id,
         tag_id: tag_id,
-        created_at: created_at,
+        created_at: time,
       })
       .then((res: any) => {
         setList(res.data.data.data);
@@ -132,16 +158,45 @@ const MemberPage = () => {
     }
   }, [created_at, role_id, tag_id, keywords]);
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.keywords !== "undefined") {
+          prev.set("keywords", params.keywords);
+        }
+        if (typeof params.role_id !== "undefined") {
+          prev.set("role_id", JSON.stringify(params.role_id));
+        }
+        if (typeof params.tag_id !== "undefined") {
+          prev.set("tag_id", JSON.stringify(params.tag_id));
+        }
+        if (typeof params.created_at !== "undefined") {
+          prev.set("created_at", JSON.stringify(params.created_at));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      keywords: "",
+      role_id: [],
+      tag_id: [],
+      created_at: [],
+    });
     setList([]);
     setSelectedRowKeys([]);
-    setKeywords("");
     setCreatedAts([]);
-    setCreatedAt([]);
-    setTagId([]);
-    setRoleId([]);
     setRefresh(!refresh);
   };
 
@@ -155,8 +210,10 @@ const MemberPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const rowSelection = {
@@ -434,7 +491,9 @@ const MemberPage = () => {
   };
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setSelectedRowKeys([]);
     setRefresh(!refresh);
@@ -536,9 +595,11 @@ const MemberPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords}
+            value={keywords || ""}
             onChange={(e) => {
-              setKeywords(e.target.value);
+              resetLocalSearchParams({
+                keywords: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -552,7 +613,9 @@ const MemberPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
               setDrawer(false);
             }}
@@ -612,7 +675,9 @@ const MemberPage = () => {
               </Button>
               <Button
                 onClick={() => {
-                  setPage(1);
+                  resetLocalSearchParams({
+                    page: 1,
+                  });
                   setRefresh(!refresh);
                   setDrawer(false);
                 }}
@@ -626,9 +691,11 @@ const MemberPage = () => {
         >
           <div className="float-left">
             <Input
-              value={keywords}
+              value={keywords || ""}
               onChange={(e) => {
-                setKeywords(e.target.value);
+                resetLocalSearchParams({
+                  keywords: e.target.value,
+                });
               }}
               allowClear
               placeholder="昵称或手机号"
@@ -637,7 +704,9 @@ const MemberPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={role_id}
               onChange={(e) => {
-                setRoleId(e);
+                resetLocalSearchParams({
+                  role_id: e,
+                });
               }}
               allowClear
               placeholder="VIP会员"
@@ -647,7 +716,9 @@ const MemberPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={tag_id}
               onChange={(e) => {
-                setTagId(e);
+                resetLocalSearchParams({
+                  tag_id: e,
+                });
               }}
               allowClear
               placeholder="学员标签"
@@ -659,9 +730,10 @@ const MemberPage = () => {
               value={createdAts}
               style={{ marginTop: 20 }}
               onChange={(date, dateString) => {
-                dateString[1] += " 23:59:59";
-                setCreatedAt(dateString);
                 setCreatedAts(date);
+                resetLocalSearchParams({
+                  created_at: dateString,
+                });
               }}
               placeholder={["注册-开始日期", "注册-结束日期"]}
             />

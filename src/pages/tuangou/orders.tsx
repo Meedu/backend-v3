@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { Table, Input, Button, Tag, DatePicker, Select } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { tuangou } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton, ThumbBar, BackBartment } from "../../components";
 import { dateFormat } from "../../utils/index";
 const { RangePicker } = DatePicker;
 import moment from "moment";
+import dayjs from "dayjs";
 
 interface DataType {
   id: React.Key;
@@ -16,20 +17,41 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  keywords?: string;
+  user_id?: string;
+  status?: number;
+  created_at?: any;
+}
+
 const TuangouOrdersPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    user_id: "",
+    status: "-1",
+    created_at: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const keywords = searchParams.get("keywords");
+  const user_id = searchParams.get("user_id");
+  const status = Number(searchParams.get("status") || "-1");
+  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [createdAts, setCreatedAts] = useState<any>(
+    created_at.length > 0
+      ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
+      : []
+  );
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [keywords, setKeywords] = useState<string>("");
-  const [user_id, setUserId] = useState("");
-  const [status, setStatus] = useState(-1);
-  const [created_at, setCreatedAt] = useState<any>([]);
-  const [createdAts, setCreatedAts] = useState<any>([]);
   const statusRows = [
     {
       value: -1,
@@ -58,6 +80,10 @@ const TuangouOrdersPage = () => {
     if (loading) {
       return;
     }
+    let time = created_at;
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
     setLoading(true);
     tuangou
       .ordersList({
@@ -66,7 +92,7 @@ const TuangouOrdersPage = () => {
         keywords: keywords,
         user_id: user_id,
         status: status,
-        created_at: created_at,
+        created_at: time,
       })
       .then((res: any) => {
         setList(res.data.data.data);
@@ -78,15 +104,44 @@ const TuangouOrdersPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.keywords !== "undefined") {
+          prev.set("keywords", params.keywords);
+        }
+        if (typeof params.user_id !== "undefined") {
+          prev.set("user_id", params.user_id);
+        }
+        if (typeof params.status !== "undefined") {
+          prev.set("status", params.status + "");
+        }
+        if (typeof params.created_at !== "undefined") {
+          prev.set("created_at", JSON.stringify(params.created_at));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      keywords: "",
+      user_id: "",
+      status: -1,
+      created_at: [],
+    });
     setList([]);
-    setStatus(-1);
-    setKeywords("");
-    setUserId("");
     setCreatedAts([]);
-    setCreatedAt([]);
     setRefresh(!refresh);
   };
 
@@ -100,8 +155,10 @@ const TuangouOrdersPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -183,18 +240,22 @@ const TuangouOrdersPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords}
+            value={keywords || ""}
             onChange={(e) => {
-              setKeywords(e.target.value);
+              resetLocalSearchParams({
+                keywords: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
             placeholder="商品名称关键字"
           />
           <Input
-            value={user_id}
+            value={user_id || ""}
             onChange={(e) => {
-              setUserId(e.target.value);
+              resetLocalSearchParams({
+                user_id: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
@@ -204,7 +265,9 @@ const TuangouOrdersPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={status}
             onChange={(e) => {
-              setStatus(e);
+              resetLocalSearchParams({
+                status: e,
+              });
             }}
             allowClear
             placeholder="状态"
@@ -216,9 +279,10 @@ const TuangouOrdersPage = () => {
             value={createdAts}
             style={{ marginLeft: 10 }}
             onChange={(date, dateString) => {
-              dateString[1] += " 23:59:59";
-              setCreatedAt(dateString);
               setCreatedAts(date);
+              resetLocalSearchParams({
+                created_at: dateString,
+              });
             }}
             placeholder={["开始日期", "结束日期"]}
           />
@@ -229,7 +293,9 @@ const TuangouOrdersPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, message, Input, Button, Space } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { tuangou } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton, ThumbBar, OptionBar } from "../../components";
@@ -18,16 +18,28 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  keywords?: string;
+}
+
 const TuangouPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    keywords: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const keywords = searchParams.get("keywords");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [keywords, setKeywords] = useState<string>("");
 
   useEffect(() => {
     document.title = "团购活动";
@@ -59,11 +71,31 @@ const TuangouPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.keywords !== "undefined") {
+          prev.set("keywords", params.keywords);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      keywords: "",
+    });
     setList([]);
-    setKeywords("");
     setRefresh(!refresh);
   };
 
@@ -77,8 +109,10 @@ const TuangouPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -145,23 +179,23 @@ const TuangouPage = () => {
         <Space>
           <PerButton
             type="link"
-            text="编辑"
-            class="c-primary"
-            icon={null}
-            p="addons.TuanGou.goods.update"
-            onClick={() => {
-              navigate("/tuangou/goods/update?id=" + record.id);
-            }}
-            disabled={null}
-          />
-          <PerButton
-            type="link"
             text="团列表"
             class="c-primary"
             icon={null}
             p="addons.TuanGou.goods.items"
             onClick={() => {
               navigate("/tuangou/goods/tuanorder?id=" + record.id);
+            }}
+            disabled={null}
+          />
+          <PerButton
+            type="link"
+            text="编辑"
+            class="c-primary"
+            icon={null}
+            p="addons.TuanGou.goods.update"
+            onClick={() => {
+              navigate("/tuangou/goods/update?id=" + record.id);
             }}
             disabled={null}
           />
@@ -215,7 +249,9 @@ const TuangouPage = () => {
   };
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -249,9 +285,11 @@ const TuangouPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords}
+            value={keywords || ""}
             onChange={(e) => {
-              setKeywords(e.target.value);
+              resetLocalSearchParams({
+                keywords: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -264,7 +302,9 @@ const TuangouPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Input, Button, Space, Select } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Table, Input, Button, Space, Select } from "antd";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { creditMall } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../../components";
@@ -13,18 +13,32 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  keywords?: string;
+  goods_type?: any;
+}
+
 const CreditMallOrdersPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    keywords: "",
+    goods_type: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const keywords = searchParams.get("keywords");
+  const goods_type = JSON.parse(searchParams.get("goods_type") || "[]");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [keywords, setKeywords] = useState<string>("");
   const [goodsTypes, setGoodsTypes] = useState<any>([]);
-  const [goods_type, setGoodsType] = useState([]);
 
   useEffect(() => {
     document.title = "积分订单";
@@ -66,12 +80,35 @@ const CreditMallOrdersPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.keywords !== "undefined") {
+          prev.set("keywords", params.keywords);
+        }
+        if (typeof params.goods_type !== "undefined") {
+          prev.set("goods_type", JSON.stringify(params.goods_type));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      keywords: "",
+      goods_type: [],
+    });
     setList([]);
-    setGoodsType([]);
-    setKeywords("");
     setRefresh(!refresh);
   };
 
@@ -85,8 +122,10 @@ const CreditMallOrdersPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -202,9 +241,11 @@ const CreditMallOrdersPage = () => {
         <div></div>
         <div className="d-flex">
           <Input
-            value={keywords}
+            value={keywords || ""}
             onChange={(e) => {
-              setKeywords(e.target.value);
+              resetLocalSearchParams({
+                keywords: e.target.value,
+              });
             }}
             allowClear
             style={{ width: 150 }}
@@ -214,7 +255,9 @@ const CreditMallOrdersPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={goods_type}
             onChange={(e) => {
-              setGoodsType(e);
+              resetLocalSearchParams({
+                goods_type: e,
+              });
             }}
             allowClear
             placeholder="商品分类"
@@ -227,7 +270,9 @@ const CreditMallOrdersPage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setRefresh(!refresh);
             }}
           >

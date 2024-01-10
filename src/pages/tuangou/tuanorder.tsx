@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, message, Tabs, Tag, Space } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { tuangou } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { PerButton, BackBartment } from "../../components";
@@ -15,19 +15,32 @@ interface DataType {
   expired_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  resourceActive?: string;
+}
+
 const TuangouTuanOrderPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    user_id: "",
+    resourceActive: "watch-user",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const resourceActive = searchParams.get("resourceActive") || "1";
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [countMap, setCountMap] = useState<any>([0, 0, 0, 0]);
   const [id, setId] = useState(Number(result.get("id")));
-  const [resourceActive, setResourceActive] = useState<string>("-1");
   const [orderTotal, setOrderTotal] = useState(0);
   const [types, setTypes] = useState<any>([
     {
@@ -125,9 +138,29 @@ const TuangouTuanOrderPage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.resourceActive !== "undefined") {
+          prev.set("resourceActive", params.resourceActive);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -142,8 +175,10 @@ const TuangouTuanOrderPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -267,13 +302,19 @@ const TuangouTuanOrderPage = () => {
   };
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
 
   const onChange = (key: string) => {
-    setResourceActive(key);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      resourceActive: key,
+    });
   };
 
   return (

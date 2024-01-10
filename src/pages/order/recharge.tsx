@@ -104,7 +104,7 @@ const OrderRechargePage = () => {
     setSearchParams(
       (prev) => {
         if (typeof params.user_id !== "undefined") {
-          prev.set("ouser_id", params.user_id);
+          prev.set("user_id", params.user_id);
         }
         if (typeof params.is_paid !== "undefined") {
           prev.set("is_paid", params.is_paid + "");

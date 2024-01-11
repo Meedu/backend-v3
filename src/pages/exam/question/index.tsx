@@ -315,7 +315,7 @@ const QuestionPage = () => {
             value={category_id}
             onChange={(e) => {
               resetLocalSearchParams({
-                category_id: e,
+                category_id: typeof e !== "undefined" ? e : [],
               });
             }}
             allowClear
@@ -327,7 +327,7 @@ const QuestionPage = () => {
             value={type}
             onChange={(e) => {
               resetLocalSearchParams({
-                type: e,
+                type: typeof e !== "undefined" ? e : [],
               });
             }}
             allowClear
@@ -339,7 +339,7 @@ const QuestionPage = () => {
             value={level}
             onChange={(e) => {
               resetLocalSearchParams({
-                level: e,
+                level: typeof e !== "undefined" ? e : [],
               });
             }}
             allowClear

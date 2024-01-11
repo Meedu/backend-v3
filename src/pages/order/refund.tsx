@@ -511,7 +511,7 @@ const OrderRefundPage = () => {
             value={payment}
             onChange={(e) => {
               resetLocalSearchParams({
-                payment: e,
+                payment: typeof e !== "undefined" ? e : [],
               });
             }}
             allowClear
@@ -545,7 +545,7 @@ const OrderRefundPage = () => {
             value={is_local}
             onChange={(e) => {
               resetLocalSearchParams({
-                is_local: e,
+                is_local: typeof e !== "undefined" ? e : -1,
               });
             }}
             allowClear
@@ -557,7 +557,7 @@ const OrderRefundPage = () => {
             value={status}
             onChange={(e) => {
               resetLocalSearchParams({
-                status: e,
+                status: typeof e !== "undefined" ? e : 0,
               });
             }}
             allowClear
@@ -646,7 +646,7 @@ const OrderRefundPage = () => {
               value={payment}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  payment: e,
+                  payment: typeof e !== "undefined" ? e : [],
                 });
               }}
               allowClear
@@ -691,7 +691,7 @@ const OrderRefundPage = () => {
               value={is_local}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  is_local: e,
+                  is_local: typeof e !== "undefined" ? e : -1,
                 });
               }}
               allowClear
@@ -703,7 +703,7 @@ const OrderRefundPage = () => {
               value={status}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  status: e,
+                  status: typeof e !== "undefined" ? e : 0,
                 });
               }}
               allowClear

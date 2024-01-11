@@ -629,7 +629,7 @@ const OrderPage = () => {
             value={payment}
             onChange={(e) => {
               resetLocalSearchParams({
-                payment: e,
+                payment: typeof e !== "undefined" ? e : [],
               });
             }}
             allowClear
@@ -746,7 +746,7 @@ const OrderPage = () => {
               value={payment}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  payment: e,
+                  payment: typeof e !== "undefined" ? e : [],
                 });
               }}
               allowClear
@@ -758,7 +758,7 @@ const OrderPage = () => {
               value={is_refund}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  is_refund: e,
+                  is_refund: typeof e !== "undefined" ? e : -1,
                 });
               }}
               allowClear

@@ -404,7 +404,7 @@ const WendaPage = () => {
             value={category_id}
             onChange={(e) => {
               resetLocalSearchParams({
-                category_id: e,
+                category_id: typeof e !== "undefined" ? e : [],
               });
             }}
             allowClear
@@ -507,7 +507,7 @@ const WendaPage = () => {
               value={category_id}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  category_id: e,
+                  category_id: typeof e !== "undefined" ? e : [],
                 });
               }}
               allowClear
@@ -530,7 +530,7 @@ const WendaPage = () => {
               value={status}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  status: e,
+                  status: typeof e !== "undefined" ? e : -1,
                 });
               }}
               allowClear

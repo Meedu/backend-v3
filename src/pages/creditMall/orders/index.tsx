@@ -256,7 +256,7 @@ const CreditMallOrdersPage = () => {
             value={goods_type}
             onChange={(e) => {
               resetLocalSearchParams({
-                goods_type: e,
+                goods_type: typeof e !== "undefined" ? e : [],
               });
             }}
             allowClear

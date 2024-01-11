@@ -705,7 +705,7 @@ const MemberPage = () => {
               value={role_id}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  role_id: e,
+                  role_id: typeof e !== "undefined" ? e : [],
                 });
               }}
               allowClear
@@ -717,7 +717,7 @@ const MemberPage = () => {
               value={tag_id}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  tag_id: e,
+                  tag_id: typeof e !== "undefined" ? e : [],
                 });
               }}
               allowClear

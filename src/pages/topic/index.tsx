@@ -367,7 +367,7 @@ const TopicPage = () => {
             value={category_id}
             onChange={(e) => {
               resetLocalSearchParams({
-                category_id: e,
+                category_id: typeof e !== "undefined" ? e : [],
               });
             }}
             allowClear

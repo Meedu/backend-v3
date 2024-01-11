@@ -583,7 +583,7 @@ const LivePage = () => {
               value={category_id}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  category_id: e,
+                  category_id: typeof e !== "undefined" ? e : [],
                 });
               }}
               allowClear
@@ -595,7 +595,7 @@ const LivePage = () => {
               value={teacher_id}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  teacher_id: e,
+                  teacher_id: typeof e !== "undefined" ? e : [],
                 });
               }}
               allowClear
@@ -607,7 +607,7 @@ const LivePage = () => {
               value={status}
               onChange={(e) => {
                 resetLocalSearchParams({
-                  status: e,
+                  status: typeof e !== "undefined" ? e : -1,
                 });
               }}
               allowClear

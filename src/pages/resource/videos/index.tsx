@@ -34,7 +34,7 @@ const ResourceVideosPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const keywords = searchParams.get("keywords");
+  const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -150,6 +150,7 @@ const ResourceVideosPage = () => {
       size: 10,
       keywords: "",
     });
+    setKeywords("");
     setList([]);
     setRefresh(!refresh);
   };
@@ -419,9 +420,7 @@ const ResourceVideosPage = () => {
           <Input
             value={keywords || ""}
             onChange={(e) => {
-              resetLocalSearchParams({
-                keywords: e.target.value,
-              });
+              setKeywords(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -436,6 +435,7 @@ const ResourceVideosPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                keywords: keywords,
               });
               setRefresh(!refresh);
             }}

@@ -49,9 +49,11 @@ const CoursePage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const keywords = searchParams.get("keywords");
-  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
-  const id = searchParams.get("id");
+  const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
+  const [category_id, setCategoryId] = useState(
+    JSON.parse(searchParams.get("category_id") || "[]")
+  );
+  const [id, setId] = useState(searchParams.get("id") || "");
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -165,6 +167,9 @@ const CoursePage = () => {
       id: "",
       category_id: [],
     });
+    setKeywords("")
+    setCategoryId([])
+    setId("");
     setList([]);
     setRefresh(!refresh);
   };
@@ -439,11 +444,9 @@ const CoursePage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords || ""}
+            value={keywords}
             onChange={(e) => {
-              resetLocalSearchParams({
-                keywords: e.target.value,
-              });
+              setKeywords(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -458,6 +461,10 @@ const CoursePage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                id: id,
+                keywords: keywords,
+                category_id:
+                  typeof category_id !== "undefined" ? category_id : [],
               });
               setRefresh(!refresh);
               setDrawer(false);
@@ -513,6 +520,10 @@ const CoursePage = () => {
                 onClick={() => {
                   resetLocalSearchParams({
                     page: 1,
+                    id: id,
+                    keywords: keywords,
+                    category_id:
+                      typeof category_id !== "undefined" ? category_id : [],
                   });
                   setRefresh(!refresh);
                   setDrawer(false);
@@ -529,9 +540,7 @@ const CoursePage = () => {
             <Input
               value={keywords || ""}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  keywords: e.target.value,
-                });
+                setKeywords(e.target.value);
               }}
               allowClear
               placeholder="课程名称关键字"
@@ -540,9 +549,7 @@ const CoursePage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={category_id || []}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  category_id: typeof e !== "undefined" ? e : [],
-                });
+                setCategoryId(e);
               }}
               allowClear
               placeholder="分类"
@@ -550,11 +557,9 @@ const CoursePage = () => {
             />
             <Input
               style={{ marginTop: 20 }}
-              value={id || ""}
+              value={id}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  id: e.target.value,
-                });
+                setId(e.target.value);
               }}
               allowClear
               placeholder="课程ID"

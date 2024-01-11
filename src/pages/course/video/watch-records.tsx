@@ -36,8 +36,10 @@ const CourseVideoRecordsPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const user_id = searchParams.get("user_id");
-  const watched_at = JSON.parse(searchParams.get("watched_at") || "[]");
+  const [user_id, setUserId] = useState(searchParams.get("user_id") || "");
+  const [watched_at, setWatchedAt] = useState<any>(
+    JSON.parse(searchParams.get("watched_at") || "[]")
+  );
   const [watchedAts, setWatchedAts] = useState<any>(
     watched_at.length > 0
       ? [dayjs(watched_at[0], "YYYY-MM-DD"), dayjs(watched_at[1], "YYYY-MM-DD")]
@@ -105,6 +107,9 @@ const CourseVideoRecordsPage = () => {
         if (typeof params.watched_at !== "undefined") {
           prev.set("watched_at", JSON.stringify(params.watched_at));
         }
+        if (typeof params.user_id !== "undefined") {
+          prev.set("user_id", params.user_id);
+        }
         if (typeof params.page !== "undefined") {
           prev.set("page", params.page + "");
         }
@@ -125,6 +130,8 @@ const CourseVideoRecordsPage = () => {
       user_id: "",
     });
     setList([]);
+    setUserId("");
+    setWatchedAt([]);
     setWatchedAts([]);
     setRefresh(!refresh);
   };
@@ -238,14 +245,18 @@ const CourseVideoRecordsPage = () => {
     if (loading) {
       return;
     }
+    let time = watched_at;
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
     setLoading(true);
     let params = {
       page: 1,
       size: total,
       course_id: cid,
       user_id: user_id,
-      watched_start_at: watched_at[0],
-      watched_end_at: watched_at[1],
+      watched_start_at: time[0],
+      watched_end_at: time[1],
     };
     course.videoWatchRecords(id, params).then((res: any) => {
       if (res.data.data.total === 0) {
@@ -302,11 +313,9 @@ const CourseVideoRecordsPage = () => {
       <div className="float-left mt-30">
         <Input
           style={{ width: 150 }}
-          value={user_id || ""}
+          value={user_id}
           onChange={(e) => {
-            resetLocalSearchParams({
-              user_id: e.target.value,
-            });
+            setUserId(e.target.value);
           }}
           allowClear
           placeholder="学员ID"
@@ -317,9 +326,7 @@ const CourseVideoRecordsPage = () => {
           style={{ marginLeft: 10 }}
           onChange={(date, dateString) => {
             setWatchedAts(date);
-            resetLocalSearchParams({
-              watched_at: dateString,
-            });
+            setWatchedAt(dateString);
           }}
           placeholder={["看完时间-开始", "看完时间-结束"]}
         />
@@ -332,6 +339,8 @@ const CourseVideoRecordsPage = () => {
           onClick={() => {
             resetLocalSearchParams({
               page: 1,
+              user_id: user_id,
+              watched_at: watched_at,
             });
             setRefresh(!refresh);
           }}

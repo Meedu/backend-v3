@@ -34,7 +34,9 @@ const CourseCommentsPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [created_at, setCreatedAt] = useState<any>(
+    JSON.parse(searchParams.get("created_at") || "[]")
+  );
   const [createdAts, setCreatedAts] = useState<any>(
     created_at.length > 0
       ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
@@ -145,6 +147,7 @@ const CourseCommentsPage = () => {
       size: 10,
       created_at: [],
     });
+    setCreatedAt([]);
     setCreatedAts([]);
     setList([]);
     setSelectedRowKeys([]);
@@ -266,9 +269,7 @@ const CourseCommentsPage = () => {
             style={{ marginLeft: 10 }}
             onChange={(date, dateString) => {
               setCreatedAts(date);
-              resetLocalSearchParams({
-                created_at: dateString,
-              });
+              setCreatedAt(dateString);
             }}
             placeholder={["评论时间-开始", "评论时间-结束"]}
           />
@@ -281,6 +282,7 @@ const CourseCommentsPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                created_at: created_at,
               });
               setRefresh(!refresh);
             }}

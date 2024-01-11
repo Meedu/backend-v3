@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Modal, Table, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { course } from "../../../api/index";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { ExclamationCircleFilled } from "@ant-design/icons";

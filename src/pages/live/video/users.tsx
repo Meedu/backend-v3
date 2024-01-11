@@ -33,8 +33,10 @@ const LiveVideoUsersPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const mobile = searchParams.get("mobile");
-  const nick_name = searchParams.get("nick_name");
+  const [mobile, setMobile] = useState(searchParams.get("mobile") || "");
+  const [nick_name, setNickName] = useState(
+    searchParams.get("nick_name") || ""
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -111,6 +113,8 @@ const LiveVideoUsersPage = () => {
       nick_name: "",
     });
     setList([]);
+    setNickName("");
+    setMobile("");
     setRefresh(!refresh);
   };
 
@@ -292,22 +296,18 @@ const LiveVideoUsersPage = () => {
         <div className="d-flex"></div>
         <div className="d-flex">
           <Input
-            value={mobile || ""}
+            value={mobile}
             onChange={(e) => {
-              resetLocalSearchParams({
-                mobile: e.target.value,
-              });
+              setMobile(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
             placeholder="学员手机号"
           />
           <Input
-            value={nick_name || ""}
+            value={nick_name}
             onChange={(e) => {
-              resetLocalSearchParams({
-                nick_name: e.target.value,
-              });
+              setNickName(e.target.value);
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
@@ -323,6 +323,8 @@ const LiveVideoUsersPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                nick_name: nick_name,
+                mobile: mobile,
               });
               setRefresh(!refresh);
             }}

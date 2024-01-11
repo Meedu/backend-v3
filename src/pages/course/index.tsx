@@ -167,8 +167,8 @@ const CoursePage = () => {
       id: "",
       category_id: [],
     });
-    setKeywords("")
-    setCategoryId([])
+    setKeywords("");
+    setCategoryId([]);
     setId("");
     setList([]);
     setRefresh(!refresh);
@@ -547,7 +547,7 @@ const CoursePage = () => {
             />
             <Select
               style={{ width: "100%", marginTop: 20 }}
-              value={category_id || []}
+              value={category_id}
               onChange={(e) => {
                 setCategoryId(e);
               }}

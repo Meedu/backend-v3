@@ -51,10 +51,16 @@ const LivePage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const keywords = searchParams.get("keywords");
-  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
-  const teacher_id = JSON.parse(searchParams.get("teacher_id") || "[]");
-  const status = Number(searchParams.get("status") || "-1");
+  const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
+  const [category_id, setCategoryId] = useState(
+    JSON.parse(searchParams.get("category_id") || "[]")
+  );
+  const [teacher_id, setTeacherId] = useState(
+    JSON.parse(searchParams.get("teacher_id") || "[]")
+  );
+  const [status, setStatus] = useState(
+    Number(searchParams.get("status") || -1)
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -193,6 +199,10 @@ const LivePage = () => {
       status: -1,
     });
     setList([]);
+    setStatus(-1);
+    setTeacherId([]);
+    setCategoryId([]);
+    setKeywords("");
     setRefresh(!refresh);
   };
 
@@ -481,11 +491,9 @@ const LivePage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords || ""}
+            value={keywords}
             onChange={(e) => {
-              resetLocalSearchParams({
-                keywords: e.target.value,
-              });
+              setKeywords(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -500,6 +508,11 @@ const LivePage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                keywords: keywords,
+                category_id:
+                  typeof category_id !== "undefined" ? category_id : [],
+                teacher_id: typeof teacher_id !== "undefined" ? teacher_id : [],
+                status: status,
               });
               setRefresh(!refresh);
               setDrawer(false);
@@ -555,6 +568,12 @@ const LivePage = () => {
                 onClick={() => {
                   resetLocalSearchParams({
                     page: 1,
+                    keywords: keywords,
+                    category_id:
+                      typeof category_id !== "undefined" ? category_id : [],
+                    teacher_id:
+                      typeof teacher_id !== "undefined" ? teacher_id : [],
+                    status: typeof status !== "undefined" ? status : -1,
                   });
                   setRefresh(!refresh);
                   setDrawer(false);
@@ -569,11 +588,9 @@ const LivePage = () => {
         >
           <div className="float-left">
             <Input
-              value={keywords || ""}
+              value={keywords}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  keywords: e.target.value,
-                });
+                setKeywords(e.target.value);
               }}
               allowClear
               placeholder="课程名称关键字"
@@ -582,9 +599,7 @@ const LivePage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={category_id}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  category_id: typeof e !== "undefined" ? e : [],
-                });
+                setCategoryId(e);
               }}
               allowClear
               placeholder="分类"
@@ -594,9 +609,7 @@ const LivePage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={teacher_id}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  teacher_id: typeof e !== "undefined" ? e : [],
-                });
+                setTeacherId(e);
               }}
               allowClear
               placeholder="讲师"
@@ -606,9 +619,7 @@ const LivePage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={status}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  status: typeof e !== "undefined" ? e : -1,
-                });
+                setStatus(e);
               }}
               allowClear
               placeholder="状态"

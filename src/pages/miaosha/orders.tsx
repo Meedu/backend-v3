@@ -36,9 +36,11 @@ const MiaoshaOrdersPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const user_id = searchParams.get("user_id");
+  const [user_id, setUserId] = useState(searchParams.get("user_id") || "");
   const resourceActive = searchParams.get("resourceActive") || "1";
-  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [created_at, setCreatedAt] = useState<any>(
+    JSON.parse(searchParams.get("created_at") || "[]")
+  );
   const [createdAts, setCreatedAts] = useState<any>(
     created_at.length > 0
       ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
@@ -135,6 +137,8 @@ const MiaoshaOrdersPage = () => {
       created_at: [],
     });
     setList([]);
+    setUserId("");
+    setCreatedAt([]);
     setCreatedAts([]);
     setRefresh(!refresh);
   };
@@ -230,11 +234,9 @@ const MiaoshaOrdersPage = () => {
       <BackBartment title="秒杀订单" />
       <div className="float-left mt-30">
         <Input
-          value={user_id || ""}
+          value={user_id}
           onChange={(e) => {
-            resetLocalSearchParams({
-              user_id: e.target.value,
-            });
+            setUserId(e.target.value);
           }}
           allowClear
           style={{ width: 150 }}
@@ -247,9 +249,7 @@ const MiaoshaOrdersPage = () => {
           style={{ marginLeft: 10 }}
           onChange={(date, dateString) => {
             setCreatedAts(date);
-            resetLocalSearchParams({
-              created_at: dateString,
-            });
+            setCreatedAt(dateString);
           }}
           placeholder={["开始日期", "结束日期"]}
         />
@@ -262,6 +262,8 @@ const MiaoshaOrdersPage = () => {
           onClick={() => {
             resetLocalSearchParams({
               page: 1,
+              user_id: user_id,
+              created_at: created_at,
             });
             setRefresh(!refresh);
           }}

@@ -27,7 +27,7 @@ const MultiShareRewardsPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "50");
-  const order_id = searchParams.get("order_id");
+  const [order_id, setOrderId] = useState(searchParams.get("order_id") || "");
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState([]);
@@ -89,6 +89,7 @@ const MultiShareRewardsPage = () => {
       order_id: "",
     });
     setList([]);
+    setOrderId("");
     setRefresh(!refresh);
   };
 
@@ -198,11 +199,9 @@ const MultiShareRewardsPage = () => {
       <div className="float-left j-b-flex mb-30 mt-30">
         <div className="d-flex">
           <Input
-            value={order_id || ""}
+            value={order_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                order_id: e.target.value,
-              });
+              setOrderId(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -217,6 +216,7 @@ const MultiShareRewardsPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                order_id: order_id,
               });
               setRefresh(!refresh);
             }}

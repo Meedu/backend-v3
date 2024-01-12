@@ -74,7 +74,7 @@ const CourseVideoRecordsPage = () => {
     if (loading) {
       return;
     }
-    let time = watched_at;
+    let time = [...watched_at];
     if (time.length > 0) {
       time[1] += " 23:59:59";
     }
@@ -245,7 +245,7 @@ const CourseVideoRecordsPage = () => {
     if (loading) {
       return;
     }
-    let time = watched_at;
+    let time = [...watched_at];
     if (time.length > 0) {
       time[1] += " 23:59:59";
     }

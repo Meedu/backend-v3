@@ -69,7 +69,7 @@ const LiveWatchUsersPage = () => {
     if (loading) {
       return;
     }
-    let time = watched_at;
+    let time = [...watched_at];
     if (time.length > 0) {
       time[1] += " 23:59:59";
     }
@@ -231,7 +231,7 @@ const LiveWatchUsersPage = () => {
     if (loading) {
       return;
     }
-    let time = watched_at;
+    let time = [...watched_at];
     if (time.length > 0) {
       time[1] += " 23:59:59";
     }

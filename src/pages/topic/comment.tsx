@@ -63,7 +63,7 @@ const TopicCommentsPage = () => {
     if (loading) {
       return;
     }
-    let time = created_at;
+    let time = [...created_at];
     if (time.length > 0) {
       time[1] += " 23:59:59";
     }

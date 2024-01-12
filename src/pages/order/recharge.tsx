@@ -80,7 +80,7 @@ const OrderRechargePage = () => {
     if (loading) {
       return;
     }
-    let time = created_at;
+    let time = [...created_at];
     if (time.length > 0) {
       time[1] += " 23:59:59";
     }
@@ -282,6 +282,7 @@ const OrderRechargePage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
+              console.log(created_at);
               resetLocalSearchParams({
                 page: 1,
                 user_id: user_id,

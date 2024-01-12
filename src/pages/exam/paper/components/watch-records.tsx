@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Tag, Select, message, Space } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { paper } from "../../../../api/index";
 import { dateFormat } from "../../../../utils/index";
@@ -18,15 +18,29 @@ interface PropsInterface {
   id: number;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  status?: number;
+}
+
 export const WatchRecords = (props: PropsInterface) => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    status: "-1",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const [status, setStatus] = useState(
+    Number(searchParams.get("status") || -1)
+  );
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [status, setStatus] = useState(-1);
   const [statusMapRows, setStatusMapRows] = useState<any>([]);
 
   useEffect(() => {
@@ -75,15 +89,38 @@ export const WatchRecords = (props: PropsInterface) => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.status !== "undefined") {
+          prev.set("status", params.status + "");
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
 
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      status: -1,
+    });
     setList([]);
     setStatus(-1);
     setRefresh(!refresh);
@@ -99,8 +136,10 @@ export const WatchRecords = (props: PropsInterface) => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -330,7 +369,10 @@ export const WatchRecords = (props: PropsInterface) => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+                status: typeof status !== "undefined" ? status : -1,
+              });
               setRefresh(!refresh);
             }}
           >

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Table, Button, DatePicker, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { useSearchParams } from "react-router-dom";
 import { paper } from "../../../../api/index";
 import { dateFormat } from "../../../../utils/index";
 import moment from "moment";
 const { RangePicker } = DatePicker;
 import * as XLSX from "xlsx";
+import dayjs from "dayjs";
 
 interface DataType {
   id: React.Key;
@@ -25,21 +27,47 @@ interface StatInterface {
   pass_rate?: number;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  created_at?: any;
+  watched_at?: any;
+}
+
 export const Statistics = (props: PropsInterface) => {
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    watched_at: "[]",
+    created_at: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const [created_at, setCreatedAt] = useState<any>(
+    JSON.parse(searchParams.get("created_at") || "[]")
+  );
+  const [createdAts, setCreatedAts] = useState<any>(
+    created_at.length > 0
+      ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
+      : []
+  );
+  const [watched_at, setWatchedAt] = useState<any>(
+    JSON.parse(searchParams.get("watched_at") || "[]")
+  );
+  const [watchedAts, setWatchedAts] = useState<any>(
+    watched_at.length > 0
+      ? [dayjs(watched_at[0], "YYYY-MM-DD"), dayjs(watched_at[1], "YYYY-MM-DD")]
+      : []
+  );
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [users, setUsers] = useState<any>({});
   const [pass_score, setPassScore] = useState(0);
   const [total_score, setTotalScore] = useState(0);
   const [stat, setStat] = useState<StatInterface>();
-  const [created_at, setCreatedAt] = useState<any>([]);
-  const [createdAts, setCreatedAts] = useState<any>([]);
-  const [watched_at, setWatchedAt] = useState<any>([]);
-  const [watchedAts, setWatchedAts] = useState<any>([]);
 
   useEffect(() => {
     getData();
@@ -49,13 +77,21 @@ export const Statistics = (props: PropsInterface) => {
     if (loading) {
       return;
     }
+    let time = [...created_at];
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
+    let time2 = [...watched_at];
+    if (time2.length > 0) {
+      time2[1] += " 23:59:59";
+    }
     setLoading(true);
     paper
       .stats(props.id, {
         page: page,
         size: size,
-        created_at: created_at,
-        submit_at: watched_at,
+        created_at: time,
+        submit_at: time2,
       })
       .then((res: any) => {
         setList(res.data.data);
@@ -71,9 +107,34 @@ export const Statistics = (props: PropsInterface) => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.watched_at !== "undefined") {
+          prev.set("watched_at", JSON.stringify(params.watched_at));
+        }
+        if (typeof params.created_at !== "undefined") {
+          prev.set("created_at", JSON.stringify(params.created_at));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      created_at: [],
+      watched_at: [],
+    });
     setList([]);
     setWatchedAts([]);
     setWatchedAt([]);
@@ -92,8 +153,10 @@ export const Statistics = (props: PropsInterface) => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [
@@ -155,12 +218,20 @@ export const Statistics = (props: PropsInterface) => {
     if (loading) {
       return;
     }
+    let time = [...created_at];
+    if (time.length > 0) {
+      time[1] += " 23:59:59";
+    }
+    let time2 = [...watched_at];
+    if (time2.length > 0) {
+      time2[1] += " 23:59:59";
+    }
     setLoading(true);
     let params = {
       page: 1,
       size: total,
-      created_at: created_at,
-      submit_at: watched_at,
+      created_at: time,
+      submit_at: time2,
     };
     paper.stats(props.id, params).then((res: any) => {
       if (res.data.total === 0) {
@@ -249,7 +320,11 @@ export const Statistics = (props: PropsInterface) => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+                watched_at: watched_at,
+                created_at: created_at,
+              });
               setRefresh(!refresh);
             }}
           >

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, message, Button, Select } from "antd";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch } from "react-redux";
 import { paper } from "../../../api/index";
@@ -14,22 +14,44 @@ interface DataType {
   created_at: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  type?: any;
+  category_id?: any;
+  level?: any;
+}
+
 const PaperQuestionCreatePage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "20",
+    type: "[]",
+    category_id: "[]",
+    level: "[]",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "20");
+  const [category_id, setCategoryId] = useState(
+    JSON.parse(searchParams.get("category_id") || "[]")
+  );
+  const [type, setType] = useState(
+    JSON.parse(searchParams.get("type") || "[]")
+  );
+  const [level, setLevel] = useState(
+    JSON.parse(searchParams.get("level") || "[]")
+  );
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(20);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [id, setId] = useState(Number(result.get("id")));
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [category_id, setCategoryId] = useState([]);
   const [categories, setCategories] = useState<any>([]);
-  const [type, setType] = useState([]);
   const [types, setTypes] = useState<any>([]);
-  const [level, setLevel] = useState([]);
   const [levels, setLevels] = useState<any>([]);
 
   useEffect(() => {
@@ -97,9 +119,38 @@ const PaperQuestionCreatePage = () => {
       });
   };
 
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.category_id !== "undefined") {
+          prev.set("category_id", JSON.stringify(params.category_id));
+        }
+        if (typeof params.type !== "undefined") {
+          prev.set("type", JSON.stringify(params.type));
+        }
+        if (typeof params.level !== "undefined") {
+          prev.set("level", JSON.stringify(params.level));
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   const resetList = () => {
-    setPage(1);
-    setSize(20);
+    resetLocalSearchParams({
+      page: 1,
+      size: 20,
+      category_id: [],
+      type: [],
+      level: [],
+    });
     setList([]);
     setType([]);
     setCategoryId([]);
@@ -108,6 +159,9 @@ const PaperQuestionCreatePage = () => {
   };
 
   const resetData = () => {
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setSelectedRowKeys([]);
     setRefresh(!refresh);
@@ -122,7 +176,7 @@ const PaperQuestionCreatePage = () => {
     {
       title: "分类",
       width: 200,
-      render: (_, record: any) => <span>{record?.category?.name || '-'}</span>,
+      render: (_, record: any) => <span>{record?.category?.name || "-"}</span>,
     },
     {
       title: "类型",
@@ -200,8 +254,10 @@ const PaperQuestionCreatePage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   return (
@@ -251,7 +307,13 @@ const PaperQuestionCreatePage = () => {
             className="ml-10"
             type="primary"
             onClick={() => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+                category_id:
+                  typeof category_id !== "undefined" ? category_id : [],
+                type: typeof type !== "undefined" ? type : [],
+                level: typeof level !== "undefined" ? level : [],
+              });
               setRefresh(!refresh);
             }}
           >

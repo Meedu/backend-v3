@@ -1,18 +1,30 @@
 import { useState, useEffect } from "react";
 import { Tabs } from "antd";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { titleAction } from "../../../store/user/loginUserSlice";
 import { BackBartment } from "../../../components";
 import { WatchRecords } from "./components/watch-records";
 import { SubUsers } from "./components/sub-users";
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  resourceActive?: string;
+}
+
 const PracticeUsersPage = () => {
   const result = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    resourceActive: "watch-user",
+  });
+  const resourceActive = searchParams.get("resourceActive") || "";
+
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
-  const [resourceActive, setResourceActive] = useState<string>("");
   const [avaliableResources, setAvaliableResources] = useState<any>([]);
   const [id, setId] = useState(Number(result.get("id")));
 
@@ -39,9 +51,31 @@ const PracticeUsersPage = () => {
         key: "sub-users",
       });
     }
-    setResourceActive(data[0].key);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      resourceActive: data[0].key,
+    });
     setAvaliableResources(data);
   }, [user]);
+
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.resourceActive !== "undefined") {
+          prev.set("resourceActive", params.resourceActive);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
+  };
 
   const through = (val: string) => {
     if (!user.permissions) {
@@ -51,7 +85,11 @@ const PracticeUsersPage = () => {
   };
 
   const onChange = (key: string) => {
-    setResourceActive(key);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      resourceActive: key,
+    });
   };
 
   return (

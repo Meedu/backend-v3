@@ -43,8 +43,10 @@ const MockPaperPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "20");
-  const keywords = searchParams.get("keywords");
-  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
+  const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
+  const [category_id, setCategoryId] = useState(
+    JSON.parse(searchParams.get("category_id") || "[]")
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -129,6 +131,8 @@ const MockPaperPage = () => {
       category_id: [],
     });
     setList([]);
+    setCategoryId([]);
+    setKeywords("");
     setRefresh(!refresh);
   };
 
@@ -308,11 +312,9 @@ const MockPaperPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords || ""}
+            value={keywords}
             onChange={(e) => {
-              resetLocalSearchParams({
-                keywords: e.target.value,
-              });
+              setKeywords(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -322,9 +324,7 @@ const MockPaperPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={category_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                category_id: typeof e !== "undefined" ? e : [],
-              });
+              setCategoryId(e);
             }}
             allowClear
             placeholder="分类"
@@ -339,6 +339,9 @@ const MockPaperPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                keywords: keywords,
+                category_id:
+                  typeof category_id !== "undefined" ? category_id : [],
               });
               setRefresh(!refresh);
             }}

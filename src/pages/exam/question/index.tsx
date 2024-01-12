@@ -35,9 +35,15 @@ const QuestionPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "20");
-  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
-  const type = JSON.parse(searchParams.get("type") || "[]");
-  const level = JSON.parse(searchParams.get("level") || "[]");
+  const [category_id, setCategoryId] = useState(
+    JSON.parse(searchParams.get("category_id") || "[]")
+  );
+  const [type, setType] = useState(
+    JSON.parse(searchParams.get("type") || "[]")
+  );
+  const [level, setLevel] = useState(
+    JSON.parse(searchParams.get("level") || "[]")
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -145,6 +151,9 @@ const QuestionPage = () => {
       level: [],
     });
     setList([]);
+    setCategoryId([]);
+    setType([]);
+    setLevel([]);
     setRefresh(!refresh);
   };
 
@@ -314,9 +323,7 @@ const QuestionPage = () => {
             style={{ width: 150 }}
             value={category_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                category_id: typeof e !== "undefined" ? e : [],
-              });
+              setCategoryId(e);
             }}
             allowClear
             placeholder="分类"
@@ -326,9 +333,7 @@ const QuestionPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={type}
             onChange={(e) => {
-              resetLocalSearchParams({
-                type: typeof e !== "undefined" ? e : [],
-              });
+              setType(e);
             }}
             allowClear
             placeholder="类型"
@@ -338,9 +343,7 @@ const QuestionPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={level}
             onChange={(e) => {
-              resetLocalSearchParams({
-                level: typeof e !== "undefined" ? e : [],
-              });
+              setLevel(e);
             }}
             allowClear
             placeholder="难度"
@@ -355,6 +358,10 @@ const QuestionPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                category_id:
+                  typeof category_id !== "undefined" ? category_id : [],
+                type: typeof type !== "undefined" ? type : [],
+                level: typeof level !== "undefined" ? level : [],
               });
               setRefresh(!refresh);
             }}

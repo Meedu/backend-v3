@@ -14,8 +14,9 @@ interface PropsInterface {
 }
 
 export const PaperDetailDialog = (props: PropsInterface) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const [list, setList] = useState<any>([]);
+
   useEffect(() => {
     if (props.results) {
       setLoading(true);

@@ -44,7 +44,7 @@ const PromoCodePage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const keywords = searchParams.get("keywords");
+  const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -167,6 +167,7 @@ const PromoCodePage = () => {
     });
     setList([]);
     setSelectedRowKeys([]);
+    setKeywords("");
     setUserId("");
     setCreatedAts([]);
     setExpiredAt([]);
@@ -287,11 +288,9 @@ const PromoCodePage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords || ""}
+            value={keywords}
             onChange={(e) => {
-              resetLocalSearchParams({
-                keywords: e.target.value,
-              });
+              setKeywords(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -306,6 +305,7 @@ const PromoCodePage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                keywords: keywords,
               });
               setRefresh(!refresh);
               setDrawer(false);
@@ -365,6 +365,7 @@ const PromoCodePage = () => {
                 onClick={() => {
                   resetLocalSearchParams({
                     page: 1,
+                    keywords: keywords,
                   });
                   setRefresh(!refresh);
                   setDrawer(false);
@@ -379,11 +380,9 @@ const PromoCodePage = () => {
         >
           <div className="float-left">
             <Input
-              value={keywords || ""}
+              value={keywords}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  keywords: e.target.value,
-                });
+                setKeywords(e.target.value);
               }}
               allowClear
               placeholder="优惠码"

@@ -62,13 +62,21 @@ const OrderRefundPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const mobile = searchParams.get("mobile");
-  const refund_no = searchParams.get("refund_no");
-  const order_no = searchParams.get("order_no");
-  const is_local = Number(searchParams.get("is_local") || "-1");
-  const status = Number(searchParams.get("status") || "0");
-  const payment = JSON.parse(searchParams.get("payment") || "[]");
-  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [mobile, setMobile] = useState(searchParams.get("mobile") || "");
+  const [refund_no, setRefundNo] = useState(
+    searchParams.get("refund_no") || ""
+  );
+  const [order_no, setOrderNo] = useState(searchParams.get("order_no") || "");
+  const [is_local, setIsLocal] = useState(
+    Number(searchParams.get("is_local") || -1)
+  );
+  const [status, setStatus] = useState(Number(searchParams.get("status") || 0));
+  const [payment, setPayment] = useState<any>(
+    JSON.parse(searchParams.get("payment") || "[]")
+  );
+  const [created_at, setCreatedAt] = useState<any>(
+    JSON.parse(searchParams.get("created_at") || "[]")
+  );
   const [createdAts, setCreatedAts] = useState<any>(
     created_at.length > 0
       ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
@@ -239,6 +247,13 @@ const OrderRefundPage = () => {
       created_at: [],
     });
     setList([]);
+    setMobile("");
+    setOrderNo("");
+    setRefundNo("");
+    setStatus(0);
+    setIsLocal(-1);
+    setPayment([]);
+    setCreatedAt([]);
     setCreatedAts([]);
     setRefresh(!refresh);
   };
@@ -510,31 +525,25 @@ const OrderRefundPage = () => {
             style={{ width: 150 }}
             value={payment}
             onChange={(e) => {
-              resetLocalSearchParams({
-                payment: typeof e !== "undefined" ? e : [],
-              });
+              setPayment(e);
             }}
             allowClear
             placeholder="支付渠道"
             options={payments}
           />
           <Input
-            value={mobile || ""}
+            value={mobile}
             onChange={(e) => {
-              resetLocalSearchParams({
-                mobile: e.target.value,
-              });
+              setMobile(e.target.value);
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
             placeholder="手机号"
           />
           <Input
-            value={refund_no || ""}
+            value={refund_no}
             onChange={(e) => {
-              resetLocalSearchParams({
-                refund_no: e.target.value,
-              });
+              setRefundNo(e.target.value);
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
@@ -544,9 +553,7 @@ const OrderRefundPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={is_local}
             onChange={(e) => {
-              resetLocalSearchParams({
-                is_local: typeof e !== "undefined" ? e : -1,
-              });
+              setIsLocal(e);
             }}
             allowClear
             placeholder="退款类型"
@@ -556,9 +563,7 @@ const OrderRefundPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={status}
             onChange={(e) => {
-              resetLocalSearchParams({
-                status: typeof e !== "undefined" ? e : 0,
-              });
+              setStatus(e);
             }}
             allowClear
             placeholder="退款状态"
@@ -573,6 +578,13 @@ const OrderRefundPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                mobile: mobile,
+                refund_no: refund_no,
+                order_no: order_no,
+                payment: typeof payment !== "undefined" ? payment : [],
+                status: typeof status !== "undefined" ? status : 0,
+                is_local: typeof is_local !== "undefined" ? is_local : -1,
+                created_at: created_at,
               });
               setRefresh(!refresh);
               setDrawer(false);
@@ -628,6 +640,13 @@ const OrderRefundPage = () => {
                 onClick={() => {
                   resetLocalSearchParams({
                     page: 1,
+                    mobile: mobile,
+                    refund_no: refund_no,
+                    order_no: order_no,
+                    payment: typeof payment !== "undefined" ? payment : [],
+                    status: typeof status !== "undefined" ? status : 0,
+                    is_local: typeof is_local !== "undefined" ? is_local : -1,
+                    created_at: created_at,
                   });
                   setRefresh(!refresh);
                   setDrawer(false);
@@ -645,42 +664,34 @@ const OrderRefundPage = () => {
               style={{ width: "100%" }}
               value={payment}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  payment: typeof e !== "undefined" ? e : [],
-                });
+                setPayment(e);
               }}
               allowClear
               placeholder="支付渠道"
               options={payments}
             />
             <Input
-              value={mobile || ""}
+              value={mobile}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  mobile: e.target.value,
-                });
+                setMobile(e.target.value);
               }}
               allowClear
               style={{ marginTop: 20 }}
               placeholder="手机号"
             />
             <Input
-              value={refund_no || ""}
+              value={refund_no}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  refund_no: e.target.value,
-                });
+                setRefundNo(e.target.value);
               }}
               allowClear
               style={{ marginTop: 20 }}
               placeholder="退款单号"
             />
             <Input
-              value={order_no || ""}
+              value={order_no}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  order_no: e.target.value,
-                });
+                setOrderNo(e.target.value);
               }}
               allowClear
               style={{ marginTop: 20 }}
@@ -690,9 +701,7 @@ const OrderRefundPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={is_local}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  is_local: typeof e !== "undefined" ? e : -1,
-                });
+                setIsLocal(e);
               }}
               allowClear
               placeholder="退款类型"
@@ -702,9 +711,7 @@ const OrderRefundPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={status}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  status: typeof e !== "undefined" ? e : 0,
-                });
+                setStatus(e);
               }}
               allowClear
               placeholder="退款状态"
@@ -716,9 +723,7 @@ const OrderRefundPage = () => {
               style={{ marginTop: 20 }}
               onChange={(date, dateString) => {
                 setCreatedAts(date);
-                resetLocalSearchParams({
-                  created_at: dateString,
-                });
+                setCreatedAt(dateString);
               }}
               placeholder={["开始日期", "结束日期"]}
             />

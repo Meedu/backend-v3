@@ -36,7 +36,7 @@ const WithdrawOrdersPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const user_id = searchParams.get("user_id");
+  const [user_id, setUserId] = useState(searchParams.get("user_id") || "");
   const status = searchParams.get("status") || "0";
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -130,6 +130,7 @@ const WithdrawOrdersPage = () => {
       size: 10,
       user_id: "",
     });
+    setUserId("");
     setList([]);
     setSelectedRowKeys([]);
     setRefresh(!refresh);
@@ -339,11 +340,9 @@ const WithdrawOrdersPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={user_id || ""}
+            value={user_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                user_id: e.target.value,
-              });
+              setUserId(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -358,6 +357,7 @@ const WithdrawOrdersPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                user_id: user_id,
               });
               setRefresh(!refresh);
             }}

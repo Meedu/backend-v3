@@ -34,9 +34,13 @@ const OrderRechargePage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const user_id = searchParams.get("user_id");
-  const is_paid = Number(searchParams.get("is_paid") || "-1");
-  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [user_id, setUserId] = useState(searchParams.get("user_id") || "");
+  const [is_paid, setIsPaid] = useState(
+    Number(searchParams.get("is_paid") || -1)
+  );
+  const [created_at, setCreatedAt] = useState<any>(
+    JSON.parse(searchParams.get("created_at") || "[]")
+  );
   const [createdAts, setCreatedAts] = useState<any>(
     created_at.length > 0
       ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
@@ -133,6 +137,9 @@ const OrderRechargePage = () => {
       created_at: [],
     });
     setList([]);
+    setUserId("");
+    setIsPaid(-1);
+    setCreatedAt([]);
     setCreatedAts([]);
     setRefresh(!refresh);
   };
@@ -240,11 +247,9 @@ const OrderRechargePage = () => {
       <div className="float-left j-b-flex mb-30">
         <div className="d-flex">
           <Input
-            value={user_id || ""}
+            value={user_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                user_id: e.target.value,
-              });
+              setUserId(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -254,9 +259,7 @@ const OrderRechargePage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={is_paid}
             onChange={(e) => {
-              resetLocalSearchParams({
-                is_paid: e,
-              });
+              setIsPaid(e);
             }}
             allowClear
             placeholder="状态"
@@ -268,9 +271,7 @@ const OrderRechargePage = () => {
             style={{ marginLeft: 10 }}
             onChange={(date, dateString) => {
               setCreatedAts(date);
-              resetLocalSearchParams({
-                created_at: dateString,
-              });
+              setCreatedAt(dateString);
             }}
             placeholder={["开始日期", "结束日期"]}
           />
@@ -283,6 +284,9 @@ const OrderRechargePage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                user_id: user_id,
+                is_paid: typeof is_paid !== "undefined" ? is_paid : -1,
+                created_at: created_at,
               });
               setRefresh(!refresh);
             }}

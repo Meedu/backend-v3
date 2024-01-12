@@ -64,12 +64,20 @@ const OrderPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const goods_name = searchParams.get("goods_name");
-  const order_id = searchParams.get("order_id");
-  const is_refund = Number(searchParams.get("is_refund") || "-1");
+  const [goods_name, setGoodsName] = useState(
+    searchParams.get("goods_name") || ""
+  );
+  const [order_id, setOrderId] = useState(searchParams.get("order_id") || "");
+  const [is_refund, setIsRefund] = useState(
+    Number(searchParams.get("is_refund") || -1)
+  );
   const status = searchParams.get("status");
-  const payment = JSON.parse(searchParams.get("payment") || "[]");
-  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [payment, setPayment] = useState<any>(
+    JSON.parse(searchParams.get("payment") || "[]")
+  );
+  const [created_at, setCreatedAt] = useState<any>(
+    JSON.parse(searchParams.get("created_at") || "[]")
+  );
   const [createdAts, setCreatedAts] = useState<any>(
     created_at.length > 0
       ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
@@ -224,7 +232,6 @@ const OrderPage = () => {
     if (
       (created_at && created_at.length > 0) ||
       is_refund !== -1 ||
-      status ||
       order_id ||
       (payment && payment.length > 0) ||
       goods_name
@@ -279,6 +286,11 @@ const OrderPage = () => {
       created_at: [],
     });
     setList([]);
+    setOrderId("");
+    setGoodsName("");
+    setIsRefund(-1);
+    setPayment([]);
+    setCreatedAt([]);
     setCreatedAts([]);
     setRefresh(!refresh);
   };
@@ -603,22 +615,18 @@ const OrderPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={order_id || ""}
+            value={order_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                order_id: e.target.value,
-              });
+              setOrderId(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
             placeholder="订单编号"
           />
           <Input
-            value={goods_name || ""}
+            value={goods_name}
             onChange={(e) => {
-              resetLocalSearchParams({
-                goods_name: e.target.value,
-              });
+              setGoodsName(e.target.value);
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
@@ -628,9 +636,7 @@ const OrderPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={payment}
             onChange={(e) => {
-              resetLocalSearchParams({
-                payment: typeof e !== "undefined" ? e : [],
-              });
+              setPayment(e);
             }}
             allowClear
             placeholder="支付渠道"
@@ -645,6 +651,11 @@ const OrderPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                order_id: order_id,
+                goods_name: goods_name,
+                payment: typeof payment !== "undefined" ? payment : [],
+                is_refund: typeof is_refund !== "undefined" ? is_refund : -1,
+                created_at: created_at,
               });
               setRefresh(!refresh);
               setDrawer(false);
@@ -707,6 +718,12 @@ const OrderPage = () => {
                 onClick={() => {
                   resetLocalSearchParams({
                     page: 1,
+                    order_id: order_id,
+                    goods_name: goods_name,
+                    payment: typeof payment !== "undefined" ? payment : [],
+                    is_refund:
+                      typeof is_refund !== "undefined" ? is_refund : -1,
+                    created_at: created_at,
                   });
                   setRefresh(!refresh);
                   setDrawer(false);
@@ -721,21 +738,17 @@ const OrderPage = () => {
         >
           <div className="float-left">
             <Input
-              value={order_id || ""}
+              value={order_id}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  order_id: e.target.value,
-                });
+                setOrderId(e.target.value);
               }}
               allowClear
               placeholder="订单编号"
             />
             <Input
-              value={goods_name || ""}
+              value={goods_name}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  goods_name: e.target.value,
-                });
+                setGoodsName(e.target.value);
               }}
               allowClear
               style={{ marginTop: 20 }}
@@ -745,9 +758,7 @@ const OrderPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={payment}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  payment: typeof e !== "undefined" ? e : [],
-                });
+                setPayment(e);
               }}
               allowClear
               placeholder="支付渠道"
@@ -757,9 +768,7 @@ const OrderPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={is_refund}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  is_refund: typeof e !== "undefined" ? e : -1,
-                });
+                setIsRefund(e);
               }}
               allowClear
               placeholder="退款方式"
@@ -772,9 +781,7 @@ const OrderPage = () => {
               style={{ marginTop: 20 }}
               onChange={(date, dateString) => {
                 setCreatedAts(date);
-                resetLocalSearchParams({
-                  created_at: dateString,
-                });
+                setCreatedAt(dateString);
               }}
               placeholder={["订单添加-开始时间", "订单添加-结束时间"]}
             />

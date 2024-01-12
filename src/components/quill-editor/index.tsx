@@ -88,6 +88,7 @@ export const QuillEditor: React.FC<PropInterface> = (props) => {
   const importVideoIframe = () => {
     if (!/^<iframe.+<\/iframe>$/.test(videoIframe)) {
       setVideoIframe("");
+      message.error("请输入正确的iframe链接");
       return;
     }
     const value = videoIframe

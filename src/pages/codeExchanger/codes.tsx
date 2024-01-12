@@ -35,8 +35,8 @@ const CodeExchangerCodesPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "50");
-  const code = searchParams.get("code");
-  const user_id = searchParams.get("user_id");
+  const [code, setCode] = useState(searchParams.get("code") || "");
+  const [user_id, setUserId] = useState(searchParams.get("user_id") || "");
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -110,6 +110,8 @@ const CodeExchangerCodesPage = () => {
       user_id: "",
     });
     setList([]);
+    setUserId("");
+    setCode("");
     setSelectedRowKeys([]);
     setRefresh(!refresh);
   };
@@ -384,22 +386,18 @@ const CodeExchangerCodesPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={code || ""}
+            value={code}
             onChange={(e) => {
-              resetLocalSearchParams({
-                code: e.target.value,
-              });
+              setCode(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
             placeholder="兑换码"
           />
           <Input
-            value={user_id || ""}
+            value={user_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                user_id: e.target.value,
-              });
+              setUserId(e.target.value);
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
@@ -414,6 +412,8 @@ const CodeExchangerCodesPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                code: code,
+                user_id: user_id,
               });
               setRefresh(!refresh);
             }}

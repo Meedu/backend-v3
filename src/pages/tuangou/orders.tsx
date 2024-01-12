@@ -32,16 +32,21 @@ const TuangouOrdersPage = () => {
   const [searchParams, setSearchParams] = useSearchParams({
     page: "1",
     size: "10",
+    keywords: "",
     user_id: "",
     status: "-1",
     created_at: "[]",
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const keywords = searchParams.get("keywords");
-  const user_id = searchParams.get("user_id");
-  const status = Number(searchParams.get("status") || "-1");
-  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
+  const [user_id, setUserId] = useState(searchParams.get("user_id") || "");
+  const [status, setStatus] = useState(
+    Number(searchParams.get("status") || -1)
+  );
+  const [created_at, setCreatedAt] = useState<any>(
+    JSON.parse(searchParams.get("created_at") || "[]")
+  );
   const [createdAts, setCreatedAts] = useState<any>(
     created_at.length > 0
       ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
@@ -141,6 +146,10 @@ const TuangouOrdersPage = () => {
       created_at: [],
     });
     setList([]);
+    setKeywords("");
+    setUserId("");
+    setStatus(-1);
+    setCreatedAt([]);
     setCreatedAts([]);
     setRefresh(!refresh);
   };
@@ -240,22 +249,18 @@ const TuangouOrdersPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords || ""}
+            value={keywords}
             onChange={(e) => {
-              resetLocalSearchParams({
-                keywords: e.target.value,
-              });
+              setKeywords(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
             placeholder="商品名称关键字"
           />
           <Input
-            value={user_id || ""}
+            value={user_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                user_id: e.target.value,
-              });
+              setUserId(e.target.value);
             }}
             allowClear
             style={{ width: 150, marginLeft: 10 }}
@@ -265,9 +270,7 @@ const TuangouOrdersPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={status}
             onChange={(e) => {
-              resetLocalSearchParams({
-                status: e,
-              });
+              setStatus(e);
             }}
             allowClear
             placeholder="状态"
@@ -280,9 +283,7 @@ const TuangouOrdersPage = () => {
             style={{ marginLeft: 10 }}
             onChange={(date, dateString) => {
               setCreatedAts(date);
-              resetLocalSearchParams({
-                created_at: dateString,
-              });
+              setCreatedAt(dateString);
             }}
             placeholder={["开始日期", "结束日期"]}
           />
@@ -295,6 +296,10 @@ const TuangouOrdersPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                user_id: user_id,
+                keywords: keywords,
+                status: typeof status !== "undefined" ? status : -1,
+                created_at: created_at,
               });
               setRefresh(!refresh);
             }}

@@ -28,7 +28,6 @@ const TuangouTuanOrderPage = () => {
   const [searchParams, setSearchParams] = useSearchParams({
     page: "1",
     size: "10",
-    user_id: "",
     resourceActive: "watch-user",
   });
   const page = parseInt(searchParams.get("page") || "1");

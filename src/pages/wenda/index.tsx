@@ -60,11 +60,17 @@ const WendaPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const keywords = searchParams.get("keywords");
-  const user_id = searchParams.get("user_id");
-  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
-  const status = Number(searchParams.get("status") || "-1");
-  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
+  const [user_id, setUserId] = useState(searchParams.get("user_id") || "");
+  const [category_id, setCategoryId] = useState(
+    JSON.parse(searchParams.get("category_id") || "[]")
+  );
+  const [status, setStatus] = useState(
+    Number(searchParams.get("status") || -1)
+  );
+  const [created_at, setCreatedAt] = useState<any>(
+    JSON.parse(searchParams.get("created_at") || "[]")
+  );
   const [createdAts, setCreatedAts] = useState<any>(
     created_at.length > 0
       ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
@@ -205,6 +211,11 @@ const WendaPage = () => {
     });
     setList([]);
     setSelectedRowKeys([]);
+    setKeywords("");
+    setUserId("");
+    setStatus(-1);
+    setCategoryId([]);
+    setCreatedAt([]);
     setCreatedAts([]);
     setRefresh(!refresh);
   };
@@ -389,11 +400,9 @@ const WendaPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords || ""}
+            value={keywords}
             onChange={(e) => {
-              resetLocalSearchParams({
-                keywords: e.target.value,
-              });
+              setKeywords(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -403,9 +412,7 @@ const WendaPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={category_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                category_id: typeof e !== "undefined" ? e : [],
-              });
+              setCategoryId(e);
             }}
             allowClear
             placeholder="分类"
@@ -420,6 +427,12 @@ const WendaPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                keywords: keywords,
+                user_id: user_id,
+                category_id:
+                  typeof category_id !== "undefined" ? category_id : [],
+                status: typeof status !== "undefined" ? status : -1,
+                created_at: created_at,
               });
               setRefresh(!refresh);
               setDrawer(false);
@@ -479,6 +492,12 @@ const WendaPage = () => {
                 onClick={() => {
                   resetLocalSearchParams({
                     page: 1,
+                    keywords: keywords,
+                    user_id: user_id,
+                    category_id:
+                      typeof category_id !== "undefined" ? category_id : [],
+                    status: typeof status !== "undefined" ? status : -1,
+                    created_at: created_at,
                   });
                   setRefresh(!refresh);
                   setDrawer(false);
@@ -493,11 +512,9 @@ const WendaPage = () => {
         >
           <div className="float-left">
             <Input
-              value={keywords || ""}
+              value={keywords}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  keywords: e.target.value,
-                });
+                setKeywords(e.target.value);
               }}
               allowClear
               placeholder="关键字"
@@ -506,20 +523,16 @@ const WendaPage = () => {
               style={{ marginTop: 20, width: "100%" }}
               value={category_id}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  category_id: typeof e !== "undefined" ? e : [],
-                });
+                setCategoryId(e);
               }}
               allowClear
               placeholder="分类"
               options={categories}
             />
             <Input
-              value={user_id || ""}
+              value={user_id}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  user_id: e.target.value,
-                });
+                setUserId(e.target.value);
               }}
               allowClear
               style={{ marginTop: 20 }}
@@ -529,9 +542,7 @@ const WendaPage = () => {
               style={{ marginTop: 20, width: "100%" }}
               value={status}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  status: typeof e !== "undefined" ? e : -1,
-                });
+                setStatus(e);
               }}
               allowClear
               placeholder="状态"
@@ -543,9 +554,7 @@ const WendaPage = () => {
               style={{ marginTop: 20 }}
               onChange={(date, dateString) => {
                 setCreatedAts(date);
-                resetLocalSearchParams({
-                  created_at: dateString,
-                });
+                setCreatedAt(dateString);
               }}
               placeholder={["日期-开始", "日期-结束"]}
             />

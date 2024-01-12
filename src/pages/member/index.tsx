@@ -52,16 +52,23 @@ const MemberPage = () => {
   const [searchParams, setSearchParams] = useSearchParams({
     page: "1",
     size: "10",
+    keywords: "",
     role_id: "[]",
     tag_id: "[]",
     created_at: "[]",
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const keywords = searchParams.get("keywords");
-  const role_id = JSON.parse(searchParams.get("role_id") || "[]");
-  const tag_id = JSON.parse(searchParams.get("tag_id") || "[]");
-  const created_at = JSON.parse(searchParams.get("created_at") || "[]");
+  const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
+  const [role_id, setRoleId] = useState(
+    JSON.parse(searchParams.get("role_id") || "[]")
+  );
+  const [tag_id, setTagId] = useState(
+    JSON.parse(searchParams.get("tag_id") || "[]")
+  );
+  const [created_at, setCreatedAt] = useState<any>(
+    JSON.parse(searchParams.get("created_at") || "[]")
+  );
   const [createdAts, setCreatedAts] = useState<any>(
     created_at.length > 0
       ? [dayjs(created_at[0], "YYYY-MM-DD"), dayjs(created_at[1], "YYYY-MM-DD")]
@@ -196,6 +203,10 @@ const MemberPage = () => {
     });
     setList([]);
     setSelectedRowKeys([]);
+    setKeywords("");
+    setRoleId([]);
+    setTagId([]);
+    setCreatedAt([]);
     setCreatedAts([]);
     setRefresh(!refresh);
   };
@@ -595,11 +606,9 @@ const MemberPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={keywords || ""}
+            value={keywords}
             onChange={(e) => {
-              resetLocalSearchParams({
-                keywords: e.target.value,
-              });
+              setKeywords(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -615,6 +624,10 @@ const MemberPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                keywords: keywords,
+                role_id: typeof role_id !== "undefined" ? role_id : [],
+                tag_id: typeof tag_id !== "undefined" ? tag_id : [],
+                created_at: created_at,
               });
               setRefresh(!refresh);
               setDrawer(false);
@@ -677,6 +690,10 @@ const MemberPage = () => {
                 onClick={() => {
                   resetLocalSearchParams({
                     page: 1,
+                    keywords: keywords,
+                    role_id: typeof role_id !== "undefined" ? role_id : [],
+                    tag_id: typeof tag_id !== "undefined" ? tag_id : [],
+                    created_at: created_at,
                   });
                   setRefresh(!refresh);
                   setDrawer(false);
@@ -691,11 +708,9 @@ const MemberPage = () => {
         >
           <div className="float-left">
             <Input
-              value={keywords || ""}
+              value={keywords}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  keywords: e.target.value,
-                });
+                setKeywords(e.target.value);
               }}
               allowClear
               placeholder="昵称或手机号"
@@ -704,9 +719,7 @@ const MemberPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={role_id}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  role_id: typeof e !== "undefined" ? e : [],
-                });
+                setRoleId(e);
               }}
               allowClear
               placeholder="VIP会员"
@@ -716,9 +729,7 @@ const MemberPage = () => {
               style={{ width: "100%", marginTop: 20 }}
               value={tag_id}
               onChange={(e) => {
-                resetLocalSearchParams({
-                  tag_id: typeof e !== "undefined" ? e : [],
-                });
+                setTagId(e);
               }}
               allowClear
               placeholder="学员标签"
@@ -731,9 +742,7 @@ const MemberPage = () => {
               style={{ marginTop: 20 }}
               onChange={(date, dateString) => {
                 setCreatedAts(date);
-                resetLocalSearchParams({
-                  created_at: dateString,
-                });
+                setCreatedAt(dateString);
               }}
               placeholder={["注册-开始日期", "注册-结束日期"]}
             />

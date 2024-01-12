@@ -32,7 +32,9 @@ const BookArticlePage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "100");
-  const category_id = JSON.parse(searchParams.get("category_id") || "[]");
+  const [category_id, setCategoryId] = useState(
+    JSON.parse(searchParams.get("category_id") || "[]")
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -114,6 +116,7 @@ const BookArticlePage = () => {
       category_id: [],
     });
     setList([]);
+    setCategoryId([]);
     setRefresh(!refresh);
   };
 
@@ -269,9 +272,7 @@ const BookArticlePage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={category_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                category_id: e,
-              });
+              setCategoryId(e);
             }}
             allowClear
             placeholder="章节"
@@ -286,6 +287,8 @@ const BookArticlePage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                category_id:
+                  typeof category_id !== "undefined" ? category_id : [],
               });
               setRefresh(!refresh);
             }}

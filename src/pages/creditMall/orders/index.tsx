@@ -31,8 +31,10 @@ const CreditMallOrdersPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const keywords = searchParams.get("keywords");
-  const goods_type = JSON.parse(searchParams.get("goods_type") || "[]");
+  const [keywords, setKeywords] = useState(searchParams.get("keywords") || "");
+  const [goods_type, setGoodsType] = useState(
+    JSON.parse(searchParams.get("goods_type") || "[]")
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -109,6 +111,8 @@ const CreditMallOrdersPage = () => {
       goods_type: [],
     });
     setList([]);
+    setKeywords("");
+    setGoodsType([]);
     setRefresh(!refresh);
   };
 
@@ -241,11 +245,9 @@ const CreditMallOrdersPage = () => {
         <div></div>
         <div className="d-flex">
           <Input
-            value={keywords || ""}
+            value={keywords}
             onChange={(e) => {
-              resetLocalSearchParams({
-                keywords: e.target.value,
-              });
+              setKeywords(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -255,9 +257,7 @@ const CreditMallOrdersPage = () => {
             style={{ width: 150, marginLeft: 10 }}
             value={goods_type}
             onChange={(e) => {
-              resetLocalSearchParams({
-                goods_type: typeof e !== "undefined" ? e : [],
-              });
+              setGoodsType(e);
             }}
             allowClear
             placeholder="商品分类"
@@ -272,6 +272,8 @@ const CreditMallOrdersPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                keywords: keywords,
+                goods_type: typeof goods_type !== "undefined" ? goods_type : [],
               });
               setRefresh(!refresh);
             }}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Modal, Table, Button, Input, message } from "antd";
+import { Modal, Table, Button, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { useSearchParams } from "react-router-dom";
 import { mock } from "../../../../api/index";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { PerButton, UserAddDialog } from "../../../../components";
@@ -17,11 +18,21 @@ interface PropsInterface {
   id: number;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+}
+
 export const SubUsers = (props: PropsInterface) => {
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [showUserAddWin, setShowUserAddWin] = useState<boolean>(false);
   const [refresh, setRefresh] = useState(false);
@@ -48,6 +59,21 @@ export const SubUsers = (props: PropsInterface) => {
       .catch((e) => {
         setLoading(false);
       });
+  };
+
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
   };
 
   const delRecords = (uid: number) => {
@@ -84,14 +110,18 @@ export const SubUsers = (props: PropsInterface) => {
   };
 
   const resetData = () => {
-    setPage(1);
+    resetLocalSearchParams({
+      page: 1,
+    });
     setList([]);
     setRefresh(!refresh);
   };
 
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -106,8 +136,10 @@ export const SubUsers = (props: PropsInterface) => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
   };
 
   const columns: ColumnsType<DataType> = [

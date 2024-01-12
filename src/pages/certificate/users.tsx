@@ -33,7 +33,7 @@ const CertificateUsersPage = () => {
   });
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
-  const user_id = searchParams.get("user_id");
+  const [user_id, setUserId] = useState(searchParams.get("user_id") || "");
 
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
@@ -102,6 +102,7 @@ const CertificateUsersPage = () => {
       user_id: "",
     });
     setList([]);
+    setUserId("");
     setSelectedRowKeys([]);
     setRefresh(!refresh);
   };
@@ -281,11 +282,9 @@ const CertificateUsersPage = () => {
         </div>
         <div className="d-flex">
           <Input
-            value={user_id || ""}
+            value={user_id}
             onChange={(e) => {
-              resetLocalSearchParams({
-                user_id: e.target.value,
-              });
+              setUserId(e.target.value);
             }}
             allowClear
             style={{ width: 150 }}
@@ -300,6 +299,7 @@ const CertificateUsersPage = () => {
             onClick={() => {
               resetLocalSearchParams({
                 page: 1,
+                user_id: user_id,
               });
               setRefresh(!refresh);
             }}

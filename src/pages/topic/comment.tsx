@@ -289,9 +289,7 @@ const TopicCommentsPage = () => {
   };
 
   const delSubmit = () => {
-    fileList.map((item: any, index: number) => {
-      delItem(item.id, index);
-    });
+    delItem(fileList[0].id, 0);
   };
 
   const delItem = (id: number, index: number) => {
@@ -301,6 +299,12 @@ const TopicCommentsPage = () => {
         let box = [...fileList];
         box[index].status = 1;
         setFileList(box);
+        if (index === fileList.length - 1) {
+          return;
+        }
+        setTimeout(() => {
+          delItem(box[index + 1].id, index + 1);
+        }, 700);
       })
       .catch((e) => {});
   };

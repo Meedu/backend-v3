@@ -85,6 +85,18 @@ export function userIOSRecords(params: any) {
   );
 }
 
+export function userLive(params: any) {
+  return client.get(`/backend/addons/zhibo/user/index`, params);
+}
+
+export function userBook(params: any) {
+  return client.get(`/backend/addons/meedu_books/user/index`, params);
+}
+
+export function userTopic(params: any) {
+  return client.get(`/backend/addons/meedu_topics/orders`, params);
+}
+
 export function userPapers(id: number, params: any) {
   return client.get(`/backend/addons/Paper/user/${id}/paper-orders`, params);
 }

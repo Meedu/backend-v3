@@ -19,6 +19,9 @@ import { UserInviteComp } from "./detail/invite";
 import { UserCredit1Comp } from "./detail/credit1";
 import { UserBalanceRecordsComp } from "./detail/balance-records";
 import { UserIOSRecordsComp } from "./detail/iOS-records";
+import { UserLiveComp } from "./detail/live";
+import { UserBookComp } from "./detail/book";
+import { UserTopicComp } from "./detail/topic";
 import { UserPapersComp } from "./detail/papers";
 import { UserMockPapersComp } from "./detail/mockPapers";
 import { UserPracticesComp } from "./detail/practices";
@@ -107,6 +110,24 @@ const MemberDetailPage = () => {
       types.push({
         name: "iOS余额明细",
         key: "iOSRecords",
+      });
+    }
+    if (checkPermission("addons.Zhibo.user.index")) {
+      types.push({
+        name: "已购直播课",
+        key: "live",
+      });
+    }
+    if (checkPermission("addons.meedu_books.user.index")) {
+      types.push({
+        name: "已购电子书",
+        key: "book",
+      });
+    }
+    if (checkPermission("addons.meedu_topics.orders")) {
+      types.push({
+        name: "已购图文",
+        key: "topic",
       });
     }
     setCourseTypes(types);
@@ -494,6 +515,15 @@ const MemberDetailPage = () => {
             <UserIOSRecordsComp
               id={Number(params.memberId)}
             ></UserIOSRecordsComp>
+          )}
+          {courseTabActive === "live" && (
+            <UserLiveComp id={Number(params.memberId)}></UserLiveComp>
+          )}
+          {courseTabActive === "book" && (
+            <UserBookComp id={Number(params.memberId)}></UserBookComp>
+          )}
+          {courseTabActive === "topic" && (
+            <UserTopicComp id={Number(params.memberId)}></UserTopicComp>
           )}
         </div>
       </div>

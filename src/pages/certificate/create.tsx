@@ -360,7 +360,6 @@ const CertificateCreatePage = () => {
     let box = [...paperData];
     box = box.concat(data);
     setPaperData(box);
-    console.log(data);
     setShowSelectResourcePaperWin(false);
   };
 

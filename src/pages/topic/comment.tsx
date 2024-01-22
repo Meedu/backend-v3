@@ -195,7 +195,7 @@ const TopicCommentsPage = () => {
         for (var i = 0; i < row.length; i++) {
           newbox.push({
             id: row[i].id,
-            title: row[i].topic.title,
+            title: row[i].topic ? row[i].topic.title : "",
             content: row[i].content,
             status: 0,
           });

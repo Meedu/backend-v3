@@ -201,6 +201,13 @@ const CertificateUpdatePage = () => {
               title: data[j].res_title,
               thumb: data[j].res_thumb,
             });
+          }else if (data[j].res_type === "mock_paper") {
+            paperData.push({
+              type: data[j].res_type,
+              id: data[j].res_id,
+              title: data[j].res_title,
+              thumb: data[j].res_thumb,
+            });
           } else {
             coursesData.push({
               type: data[j].res_type,
@@ -742,7 +749,7 @@ const CertificateUpdatePage = () => {
                       selectedPractice={[]}
                       selectedVip={[]}
                       open={showSelectResourcePaperWin}
-                      enabledResource={"paper"}
+                      enabledResource={"paper,mock_paper"}
                       onCancel={() => setShowSelectResourcePaperWin(false)}
                       onSelected={(result: any) => {
                         changePapers(result);
@@ -762,6 +769,7 @@ const CertificateUpdatePage = () => {
                               delPapers(index);
                             }}
                           />
+                          {item.type === "paper" ? "考试卷-" : "模拟卷-"}
                           {item.title}
                         </div>
                       ))}

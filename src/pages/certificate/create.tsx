@@ -360,7 +360,7 @@ const CertificateCreatePage = () => {
     let box = [...paperData];
     box = box.concat(data);
     setPaperData(box);
-
+    console.log(data);
     setShowSelectResourcePaperWin(false);
   };
 
@@ -661,7 +661,7 @@ const CertificateCreatePage = () => {
                       selectedPractice={[]}
                       selectedVip={[]}
                       open={showSelectResourcePaperWin}
-                      enabledResource={"paper"}
+                      enabledResource={"paper,mock_paper"}
                       onCancel={() => setShowSelectResourcePaperWin(false)}
                       onSelected={(result: any) => {
                         changePapers(result);
@@ -681,6 +681,7 @@ const CertificateCreatePage = () => {
                               delPapers(index);
                             }}
                           />
+                          {item.type === "paper" ? "考试卷-" : "模拟卷-"}
                           {item.title}
                         </div>
                       ))}

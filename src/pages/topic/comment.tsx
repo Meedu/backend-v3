@@ -11,6 +11,7 @@ import {
   ExclamationCircleFilled,
   CheckCircleOutlined,
   SyncOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
@@ -306,7 +307,17 @@ const TopicCommentsPage = () => {
           delItem(box[index + 1].id, index + 1);
         }, 700);
       })
-      .catch((e) => {});
+      .catch((e) => {
+        let box = [...fileList];
+        box[index].status = 2;
+        setFileList(box);
+        if (index === fileList.length - 1) {
+          return;
+        }
+        setTimeout(() => {
+          delItem(box[index + 1].id, index + 1);
+        }, 700);
+      });
   };
 
   return (
@@ -405,9 +416,14 @@ const TopicCommentsPage = () => {
                           等待删除
                         </Tag>
                       )}
-                      {record.status > 0 && (
+                      {record.status === 1 && (
                         <Tag icon={<CheckCircleOutlined />} color="success">
                           删除成功
+                        </Tag>
+                      )}
+                      {record.status === 2 && (
+                        <Tag icon={<CloseCircleOutlined />} color="error">
+                          删除失败
                         </Tag>
                       )}
                     </>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Modal, message, Button, DatePicker } from "antd";
+import { Row, Col, Table, Modal, message, Button, DatePicker, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
@@ -7,7 +7,11 @@ import { topic } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import { BackBartment } from "../../components";
 import { dateFormat } from "../../utils/index";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  ExclamationCircleFilled,
+  CheckCircleOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
 const { confirm } = Modal;
 const { RangePicker } = DatePicker;
 import moment from "moment";
@@ -49,6 +53,9 @@ const TopicCommentsPage = () => {
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [user_id, setUserId] = useState("");
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [fileList, setFileList] = useState<any[]>([]);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     document.title = "图文文章评论";
@@ -147,6 +154,8 @@ const TopicCommentsPage = () => {
     setUserId("");
     setCreatedAt([]);
     setCreatedAts([]);
+    setSelectedRowKeys([]);
+    setFileList([]);
     setRefresh(!refresh);
   };
 
@@ -155,6 +164,8 @@ const TopicCommentsPage = () => {
       page: 1,
     });
     setList([]);
+    setSelectedRowKeys([]);
+    setFileList([]);
     setRefresh(!refresh);
   };
 
@@ -172,6 +183,26 @@ const TopicCommentsPage = () => {
       page: page,
       size: pageSize,
     });
+  };
+
+  const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      let row: any = selectedRows;
+      let newbox: any = [];
+      if (row) {
+        for (var i = 0; i < row.length; i++) {
+          newbox.push({
+            id: row[i].id,
+            title: row[i].topic.title,
+            content: row[i].content,
+            status: 0,
+          });
+        }
+        setFileList(newbox);
+      }
+      setSelectedRowKeys(selectedRowKeys);
+    },
   };
 
   const columns: ColumnsType<DataType> = [
@@ -233,11 +264,56 @@ const TopicCommentsPage = () => {
     return current && current >= moment().add(0, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
   };
 
+  const destorymulti = () => {
+    if (selectedRowKeys.length === 0) {
+      message.error("请选择需要操作的数据");
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除选中评论？",
+      centered: true,
+      okText: "确认删除",
+      cancelText: "取消",
+      onOk() {
+        setVisible(true);
+        setTimeout(() => {
+          delSubmit();
+        }, 1000);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const delSubmit = () => {
+    fileList.map((item: any, index: number) => {
+      delItem(item.id, index);
+    });
+  };
+
+  const delItem = (id: number, index: number) => {
+    topic
+      .commentDestory(id)
+      .then(() => {
+        let box = [...fileList];
+        box[index].status = 1;
+        setFileList(box);
+      })
+      .catch((e) => {});
+  };
+
   return (
     <div className="meedu-main-body">
       <BackBartment title="图文文章评论" />
       <div className="float-left j-b-flex mb-30 mt-30">
-        <div className="d-flex"></div>
+        <div className="d-flex">
+          <Button type="primary" danger onClick={() => destorymulti()}>
+            批量删除
+          </Button>
+        </div>
         <div className="d-flex">
           <RangePicker
             disabledDate={disabledDate}
@@ -269,6 +345,10 @@ const TopicCommentsPage = () => {
       </div>
       <div className="float-left">
         <Table
+          rowSelection={{
+            type: "checkbox",
+            ...rowSelection,
+          }}
           loading={loading}
           columns={columns}
           dataSource={list}
@@ -276,6 +356,85 @@ const TopicCommentsPage = () => {
           pagination={paginationProps}
         />
       </div>
+      <Modal
+        footer={null}
+        title="批量删除"
+        open={visible}
+        width={800}
+        maskClosable={false}
+        closable={false}
+        centered
+      >
+        <Row gutter={[0, 10]}>
+          <Col
+            span={24}
+            style={{
+              marginTop: 30,
+            }}
+          >
+            <Table
+              pagination={false}
+              rowKey="id"
+              columns={[
+                {
+                  title: "图文",
+                  width: 200,
+                  render: (_, record: any) => <span>{record.title}</span>,
+                },
+                {
+                  title: "评论内容",
+                  width: 400,
+                  ellipsis: true,
+                  render: (_, record: any) => (
+                    <div
+                      dangerouslySetInnerHTML={{ __html: record.content }}
+                    ></div>
+                  ),
+                },
+                {
+                  title: "进度",
+
+                  render: (_, record: any) => (
+                    <>
+                      {record.status === 0 && (
+                        <Tag icon={<SyncOutlined spin />} color="processing">
+                          等待删除
+                        </Tag>
+                      )}
+                      {record.status > 0 && (
+                        <Tag icon={<CheckCircleOutlined />} color="success">
+                          删除成功
+                        </Tag>
+                      )}
+                    </>
+                  ),
+                },
+              ]}
+              dataSource={fileList}
+            />
+          </Col>
+          <Col
+            span={24}
+            style={{
+              display: "flex",
+              flexDirection: "row-reverse",
+              marginTop: 30,
+            }}
+          >
+            {fileList.every((item) => item.status > 0) && (
+              <Button
+                type="primary"
+                onClick={() => {
+                  setVisible(false);
+                  resetData();
+                }}
+              >
+                关闭
+              </Button>
+            )}
+          </Col>
+        </Row>
+      </Modal>
     </div>
   );
 };

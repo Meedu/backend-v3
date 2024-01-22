@@ -76,12 +76,12 @@ const MemberDetailPage = () => {
         key: "vod-watch-records",
       });
     }
-    if (checkPermission("v2.member.videos")) {
-      types.push({
-        name: "单独订阅课时",
-        key: "video-watch-records",
-      });
-    }
+    // if (checkPermission("v2.member.videos")) {
+    //   types.push({
+    //     name: "单独订阅课时",
+    //     key: "video-watch-records",
+    //   });
+    // }
     types.push(
       ...[
         {

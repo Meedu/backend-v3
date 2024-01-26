@@ -113,12 +113,11 @@ export const TopicComp = (props: PropsInterface) => {
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       let row: any = selectedRows[0];
       if (row) {
-        let url = encodeURIComponent(
-          configUrl +
-            "/addons/MeeduTopics/app-view/dist/index.html#/?id=" +
-            row.id
-        );
-        let link = "/pages/webview/webview?url=" + url + "&title=" + row.title;
+        let link =
+          "/pages/webview/webview?course_type=topic&id=" +
+          row.id +
+          "&title=" +
+          row.title;
         props.onChange(link);
       }
     },

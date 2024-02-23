@@ -41,7 +41,6 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [keywords, setKeywords] = useState<string>("");
-  const [name, setName] = useState<string>("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [selectedRows, setSelectedRows] = useState<any>([]);
   const [isNoService, setIsNoService] = useState(false);
@@ -112,7 +111,6 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
     setSelectedRowKeys([]);
     setSelectedRows([]);
     setKeywords("");
-    setName("");
     setRefresh(!refresh);
   };
 
@@ -327,54 +325,10 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
               </div>
             )}
             <div className="float-left">
-              {isLocalService &&
-                checkPermission("addons.LocalUpload.video.index") && (
-                  <>
-                    <div className="float-left j-b-flex mb-15">
-                      <div className="d-flex">
-                        <Button
-                          type="primary"
-                          onClick={() => {
-                            if (isNoService) {
-                              message.warning(
-                                "请先在系统配置的视频存储中完成参数配置"
-                              );
-                              return;
-                            }
-                            setOpenUploadItem(true);
-                          }}
-                        >
-                          上传视频
-                        </Button>
-                      </div>
-                      <div className="d-flex">
-                        <Input
-                          value={name}
-                          style={{ width: 150 }}
-                          onChange={(e) => {
-                            setName(e.target.value);
-                          }}
-                          allowClear
-                          placeholder="视频名称关键词"
-                        />
-                        <Button className="ml-10" onClick={resetList}>
-                          清空
-                        </Button>
-                        <Button
-                          className="ml-10"
-                          type="primary"
-                          onClick={() => {
-                            setPage(1);
-                            setRefresh(!refresh);
-                          }}
-                        >
-                          筛选
-                        </Button>
-                      </div>
-                    </div>
-                  </>
-                )}
-              {(isAliService || isTenService) && (
+              {isAliService ||
+              isTenService ||
+              (isLocalService &&
+                checkPermission("addons.LocalUpload.video.index")) ? (
                 <>
                   <div className="float-left j-b-flex mb-15">
                     <div className="d-flex">
@@ -419,8 +373,9 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
                     </div>
                   </div>
                 </>
-              )}
-              {!isNoService && (
+              ) : null}
+
+              {!isNoService ? (
                 <div className="float-left">
                   <ConfigProvider renderEmpty={tableEmptyRender}>
                     <Table
@@ -436,18 +391,19 @@ export const UploadVideoDialog: React.FC<PropInterface> = ({
                     />
                   </ConfigProvider>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </Modal>
       ) : null}
+
       <UploadVideoItem
         open={openUploadItem}
         onCancel={() => setOpenUploadItem(false)}
         onSuccess={() => {
           completeUpload();
         }}
-      ></UploadVideoItem>
+      />
     </>
   );
 };

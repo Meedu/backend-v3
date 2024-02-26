@@ -81,6 +81,9 @@ export const MemberUpdateDialog = (props: PropsInterface) => {
     values.role_expired_at = values.role_expired_at
       ? moment(new Date(values.role_expired_at)).format("YYYY-MM-DD HH:mm:ss")
       : "";
+    if (!values.password) {
+      delete values.password;
+    }
     setLoading(true);
     member
       .update(props.id, values)

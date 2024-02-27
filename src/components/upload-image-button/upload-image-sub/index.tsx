@@ -25,10 +25,15 @@ export const UploadImageSub = (props: PropsInterface) => {
       if (status === "done") {
         if (response.status === 0) {
           message.success(`${info.file.name} 上传成功`);
+        } else {
+          message.error(
+            `上传失败:错误代码${response.status}-${response.message}`
+          );
         }
       } else if (status === "error") {
         message.error(`${info.file.name} 上传失败`);
       }
+      console.log(info);
     },
     showUploadList: {
       showRemoveIcon: false,

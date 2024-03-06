@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { Modal, message, Button, Tooltip } from "antd";
+import { Modal, message, Tooltip } from "antd";
 import styles from "./h5.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { viewBlock } from "../../api/index";
 import { titleAction } from "../../store/user/loginUserSlice";
 import {
-  CloseOutlined,
   UpOutlined,
   DownOutlined,
   CopyOutlined,
@@ -48,11 +47,12 @@ const DecorationH5Page = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  const [platform, setPlatform] = useState("h5");
-  const [page, setPage] = useState("h5-page-index");
+  const [platform] = useState("h5");
+  const [page] = useState("h5-page-index");
   const [blocks, setBlocks] = useState<any>([]);
   const [curBlock, setCurBlock] = useState<any>(null);
   const [lastSort, setLastSort] = useState(0);
+
   const enabledAddons = useSelector(
     (state: any) => state.enabledAddonsConfig.value.enabledAddons
   );
@@ -622,7 +622,16 @@ const DecorationH5Page = () => {
             </div>
           </div>
         </div>
-        <div className="h5-dec-preview-box" id="h5-dec-preview-box">
+        <div
+          className="h5-dec-preview-box"
+          id="h5-dec-preview-box"
+          onDragEnter={(e: any) => {
+            e.preventDefault();
+          }}
+          onDragOver={(e: any) => {
+            e.preventDefault();
+          }}
+        >
           <div className="status-bar">
             <img src={statusIcon} style={{ width: "100%" }} height={26} />
           </div>

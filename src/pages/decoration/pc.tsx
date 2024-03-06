@@ -46,23 +46,23 @@ import codeIocn from "../../assets/images/decoration/h5/code.png";
 const { confirm } = Modal;
 
 const DecorationPCPage = () => {
+  const enabledAddons = useSelector(
+    (state: any) => state.enabledAddonsConfig.value.enabledAddons
+  );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  const [platform, setPlatform] = useState("pc");
-  const [page, setPage] = useState("pc-page-index");
+  const [platform] = useState("pc");
+  const [page] = useState("pc-page-index");
   const [blocks, setBlocks] = useState<any>([]);
   const [curBlockIndex, setCurBlockIndex] = useState<any>(null);
   const [showNavWin, setShowNavWin] = useState<boolean>(false);
   const [showListWin, setShowListWin] = useState<boolean>(false);
   const [showNoticeWin, setShowNoticeWin] = useState<boolean>(false);
   const [showLinkWin, setShowLinkWin] = useState<boolean>(false);
-  const [screenWidth, setScreenWidth] = useState<any>(null);
   const [previewWidth, setPreviewWidth] = useState(1200);
   const [lastSort, setLastSort] = useState(0);
-  const enabledAddons = useSelector(
-    (state: any) => state.enabledAddonsConfig.value.enabledAddons
-  );
 
   useEffect(() => {
     document.title = "电脑端装修";
@@ -132,20 +132,15 @@ const DecorationPCPage = () => {
   };
 
   const dragChange = (e: any, sign: string) => {
-    if (e.clientX < 249) {
-      return;
-    }
-    if (e.clientX > 249 + previewWidth) {
-      return;
-    }
-    if (e.clientY < 143) {
-      return;
-    }
-    if (loading) {
+    if (
+      e.clientX < 249 ||
+      e.clientX > 249 + previewWidth ||
+      e.clientY < 143 ||
+      loading
+    ) {
       return;
     }
     setLoading(true);
-    // 默认数据
     let defaultConfig = null;
     if (sign === "pc-vod-v1") {
       defaultConfig = {
@@ -719,19 +714,25 @@ const DecorationPCPage = () => {
         </div>
         <div className={styles["tip"]}>点击预览区直接编辑板块</div>
       </div>
-      <div className="pc-dec-preview-box" id="pc-dec-preview-box">
+      <div
+        className="pc-dec-preview-box"
+        id="pc-dec-preview-box"
+        onDragEnter={(e: any) => {
+          e.preventDefault();
+        }}
+        onDragOver={(e: any) => {
+          e.preventDefault();
+        }}
+      >
         <div className="pc-box" style={{ width: previewWidth }}>
           {/* 导航栏 */}
-          <RenderNavs reload={showNavWin}></RenderNavs>
+          <RenderNavs reload={showNavWin} />
 
           {/* 幻灯片 */}
-          <RenderSliders
-            reload={showListWin}
-            width={previewWidth}
-          ></RenderSliders>
+          <RenderSliders reload={showListWin} width={previewWidth} />
 
           {/* 公告  */}
-          <RenderNotice reload={showNoticeWin}></RenderNotice>
+          <RenderNotice reload={showNoticeWin} />
 
           {blocks.length > 0 &&
             blocks.map((item: any, index: number) => (
@@ -741,30 +742,28 @@ const DecorationPCPage = () => {
                   onClick={() => setCurBlockIndex(index)}
                 >
                   {item.sign === "pc-vod-v1" && (
-                    <RenderVod config={item.config_render}></RenderVod>
+                    <RenderVod config={item.config_render} />
                   )}
                   {item.sign === "pc-live-v1" && (
-                    <RenderLive config={item.config_render}></RenderLive>
+                    <RenderLive config={item.config_render} />
                   )}
                   {item.sign === "pc-book-v1" && (
-                    <RenderBook config={item.config_render}></RenderBook>
+                    <RenderBook config={item.config_render} />
                   )}
                   {item.sign === "pc-topic-v1" && (
-                    <RenderTopic config={item.config_render}></RenderTopic>
+                    <RenderTopic config={item.config_render} />
                   )}
                   {item.sign === "pc-learnPath-v1" && (
-                    <RenderLearnPath
-                      config={item.config_render}
-                    ></RenderLearnPath>
+                    <RenderLearnPath config={item.config_render} />
                   )}
                   {item.sign === "pc-ms-v1" && (
-                    <RenderMiaosha config={item.config_render}></RenderMiaosha>
+                    <RenderMiaosha config={item.config_render} />
                   )}
                   {item.sign === "pc-tg-v1" && (
-                    <RenderTuangou config={item.config_render}></RenderTuangou>
+                    <RenderTuangou config={item.config_render} />
                   )}
                   {item.sign === "code" && (
-                    <RenderCode config={item.config_render}></RenderCode>
+                    <RenderCode config={item.config_render} />
                   )}
                   {curBlockIndex === index && (
                     <div className="item-options">
@@ -811,7 +810,7 @@ const DecorationPCPage = () => {
             ))}
 
           {/* 友情链接  */}
-          <RenderLinks reload={showLinkWin}></RenderLinks>
+          <RenderLinks reload={showLinkWin} />
         </div>
       </div>
       {curBlockIndex !== null && (
@@ -830,13 +829,13 @@ const DecorationPCPage = () => {
           <ConfigSetting
             block={blocks[curBlockIndex]}
             onUpdate={() => reloadData()}
-          ></ConfigSetting>
+          />
         </div>
       )}
-      <NavsList open={showNavWin} onClose={() => close()}></NavsList>
-      <SlidersList open={showListWin} onClose={() => close()}></SlidersList>
-      <NoticeList open={showNoticeWin} onClose={() => close()}></NoticeList>
-      <LinksList open={showLinkWin} onClose={() => close()}></LinksList>
+      <NavsList open={showNavWin} onClose={() => close()} />
+      <SlidersList open={showListWin} onClose={() => close()} />
+      <NoticeList open={showNoticeWin} onClose={() => close()} />
+      <LinksList open={showLinkWin} onClose={() => close()} />
     </div>
   );
 };

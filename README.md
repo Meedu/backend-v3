@@ -1,6 +1,6 @@
 ## MeEdu 后台界面程序
 
-本项目使用 React18 + Ant.design 构建。
+本项目使用 React18 + TypeScript + Ant.design 构建。
 
 ## 常用链接
 
@@ -13,13 +13,13 @@
 #### 一、安装依赖：
 
 ```
-npm i
+pnpm install
 ```
 
 #### 二、修改配置：
 
 ```
-cp .env.example .env
+cp .env.example .env.production
 ```
 
 打开 `.env` 文件，修改其中的配置如下：
@@ -37,7 +37,7 @@ VITE_APP_URL=https://demo-api.meedu.xyz
 #### 三、编译：
 
 ```
-npm run build
+pnpm build
 ```
 
 编译好，将会生成 `dist` 目录。将 `dist` 目录下的文件部署到新的站点。需要注意的是：
